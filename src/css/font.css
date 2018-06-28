@@ -1,0 +1,117 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('../fonts/icomoon.eot?4icbu4');
+  src:  url('../fonts/icomoon.eot?4icbu4#iefix') format('embedded-opentype'),
+    url('../fonts/icomoon.ttf?4icbu4') format('truetype'),
+    url('../fonts/icomoon.woff?4icbu4') format('woff'),
+    url('../fonts/icomoon.svg?4icbu4#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-email-send-abnormal:before {
+  content: "\e91c";
+}
+.icon-no-tips:before {
+  content: "\e91d";
+}
+.icon-customer-complaint-black:before {
+  content: "\e91b";
+}
+.icon-accessory:before {
+  content: "\e900";
+}
+.icon-account-list:before {
+  content: "\e901";
+}
+.icon-add:before {
+  content: "\e902";
+}
+.icon-add-account:before {
+  content: "\e903";
+}
+.icon-add-template:before {
+  content: "\e904";
+}
+.icon-assigned:before {
+  content: "\e905";
+}
+.icon-base-data:before {
+  content: "\e906";
+}
+.icon-change-signs:before {
+  content: "\e907";
+}
+.icon-customer-complaint:before {
+  content: "\e908";
+}
+.icon-finish:before {
+  content: "\e909";
+}
+.icon-global:before {
+  content: "\e90a";
+}
+.icon-hint:before {
+  content: "\e90b";
+}
+.icon-home:before {
+  content: "\e90c";
+}
+.icon-my-folder:before {
+  content: "\e90d";
+}
+.icon-other-email:before {
+  content: "\e90e";
+}
+.icon-out:before {
+  content: "\e90f";
+}
+.icon-pen:before {
+  content: "\e910";
+}
+.icon-receiving-rules:before {
+  content: "\e911";
+}
+.icon-remove:before {
+  content: "\e912";
+}
+.icon-resolved:before {
+  content: "\e913";
+}
+.icon-search:before {
+  content: "\e914";
+}
+.icon-send:before {
+  content: "\e915";
+}
+.icon-sensitive-word:before {
+  content: "\e916";
+}
+.icon-sent-mails:before {
+  content: "\e917";
+}
+.icon-templates:before {
+  content: "\e918";
+}
+.icon-unassigned:before {
+  content: "\e919";
+}
+.icon-unfinish:before {
+  content: "\e91a";
+}
+

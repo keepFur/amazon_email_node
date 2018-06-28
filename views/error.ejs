@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>亚马逊客服</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link type="text/css" href="../plugins/css/flyer.all.min.css?v=<%=package.version %>" rel="stylesheet">
+    <link type="text/css" href="../css/layout.css?v=<%=package.version %>" rel="stylesheet">
+    <link type="text/css" href="../css/home.css?v=<%=package.version %>" rel="stylesheet">
+    <link type="text/css" href="../css/access_right.css?v=<%=package.version %>" rel="stylesheet">
+    <link type="text/css" href="../css/index.css?v=<%=package.version %>" rel="stylesheet">
+</head>
+
+<body>
+    <!-- 头部 -->
+    <header>
+        <!-- logo -->
+        <a href="<%= baiyi_home %>" class='logo-link'>
+            <img src="../imgs/logo-new.png" alt="logo" />
+        </a>
+        <!-- 首页以及模块导航 -->
+        <!-- <ul class='nav-link'>
+            <li>
+                <a href="#">
+                    <span>首页</span>
+                </a>
+            </li>
+        </ul> -->
+        <!-- 登录相关 -->
+        <span class='login'>
+            <span></span>
+        <a href="/logout"><i class="icon-out"></i></a>
+        </span>
+    </header>
+    <!-- 面包屑 -->
+    <nav class='nav-top'>
+        <span>销售工具</span>
+        <span>亚马逊客服</span>
+    </nav>
+    <!-- 内容主体 -->
+    <section class="flyer-layout-content">
+             <div class="flyer-form-item access-right">
+                <div class="access-right-leftImg">
+                    <img src="../imgs/notAllow.png">
+                </div>
+                <div class="access-right-rightBox">
+                    <div>
+                        <img src="../imgs/worry.png">
+                    </div>
+                    <div class="access-right-bottom">
+                        <p>您没有访问该页面的权限！</p>
+                        <a href="<%= baiyi_home %>"><button class="flyer-btn flyer-btn-blue">返回首页</button></a>
+                    </div>
+                </div>
+            </div>
+    </section>
+    <footer>
+        <span class="footer-brand">Version: <span class = "version-icon"><span class = 'version-update'></span>
+        <%=package.version %>
+            </span>
+            </span>
+            <span class="footer-brand">
+                <strong class="text-danger">AUKEY</strong>
+            </span>
+            <p class="no-margin">
+                © <span id="year">2017</span> <strong>AUKEY</strong>. ALL Rights Reserved.
+            </p>
+    </footer>
+</body>
+
+</html>

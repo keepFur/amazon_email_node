@@ -1,0 +1,45 @@
+<div class="flyer-layout-previewTitle">
+    <span class="flyer-layout-blod i18n" data-i18nKey="商品">商品</span>
+    <span data-i18nkey="(当前显示" class="i18n">(当前显示</span>
+    <span id="productCurrentMountSpan">0</span>
+    <span data-i18nkey="个，共" class="i18n">个，共</span>
+    <span class="flyer-layout-allNum" id="productMountSpan">0</span>
+    <span data-i18nkey="个" class="i18n">个</span>
+    <span class="flyer-search-conditions"></span>)
+</div>
+<div class="btn-container product-comtainer">
+    <input type="file" class="flyer-upload-file flyer-upload-file-up" accept=".xlsx">
+    <button class="flyer-btn flyer-btn-blue adjustDataProduct i18n" style="display:none;" data-i18nKey="数据修正">数据修正</button>
+    <button class="flyer-btn flyer-btn-default deleteProduct i18n" data-i18nKey="删除">删除</button>
+    <!-- <div class="flyer-btn-group">
+        <button class="flyer-btn flyer-btn-default toggleBtnGroup">停用或启用
+            <i class="fa fa-angle-down"></i>
+        </button>
+        <div class="flyer-btn-group-content">
+            <ul>
+                <li class="disabled-product" data-disabled="0">停用</li>
+                <li class="disabled-product" data-disabled="1">启用</li>
+            </ul>
+        </div>
+    </div> -->
+    <button class="flyer-btn flyer-btn-default i18n" id="advancedSearchBtn" title="高级搜索" data-i18nKey="高级搜索">
+        <i class="icon-search"></i>
+    </button>
+    <button class="flyer-btn flyer-btn-default i18n" id="clearSearchConditionsBtn" title="清空搜索条件" data-i18nKey="清空搜索条件">
+        <i class="fa fa-eraser"></i>
+    </button>
+    <!-- 分页插件 -->
+    <div class="paper-container paper-container-product first"></div>
+    <div class="pager-size-container" id="productPagerSize"></div>
+</div>
+<!-- 表格 -->
+<div class="table-container" id="dataTable">
+
+</div>
+<div class="btn-container footer-upper product-comtainer">
+    <input type="file" class="flyer-upload-file flyer-upload-file-down" accept=".xlsx">
+    <button class="flyer-btn flyer-btn-default deleteProduct i18n" data-i18nKey="删除">删除</button>
+    <!-- 分页插件 -->
+    <div class="paper-container paper-container-product"></div>
+</div>
+<script src='../js/product.js'></script>

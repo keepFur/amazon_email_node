@@ -1,0 +1,57 @@
+@import "base";
+.change-email{
+     .flyer-input-block{
+         span{
+             display: inline-block;
+             width: 110px;
+             text-align: right;
+             margin-right: 2px;
+         }
+     }
+     .flyer-form {
+         margin-right: 0;
+         .flyer-input {
+            display:inline-block; 
+            width: 350px;
+            height: 34px;
+            line-height: 34px;
+       }
+        .flyer-input-block {
+            padding-left: 0;
+            margin-bottom: 8px;
+        }
+     }
+     h5 {
+        font-size: 14px;
+        font-weight: bold;
+        margin-left: 20px;
+        color: #333;
+    }
+    .change-email-h5{
+        margin-top: 16px;
+    }
+    .flyer-radio{
+        margin-left: 156px;
+        margin-bottom: 6px;        
+        & + span{
+             display: inline-block;
+             line-height: 20px;
+        }
+    }
+    .flyer-input-block {
+        select{
+            display: inline-block!important;
+        }
+    }
+    .change-email-otrherSend{
+        margin-top: 10px;
+        padding-left: 50px;
+        .flyer-input {
+            width: 235px;
+        }
+        span{
+            margin-right: 0px;  
+            font-size: 13px;
+        }
+    }
+}

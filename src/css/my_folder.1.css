@@ -1,0 +1,10 @@
+/*** Parameters ***/
+.my-folder .my-folder-reomove {
+  margin-left: 10px; }
+
+.my-folder table span:hover {
+  color: #2cc3a9;
+  cursor: pointer; }
+
+.my-folder .flyer-table table tr td:first-child {
+  overflow: hidden !important; }

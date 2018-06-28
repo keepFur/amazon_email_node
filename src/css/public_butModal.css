@@ -1,0 +1,88 @@
+/*** Parameters ***/
+.public-butModal input,
+.public-butModal .flyer-combobox-contents {
+  height: 32px !important;
+  line-height: 32px !important;
+  box-sizing: border-box; }
+
+.public-butModal .flyer-combobox-contents .filter-options {
+  width: 326px;
+  height: 30px !important;
+  float: left; }
+
+.public-butModal .flyer-combobox-contents i.fa {
+  height: 29px;
+  line-height: 29px; }
+
+.public-butModal .flyer-form-item {
+  min-height: 32px;
+  height: 32px;
+  line-height: 32px; }
+
+.public-butModal .public-butModal-search {
+  display: inline-block; }
+  .public-butModal .public-butModal-search i {
+    position: absolute;
+    right: 6px;
+    top: 8px;
+    color: #666; }
+
+.public-butModal .public-butModal-endTime,
+.public-butModal .public-butModal-startTime {
+  width: 346px;
+  float: left;
+  margin-left: 10px; }
+
+.public-butModal .public-butModal-datepicker {
+  float: left;
+  width: 216px; }
+
+.public-butModal .flyer-form {
+  margin-right: 0; }
+
+.public-butModal .flyer-form .flyer-input-inline {
+  width: 83%;
+  margin-left: 15%; }
+
+.public-butModal div.mutiple-select {
+  float: left;
+  position: relative;
+  bottom: 0px;
+  padding: 0px;
+  margin-right: 0;
+  padding-left: 10px;
+  box-sizing: border-box;
+  width: 356px; }
+
+.public-butModal .public-butModal-inputBox {
+  margin-bottom: 14px;
+  width: 100%;
+  display: inline-block;
+  height: 34PX; }
+  .public-butModal .public-butModal-inputBox label {
+    float: left;
+    height: 32px;
+    line-height: 32px;
+    width: 56px;
+    text-align: right; }
+  .public-butModal .public-butModal-inputBox span.datepicker-spilt {
+    float: left;
+    position: relative;
+    top: 5px; }
+
+.public-butModal input.flyer-input.i18n {
+  margin-left: 10px;
+  display: inline-block;
+  box-sizing: border-box; }
+
+.advanced-search-pop input.flyer-input.i18n {
+  width: 346px !important; }
+
+.advanced-search-pop div.customer-service-select {
+  width: 346px !important; }
+
+.advanced-search-pop input.customer-search-keyword {
+  width: 346px !important; }
+
+.advanced-search-pop div.mutiple-select {
+  width: 356px; }

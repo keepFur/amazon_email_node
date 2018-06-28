@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,oBAAoB;ACEhB,6BAAkB;EACd,WAAW,EAAE,IAAI;AAErB,2BAAgB;EACZ,KAAK,EDkHN,OAAO;ECjHN,MAAM,EAAE,OAAO;AAEnB,+CAAqC;EACjC,QAAQ,EAAC,iBAAgB",
+"sources": ["../sass/base.scss","../sass/my_folder.scss"],
+"names": [],
+"file": "my_folder.css"
+}

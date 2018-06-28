@@ -1,0 +1,13 @@
+/*** Parameters ***/
+.add-folder label.flyer-form-label {
+  width: 46px;
+  margin-right: 10px;
+  padding: 0;
+  height: 32px;
+  line-height: 32px; }
+
+.add-folder .flyer-input-block {
+  padding-left: 46px; }
+
+.add-folder .flyer-input {
+  width: 292px; }

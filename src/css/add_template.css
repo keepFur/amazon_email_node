@@ -1,0 +1,46 @@
+/*** Parameters ***/
+.flyer-layout-sendEmail label.flyer-form-label {
+  font-weight: bold; }
+
+.flyer-layout-sendEmail .flyer-form {
+  margin-right: 0;
+  width: 75%; }
+
+.flyer-layout-sendEmail #addFile span.fileNum {
+  font-size: 12px;
+  color: #fff;
+  padding-left: 0;
+  margin-left: 5px;
+  display: inline-block;
+  padding: 0 6px;
+  height: 18px;
+  background-color: #2cc3a9;
+  line-height: 18px;
+  text-align: center;
+  border-radius: 10px;
+  margin-left: 4px;
+  margin-top: 6px;
+  display: none; }
+
+.flyer-layout-sendEmail .flyer-template-datil {
+  margin: 14px;
+  overflow: hidden;
+  padding-left: 56px; }
+  .flyer-layout-sendEmail .flyer-template-datil p {
+    float: left;
+    color: #999;
+    font-size: 14px;
+    height: 19px;
+    line-height: 19px; }
+    .flyer-layout-sendEmail .flyer-template-datil p:first-child {
+      margin-right: 40px; }
+
+table .template-title {
+  margin-right: 8px; }
+
+table .template-content {
+  color: #999;
+  width: 60%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap; }

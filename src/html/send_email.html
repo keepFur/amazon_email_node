@@ -1,0 +1,135 @@
+<!-- 左边发送邮件 Start -->
+<div class="flyer-layout-sendEmail">
+    <form class="flyer-form" id="form" action="">
+        <div class="flyer-form-item">
+            <label class="flyer-form-label i18n" data-i18nkey="发件人">发件人</label>
+            <div class="emailBox flyer-input-block">
+
+            </div>
+        </div>
+        <div class="flyer-form-item">
+            <label class="flyer-form-label i18n" data-i18nkey="收件人">收件人</label>
+            <div class="flyer-input-block">
+                <input type="text" name="to" required="true" email="true" placeholder="请输入收件人地址" autocomplete="off" class="flyer-input i18n"
+                    id='reviceAddress' data-i18nkey="请输入收件人地址">
+            </div>
+        </div>
+        <div class="flyer-form-item">
+            <label class="flyer-form-label i18n" data-i18nkey="主题">主题</label>
+            <div class="flyer-input-block">
+                <input type="text" name="subject" required="true" maxlength="500" placeholder="要发送的邮件主题" autocomplete="off" class="flyer-input i18n"
+                    data-i18nkey="要发送的邮件主题">
+            </div>
+        </div>
+        <!-- <div class="flyer-form-item flyer-layout-otherBtn">
+            <div class="flyer-input-block">
+                <a><span id='addFile'><i class="fa fa-files-o"></i>添加附件<span class = 'fileNum'></a>
+                <a><span><i class="fa fa-file-code-o"></i>引用模板<span></a>
+                <a><span><i class="fa fa-image"></i>引用图片<span></a>
+                <a><span><i class="fa fa-file-picture-o"></i>更多<span></a>
+            </div>
+        </div> -->
+        <div class="flyer-form-item flyer-layout-text">
+            <label class="flyer-form-label i18n" data-i18nkey="正文">正文</label>
+            <div class="flyer-input-block">
+                <textarea name="body" required="true" placeholder="请输入内容" class="flyer-textarea i18n" data-i18nkey="请输入内容"></textarea>
+            </div>
+        </div>
+        <div class="flyer-form-item flyer-layout-submitBox">
+            <div class="flyer-input-block">
+                <button class="flyer-btn flyer-btn-blue submit i18n" data-i18nkey="发送邮件">发送邮件</button>
+                <span class="flyer-btn flyer-btn-default i18n" id='saveTempMail' data-i18nkey="暂存草稿">暂存草稿</span>
+                <button class="flyer-btn flyer-btn-default i18n" id='clearTempMail' data-i18nkey="清除草稿">清除草稿</button>
+            </div>
+        </div>
+    </form>
+    <!-- 右侧边栏 -->
+    <div class="send-email-orders">
+        <h4 class="i18n" data-i18nkey="相关订单">相关订单</h4>
+        <span id="nomatch" class="i18n" data-i18nkey="暂无">暂无</span>
+        <!-- 单个结构 -->
+        <div class='sendEmail-orders-single'>
+            <div class='sendEmail-orders-text'>
+                <div class='sendEmail-orders-title'>
+
+                </div>
+                <div class='sendEmail-orders-num'>
+                    <i class="i18n" data-i18nKey="订单编号:">订单编号:</i>
+                    <span></span>
+                </div>
+                <div class='sendEmail-quantity-ordered'>
+                    <i class="i18n" data-i18nKey="产品数量:">产品数量:</i>
+                    <span></span>
+                </div>
+                <div class='sendEmail-orders-shop'>
+                    <i class="i18n" data-i18nKey="店铺：">店铺：</i>
+                    <span></span>
+                </div>
+                <div class='sendEmail-orders-site'>
+                    <i class="i18n" data-i18nKey="站点：">站点：</i>
+                    <span></span>
+                </div>
+                <div class='sendEmail-orders-despatch'>
+                    <i class="i18n" data-i18nKey="站点：">发货方式：</i>
+                    <span></span>
+                </div>
+                <div class='sendEmail-orders-postage'>
+                    <i class="i18n" data-i18nKey="邮费：">邮费：</i>
+                    <span></span>
+                </div>
+                <div class='sendEmail-orders-discount'>
+                    <i class="i18n" data-i18nKey="折扣：">折扣：</i>
+                    <span></span>
+                </div>
+                <div class='sendEmail-orders-buyerEmail'>
+                    <i class="i18n" data-i18nKey="买家账户：">买家账户：</i>
+                    <span></span>
+                </div>
+                <div class='sendEmail-orders-country'>
+                    <i class="i18n" data-i18nKey="国家：">国家：</i>
+                    <span></span>
+                </div>
+                <div class='sendEmail-orders-address'>
+                    <i class="i18n" data-i18nKey="地址：">地址：</i>
+                    <span></span>
+                </div>
+                <div class='sendEmail-orders-buyTime'>
+                    <i class="i18n" data-i18nKey="购买时间：">购买时间：</i>
+                    <span></span>
+                </div>
+                <div class='sendEmail-orders-amazonTime'>
+                    <i class="i18n" data-i18nKey="亚马逊更新时间：">亚马逊更新时间：</i>
+                    <span></span>
+                </div>
+                <div class='sendEmail-orders-systemTime'>
+                    <i class="i18n" data-i18nKey="系统更新时间：">系统更新时间：</i>
+                    <span></span>
+                </div>
+                <div class='sendEmail-orders-status'>
+                    <i class="i18n" data-i18nKey="订单状态：">订单状态：</i>
+                    <span></span>
+                </div>
+                <div class='sendEmail-orders-asin'>
+                    ASIN：
+                    <span>ASIN：</span>
+                </div>
+                <div class='sendEmail-orders-sku'>
+                    SKU：
+                    <span>SKU：</span>
+                </div>
+                <div class='sendEmail-orders-price'>
+                    <i class="i18n" data-i18nKey="总金额：">总金额：</i>
+                    <span></span>
+                </div>
+                <div class='sendEmail-orders-target'>
+                    <a>
+                        <i class="i18n" data-i18nKey="查看商品详情">查看商品详情</i>&nbsp;>>&nbsp;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- 右边订单 End -->
+<script src="../js/send_email.js"></script>

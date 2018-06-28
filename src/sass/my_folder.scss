@@ -1,0 +1,24 @@
+@import "base";
+.my-folder{
+    .my-folder-reomove{
+        margin-left: 10px;
+    }
+    table span:hover{
+        color: $green;
+        cursor: pointer;
+    }
+    .edit_folder i{
+        color: #666;
+        font-size: 16px;
+        &:hover{
+            color: $green;
+        }
+    }
+    button.flyer-btn.flyer-btn-default{
+        border: 1px solid #dedede;        
+    }
+}
+.mail-aging{
+    height:32px;
+    line-height:32px;
+}

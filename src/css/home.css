@@ -1,0 +1,171 @@
+/*** Parameters ***/
+#account-echart {
+  width: 68%;
+  height: 260px;
+  float: left;
+  border: 1px solid #ccc;
+  box-sizing: border-box; }
+
+#assign-status-echart {
+  width: 16%;
+  height: 260px;
+  float: left;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  box-sizing: border-box; }
+
+#finish-status-echart {
+  width: 16%;
+  height: 260px;
+  float: left;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  border-left: none; }
+
+#group-echart, #performance-echart {
+  margin-top: 20px;
+  width: 100%;
+  height: 260px;
+  float: left;
+  border: 1px solid #ccc;
+  box-sizing: border-box; }
+
+.no-border {
+  border: none !important; }
+
+#message-alert {
+  position: fixed;
+  bottom: 50px;
+  right: 20px;
+  width: 300px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  box-shadow: 0 0 10px 0 #ccc; }
+  #message-alert .message-alert-head {
+    height: 36px;
+    line-height: 36px;
+    font-size: 16px;
+    color: #333;
+    padding: 0 20px;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 0 20px; }
+    #message-alert .message-alert-head span {
+      color: #2cc3a9;
+      display: inline-block; }
+    #message-alert .message-alert-head i {
+      color: #999;
+      float: right;
+      margin-top: 8px;
+      cursor: pointer; }
+      #message-alert .message-alert-head i:hover {
+        color: #2cc3a9; }
+  #message-alert .message-alert-body {
+    padding: 14px 20px;
+    box-sizing: border-box;
+    min-height: 140px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd; }
+    #message-alert .message-alert-body h5 {
+      font-size: 15px;
+      color: #666;
+      text-align: center;
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis; }
+    #message-alert .message-alert-body h6 {
+      font-size: 14px;
+      color: #999;
+      margin-top: 4px; }
+    #message-alert .message-alert-body p {
+      font-size: 14px;
+      color: #999;
+      text-indent: 28px;
+      margin: 0; }
+  #message-alert .message-alert-foot {
+    height: 40px; }
+    #message-alert .message-alert-foot button {
+      float: right;
+      margin-right: 20px;
+      margin-top: 4px; }
+
+.home-tabUl {
+  overflow: hidden;
+  list-style: none;
+  margin-bottom: 16px; }
+  .home-tabUl li.time-btn {
+    border-bottom: 2px solid #eee; }
+    .home-tabUl li.time-btn.active {
+      border-bottom: 2px solid #2cc3a9;
+      color: #2cc3a9; }
+  .home-tabUl li {
+    float: left;
+    padding: 10px 16px;
+    color: #333;
+    font-size: 16px;
+    cursor: pointer;
+    margin-right: 16px; }
+    .home-tabUl li:last-child {
+      padding: 4px 16px; }
+    .home-tabUl li .flyer-input {
+      width: 120px; }
+    .home-tabUl li span {
+      margin: 0 2px;
+      display: inline-block; }
+  .home-tabUl button.flyer-btn {
+    margin-left: 10px;
+    height: 32px;
+    color: #999;
+    box-sizing: border-box;
+    border-color: #e6e6e6; }
+    .home-tabUl button.flyer-btn i {
+      font-size: 16px;
+      vertical-align: -1px;
+      font-weight: 400; }
+  .home-tabUl .home-refresh {
+    float: right;
+    padding-top: 7px; }
+    .home-tabUl .home-refresh .flyer-btn {
+      color: #fff;
+      border-color: #fff;
+      margin-right: 0; }
+  .home-tabUl .timeLi {
+    height: 30px;
+    line-height: 30px;
+    line-height: 30px;
+    border: 1px solid #e6e6e6;
+    background-color: #fff;
+    border-radius: 2px;
+    outline: none;
+    padding: 0;
+    margin-top: 7px; }
+    .home-tabUl .timeLi.green {
+      border: 1px solid #2cc3a9; }
+    .home-tabUl .timeLi .flyer-input,
+    .home-tabUl .timeLi .flyer-input:focus {
+      border: none !important; }
+    .home-tabUl .timeLi .flyer-input {
+      height: 28px; }
+    .home-tabUl .timeLi button.flyer-btn.flyer-btn-default {
+      border-top: 0;
+      border-bottom: 0;
+      border-right: 0;
+      margin-right: 0;
+      height: 29px; }
+
+@media screen and (min-width: 1400px) {
+  #group-echart, #performance-echart {
+    height: 500px; }
+  #account-echart, #assign-status-echart, #finish-status-echart {
+    height: 300px; } }
+
+.empty-text {
+  font-size: 40px;
+  text-align: center;
+  color: #ccc; }
+
+.loading-home {
+  color: #2cc3a9;
+  font-size: 14px; }

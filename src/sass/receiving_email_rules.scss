@@ -1,0 +1,42 @@
+@import "base";
+.receiving-rules{
+    .receiving-rules-addRule{
+        padding: 4px 8px;
+    }
+   .receiving-rules-handle{
+       font-size: 16px;
+       color: #666;
+       &:hover{
+           color: $green;
+       }
+   } 
+  tbody tr td:first-child{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+   }
+  .flyer-input-inline{
+     display: inline-block;
+  }
+ .receiving-rules-onswitch.flyer-onswitch input[type=checkbox] + i:after{
+      width:32px;
+  }
+  .flyer-onswitch{
+        height: 16px;
+        span:first-child {
+            font-size: 12px;
+            line-height: 16px;
+        }
+        span:last-child{
+            line-height: 16px;
+        }
+        input[type="checkbox"] + i {
+            height: 16px;
+            min-width:62px;
+        }
+        input[type="checkbox"] + i:after {
+            height: 14px;
+        }
+    }
+}

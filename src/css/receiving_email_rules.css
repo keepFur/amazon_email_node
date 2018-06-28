@@ -1,0 +1,34 @@
+/*** Parameters ***/
+.receiving-rules .receiving-rules-addRule {
+  padding: 4px 8px; }
+
+.receiving-rules .receiving-rules-handle {
+  font-size: 16px;
+  color: #666; }
+  .receiving-rules .receiving-rules-handle:hover {
+    color: #2cc3a9; }
+
+.receiving-rules tbody tr td:first-child {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100%; }
+
+.receiving-rules .flyer-input-inline {
+  display: inline-block; }
+
+.receiving-rules .receiving-rules-onswitch.flyer-onswitch input[type=checkbox] + i:after {
+  width: 32px; }
+
+.receiving-rules .flyer-onswitch {
+  height: 16px; }
+  .receiving-rules .flyer-onswitch span:first-child {
+    font-size: 12px;
+    line-height: 16px; }
+  .receiving-rules .flyer-onswitch span:last-child {
+    line-height: 16px; }
+  .receiving-rules .flyer-onswitch input[type="checkbox"] + i {
+    height: 16px;
+    min-width: 62px; }
+  .receiving-rules .flyer-onswitch input[type="checkbox"] + i:after {
+    height: 14px; }

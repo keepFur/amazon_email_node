@@ -1,0 +1,189 @@
+/*** Parameters ***/
+.flyer-frame-Box {
+  clear: both; }
+  .flyer-frame-Box .flyer-frame.flyer-insert {
+    width: 100%;
+    border: 1px solid #e2e2e2;
+    padding: 10px;
+    box-sizing: border-box; }
+    .flyer-frame-Box .flyer-frame.flyer-insert h2 {
+      height: 32px;
+      line-height: 32px;
+      cursor: pointer;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      width: 100%;
+      position: relative;
+      padding-right: 30px;
+      box-sizing: border-box; }
+      .flyer-frame-Box .flyer-frame.flyer-insert h2 i {
+        position: absolute;
+        color: #666;
+        right: 0px;
+        top: 10px; }
+  .flyer-frame-Box span.flyer-frame-email.send-account {
+    color: #2cc3a9; }
+  .flyer-frame-Box span.flyer-frame-email.recive-account {
+    color: #333; }
+  .flyer-frame-Box .flyer-frame {
+    width: 80%;
+    float: left;
+    padding-right: 40px;
+    box-sizing: border-box; }
+    .flyer-frame-Box .flyer-frame h2 {
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 10px; }
+    .flyer-frame-Box .flyer-frame p {
+      color: #8e877d;
+      font-size: 13px;
+      margin-bottom: 6px; }
+    .flyer-frame-Box .flyer-frame-timeTitle span {
+      display: inline-block;
+      width: 12px; }
+    .flyer-frame-Box .flyer-frame .flyer-frame-account {
+      font-weight: bold;
+      color: #2cc3a9;
+      display: inline-block; }
+    .flyer-frame-Box .flyer-frame .flyer-frame-peopleReceive {
+      color: #333; }
+    .flyer-frame-Box .flyer-frame .flyer-frame-contentBox {
+      width: 100%;
+      margin: 10px 0;
+      border-top: 1px solid #e2e2e2;
+      border-bottom: 1px solid #e2e2e2;
+      min-width: 300px;
+      min-height: 200px; }
+      .flyer-frame-Box .flyer-frame .flyer-frame-contentBox .flyer-frame-content {
+        display: block;
+        margin: 20px auto; }
+      .flyer-frame-Box .flyer-frame .flyer-frame-contentBox .flyer-frame-attachment-box {
+        margin: 0;
+        overflow: hidden; }
+    .flyer-frame-Box .flyer-frame .flyer-frame-attachment-box .flyer-frame-attachment-sum {
+      margin: 7px 0;
+      position: relative; }
+      .flyer-frame-Box .flyer-frame .flyer-frame-attachment-box .flyer-frame-attachment-sum span {
+        font-weight: bold;
+        height: 29px;
+        line-height: 29px; }
+      .flyer-frame-Box .flyer-frame .flyer-frame-attachment-box .flyer-frame-attachment-sum div {
+        position: absolute;
+        top: -1px;
+        right: 0;
+        display: inline-block; }
+    .flyer-frame-Box .flyer-frame .flyer-frame-attachment-box .flyer-frame-attachment-content {
+      margin-left: -16px;
+      margin-bottom: -16px; }
+    .flyer-frame-Box .flyer-frame .flyer-frame-attachment-box:after, .flyer-frame-Box .flyer-frame .flyer-frame-attachment-content:after {
+      content: "";
+      clear: both;
+      display: block; }
+    .flyer-frame-Box .flyer-frame .flyer-frame-attachment-item {
+      display: block;
+      float: left;
+      margin: 0 0 16px 16px;
+      height: 120px;
+      width: 180px;
+      position: relative;
+      background-color: #fff;
+      overflow: hidden;
+      z-index: 0;
+      border: 1px solid #e2e2e2;
+      cursor: pointer; }
+      .flyer-frame-Box .flyer-frame .flyer-frame-attachment-item .flyer-frame-attachment-item-top {
+        height: 90px;
+        width: 100%;
+        text-align: center;
+        margin-top: 8px;
+        background-color: #fff; }
+        .flyer-frame-Box .flyer-frame .flyer-frame-attachment-item .flyer-frame-attachment-item-top .flyer-frame-attachment-item-dowload-link {
+          text-align: right;
+          padding-right: 8px; }
+        .flyer-frame-Box .flyer-frame .flyer-frame-attachment-item .flyer-frame-attachment-item-top .flyer-frame-attachment-item-icon {
+          text-align: center; }
+      .flyer-frame-Box .flyer-frame .flyer-frame-attachment-item .flyer-frame-attachment-item-footer {
+        position: absolute;
+        bottom: 0px;
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        background-color: #e2e2e2;
+        text-align: center; }
+      .flyer-frame-Box .flyer-frame .flyer-frame-attachment-item span.flyer-frame-attachment-name {
+        display: inline-block;
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis; }
+  .flyer-frame-Box .flyer-frame-aside {
+    float: left;
+    width: 26%; }
+    .flyer-frame-Box .flyer-frame-aside .flyer-frame-order {
+      margin-left: 80px;
+      border-left: 1px solid #e2e2e2;
+      min-height: 200px;
+      padding-left: 20px; }
+    .flyer-frame-Box .flyer-frame-aside h4 {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px; }
+  .flyer-frame-Box .email-container {
+    width: 100%;
+    height: 62px;
+    line-height: 38px;
+    padding: 0 6px;
+    border-radius: 2px;
+    border: 1px solid #ececec;
+    margin-bottom: 12px;
+    cursor: pointer;
+    display: block;
+    box-sizing: border-box; }
+    .flyer-frame-Box .email-container .content {
+      margin-left: 12px; }
+    .flyer-frame-Box .email-container .date {
+      float: right;
+      line-height: 20px;
+      margin-top: 8px; }
+    .flyer-frame-Box .email-container + .email_detail {
+      display: none;
+      overflow: hidden;
+      margin-bottom: 12px; }
+    .flyer-frame-Box .email-container .email_address {
+      margin-top: -10px;
+      margin-left: 36px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      width: 93%; }
+    .flyer-frame-Box .email-container .fa-paperclip {
+      margin-left: 6px;
+      display: inline-block; }
+    .flyer-frame-Box .email-container i.fa.fa-user-o {
+      width: 24px;
+      height: 24px;
+      text-align: center;
+      line-height: 24px;
+      border-radius: 50%;
+      border-color: #999;
+      color: #999;
+      background: #fff;
+      border: 1px solid #999;
+      border-radius: 50%; }
+      .flyer-frame-Box .email-container i.fa.fa-user-o.active {
+        border: 1px solid #2cc3a9;
+        color: #2cc3a9; }
+  .flyer-frame-Box .expandBtn {
+    font-weight: bolder;
+    cursor: pointer;
+    font-size: 24px;
+    height: 24px;
+    line-height: 24px; }
+
+.gmail_extra {
+  color: #999; }
+
+@media screen and (max-width: 1100px) {
+  .flyer-write-title {
+    font-size: 12px; } }

@@ -1,0 +1,279 @@
+            @import "base.scss";
+            .flyer-layout-sendEmail ,.flyer-frame-Box{
+                float: left;
+                width: 100%;
+                min-width: 300px;
+                .flyer-combobox-contents {
+                    border: 1px solid #dedede;
+                }
+                .flyer-form-item {
+                    margin-bottom: 0;
+                    margin-top: 10px;
+                    &:first-child {
+                        margin-top: 0;
+                    }
+                }
+                .flyer-form-label {
+                    width: 56px;
+                    padding: 0;
+                    height: 38px;
+                    line-height: 38px;
+                    font-weight: bold;
+                }
+                &-orders {
+                    float: left;
+                    width: 19.99999%;
+                    min-width: 200px;
+                    border-left: 1px solid $dd;
+                }
+                .flyer-form {
+                    width: 77%;
+                    float: left;
+                    margin-right: 0px;
+                    .flyer-layout-label {
+                        padding: 9px 0;
+                        width: 56px;
+                    }
+                    .flyer-btn-normal {
+                        background: #ddd;
+                    }
+                }
+                .send-email-orders {
+                    height: 100%;
+                    width: 20%;
+                    border-left: 1px solid #dcdcdc;
+                    padding: 10px;
+                    box-sizing: border-box;
+                    background-color: #fff;
+                    float: right;
+                    position: absolute;
+                    right: 0;
+                    overflow-y: auto;
+                    top: 0;
+                    padding-top: 110px;
+                    padding-bottom: 50px; 
+                    h4 {
+                        font-size: 15px;
+                        font-weight: bold;
+                        text-align: left;
+                        height: 26px;
+                        line-height: 26px;
+                        margin-bottom: 14px;
+                        padding-bottom: 8px;
+                        color: $green;
+                    }
+                    .sendEmail-orders-title {
+                            font-size: 14px;
+                            font-weight: bold;
+                            margin-bottom: 10px;
+                            color: #333;
+                        }
+                        .sendEmail-orders-detail{
+                            line-height: 18px;
+                            margin-bottom: 6px;
+                            color: #666;
+                        }
+                        .sendEmail-orders-text {
+                            width: 100%;
+                            padding-bottom: 10px;
+                            border-bottom: 1px solid #dcdcdc;
+                            margin-bottom: 16px;
+                            display: none;
+                            &:last-child{
+                                border-bottom:none; 
+                            }
+                            div{
+                                line-height: 20px;
+                                color: #666;
+                                span{
+                                    color: #999;
+                                    word-break: break-all;
+                                }
+                            }
+                            .sendEmail-orders-detail,
+                            .sendEmail-orders-price {
+                                width: 100%;
+                                word-break: break-all;
+                            }
+                            .sendEmail-orders-price {
+                                margin-bottom: 4px;
+                                span{
+                                    color: $green;
+                                    font-size: 14px
+                                }
+                            }
+                        }
+                        .sendEmail-orders-more {
+                            // position: absolute;
+                            display: none;
+                            margin-top: 20px;
+                            text-align: center;
+                            a {
+                                color: #999;
+                                &:hover {
+                                    color: $green;
+                                    cursor: pointer;
+                                }
+                            }
+                        }
+                    
+                }
+                .flyer-layout-submitBox {
+                    padding-top: 20px;
+                }
+            }
+            
+            .flyer-layout-otherBtn,
+            .flyer-input-block {
+                min-height: 22px !important;
+                >a {
+                    margin-right: 10px;
+                    i {
+                        margin-right: 2px;
+                    }
+                    span {
+                        display: inline-block;
+                        padding: 5px;
+                    }
+                    span:hover {
+                        background-color: $dd;
+                        cursor: pointer;
+                    }
+                }
+                >a:after {
+                    content: "";
+                    border-right: 1px solid $dd;
+                    margin-left: 10px;
+                }
+                >a:last-child::after {
+                    border-right: none;
+                }
+            }
+            
+            @media screen and (max-width: 1240px) {
+                .send-email {
+                    .flyer-form {
+                        .flyer-input-block {
+                            float: left;
+                            width: 100%;
+                            padding-left: 66px;
+                            box-sizing: border-box;
+                        }
+                    }
+                }
+            }  
+            .attachments{
+                width:300px;
+                height:32px;
+                border:1px solid #ddd;
+                text-align:left;
+                line-height: 32px;
+                padding:0 20px;
+                padding-right:40px;
+                margin-bottom:6px;
+                margin-left:6px;
+                position: relative;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                cursor:pointer;
+                margin-left:6px;
+                white-space: nowrap;
+                color: #666;
+                i.fa-eye{
+                    font-size: 13px;
+                    &:hover{
+                        color: $green;
+                    }
+                }
+                .icon-remove{
+                    font-size: 13px;
+                    cursor:pointer;
+                    display: inline-block;
+                    width:12px;
+                    height:12px;
+                    text-align: center;
+                    line-height: 12px;
+                    position: absolute;
+                    right:5px;
+                    top:10px;
+                    &:hover{
+                        color: $green;
+                    }
+                }
+            }
+            .temp{
+                height:50px;
+                border:1px solid #ececec;
+                cursor:pointer;
+                padding:16px;
+                border-radius: 2px;
+                position:relative;
+                margin-bottom:8px;
+                &:hover{
+                    background:$greenHover;
+                }
+                i{
+                    font-size: 26px;
+                    float: right;
+                    position: absolute;
+                    right: 18px;
+                    top: 12px;
+                    display:none;
+                }
+                & .active{
+                    display:inline;
+                    color: $green;
+                }
+                h2{
+                    width: 100%;
+                    overflow:hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+                .template-content{
+                    width:60%;
+                    overflow:hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    color:#999;
+                }
+                .template-attachment{
+                    position: absolute;
+                    right: 10px;
+                    bottom: 12px;
+                    color: #333;
+                }
+                h2 span{
+                    font-weight: bolder;              
+                }
+                .fa-paperclip{
+                    margin-left:6px;
+                    display: inline-block;
+                }
+            }
+            span#saveTempMail{
+                cursor: pointer!important;
+            }
+            .flyer-edit-tool span:last-child i{
+                position: relative;
+                &::after{
+                    content: "";
+                    width: 6px;
+                    height: 6px;
+                    border-radius: 50%;
+                    background: #f27068;
+                    display: block;
+                    margin-left: 22px;
+                    margin-top: -26px;
+                }
+            }
+@media screen and (max-height:1280px) {
+    .flyer-edit {
+        min-width: 300px!important;
+    }
+}
+@media screen and (max-width:1100px) {
+    .flyer-write-title {
+        font-size: 12px!important;
+    }
+  }

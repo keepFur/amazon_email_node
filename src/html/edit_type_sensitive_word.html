@@ -1,0 +1,27 @@
+<div class='flyer-form' id="editTypeFormContianer" style="margin-right:0;padding-right:32px;margin-top:40px;">
+    <!-- 新类型 -->
+    <div class="flyer-form-item">
+        <label class="flyer-form-label i18n" data-i18nkey="新类型">新类型</label>
+        <div class="flyer-input-block flyer-input-type" id="typeContainer">
+        </div>
+    </div>
+</div>
+<script>
+    (function () {
+        var types = JSON.parse(window.localStorage.getItem('acsAllType'));
+        if (types.length) {
+            window.typeCombox = flyer.combobox($('#typeContainer'), {
+                isMulti: false,
+                required: true,
+                allowSearch: false,
+                placeholder: flyer.i18n.initTitle('请选择类型'),
+                data: types,
+                defaultValue: types[0].id,
+                fieldKey: 'id',
+                fieldValue: 'name'
+            });
+            window.typeCombox.setValue({ fieldKey: types[0].id, fieldValue: types[0].name });
+        }
+    })()
+
+</script>

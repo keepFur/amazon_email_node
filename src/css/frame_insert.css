@@ -1,0 +1,7 @@
+/*** Parameters ***/
+.frame-insert-content .flyer-frame-footBtn {
+  overflow: hidden; }
+  .frame-insert-content .flyer-frame-footBtn .right {
+    float: right; }
+    .frame-insert-content .flyer-frame-footBtn .right .flyer-btn:last-child {
+      margin-right: 0; }

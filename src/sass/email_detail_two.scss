@@ -1,0 +1,216 @@
+@import"base";
+.email_detail_two{
+    position: relative;
+    height: 100%;
+    .flyer-edit-tool {
+        background-color: #fff;
+    }
+    .email_detal_title{
+        font-size: 15px;
+        color: #333;
+        font-weight: bold;
+        margin-bottom: 0;
+        height: 40px;
+        line-height: 40px;
+        padding-left: 10px;
+        position: absolute;
+        top: -10px;
+        background: #f6f9fa;
+        border: 1px solid #eee;
+        width: 100%;
+        z-index: 100;
+        box-sizing: border-box;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        -o-text-overflow: ellipsis;
+        overflow: hidden;
+    }
+    .detail_two_item{
+        position: relative;
+        padding:0 60px;
+        margin-bottom: 20px;
+        padding-right:16%;
+        &:last-child{
+            margin-bottom: 4px;
+        }
+        .fa-long-arrow-right{
+            color: $green!important;
+        }
+    }
+    .detail_two_left{
+        position: absolute;
+        top:0px;
+        left: 10px;
+        width: 26px;
+        height: 26px;
+        border-radius: 13px;
+        margin-top: 20px;
+        text-align: center;
+        border: 1px solid #999;
+        i{
+            color: #999;
+            font-size: 16px;
+            line-height: 26px;
+            text-align: center;
+        }
+    }
+    .detail_two_item.myself{
+        padding-right: 60px;
+        padding-left:16%;
+        .detail_two_right{
+            border:1px solid $green;
+        }
+        .detail_two_accessory {
+            background: $green;
+            padding-right: 20px;
+            div {
+                color: #fff;
+                &:last-child{
+                    border-bottom: none;
+                }
+                p,i{
+                    color: #fff;
+                }
+            }
+        }
+        .fa-long-arrow-right{
+            color: #fff!important;
+        }
+       .detail_two_right::after{
+            left: inherit;
+            right: -7px;  
+            border-top: 1px solid $green;
+            border-right: 1px solid $green;
+            border-bottom: none;
+            border-left: none;
+        }
+        .detail_two_left{
+            left: inherit;
+            right: 10px;
+            border-color:$green;
+            i {
+                color:$green; 
+            }
+        }
+    }
+    .detail_two_right{
+        width: 99.50%; 
+        border:1px solid #dcdcdc;
+        border-radius: 2px;
+        position: relative;
+        &::after{
+            content: "";
+            width: 12px;
+            height: 12px;
+            border: 1px solid #dcdcdc;
+            background: #fff;
+            z-index: 0;
+            position: absolute;
+            left: -7px;
+            top: 24px;
+            border-top: 0px;
+            border-right: 0px;
+            transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            -moz-transform: rotate(45deg);
+            -webkit-transform: rotate(45deg);
+            -o-transform: rotate(45deg);
+        }
+    }
+    .detail_two_accessory{
+        background: #f5f5f5;
+        font-size: 14px;
+        overflow: hidden;
+        padding:0 20px;
+        div{
+            height: 32px;
+            line-height: 32px;
+            border-bottom: 1px solid #ddd;
+            overflow: hidden;
+            &:last-child{
+                border-bottom: none;
+            }
+        }
+        p{
+            max-width: 70%;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            -o-text-overflow: ellipsis;
+            overflow: hidden;
+            float: left;
+        }
+        i{
+            margin-left: 8px;
+            color: #666; 
+            font-size: 13px;
+            float: left;
+            line-height: 32px;  
+            width: 15px;
+            text-align: center;     
+            &:hover{
+                color: $green;;
+                font-size: 15px;
+                width: 15px;
+                text-align: center;
+                cursor: pointer;
+            }
+        }
+    }
+    .detail_two_text{
+        padding:25px 20px; 
+        line-height: 20px;
+        word-wrap: break-word;
+        color: #666;
+    }
+    .detail_two_send {
+        position: absolute;
+        right: 0;
+        width: 100%;
+        bottom:-10px;
+        .flyer-input-block {
+            margin-right: 0;
+            padding-left: 0;
+       }
+       .flyer-edit-content {
+        height: 150px;
+      }
+    }
+    .flyer-frame-footBtn{
+        background: #fff;
+        border: 1px solid #eee;
+        border-top: none;
+        padding: 10px;
+        overflow: hidden;
+        .flyer-btn {
+            float: left;
+        }
+        .right{
+            float: right;
+            .flyer-btn:last-child {
+                margin-right:0;
+            }
+        }
+    }
+    
+    .detail_two_contact{
+        overflow: auto;
+        padding-top: 38px;
+        border-left:1px solid #eee;
+        border-right:1px solid #eee;
+        padding-bottom:10px;
+        position: relative;
+    }
+    
+    .email-text-link{
+        text-decoration:underline;
+        color:#888;
+    }
+    .just-email-address{
+        position: absolute;
+        z-index:99;
+        bottom:8px;
+        padding:8px;
+        min-width:400px;
+        width:50%;
+    }
+}

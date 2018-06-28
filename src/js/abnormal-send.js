@@ -1,0 +1,237 @@
+'use strict';
+flyer.define('emailSendAbnormalTable', function (exports, module) {
+    var emailSendAbnormalData = {
+        // 表格实例
+        $table: null,
+        pagerObj: null,
+        pageSizeSelectObj: null,
+        ajax_timeout: 1000 * 60 * 10,
+        // 错误消息
+        paramErrMsg: ((flyer.i18n && flyer.i18n.initTitle('参数错误，请刷新页面重试。'))|| '参数错误，请刷新页面重试。'),
+        netErrMsg: ((flyer.i18n && flyer.i18n.initTitle('系统已退出登录，请登录系统重试。'))|| '系统已退出登录，请登录系统重试。'),
+        operatorErrMsg: ((flyer.i18n && flyer.i18n.initTitle("请至少选择一条数据操作"))|| "请至少选择一条数据操作"),
+        rABS: true,
+        // 用户所在组
+        orgGroupID: JSON.parse(window.unescape($("#__groups").val()))[0]['orgGroupId'],
+        userID: $("#__userid").val().trim(), 
+        userName: $('#__username').val().trim(),
+        // 部门信息
+        // companyOrgID: Number(core.getUserGroups().parentId.split(',')[1]),
+        // companyOrgName: core.getUserGroups().parentName.split(',')[1]
+        fromAddress:core.getUserGroups().parentName.split(',')[1]
+    };
+
+    /**
+     *页面入口函数 
+     * 
+     */
+    function init() {
+        // 获取表格数据
+        getTableDatas(1, 20);
+        // 初始化事件
+        initEvent();
+    }
+
+    /**
+     * 初始化DOM元素事件
+     * 
+     */
+    function initEvent() {
+        // 点击不再提示
+        $(".emailNoTips").on("click",noPrompt);
+    }
+  /**
+    * 点击不再提示
+    */
+    function noPrompt(events){
+        var selectDatas = flyer.exports.emailSendAbnormalTable.getTableCheckedDatas(emailSendAbnormalData.$table);
+        if (selectDatas.length) {
+            flyer.confirm(flyer.i18n.initTitle("确定不再提示吗?"), function (result) {
+                
+            }, {
+                    btns: [{
+                        text: flyer.i18n.initTitle('确定'),
+                        skin: "flyer-btn-blue",
+                        click: function (elm) {
+                            this.close();
+                            var ids = selectDatas.map(function (item) {
+                                return item.ID;
+                            });
+                            $.ajax({
+                                url: core.url + '/updata_email_send_abnormal',
+                                type: 'POST',
+                                data: {
+                                    ID: ids
+                                },
+                                success: function (data, textStatus, jqXHR) {
+                                    flyer.msg(data.success ? ((flyer.i18n && flyer.i18n.initTitle('操作成功'))|| '操作成功') : ((flyer.i18n && flyer.i18n.initTitle('操作失败'))|| '操作失败'));
+                                    getTableDatas(1, 20);
+                                    flyer.exports.emailAbnormalNoTips.getTableDatas(1,20);
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    flyer.msg(emailSendAbnormalData.netErrMsg);
+                                }
+                            });
+                        }
+                    },
+                    {
+                        text: flyer.i18n.initTitle("取消"),
+                        skin: "",
+                        click: function (elm) {
+                            this.close();
+                        }
+                    }
+                    ],
+                    title: flyer.i18n.initTitle("询问框"),
+                    isModal: true
+                });
+        } else {
+            flyer.msg(emailSendAbnormalData.operatorErrMsg);
+        }
+        return false;
+    }
+    
+    /**
+     * 渲染表格结构
+     * 
+     * @param {any} $table 表格容器
+     * @param {any} datas 表格数据
+     */
+    function renderDOMTable($table, datas) {
+        if ($table && $table.length && Array.isArray(datas)) {
+            emailSendAbnormalData.$table = flyer.table($table, {
+                columns: [{
+                    field: "",
+                    checkbox: true,
+                    styles: {
+                        width: 34
+                    }
+                }, {
+                    title: flyer.i18n.initTitle("对方收信地址"),
+                    field: "address"
+                }, {
+                    title: flyer.i18n.initTitle("错误代码"),
+                    field: "code",
+                    styles: {
+                        width: 150
+                    }
+                }, {
+                    title: flyer.i18n.initTitle("错误原因"),
+                    field: "error"
+                }, {
+                    title: flyer.i18n.initTitle("发生时间"),
+                    field: "createdAt"
+                }],
+                data: datas
+            });
+        } else {
+            flyer.msg(emailSendAbnormalData.paramErrMsg);
+        }
+    }
+
+    /**
+     * 初始化分页信息
+     * 
+     * @param {any} $table 
+     * @param {any} datas 
+     */
+    function randerDOMPager($table, datas, total, pagerObj) {
+        //没有结果的时候
+        core.tableNoMatch($table, flyer.i18n.initTitle('暂时没有相关商品'));
+        //初始化分页
+        emailSendAbnormalData.pagerObj = core.initPager($('.paper-container-product'), total, pagerObj.pageSize || 20, {
+            callback: getTableDatas,
+            pageNumber: pagerObj.pageNumber || 1,
+            pageSizeSelectObj: emailSendAbnormalData.pageSizeSelectObj,
+            exports: exports
+        });
+        // 初始化下拉框，显示每页数据条数的下拉框
+        emailSendAbnormalData.pageSizeSelectObj = core.initPagerSizeSelect($('#productPagerSize'), core.getPageListByTotal(total), String(pagerObj.pageSize || 20), {
+            callback: getTableDatas,
+            pagerObj: emailSendAbnormalData.pagerObj,
+            total: datas.total,
+            exports: exports
+        });
+        // 有数据的时候。才需要去初始化
+        if (datas.total) {
+            // 为表中的checkbox绑定点击事件
+            core.bindCheckboxEvent($table);
+        }
+    }
+
+    /**
+     * 设置spanner
+     * 
+     * @param {any} currentTotal 当前显示数据的总数
+     * @param {any} total 总数居
+     */
+    function setMountValue(currentTotal, total) {
+        $('#abnormalCurrentMountSpan').text(currentTotal);
+        $('#abnormalMountSpan').text(total);
+    }
+
+    /**
+     * 获取表格数据
+     */
+    function getTableDatas(pageNumber, pageSize) {
+        var conditions = {},
+            conditionsObj = {},
+            conditionsText = '',
+            $table = $('#abnormalTable');
+        conditions.offset = pageNumber || 1;
+        conditions.limit = pageSize || 20;
+        conditions.nocache = window.Date.now();
+        // conditions.fromAddress = emailSendAbnormalData.fromAddress;
+        $.ajax({
+            url: core.url + '/read_email_send_abnormal',
+            type: 'GET',
+            data: conditions,
+            beforeSend: function (jqXHR, settings) {
+                flyer.loading.init().add();
+            },
+            success: function (data, jqXHR, textStatus) {
+                if (data.success) {
+                    renderDOMTable($table, data.data.rows);
+                    randerDOMPager(emailSendAbnormalData.$table, data.data.rows, data.data.total, {
+                        pageNumber: pageNumber || 1,
+                        pageSize: pageSize || 20
+                    });
+                    core.bindCheckboxEvent(emailSendAbnormalData.$table);
+                    setMountValue(data.data.rows.length, data.data.total);
+                } else {
+                    flyer.msg(emailSendAbnormalData.netErrMsg);
+                    renderDOMTable($table, []);
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                flyer.msg(emailSendAbnormalData.netErrMsg);
+            },
+            complete: function (jqXHR, textStatus) {
+                flyer.loading.init().delete();
+            }
+        });
+    }
+    /**
+     * 获取表格中选中的数据,返回选中数据的一个数组
+     * 
+     * @param {any} $table 数据表格
+     * @returns 返回一个数组，没有则返回空数据
+     */
+    function getTableCheckedDatas($table) {
+        var arr = [], rows = [];
+        if ($table && Array.isArray(rows)) {
+            var checkedDatas = $table.$body.find('input[type=checkbox][name!=flyer-active-radio]:checked');
+            rows = $table.getDatas();
+            $.each(checkedDatas, function (index, item) {
+                var $item = $(item), $index = $item.parents('tr').data('index');
+                arr[index] = rows[$index];
+            });
+        }
+        return arr;
+    }
+    // 暴露接口
+    exports.getTableDatas = getTableDatas;
+    exports.getTableCheckedDatas = getTableCheckedDatas;
+    // 页面入口
+    init();
+});

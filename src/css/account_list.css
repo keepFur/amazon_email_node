@@ -1,0 +1,13 @@
+.flyer-layout-accountMan .flyer-account-input {
+  width: 360px; }
+
+.flyer-layout-accountMan .flyer-account-search {
+  position: relative;
+  top: 3px;
+  right: 28px; }
+  .flyer-layout-accountMan .flyer-account-search i {
+    color: #888;
+    cursor: pointer; }
+  .flyer-layout-accountMan .flyer-account-search i:focus {
+    color: #2cc3a9;
+    cursor: pointer; }

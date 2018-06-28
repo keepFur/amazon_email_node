@@ -1,0 +1,15 @@
+@import "base";
+#filesTable{
+    margin-top: 10px;
+    i{
+        color: #666;
+        &:hover{
+            color: $green;
+        }
+    }
+    .delect-file-btn {
+        float: right;
+        font-size: 13px;
+        margin-top: 2px;
+    }
+}

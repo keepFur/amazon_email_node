@@ -1,0 +1,43 @@
+<link rel="stylesheet" href="../css/add_account.css">
+<div class='flyer-form'>
+    <!-- 账号 -->
+    <div class="flyer-form-item">
+        <label class="flyer-form-label i18n" data-i18nKey="邮箱名">邮箱名</label>
+        <div class="flyer-input-block">
+            <input type="text" name="title" required="true" autocomplete="off" class="flyer-input i18n" autofocus placeholder="输入邮箱名称" data-i18nKey="输入邮箱名称">
+        </div>
+    </div>
+    <!-- 密码 -->
+    <!-- <div class="flyer-form-item">
+        <label class="flyer-form-label">密码</label>
+        <div class="flyer-input-block">
+            <input type="password" name="password" required="true" minlength="6" maxlength="10" autocomplete="off" class="flyer-input"
+                placeholder="输入6-10位长度的密码">
+        </div>
+        <div class="flyer-form-wordAux"></div>
+    </div> -->
+    <!-- 确认密码 -->
+    <!-- <div class="flyer-form-item">
+        <label class="flyer-form-label">确认密码</label>
+        <div class="flyer-input-block">
+            <input type="password" name="password_confirm" required="true" minlength="6" maxlength="10" equalto="password" autocomplete="off"
+                class="flyer-input" placeholder="输入确认密码">
+        </div>
+        <div class="flyer-form-wordAux"></div>
+    </div> -->
+    <!-- 添加域 -->
+    <div class="flyer-form-item">
+        <label class="flyer-form-label">@</label>
+        <div class="flyer-input-block flyer-input-domain">
+        </div>
+        <div class="flyer-form-wordAux"></div>
+    </div>
+    <!-- 提交 -->
+    <div class="flyer-form-item">
+        <div class="flyer-input-block add_account_commit">
+            <button class="flyer-btn flyer-btn-blue submit i18n" data-i18nKey="创建">创建</button>
+            <button type="reset" class="flyer-btn cancle i18n" data-i18nKey="取消">取消</button>
+        </div>
+    </div>
+</div>
+<script src='../js/add_account.js'></script>

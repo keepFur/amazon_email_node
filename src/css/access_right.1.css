@@ -1,0 +1,31 @@
+/*** Parameters ***/
+.access-right {
+  text-align: center;
+  overflow: hidden;
+  margin-top: 140px;
+  margin: 150px auto 0;
+  max-width: 592px; }
+  .access-right .access-right-leftImg {
+    float: left; }
+  .access-right .access-right-rightBox {
+    float: left;
+    margin-left: 50px;
+    text-align: left;
+    margin-top: 50px; }
+    .access-right .access-right-rightBox p {
+      text-align: left;
+      font-size: 20px;
+      color: #aeaeae;
+      margin-bottom: 20px !important; }
+  .access-right .access-right-bottom {
+    margin-top: 10px;
+    border-top: 2px dotted #ddd; }
+
+section.flyer-layout-content {
+  margin-left: 220px;
+  padding: 20px;
+  box-sizing: border-box;
+  padding-top: 120px;
+  padding-bottom: 40px;
+  overflow: hidden;
+  min-height: 550px; }

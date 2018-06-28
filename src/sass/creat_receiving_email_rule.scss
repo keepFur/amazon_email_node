@@ -1,0 +1,87 @@
+@import "base";
+.creat-rules{
+    .creat-rules-right,
+    .creat-rules-if,
+    .flyer-input-inline{
+        display: inline-block;
+    }
+    .flyer-layout-previewTitle{
+        span{
+            user-select: none;
+        }
+    }
+    .creat-rules-if{
+        span{
+            width: 84px;
+            display:inline-block;
+            user-select: none;
+        }
+        
+    }
+    .flyer-onswitch input[type=checkbox]+i:after {
+        left: 1px;
+    }
+    .creat-rules-onswitch.flyer-onswitch input[type=checkbox]+i {
+        width: 126px;
+    }
+    .creat-rules-onswitch.flyer-onswitch input[type=checkbox]+i:after {
+        width:62px!important;
+    }
+    .creat-rules-onswitch.flyer-onswitch.creat-rules-doswitch input[type=checkbox]+i {
+        width: 200px;
+    }
+    .creat-rules-onswitch.flyer-onswitch.creat-rules-doswitch input[type=checkbox]+i:after {
+        width:98px!important;
+    }
+    .creat-rules-box {
+        line-height: 34px;
+        margin-bottom: 10px;
+        clear: both;
+        .creat-rules-title{
+            float: left;
+            width: 126px;
+            display: inline-block;
+            text-align: right;
+            margin-right: 10px;
+            user-select: none;
+        }
+    }
+    .creat-rules-choose{
+        margin-bottom: 6px;
+        &:last-child{
+            margin-bottom: 0px;
+        }
+        span{
+            user-select: none;
+        }
+    }
+    .flyer-combobox {
+        display: inline-block;
+    }
+    .flyer-combobox-contents .filter-options,
+    .flyer-combobox-contents,
+    .flyer-combobox-contents i.fa {
+        height: 32px;
+        line-height: 32px;
+    }
+    .creat-rules-span{
+        width: inherit!important;
+    }
+    .flyer-layout-blod{
+        width: 136px;
+        display: inline-block;
+    }
+    .flyer-edit-content {
+        height: 150px!important;
+    }
+    .flyer-input-block{
+        padding-left: 135px;
+    }
+    .flyer-edit-tool span:last-child i::after{
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #fff;
+    }
+}

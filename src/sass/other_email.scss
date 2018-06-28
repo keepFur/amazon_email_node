@@ -1,0 +1,10 @@
+@import "base";
+.other-email{
+    .other-email-reomove{
+        margin-left: 10px;
+    }
+    table span:hover{
+        color: $green;
+        cursor: pointer;
+    }
+}

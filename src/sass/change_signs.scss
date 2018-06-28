@@ -1,0 +1,39 @@
+@import"base";
+.change-signs-contant{
+    .change-signs-groups{
+       overflow: hidden;
+       max-width: 1000px;
+       min-width: 400px; 
+    }
+    .change-signs-group{
+        width: 31%;
+        margin: 1%;
+        border: 1px solid #dcdcdc;
+        float: left;
+        height: 34px;
+        line-height: 34px;
+        text-align: center;
+        font-size: 15px;
+        border-radius: 2px;
+        position: relative;
+        cursor: pointer;
+        box-sizing: border-box;
+        color: #666;
+        &:hover{
+            border-color: $green;
+            color: $green;
+        }
+        &.active{
+           background-color: $green;
+           color: #fff;
+        }
+    }
+    .change-signs-note{
+        font-size: 12px;
+        padding-left: 12px;
+        i{
+            color: $green;
+            margin-right: 3px;
+        }
+    }
+}
