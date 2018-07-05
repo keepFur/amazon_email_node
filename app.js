@@ -7,7 +7,7 @@ let express = require("express"),
     Config = require("./lib/config"),
     session = require("express-session"),
     md5 = require("blueimp-md5"),
-    Permission = require("./lib/permission"),
+    permissionData = require("./lib/permission_data"),
     Package = require("./package"),
     Core = require("./lib/core"),
     Cookie = require('cookie-parser');
@@ -28,7 +28,6 @@ app.use(
     })
 );
 
-var email = new Emails();
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'ejs');
 app.set('src', path.join('src'));
@@ -37,35 +36,36 @@ app.set('src', path.join('src'));
 app.get("/", function(req, res, next) {
     Core.flyer.log('开始进入项目:' + new Date());
     try {
-        if (req.session.hasOwnProperty("sign") && req.session.sign) {
+        if (true) {
+            // let username = req.session.username,
+            //     isMulti = req.session.isMulti,
+            //     permissionData = req.session.permissionData,
+            //     permissionAllData = req.session.permissionAllData,
+            //     menus = permissionData.permission.menus[0].menuData,
+            //     roles = permissionData.permission.roles[0].rolesData;
 
-            let username = req.session.username,
-                isMulti = req.session.isMulti,
-                permissionData = req.session.permissionData,
-                permissionAllData = req.session.permissionAllData,
-                menus = permissionData.permission.menus[0].menuData,
-                roles = permissionData.permission.roles[0].rolesData;
-
-            if (req.cookies["orgGroupId" + username]) {
-                permissionData = Core.flyer.findPermissionByGroupID(req.cookies["orgGroupId" + username], req.session.permissionData);
-                menus = permissionData.permission.menus[0].menuData;
-                roles = permissionData.permission.roles[0].rolesData;
+            // if (req.cookies["orgGroupId" + username]) {
+            //     permissionData = Core.flyer.findPermissionByGroupID(req.cookies["orgGroupId" + username], req.session.permissionData);
+            // }
+            let modules = permissionData.modules;
+            let menus = [];
+            for (var key in menus) {
+                if (menus.hasOwnProperty(key)) {
+                    var element = menus[key];
+                    menus.push(element);
+                }
             }
-
+            let roles = permissionData.roles;
             res.render("index.ejs", {
                 menus: menus.filter(function(item) {
                     return item.isMenu === true;
                 }),
                 roles: roles,
-                username: permissionData.data.username,
-                email: permissionData.data.email,
-                userid: permissionData.data.userId,
-                groups: permissionData.data.groups,
-                groupsAll: permissionAllData.data.groups,
                 logout: Config.url_list.redirect_logout,
                 package: Package,
                 baiyi_home: Config.url_list.baiyi_home,
-                isMulti: isMulti
+                isMulti: false,
+                username: 'surong'
             });
             Core.flyer.log('已经进入项目:当前路由:"/"' + new Date());
         } else {
@@ -85,34 +85,34 @@ app.get("/", function(req, res, next) {
 app.get("/index_dev", function(req, res, next) {
     try {
         if (req.session.hasOwnProperty("sign") && req.session.sign) {
-            let username = req.session.username,
-                isMulti = req.session.isMulti,
-                permissionData = req.session.permissionData,
-                permissionAllData = req.session.permissionAllData,
-                menus = permissionData.permission.menus[0].menuData,
-                roles = permissionData.permission.roles[0].rolesData;
-            if (req.cookies["orgGroupId" + username]) {
-                permissionData = Core.flyer.findPermissionByGroupID(req.cookies["orgGroupId" + username], req.session.permissionData);
-                menus = permissionData.permission.menus[0].menuData;
-                roles = permissionData.permission.roles[0].rolesData;
-            }
+            // let username = req.session.username,
+            //     isMulti = req.session.isMulti,
+            //     permissionData = req.session.permissionData,
+            //     permissionAllData = req.session.permissionAllData,
+            //     menus = permissionData.permission.menus[0].menuData,
+            //     roles = permissionData.permission.roles[0].rolesData;
+            // if (req.cookies["orgGroupId" + username]) {
+            //     permissionData = Core.flyer.findPermissionByGroupID(req.cookies["orgGroupId" + username], req.session.permissionData);
+            //     menus = permissionData.permission.menus[0].menuData;
+            //     roles = permissionData.permission.roles[0].rolesData;
+            // }
             try {
-                let data = {
-                    menus: menus.filter(function(item) {
-                        return item.isMenu === true;
-                    }),
-                    roles: roles,
-                    username: permissionData.data.username,
-                    email: permissionData.data.email,
-                    userid: permissionData.data.userId,
-                    groups: permissionData.data.groups,
-                    groupsAll: permissionAllData.data.groups,
-                    logout: Config.url_list.redirect_logout,
-                    package: Package,
-                    baiyi_home: Config.url_list.baiyi_home,
-                    isMulti: isMulti
-                };
-                res.render("index_dev.ejs", data);
+                // let data = {
+                //     menus: menus.filter(function(item) {
+                //         return item.isMenu === true;
+                //     }),
+                //     roles: roles,
+                //     username: permissionData.data.username,
+                //     email: permissionData.data.email,
+                //     userid: permissionData.data.userId,
+                //     groups: permissionData.data.groups,
+                //     groupsAll: permissionAllData.data.groups,
+                //     logout: Config.url_list.redirect_logout,
+                //     package: Package,
+                //     baiyi_home: Config.url_list.baiyi_home,
+                //     isMulti: isMulti
+                // };
+                res.render("index_dev.ejs", {});
             } catch (err) {
                 Core.flyer.log(err);
             }
