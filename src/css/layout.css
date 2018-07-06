@@ -643,10 +643,10 @@ div.guid-module {
   position: absolute; }
   .guid-arrow .top {
     top: -10px;
-    border-top-color: transparent;
-    border-right-color: transparent;
+    border-top-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
     border-bottom-color: #fff;
-    border-left-color: transparent; }
+    border-left-color: rgba(0, 0, 0, 0); }
 
 .guid-tooltipbuttons {
   text-align: right;
@@ -706,10 +706,10 @@ div.guid-module {
 
 .guid-arrow.top {
   top: -10px;
-  border-top-color: transparent;
-  border-right-color: transparent;
+  border-top-color: rgba(0, 0, 0, 0);
+  border-right-color: rgba(0, 0, 0, 0);
   border-bottom-color: #fff;
-  border-left-color: transparent; }
+  border-left-color: rgba(0, 0, 0, 0); }
 
 .slide-container {
   width: 100%;

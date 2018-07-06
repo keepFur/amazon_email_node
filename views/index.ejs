@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="utf-8">
-    <title>亚马逊客服-首页</title>
+    <title>
+        <%=package.siteName%>-首页</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link type="text/css" href="../plugins/css/flyer.all.min.css?v=<%=package.version %>" rel="stylesheet">
@@ -16,7 +17,7 @@
     <!-- 头部 -->
     <header>
         <!-- logo -->
-        <a href="<%= baiyi_home %>" class='logo-link'>
+        <a href="/" class='logo-link'>
             <img src="../imgs/logo-new.png" alt="logo" />
         </a>
         <!-- 登录相关 -->
@@ -27,7 +28,7 @@
     </header>
     <!-- 面包屑 -->
     <nav class='nav-top'>
-        <span>有钱科技</span>
+        <span><%=package.siteName%></span>
         <span class="js-nav-text">首页</span>
     </nav>
     <!-- 侧边栏 -->
@@ -60,10 +61,10 @@
             </span>
             </span>
             <span class="footer-brand">
-                <strong class="text-danger">AUKEY</strong>
+                <strong class="text-danger"><%=package.siteName%></strong>
             </span>
             <p class="no-margin">
-                © <span id="year">2017</span> <strong>AUKEY</strong>. ALL Rights Reserved.
+                © <span>2018</span> <strong><%=package.siteName%></strong>. ALL Rights Reserved.
             </p>
     </footer>
     <script type="text/javascript" src="../plugins/js/jquery.min.js?v=<%=package.version %>"></script>

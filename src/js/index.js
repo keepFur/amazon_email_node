@@ -29,7 +29,7 @@ $(function() {
             loadPageByUrl(getPageUrlByHash());
         };
 
-        // 版本更新信息
+        // 版本更新信息点击事件
         $(".footer-brand").on("click", function(event) {
             flyer.open({
                 isModal: true,
@@ -78,16 +78,16 @@ $(function() {
     }
 
     /**
-     * 设置文档的title属性
+     * 设置文档的title属性以及面包屑导航
      * @param {string} title title值
      */
     function setDocumentTitle(title) {
-        document.title = '有钱科技 - ' + title;
+        document.title = '易店科技 - ' + title;
         $('.js-nav-text').text(title);
     }
 
     /**
-     * 出发home菜单的点击事件
+     * 触发home菜单的点击事件
      */
     function triggerHomeClick() {
         $('.flyer-layout-tree').find('a[data-url="home.html' + '"]').click();

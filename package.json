@@ -1,8 +1,9 @@
 {
-    "name": "lieliu",
-    "file": "lieliu",
+    "name": "yidiankeji",
+    "file": "yidiankeji",
     "version": "1.0.0",
-    "description": "开店必备",
+    "siteName": "易店科技",
+    "description": "电商开店必备网站",
     "license": "LGPL",
     "devDependencies": {
         "accepts": "^1.3.4",

@@ -205,7 +205,7 @@ var core = {
      */
     tableNoMatch: function($table, message) {
         if ($table) {
-            var msg = flyer.i18n.initTitle('暂时没有数据'),
+            var msg = '暂时没有数据',
                 colspan = $table.$header.find('th').length,
                 totalNum = $table.getDatas().length,
                 $ele = $('<tr class = "empty_title"><td colspan = ' + colspan + '>' + msg + '</td></tr>');

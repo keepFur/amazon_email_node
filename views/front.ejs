@@ -1,0 +1,462 @@
+<!DOCTYPE>
+<!-- 语言的设置是为了翻印使用 zh和zh-cn是简体和繁体的区别 -->
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>
+        <%=package.siteName%>-官网</title>
+    <!-- <link rel="shortcut icon" href="favicon.ico"> -->
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/front.css">
+</head>
+
+<body>
+    <!--[if lte IE 8]>
+    <p class="browserupgrade">您的浏览器版本老的可笑, 请到 <a href="http://browsehappy.com/">这里</a> 更新, 以获取最佳的体验</p>
+    <![endif]-->
+    <!-- 页面结构 头部（顶部导航-二级导航） 中部（交易金额-轮播图-网站介绍-网站公告-产品介绍）底部（链接-版权）-->
+    <!-- class 命名一般都是使用中横线分割  id一般采用的是驼峰命名 -->
+    <!--头部  -->
+    <header>
+        <nav class="main">
+            <!-- 此处两种方式  一个是使用直接潜入到结构中，还有一种是背景图片，一般logo的话 是使用img标签 -->
+            <a href="#" class="brand pull-left">
+                <img src="../imgs/logo.png" height="40" alt="回到首页">
+            </a>
+            <ul class="text-right">
+                <li>
+                    <a href="#">首页</a>
+                </li>
+                <li>
+                    <a href="#">充值</a>
+                </li>
+                <li>
+                    <a href="#">登录</a>
+                </li>
+                <li>
+                    <a href="#">注册</a>
+                </li>
+                <li>
+                    <a href="/console">控制台</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <!-- 中间内容 根据规范，section和article都需要有标题 -->
+    <div class="container">
+        <!-- 广告轮播图 -->
+        <!-- <div class="ad">
+            <div class="item">
+            </div>
+            <div class="item hide">
+            </div>
+            <div class="item hide">
+            </div>
+            <ul class="control text-center">
+                <li class="active" data-index="0">
+                    <span></span>
+                </li>
+                <li data-index="1">
+                    <span></span>
+                </li>
+                <li data-index="2">
+                    <span></span>
+                </li>
+            </ul>
+        </div> -->
+        <!-- 网站功能介绍 -->
+        <section class="feature">
+            <div class="item">
+                <h3 class="text-center">
+                    安全
+                </h3>
+                <p>国家AAA信用平台
+                    <br/>银行资金托管
+                    <br/> 上市公司背景
+                </p>
+            </div>
+            <div class="item">
+                <h3 class="text-center">
+                    权威
+                </h3>
+                <p>中央电视台推荐
+                    <br/>互联网百强企业
+                    <br/>标准起草单位
+                </p>
+            </div>
+            <div class="item">
+                <h3 class="text-center">
+                    省心
+                </h3>
+                <p>100元起投
+                    <br/>用户利益保障机制
+                    <br/>保险公司承担
+                </p>
+            </div>
+        </section>
+        <!-- 公告 -->
+        <div class="notice clearfix">
+            <a href="#" class="pull-left text-ellipsis">
+                <span>2018-5-19</span> 元旦期间业务受理及值班公告元旦期间业务受理及值班公告元旦期间业务受理及值班公告元旦期间业务受 理及值班公告元旦期间业务受理及值班公告元旦期间业务受理及值班公告元旦期间业务受理及值班公告元旦期间业务受理及值班公告元旦期间业务受理及值班公告
+            </a>
+            <a href="#" class="more pull-right">更多公告</a>
+        </div>
+        <!-- 产品 -->
+        <section class="product clearfix">
+            <h2 class="pull-left text-center">固定期限产品
+                <em>甄选优质基金</em>
+                <em>省时省力</em>
+                <em>坐等收益</em>
+            </h2>
+            <div class="product-content pull-right">
+                <div class="item clearfix">
+                    <h3>
+                        <em>3</em>个月
+                    </h3>
+                    <div class="info">
+                        <p>
+                            约定年化收益率：
+                            <span class="year-rate">
+                                3.50%
+                                <i>起</i>
+                            </span>
+                        </p>
+                        <p>
+                            总成交金额：
+                            <span class="year-rate">
+                                18000
+                                <i>万元</i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="buy">
+                        <a href="#">购买</a>
+                    </div>
+                </div>
+                <div class="item clearfix">
+                    <h3>
+                        <em>3-6</em>个月
+                    </h3>
+                    <div class="info">
+                        <p>
+                            约定年化收益率：
+                            <span class="year-rate">
+                                3.60%
+                                <i>起</i>
+                            </span>
+                        </p>
+                        <p>
+                            总成交金额：
+                            <span class="year-rate">
+                                28000
+                                <i>万元</i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="buy">
+                        <a href="#">购买</a>
+                    </div>
+                </div>
+                <div class="item clearfix">
+                    <h3>
+                        <em>6-12</em>个月
+                    </h3>
+                    <div class="info">
+                        <p>
+                            约定年化收益率：
+                            <span class="year-rate">
+                                4.50%
+                                <i>起</i>
+                            </span>
+                        </p>
+                        <p>
+                            总成交金额：
+                            <span class="year-rate">
+                                13000
+                                <i>万元</i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="buy">
+                        <a href="#">购买</a>
+                    </div>
+                </div>
+                <div class="item clearfix">
+                    <h3>
+                        <em>12-24</em>个月
+                    </h3>
+                    <div class="info">
+                        <p>
+                            约定年化收益率：
+                            <span class="year-rate">
+                                5.50%
+                                <i>起</i>
+                            </span>
+                        </p>
+                        <p>
+                            总成交金额：
+                            <span class="year-rate">
+                                98000
+                                <i>万元</i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="buy">
+                        <a href="#">购买</a>
+                    </div>
+                </div>
+                <div class="item clearfix">
+                    <h3>
+                        <em>24</em>个月以上
+                    </h3>
+                    <div class="info">
+                        <p>
+                            约定年化收益率：
+                            <span class="year-rate">
+                                6.50%
+                                <i>起</i>
+                            </span>
+                        </p>
+                        <p>
+                            总成交金额：
+                            <span class="year-rate">
+                                15000
+                                <i>万元</i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="buy">
+                        <a href="#">购买</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- 产品 -->
+        <section class="product clearfix">
+            <h2 class="pull-left text-center">债券/散标产品
+                <em>自主投资</em>
+                <em>期限灵活</em>
+            </h2>
+            <div class="product-content pull-right">
+                <div class="item clearfix">
+                    <h3>
+                        <em>3</em>个月
+                        <i>
+                            日常生活消费
+                        </i>
+                    </h3>
+                    <div class="info">
+                        <p>
+                            约定年化收益率：
+                            <span class="year-rate">
+                                3.50%
+                                <i>起</i>
+                            </span>
+                        </p>
+                        <p>
+                            总成交金额：
+                            <span class="year-rate">
+                                18000
+                                <i>元</i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="buy">
+                        <a href="#">投标</a>
+                    </div>
+                </div>
+                <div class="item clearfix">
+                    <h3>
+                        <em>5</em>个月
+                        <i>
+                            资金周转
+                        </i>
+                    </h3>
+                    <div class="info">
+                        <p>
+                            约定年化收益率：
+                            <span class="year-rate">
+                                3.60%
+                                <i>起</i>
+                            </span>
+                        </p>
+                        <p>
+                            总成交金额：
+                            <span class="year-rate">
+                                28000
+                                <i>元</i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="buy">
+                        <a href="#">投标</a>
+                    </div>
+                </div>
+                <div class="item clearfix">
+                    <h3>
+                        <em>7</em>个月
+                        <i>
+                            个人消费
+                        </i>
+                    </h3>
+                    <div class="info">
+                        <p>
+                            约定年化收益率：
+                            <span class="year-rate">
+                                4.50%
+                                <i>起</i>
+                            </span>
+                        </p>
+                        <p>
+                            总成交金额：
+                            <span class="year-rate">
+                                13000
+                                <i>元</i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="buy">
+                        <a href="#">还款中</a>
+                    </div>
+                </div>
+                <div class="item clearfix">
+                    <h3>
+                        <em>1</em>个月
+                        <i>
+                            日常生活消费
+                        </i>
+                    </h3>
+                    <div class="info">
+                        <p>
+                            约定年化收益率：
+                            <span class="year-rate">
+                                5.50%
+                                <i>起</i>
+                            </span>
+                        </p>
+                        <p>
+                            总成交金额：
+                            <span class="year-rate">
+                                98000
+                                <i>元</i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="buy">
+                        <a href="#" class="disabled">还款中</a>
+                    </div>
+                </div>
+                <div class="item clearfix">
+                    <h3>
+                        <em>12</em>个月以上
+                        <i>
+                            资金周转
+                        </i>
+                    </h3>
+                    <div class="info">
+                        <p>
+                            约定年化收益率：
+                            <span class="year-rate">
+                                6.50%
+                                <i>起</i>
+                            </span>
+                        </p>
+                        <p>
+                            总成交金额：
+                            <span class="year-rate">
+                                15000
+                                <i>元</i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="buy">
+                        <a href="#" class="disabled">已满标</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- 底部导航 -->
+        <nav class="footer">
+            <div class="footer-content clearfix">
+                <!-- 此处的logo不需要链接，直接使用css处理 -->
+                <p class="brand pull-left"></p>
+                <ul>
+                    <li class="title">
+                        关于我们
+                    </li>
+                    <li>
+                        <a href="#">公司介绍</a>
+                    </li>
+                    <li>
+                        <a href="#">业务模式</a>
+                    </li>
+                    <li>
+                        <a href="#">合作机构</a>
+                    </li>
+                    <li>
+                        <a href="#">服务协议</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="title">
+                        风险防范
+                    </li>
+                    <li>
+                        <a href="#">账户安全</a>
+                    </li>
+                    <li>
+                        <a href="#">安全保障</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="title">
+                        理财产品
+                    </li>
+                    <li>
+                        <a href="#">固定期限</a>
+                    </li>
+                    <li>
+                        <a href="#">债券/散标</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="title">
+                        交易帮助
+                    </li>
+                    <li>
+                        <a href="#">购买</a>
+                    </li>
+                    <li>
+                        <a href="#">赎回</a>
+                    </li>
+                    <li>
+                        <a href="#">提现</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="title">
+                        机构服务
+                    </li>
+                    <li>
+                        <a href="#">机构中心</a>
+                    </li>
+                    <li>
+                        <a href="#">合作联系</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <!-- 底部 -->
+    <footer class="front-footer">
+        <p class="text-center">
+            <%=package.siteName%> @2016-2018</p>
+    </footer>
+
+</body>
+<script src="./src/js/main.js" type="text/javascript"></script>
+
+</html>

@@ -11,6 +11,11 @@ let express = require("express"),
     Package = require("./package"),
     Core = require("./lib/core"),
     Cookie = require('cookie-parser');
+
+// 业务逻辑模块
+let UserManage = require('./lib/user_manage');
+let userManage = new UserManage();
+
 app.use(session({
     secret: `${Math.random(10)}`, //secret的值建议使用随机字符串
     cookie: { maxAge: 60 * 1000 * 60 }, // 过期时间（毫秒）
@@ -33,8 +38,38 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'ejs');
 app.set('src', path.join('src'));
 
+
+/************* 用户管理模块*************/
+
+// 获取用户列表，支持分页
+app.get('/api/readUserPage', function(req, res) {
+    try {
+        userManage.readUserPage(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 通过id获取用户
+app.get('/api/readUserById', function(req, res) {
+    try {
+        userManage.readUserById(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 创建用户
+app.post('/api/createUser', function(req, res) {
+    try {
+        userManage.createUser(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
 // 入口
-app.get("/", function(req, res, next) {
+app.get("/console", function(req, res, next) {
     Core.flyer.log('开始进入项目:' + new Date());
     try {
         if (true) {
@@ -79,7 +114,12 @@ app.get("/", function(req, res, next) {
         Core.flyer.log('进入项目发生异常:当前路由:"/"' + err);
         res.redirect("/error");
     }
+});
 
+app.get('/', function(req, res) {
+    res.render('front.ejs', {
+        package: Package
+    });
 });
 
 //开发入口
