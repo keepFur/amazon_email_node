@@ -27,19 +27,17 @@
     </header>
     <!-- 面包屑 -->
     <nav class='nav-top'>
-        <span>销售工具</span>
-        <span>亚马逊客服</span>
+        <span>有钱科技</span>
+        <span class="js-nav-text">首页</span>
     </nav>
     <!-- 侧边栏 -->
     <aside>
         <div class="flyer-layout-aside">
             <ul class="flyer-layout-tree">
-                <!-- <li>
-                    <h2 class="flyer-layout-title"><i class="fa fa-align-justify" aria-hidden="true"></i>快速入口</h2>
-                </li> -->
+                <p class='tree-shrink' id="asideToggle"><i class='fa fa-bars'></i></p>
                 <% menus.forEach(function(val,index,items){ %>
                     <li>
-                        <a data-href="<%= val.url %>" class="flyer-layout-link"><i class="<%= val.icons %>" aria-hidden="true"></i><label class="i18n" data-i18nKey="<%= val.pageName %>"></label>
+                        <a data-url="<%= val.url %>" data-hash="<%= val.hash %>" class="flyer-layout-link"><i class="<%= val.icons %>" aria-hidden="true"></i><label><%= val.pageName %></label>
                         <% if(val.hasTag){%>
                             <span>#</span>
                         <% } %></a>
@@ -57,7 +55,7 @@
 
     </section>
     <footer>
-        <span class="footer-brand">Version: <span class = "version-icon"><span class = 'version-update'></span>
+        <span class="footer-brand" data-updatecontent="更新什么什么">Version: <span class = "version-icon"><span class = 'version-update'></span>
         <%=package.version %>
             </span>
             </span>
@@ -69,8 +67,10 @@
             </p>
     </footer>
     <script type="text/javascript" src="../plugins/js/jquery.min.js?v=<%=package.version %>"></script>
-    <script type="text/javascript" src="../plugins/js/flyer.all.min.js?v=<%=package.version %>"></script>
+    <script type="text/javascript" src="../js/common/jquery.extend.js?v=<%=package.version %>"></script>
+    <script type="text/javascript" src="../plugins/js/flyer.all.js?v=<%=package.version %>"></script>
     <script type="text/javascript" src="../plugins/js/echarts.simple.min.js?v=<%=package.version %>"></script>
+    <script type="text/javascript" src="../js/common/aside.js?v=<%=package.version %>"></script>
     <script type="text/javascript" src="../js/core.js?v=<%=package.version %>"></script>
     <script type="text/javascript" src="../js/index.js?v=<%=package.version %>"></script>
 </body>

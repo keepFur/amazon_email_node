@@ -21,6 +21,7 @@ app.use(session({
 }));
 app.use(Cookie());
 app.use(express.static("src"));
+app.use('/html', express.static("src/html"));
 app.use(
     bodyParser.urlencoded({
         extended: true,
@@ -49,9 +50,9 @@ app.get("/", function(req, res, next) {
             // }
             let modules = permissionData.modules;
             let menus = [];
-            for (var key in menus) {
-                if (menus.hasOwnProperty(key)) {
-                    var element = menus[key];
+            for (var key in modules) {
+                if (modules.hasOwnProperty(key)) {
+                    var element = modules[key];
                     menus.push(element);
                 }
             }

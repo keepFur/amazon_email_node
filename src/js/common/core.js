@@ -1,11 +1,11 @@
 "use strict";
 var core = {
     url: "",
-    setWindowHash: function(hash, params) {
+    loadPage: function(code, params) {
         if (params) {
-            location.hash = hash + params;
+            location.hash = code + params;
         } else {
-            location.hash = hash;
+            location.hash = code;
         }
     },
 
@@ -41,6 +41,13 @@ var core = {
         $btn.html(btnText || '保存').attr('disabled', false);
     },
 
+    addLoading: function($container, options) {
+
+    },
+
+    deleteLoading: function() {
+
+    },
     // 为表格中checkbox绑定点击事件
     bindCheckboxEvent: function($table) {
         if ($table) {
@@ -220,13 +227,13 @@ var core = {
 
 
     /**
-     * 根据当前的hash值，使左侧菜单高亮
+     * 根据当前的key值，使左侧菜单高亮
      * 
-     * @param {str} hash 当前页面的hash值
+     * @param {str} key 当前页面的key值
      */
-    menuHeightLightByHash: function(hash) {
-        if (hash) {
-            $('ul.flyer-layout-tree').find('a[data-url="' + hash + '.html' + '"]').addClass('flyer-layout-linkActive');
+    menuHeightLightByKey: function(key) {
+        if (key) {
+            $('ul.flyer-layout-tree').find('a[data-href="' + key + '.html' + '"]').addClass('flyer-layout-linkActive');
         } else {
             console.log('参数不符合规范。');
         }
