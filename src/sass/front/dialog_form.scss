@@ -1,4 +1,21 @@
-@import "base";
+@import 'base';
+flyer-form .flyer-input:hover flyer-form .flyer-input:focus {
+    border: 1px solid #2cc3a9 !important;
+}
+
+.flyer-form .flyer-input:hover,
+.flyer-form .flyer-textarea:hover,
+.flyer-form .flyer-edit:hover,
+.flyer-form .flyer-combobox-contents:hover {
+    border-color: #2cc3a9 !important;
+}
+
+.flyer-form .flyer-input:focus,
+.flyer-form .flyer-select:focus,
+.flyer-form .flyer-textarea:focus {
+    border: 1px solid #2cc3a9 !important;
+}
+
 .dialog-form-container {
     .inline {
         width: calc(100% - 64px);
@@ -23,4 +40,25 @@
     .dialog-form-item:last-child {
         margin-bottom: 0;
     }
+}
+
+.flyer-dialog-footer button:last-child {
+    color: #333!important;
+    background-color: #fff!important;
+    border-color: #ccc!important;
+}
+
+.flyer-dialog-footer button:first-child {
+    background-color: $green!important;
+    border-color: $green!important;
+    color: #fff!important;
+}
+
+.flyer-dialog .flyer-dialog-footer {
+    border-top: 1px solid #eee;
+}
+
+.flyer-dialog .flyer-dialog-title {
+    color: $green;
+    font-size: 16px;
 }

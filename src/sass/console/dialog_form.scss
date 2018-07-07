@@ -24,3 +24,24 @@
         margin-bottom: 0;
     }
 }
+
+.flyer-dialog-footer button:last-child {
+    color: #333!important;
+    background-color: #fff!important;
+    border-color: #ccc!important;
+}
+
+.flyer-dialog-footer button:first-child {
+    background-color: $green!important;
+    border-color: $green!important;
+    color: #fff!important;
+}
+
+.flyer-dialog .flyer-dialog-footer {
+    border-top: 1px solid #eee;
+}
+
+.flyer-dialog .flyer-dialog-title {
+    color: $green;
+    font-size: 16px;
+}

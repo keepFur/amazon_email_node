@@ -53,10 +53,8 @@ body {
                 margin-right: 8px;
                 width: 18px;
                 text-align: center;
-                display: inline-block;
                 color: #666;
                 float: left;
-                display: inline-block;
                 height: 30px;
                 line-height: 30px;
             }
@@ -343,7 +341,6 @@ section.flyer-layout-content.big-content {
 
 .flyer-btn {
     margin-right: 10px;
-    // float: left; by zhengpengfei i{i{
     i {
         color: #666;
     }
@@ -522,11 +519,9 @@ header .login {
 table {
     span.hoverCur {
         max-width: 124px;
-        display: inline-block;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-        display: inline-block;
         line-height: 16px;
         float: left;
     }
@@ -535,8 +530,6 @@ table {
         margin: 0 4px;
         color: #2cc3a9;
         width: 14px;
-        display: inline-block;
-        display: inline-block;
         float: left;
     }
     .span.exchange .rightIcon {
@@ -551,11 +544,6 @@ table {
     tbody tr td:nth-child(2) {
         position: relative;
     }
-    .emailNum {
-        position: absolute;
-        right: 50px;
-        top: 5px;
-    }
     span {
         cursor: pointer;
         height: 16px!important;
@@ -566,21 +554,6 @@ table {
     }
 }
 
-i.icon-unassigned.rightIcon,
-i.icon-assigned.rightIcon {
-    position: absolute;
-    right: 6px;
-    top: 8px;
-    font-size: 14px!important;
-}
-
-i.icon-accessory.rightIcon {
-    position: absolute;
-    top: 7px;
-    right: 30px;
-    font-size: 14px!important;
-}
-
 .flyer-layout-previewTitle {
     margin-bottom: 12px;
     font-size: 12px;
@@ -589,7 +562,6 @@ i.icon-accessory.rightIcon {
         font-size: 15px;
         color: $green;
         margin-right: 6px;
-        //    font-weight: bold;
     }
     .flyer-layout-allNum {
         display: inline-block;
@@ -669,41 +641,12 @@ flyer-form .flyer-input:hover flyer-form .flyer-input:focus {
     max-height: inherit;
 }
 
-.flyer-dialog .flyer-dialog-footer {
-    border-top: 1px solid #eee;
-}
-
-.flyer-dialog .flyer-dialog-title {
-    color: $green;
-    font-size: 16px;
-}
-
-p.flyer-frame-attachment-item-dowload-link i:hover {
-    color: $green;
-    cursor: pointer;
-}
-
 tr.empty_container td {
     text-align: center;
 }
 
 input:-webkit-autofill {
     -webkit-text-fill-color: inherit!important;
-}
-
-.flyer-edit-write {
-    min-height: 20px!important;
-    word-break: break-all!important;
-}
-
-table span.mailAddress {
-    width: 310px;
-    display: inline-block;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    float: left;
-    margin-top: 3px;
 }
 
 .loading-backgroud {
@@ -716,154 +659,6 @@ table span.mailAddress {
     i {
         color: $green;
     }
-}
-
-span.guid-entrance-icon {
-    cursor: pointer;
-    width: 20px;
-    height: 50px;
-    display: inline-block;
-    font-size: 20px;
-    line-height: 50px;
-    margin-right: 20px;
-    padding: 0 20px;
-    position: initial !important;
-    border-right: 1px solid $headLine;
-    border-left: 1px solid $headLine;
-}
-
-div.guid-module {
-    background: #000;
-    opacity: 0.6;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    z-index: 9;
-    left: 0px;
-    top: 0px;
-}
-
-.guid-tooltips {
-    position: absolute;
-    padding: 10px;
-    background-color: #fff;
-    min-width: 200px;
-    max-width: 300px;
-    border-radius: 3px;
-    box-shadow: 0 1px 10px rgba(0, 0, 0, .4);
-    transition: opacity 0.1s ease-out;
-    z-index: 1000;
-}
-
-.guid-bullets {
-    text-align: center;
-}
-
-.guid-bullets ul {
-    clear: both;
-    margin: 15px auto 0;
-    padding: 0;
-    display: inline-block;
-    li {
-        list-style: none;
-        float: left;
-        margin: 0 2px;
-        a {
-            display: block;
-            width: 6px;
-            height: 6px;
-            background: #ccc;
-            border-radius: 10px;
-            -moz-border-radius: 10px;
-            -webkit-border-radius: 10px;
-            text-decoration: none;
-        }
-    }
-}
-
-.guid-arrow {
-    border: 5px solid #fff;
-    content: '';
-    position: absolute;
-    .top {
-        top: -10px;
-        border-top-color: rgba(0, 0, 0, 0);
-        border-right-color: rgba(0, 0, 0, 0);
-        border-bottom-color: #fff;
-        border-left-color: rgba(0, 0, 0, 0);
-    }
-}
-
-.guid-tooltipbuttons {
-    text-align: right;
-    white-space: nowrap;
-}
-
-.guid-button {
-    position: relative;
-    overflow: visible;
-    display: inline-block;
-    padding: 0.3em 0.8em;
-    border: 1px solid #d4d4d4;
-    margin: 0;
-    text-decoration: none;
-    text-shadow: 1px 1px 0 #fff;
-    font: 11px/normal sans-serif;
-    color: #333;
-    white-space: nowrap;
-    cursor: pointer;
-    outline: none;
-    background-color: #ececec;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f4f4f4), to(#ececec));
-    background-image: -moz-linear-gradient(#f4f4f4, #ececec);
-    background-image: -o-linear-gradient(#f4f4f4, #ececec);
-    background-image: linear-gradient(#f4f4f4, #ececec);
-    -webkit-background-clip: padding;
-    -moz-background-clip: padding;
-    -o-background-clip: padding-box;
-    -webkit-border-radius: 0.2em;
-    -moz-border-radius: 0.2em;
-    border-radius: 0.2em;
-    zoom: 1;
-    margin-top: 10px;
-}
-
-.guid-skipbutton {
-    margin-right: 5px;
-    color: #7a7a7a;
-}
-
-.guid-prevbutton {
-    -webkit-border-radius: 0.2em 0 0 0.2em;
-    -moz-border-radius: 0.2em 0 0 0.2em;
-    border-radius: 0.2em 0 0 0.2em;
-    border-right: none;
-}
-
-.guid-nextbutton {
-    -webkit-border-radius: 0 0.2em 0.2em 0;
-    -moz-border-radius: 0 0.2em 0.2em 0;
-    border-radius: 0 0.2em 0.2em 0;
-}
-
-.guid-disabled,
-.guid-disabled:hover,
-.guid-disabled:focus {
-    color: #9a9a9a;
-    border-color: #d4d4d4;
-    box-shadow: none;
-    cursor: default;
-    background-color: #f4f4f4;
-    background-image: none;
-    text-decoration: none;
-}
-
-.guid-arrow.top {
-    top: -10px;
-    border-top-color: rgba(0, 0, 0, 0);
-    border-right-color: rgba(0, 0, 0, 0);
-    border-bottom-color: #fff;
-    border-left-color: rgba(0, 0, 0, 0);
 }
 
 .slide-container {
@@ -987,11 +782,6 @@ div.mutiple-select {
     height: 29px;
 }
 
-// .send-email-orders {
-//     height: 80%!important;
-//     overflow-x: hidden;
-//     overflow-y: scroll;
-// }
 .flyer-onswitch {
     cursor: pointer;
     position: relative;
@@ -1065,26 +855,10 @@ div.mutiple-select {
     }
 }
 
-#myFolderUl {
-    li {
-        padding-left: 46px;
-        font-size: 13px;
-        line-height: 24px;
-        color: #777;
-        &:hover {
-            color: $green;
-            cursor: pointer;
-        }
-    }
-}
-
 li.flyer-tab-active {
     color: $green;
 }
 
-// .flyer-tab-content .flyer-tab-item:first-child{
-//     display: block;
-// }
 .flyer-combobox-items>ul>li div {
     text-align: left;
     overflow: hidden;
@@ -1100,15 +874,6 @@ div#original-content {
     padding-left: 0px;
 }
 
-.edit_folder,
-.delete_folder {
-    cursor: pointer;
-}
-
-.edit_folder {
-    margin-right: 4px;
-}
-
 .flyer-form .flyer-radio input[type=radio]:checked+i:after {
     background: $green;
 }
@@ -1121,19 +886,6 @@ div#original-content {
     z-index: 5!important;
 }
 
-.myFolderUl {
-    li {
-        padding-left: 46px;
-        font-size: 13px;
-        line-height: 20px;
-        color: #999;
-        &:hover {
-            color: $green;
-            cursor: pointer;
-        }
-    }
-}
-
 pre {
     white-space: pre-wrap;
     word-wrap: break-word;
@@ -1143,24 +895,6 @@ div.mutiple-select,
 section.flyer-layout-content .btn-container button {
     height: 32px;
     box-sizing: border-box;
-}
-
-.flyer-layout-aside .myFolderUl .flyer-layout-link {
-    height: inherit;
-    font-size: inherit;
-}
-
-.newFolder li[data-key='add'] {
-    position: relative;
-    &::after {
-        content: "";
-        position: absolute;
-        width: 80%;
-        top: 0;
-        height: 1px;
-        background-color: #ddd;
-        left: 10px;
-    }
 }
 
 .flyer-layout-aside .flyer-layout-link i.icon-unfinish,
@@ -1254,10 +988,6 @@ ul.myFolderUl {
     bottom: 0px!important;
 }
 
-button#advancedSearchBtn {
-    border-color: #dedede;
-}
-
 .flyer-combobox-contents i.fa {
     right: 1px;
 }
@@ -1275,24 +1005,6 @@ button#advancedSearchBtn {
 }
 
 .flyer-layout-sendEmail .emailBox .flyer-combobox-contents {
-    height: 36px !important;
-}
-
-.attachment_img {
-    display: inline-block;
-    width: 100%;
-    height: auto;
-}
-
-.creat-rules .flyer-combobox-contents {
-    height: 32px !important;
-}
-
-.creat-rules .flyer-input {
-    height: 32px;
-}
-
-#addFormContianer .flyer-combobox-contents {
     height: 36px !important;
 }
 
@@ -1390,15 +1102,6 @@ body.bg {
     height: 99%;
 }
 
-#coverOrder {
-    position: fixed;
-    right: 0;
-    bottom: 31px;
-    width: 32%;
-    height: 10px;
-    background: #fff;
-}
-
 .flyer-edit {
     border: 1px solid #eee !important;
 }
@@ -1413,24 +1116,6 @@ span#nomatch {
 
 .btn-right {
     float: right;
-}
-
-td .complaint {
-    color: #000;
-    position: inherit;
-    margin-right: 4px;
-    font-size: 14px !important;
-}
-
-td .icon-customer-complaint.complaint-no {
-    color: #666;
-    position: inherit;
-    margin-right: 4px;
-    font-size: 14px !important;
-}
-
-td .icon-customer-complaint-black.complaint {
-    color: #666;
 }
 
 .flyer-checkbox-radio {
@@ -1497,159 +1182,6 @@ textarea.flyer-input {
     margin-top: 6px;
 }
 
-.language-manage .flyer-form-label {
-    padding: 0px;
-}
-
-.language-manage input:not(.filter-options) {
-    width: 74%!important;
-}
-
-.dialog-form-container-language {
-    width: 74%!important;
-    input {
-        width: 100%!important;
-    }
-}
-
-.i18n-container.flyer-btn input {
-    height: 26px;
-    line-height: 26px;
-    top: -5px;
-    position: relative;
-    width: 100%;
-    padding: 0 6px;
-    background: transparent;
-    color: #fff;
-}
-
-.i18n-container.flyer-btn .fa.fa-angle-down {
-    height: 26px;
-    line-height: 26px;
-    top: -1px;
-    right: 0px;
-}
-
-.i18n-container .flyer-combobox-contents {
-    height: 26px !important;
-    box-sizing: border-box;
-    border: none;
-}
-
-.i18n-container .flyer-combobox-contents i.fa {
-    height: 26px;
-    line-height: 26px;
-    width: 22px!important;
-    background: transparent;
-    color: #fff;
-}
-
-.i18n-container.flyer-btn:hover {
-    opacity: 1;
-}
-
-.i18n-container .flyer-combobox-items.open {
-    background-color: #23292d;
-    border: none;
-}
-
-.i18n-container .flyer-combobox-items>ul>li div {
-    color: #fff;
-    line-height: 20px;
-    height: 20px;
-}
-
-.i18n-container .flyer-combobox-items li.selected:after {
-    top: 6px;
-}
-
 .dialog-form-container div.mutiple-select {
     padding-left: 10px;
-}
-
-@media screen and (max-width:1700px) {
-    #flyer-date-orderTimeEmail {
-        left: inherit!important;
-        right: 10px!important;
-    }
-}
-
-@media screen and (max-width: 1500px) {
-    #flyerEmailDetailTab .flyer-tab-title>ul>li {
-        padding: 0 10px;
-    }
-}
-
-@media screen and (max-width: 1330px) {
-    #flyerEmailDetailTab .flyer-tab-title>ul>li {
-        padding: 0 6px;
-    }
-}
-
-@media screen and (max-width: 1240px) {
-    .flyer-table {
-        width: 100%!important;
-    }
-    #flyerEmailDetailTab .flyer-tab-title>ul>li {
-        font-size: 12px;
-    }
-}
-
-@media screen and (max-width: 1100px) {
-    #flyerEmailDetailTab .flyer-tab-title>ul>li {
-        padding: 0 2px;
-    }
-}
-
-@media screen and (max-width:760px) {
-    .flyer-edit-content {
-        height: 250px;
-    }
-    .flyer-layout-sendEmail .flyer-layout-submitBox {
-        padding-top: 0px;
-    }
-}
-
-#ASIN,
-#SKU {
-    margin-left: 10px;
-    display: inline-block;
-    width: 346px!important;
-}
-
-#productName {
-    width: 346px!important;
-}
-
-input#keyword {
-    width: 447px;
-}
-
-.customer-advanced-search {
-    div#storeSelectContainer,
-    div#productTypeSelect,
-    div#productGroupSelect,
-    div#countriesSelect,
-    div#questionTypeSelect,
-    div#resolveMethodSelect {
-        width: 456px;
-    }
-}
-
-.customer-complaint-history {
-    #ASIN,
-    #SKU,
-    #productName {
-        margin-left: 0;
-        display: inline-block;
-        width: 60%!important;
-    }
-}
-
-.receiving-rules i.table-btn {
-    width: 62px;
-}
-
-.flyer-date {
-    position: fixed;
 }

@@ -19,6 +19,7 @@ $(function() {
             title: '用户登录',
             btns: [{
                 text: '登录',
+                skin: 'flyer-btn-blue',
                 click: function(ele) {
                     var that = this;
                     $.ajax({
@@ -49,6 +50,7 @@ $(function() {
                 }
             }, {
                 text: '取消',
+                skin: 'flyer-btn-default',
                 click: function() {
                     this.close();
                 }

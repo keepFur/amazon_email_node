@@ -1,18 +1,4 @@
 /*** Parameters ***/
-flyer-form .flyer-input:hover flyer-form .flyer-input:focus {
-  border: 1px solid #2cc3a9 !important; }
-
-.flyer-form .flyer-input:hover,
-.flyer-form .flyer-textarea:hover,
-.flyer-form .flyer-edit:hover,
-.flyer-form .flyer-combobox-contents:hover {
-  border-color: #2cc3a9 !important; }
-
-.flyer-form .flyer-input:focus,
-.flyer-form .flyer-select:focus,
-.flyer-form .flyer-textarea:focus {
-  border: 1px solid #2cc3a9 !important; }
-
 .dialog-form-container .inline {
   width: calc(100% - 64px); }
 
