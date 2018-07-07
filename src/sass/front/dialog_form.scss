@@ -1,0 +1,26 @@
+@import "base";
+.dialog-form-container {
+    .inline {
+        width: calc(100% - 64px);
+    }
+    .flyer-form {
+        margin-right: 0;
+    }
+    .dialog-form-item {
+        margin-bottom: 14px;
+        width: 100%;
+        display: inline-block;
+        height: 38px;
+        label {
+            float: left;
+            height: 38px;
+            line-height: 38px;
+            width: 56px;
+            text-align: right;
+            margin-right: 8px;
+        }
+    }
+    .dialog-form-item:last-child {
+        margin-bottom: 0;
+    }
+}

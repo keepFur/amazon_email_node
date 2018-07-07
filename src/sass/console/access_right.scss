@@ -1,16 +1,15 @@
-@import "base";
 .access-right {
     text-align: center;
     overflow: hidden;
     margin-top: 140px;
     margin: 150px auto 0;
     max-width: 592px;
-    .access-right-leftImg {
+    .access-right-leftimg {
         float: left;
     }
-    .access-right-rightBox {
+    .access-right-rightbox {
         float: left;
-        margin-left: 50px; 
+        margin-left: 50px;
         text-align: left;
         margin-top: 50px;
         p {
@@ -20,17 +19,18 @@
             margin-bottom: 20px!important;
         }
     }
-    .access-right-bottom{
+    .access-right-bottom {
         margin-top: 10px;
-        border-top: 2px dotted #ddd; 
+        border-top: 2px dotted #ddd;
     }
 }
-section.flyer-layout-content {
-    margin-left: 220px;
-    padding: 20px;
-    box-sizing: border-box;
-    padding-top: 120px;
-    padding-bottom: 40px;
-    overflow: hidden;
-    min-height: 550px;
-}
+
+// section.flyer-layout-content {
+//     margin-left: 220px;
+//     padding: 20px;
+//     box-sizing: border-box;
+//     padding-top: 120px;
+//     padding-bottom: 40px;
+//     overflow: hidden;
+//     min-height: 550px;
+// }

@@ -1,0 +1,22 @@
+/*** Parameters ***/
+.dialog-form-container .inline {
+  width: calc(100% - 64px); }
+
+.dialog-form-container .flyer-form {
+  margin-right: 0; }
+
+.dialog-form-container .dialog-form-item {
+  margin-bottom: 14px;
+  width: 100%;
+  display: inline-block;
+  height: 38px; }
+  .dialog-form-container .dialog-form-item label {
+    float: left;
+    height: 38px;
+    line-height: 38px;
+    width: 56px;
+    text-align: right;
+    margin-right: 8px; }
+
+.dialog-form-container .dialog-form-item:last-child {
+  margin-bottom: 0; }

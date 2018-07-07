@@ -46,7 +46,7 @@ flyer.define('user_manage', function(exports, module) {
         flyer.open({
             pageUrl: '/html/create_user.html',
             isModal: true,
-            area: [440, 340],
+            area: [440, 350],
             title: '注册用户',
             btns: [{
                 text: '保存',

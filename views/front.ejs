@@ -9,8 +9,8 @@
     <title>
         <%=package.siteName%>-官网</title>
     <!-- <link rel="shortcut icon" href="favicon.ico"> -->
-    <link rel="stylesheet" href="../css/reset.css">
-    <link rel="stylesheet" href="../css/front.css">
+    <link type="text/css" href="../plugins/css/flyer.all.min.css?v=<%=package.version %>" rel="stylesheet">
+    <link type="text/css" href="../dest/css/yidian.front.all.css?v=<%=package.version %>" rel="stylesheet">
 </head>
 
 <body>
@@ -34,10 +34,10 @@
                     <a href="#">充值</a>
                 </li>
                 <li>
-                    <a href="#">登录</a>
+                    <a href="#" id="userLogin">登录</a>
                 </li>
                 <li>
-                    <a href="#">注册</a>
+                    <a href="#" id="userRegister">注册</a>
                 </li>
                 <li>
                     <a href="/console">控制台</a>
@@ -455,8 +455,10 @@
         <p class="text-center">
             <%=package.siteName%> @2016-2018</p>
     </footer>
-
+    <script type="text/javascript" src="../plugins/js/jquery.min.js?v=<%=package.version %>"></script>
+    <script type="text/javascript" src="../js/common/jquery.extend.js?v=<%=package.version %>"></script>
+    <script type="text/javascript" src="../plugins/js/flyer.all.js?v=<%=package.version %>"></script>
+    <script src="../js/front.js" type="text/javascript"></script>
 </body>
-<script src="./src/js/main.js" type="text/javascript"></script>
 
 </html>

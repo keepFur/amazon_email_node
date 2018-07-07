@@ -5,8 +5,8 @@ $(function() {
      */
     function init() {
         initEvent();
-        triggerHomeClick();
         loadPageByUrl(getPageUrlByHash());
+        core.menuHeightLightByHash(window.location.hash.replace('#', '') || 'home');
     }
 
     /**
@@ -70,7 +70,6 @@ $(function() {
             },
             error: function(error) {
                 triggerHomeClick();
-                // core.setWindowHash('home');
                 // core.menuHeightLightByHash('home');
                 $.writeLog('index-loadPage', '没有找到[' + getPageUrlByHash() + ']页面');
             }

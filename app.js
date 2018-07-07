@@ -68,6 +68,15 @@ app.post('/api/createUser', function(req, res) {
     }
 });
 
+// 用户登录
+app.post('/api/userLogin', function(req, res) {
+    try {
+        userManage.userLogin(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
 // 入口
 app.get("/console", function(req, res, next) {
     Core.flyer.log('开始进入项目:' + new Date());

@@ -1,8 +1,9 @@
 @import "base";
-body{
+body {
     color: #333;
-    font-family: Arial,Console,Verdana,Courier New;
+    font-family: Arial, Console, Verdana, Courier New;
 }
+
 .flyer-layout-aside {
     position: fixed;
     .flyer-layout {
@@ -12,7 +13,7 @@ body{
             padding: 5px 0 20px;
             border-right: 1px solid #eee;
             margin-top: 100px;
-            background-color:$greenHover;
+            background-color: $greenHover;
         }
         &-title {
             line-height: 36px;
@@ -21,7 +22,8 @@ body{
             border-bottom: 1px solid #f2f2f2;
             font-size: 15px;
             font-weight: bold;
-            [class^="icon-"],.fa{
+            [class^="icon-"],
+            .fa {
                 margin-right: 10px;
                 width: 18px;
                 text-align: center;
@@ -45,7 +47,8 @@ body{
             -ms-user-select: none;
             -webkit-user-select: none;
             position: relative;
-            [class^="icon-"],.fa{
+            [class^="icon-"],
+            .fa {
                 font-size: 14px;
                 margin-right: 8px;
                 width: 18px;
@@ -56,11 +59,11 @@ body{
                 display: inline-block;
                 height: 30px;
                 line-height: 30px;
-                
             }
             &:hover {
                 color: $green;
-                [class^="icon-"],.fa {
+                [class^="icon-"],
+                .fa {
                     color: $green;
                 }
             }
@@ -80,8 +83,8 @@ body{
                 left: 136px;
                 position: absolute;
             }
-            label{
-                cursor:pointer;
+            label {
+                cursor: pointer;
                 width: 90px;
                 overflow: hidden;
                 float: left;
@@ -91,7 +94,8 @@ body{
         }
         &-linkActive {
             color: $green;
-            [class^="icon-"],.fa{
+            [class^="icon-"],
+            .fa {
                 color: $green;
             }
         }
@@ -142,7 +146,7 @@ header {
         min-height: 50px;
         min-width: 160px;
         background: $green;
-        float:left;
+        float: left;
         img {
             position: relative;
             top: -6px;
@@ -206,7 +210,7 @@ footer {
     text-align: right;
     font-size: $font-common;
     font-family: $font-footer;
-    border-top:1px solid #eee;
+    border-top: 1px solid #eee;
     .footer-brand {
         margin-right: 8px;
         cursor: pointer;
@@ -225,7 +229,7 @@ section.flyer-layout-content {
     padding: 10px;
     box-sizing: border-box;
     padding-top: 94px;
-    padding-bottom:40px;
+    padding-bottom: 40px;
     overflow: hidden;
     min-height: 400px;
     .btn-container {
@@ -243,31 +247,31 @@ section.flyer-layout-content {
             height: 26px;
             float: right;
         }
-        .pager-size-container{
+        .pager-size-container {
             float: right;
             width: 152px;
-            margin-top:6px;
+            margin-top: 6px;
             margin-right: 12px;
             color: #666;
-             .flyer-combobox-contents{
-                 line-height: 24px!important;
-                 height: 24px!important;
-                 width: 122px!important;
-                 border: 1px solid #dcdcdc;
-                 input.filter-options {
+            .flyer-combobox-contents {
+                line-height: 24px!important;
+                height: 24px!important;
+                width: 122px!important;
+                border: 1px solid #dcdcdc;
+                input.filter-options {
                     line-height: 24px;
                     height: 24px;
                     color: #666;
-                 }
-                 i.fa-angle-down{
+                }
+                i.fa-angle-down {
                     line-height: 24px;
                     height: 24px;
-                 }
-                 i.fa-angle-up{
-                     line-height: 24px;
-                     height: 24px;
-                 }
-             }
+                }
+                i.fa-angle-up {
+                    line-height: 24px;
+                    height: 24px;
+                }
+            }
             // display: none;
         }
         .flyer-pager-wrapper {
@@ -278,14 +282,14 @@ section.flyer-layout-content {
             clear: both;
             display: block;
         }
-        .flyer-keyword-input{
+        .flyer-keyword-input {
             display: inline-block;
         }
-        .flyer-btn-group{
+        .flyer-btn-group {
             display: inline-block;
             position: relative;
             margin-left: 7px;
-            .flyer-btn-group-content{
+            .flyer-btn-group-content {
                 display: none;
                 position: absolute;
                 min-width: 99px;
@@ -293,15 +297,15 @@ section.flyer-layout-content {
                 border-bottom: none;
                 top: 30px;
                 background: #fff;
-                li{
+                li {
                     padding: 0 12px;
                     border-bottom: 1px solid #ccc;
                     border-collapse: collapse;
-                    color:#666;
-                   &:hover{
-                    background:#2cc3a9;
-                    color: #fff; 
-                    cursor: pointer;
+                    color: #666;
+                    &:hover {
+                        background: #2cc3a9;
+                        color: #fff;
+                        cursor: pointer;
                     }
                 }
             }
@@ -312,13 +316,14 @@ section.flyer-layout-content {
         clear: both;
         display: block;
     }
-    .product-comtainer{
-        .flyer-upload{
-              float: left;
-              margin-right: 10px;
+    .product-comtainer {
+        .flyer-upload {
+            float: left;
+            margin-right: 10px;
         }
     }
 }
+
 section.flyer-layout-content.big-content {
     margin-left: 58px;
 }
@@ -339,15 +344,16 @@ section.flyer-layout-content.big-content {
 .flyer-btn {
     margin-right: 10px;
     // float: left; by zhengpengfei i{i{
-        i{     
-               color: #666;
+    i {
+        color: #666;
     }
 }
 
-.flyer-table table{
+.flyer-table table {
     margin: 0!important;
 }
-.table-container{
+
+.table-container {
     margin: 10px 0;
 }
 
@@ -413,10 +419,12 @@ header .login a {
     height: 50px;
     line-height: 50px;
 }
-header .login a i{
+
+header .login a i {
     line-height: 50px;
     display: inline-block;
 }
+
 header .login a:hover {
     color: $green;
 }
@@ -431,6 +439,7 @@ header .login {
 .flyer-form .flyer-textarea {
     cursor: inherit!important;
 }
+
 .flyer-btn.flyer-btn-default,
 .flyer-form .flyer-input,
 .flyer-form .flyer-select,
@@ -439,10 +448,9 @@ header .login {
     color: #666;
 }
 
-
 .flyer-table table th {
     font-weight: bold;
-    border-top:1px solid $dd !important;
+    border-top: 1px solid $dd !important;
 }
 
 .flyer-table table thead {
@@ -452,18 +460,21 @@ header .login {
 .flyer-edit-content {
     height: 450px;
 }
-.flyer-edit-write{
-    min-height:100px;
+
+.flyer-edit-write {
+    min-height: 100px;
 }
-.flyer-write-title{
+
+.flyer-write-title {
     font-size: 14px;
     border-top: 1px dashed #ccc;
     padding-top: 5px;
     padding-bottom: 5px;
     color: #888;
-    margin-top:20px;
+    margin-top: 20px;
 }
-.flyer-write-html{
+
+.flyer-write-html {
     margin-left: 10px;
     line-height: 24px;
     border-left: 1px solid #ccc;
@@ -476,17 +487,20 @@ header .login {
     border: 1px solid $green;
     color: #fff;
 }
+
 .flyer-layout-content .btn-container:nth-child(1) .paper-container,
-.flyer-layout-content  .paper-container.first {
+.flyer-layout-content .paper-container.first {
     margin-top: 6px;
 }
+
 .flyer-table table td,
- .flyer-table table th {
+.flyer-table table th {
     padding: 6px 10px;
-    border:0px;
-    border-bottom:1px solid $dd;
-    text-align:left;
+    border: 0px;
+    border-bottom: 1px solid $dd;
+    text-align: left;
 }
+
 .flyer-table table td {
     height: 34px;
     width: 100%;
@@ -496,13 +510,16 @@ header .login {
     color: #666;
     font-size: 13px;
 }
-.flyer-table table tr{ 
-   cursor:pointer;
+
+.flyer-table table tr {
+    cursor: pointer;
 }
+
 .flyer-table table tr td:first-child {
     overflow: inherit;
 }
-table{
+
+table {
     span.hoverCur {
         max-width: 124px;
         display: inline-block;
@@ -513,7 +530,7 @@ table{
         line-height: 16px;
         float: left;
     }
-    .exchange .fa{
+    .exchange .fa {
         font-size: 12px;
         margin: 0 4px;
         color: #2cc3a9;
@@ -522,144 +539,163 @@ table{
         display: inline-block;
         float: left;
     }
-    .span.exchange
-    .rightIcon{
+    .span.exchange .rightIcon {
         float: right;
-       margin: 2px 2px;
-       cursor: pointer;
-       color: #666;
+        margin: 2px 2px;
+        cursor: pointer;
+        color: #666;
     }
-    .hoverCur{
-        cursor: pointer; 
+    .hoverCur {
+        cursor: pointer;
     }
-    tbody tr td:nth-child(2){
+    tbody tr td:nth-child(2) {
         position: relative;
     }
-    .emailNum{
+    .emailNum {
         position: absolute;
         right: 50px;
         top: 5px;
     }
-    span{
-        cursor:pointer;
+    span {
+        cursor: pointer;
         height: 16px!important;
         color: #666;
     }
     td {
-        color: #666; 
-    } 
-} 
+        color: #666;
+    }
+}
+
 i.icon-unassigned.rightIcon,
-i.icon-assigned.rightIcon{
+i.icon-assigned.rightIcon {
     position: absolute;
     right: 6px;
     top: 8px;
-    font-size:14px!important;
+    font-size: 14px!important;
 }
-i.icon-accessory.rightIcon{
+
+i.icon-accessory.rightIcon {
     position: absolute;
     top: 7px;
     right: 30px;
-    font-size:14px!important;
+    font-size: 14px!important;
 }
+
 .flyer-layout-previewTitle {
     margin-bottom: 12px;
-    font-size:12px;
+    font-size: 12px;
     color: #666;
-   .flyer-layout-blod{
-       font-size:15px;
-       color: $green;
-       margin-right: 6px;
-    //    font-weight: bold;
-   }
-    .flyer-layout-allNum{
+    .flyer-layout-blod {
+        font-size: 15px;
+        color: $green;
+        margin-right: 6px;
+        //    font-weight: bold;
+    }
+    .flyer-layout-allNum {
         display: inline-block;
-        color:#333;
+        color: #333;
         margin: 0 2px;
     }
 }
 
-.flyer-combobox-items>ul>li>div:hover, 
-.hover{
-  background-color: $green;
-  color: #fff;
+.flyer-combobox-items>ul>li>div:hover,
+.hover {
+    background-color: $green;
+    color: #fff;
 }
-flyer-form .flyer-input:hover
-flyer-form .flyer-input:focus{
-      border: 1px solid  $green!important;
+
+flyer-form .flyer-input:hover flyer-form .flyer-input:focus {
+    border: 1px solid $green!important;
 }
+
 .flyer-form .flyer-input:hover,
 .flyer-form .flyer-textarea:hover,
 .flyer-form .flyer-edit:hover,
-.flyer-form .flyer-combobox-contents:hover{
-     border-color:$green!important;
+.flyer-form .flyer-combobox-contents:hover {
+    border-color: $green!important;
 }
+
 .flyer-form .flyer-input:focus,
 .flyer-form .flyer-select:focus,
 .flyer-form .flyer-textarea:focus {
     border: 1px solid $green!important;
 }
-.flyer-table table .empty_title td{
+
+.flyer-table table .empty_title td {
     text-align: center;
 }
+
 .flyer-table tbody tr:hover {
     background-color: $greenHover!important;
 }
+
 .flyer-combobox-items li.selected:after {
-    background-color:$green!important;
+    background-color: $green!important;
 }
-.flyer-table-checkbox{
+
+.flyer-table-checkbox {
     i:after {
         top: -2px!important;
     }
 }
-.flyer-dialog-footer button:last-child{
+
+.flyer-dialog-footer button:last-child {
     color: #333!important;
     background-color: #fff!important;
     border-color: #ccc!important;
 }
-.flyer-dialog-footer button:first-child{
+
+.flyer-dialog-footer button:first-child {
     background-color: $green!important;
     border-color: $green!important;
     color: #fff!important;
 }
+
 .flyer-combobox-items {
-    max-height:200px;
-    overflow-y:auto;
-    box-sizing:border-box;
-    overflow-x:hidden;
+    max-height: 200px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    overflow-x: hidden;
     margin-top: -1px;
-    &.open{
+    &.open {
         border: 1px solid #dedede;
     }
 }
+
 .flyer-combobox-items>ul {
-     border:none;
-    overflow:initial; 
-    font-size:14px;
-    max-height:inherit;
+    border: none;
+    overflow: initial;
+    font-size: 14px;
+    max-height: inherit;
 }
+
 .flyer-dialog .flyer-dialog-footer {
     border-top: 1px solid #eee;
 }
+
 .flyer-dialog .flyer-dialog-title {
     color: $green;
     font-size: 16px;
 }
-p.flyer-frame-attachment-item-dowload-link i:hover{
-       color: $green;
-       cursor: pointer;
+
+p.flyer-frame-attachment-item-dowload-link i:hover {
+    color: $green;
+    cursor: pointer;
 }
+
 tr.empty_container td {
     text-align: center;
 }
+
 input:-webkit-autofill {
-     -webkit-text-fill-color: inherit!important; 
+    -webkit-text-fill-color: inherit!important;
 }
-.flyer-edit-write{
+
+.flyer-edit-write {
     min-height: 20px!important;
-    word-break:break-all!important;
+    word-break: break-all!important;
 }
+
 table span.mailAddress {
     width: 310px;
     display: inline-block;
@@ -669,18 +705,20 @@ table span.mailAddress {
     float: left;
     margin-top: 3px;
 }
-.loading-backgroud{
-    position:absolute;
-    width:100%;
-    height:100%;
+
+.loading-backgroud {
+    position: absolute;
+    width: 100%;
+    height: 100%;
     text-align: center;
-    left:0px;
-    top:0px;
-    i{
+    left: 0px;
+    top: 0px;
+    i {
         color: $green;
     }
 }
-span.guid-entrance-icon{
+
+span.guid-entrance-icon {
     cursor: pointer;
     width: 20px;
     height: 50px;
@@ -691,33 +729,37 @@ span.guid-entrance-icon{
     padding: 0 20px;
     position: initial !important;
     border-right: 1px solid $headLine;
-    border-left:1px solid $headLine;
+    border-left: 1px solid $headLine;
 }
-div.guid-module{
-    background:#000;
+
+div.guid-module {
+    background: #000;
     opacity: 0.6;
     position: fixed;
-    width:100%;
-    height:100%;
-    z-index:9;
-    left:0px;
-    top:0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9;
+    left: 0px;
+    top: 0px;
 }
-.guid-tooltips{
+
+.guid-tooltips {
     position: absolute;
     padding: 10px;
     background-color: #fff;
     min-width: 200px;
     max-width: 300px;
     border-radius: 3px;
-    box-shadow: 0 1px 10px rgba(0,0,0,.4);
+    box-shadow: 0 1px 10px rgba(0, 0, 0, .4);
     transition: opacity 0.1s ease-out;
-    z-index:1000;
+    z-index: 1000;
 }
-.guid-bullets{
+
+.guid-bullets {
     text-align: center;
 }
-.guid-bullets ul{
+
+.guid-bullets ul {
     clear: both;
     margin: 15px auto 0;
     padding: 0;
@@ -738,6 +780,7 @@ div.guid-module{
         }
     }
 }
+
 .guid-arrow {
     border: 5px solid #fff;
     content: '';
@@ -750,10 +793,12 @@ div.guid-module{
         border-left-color: rgba(0, 0, 0, 0);
     }
 }
+
 .guid-tooltipbuttons {
     text-align: right;
     white-space: nowrap;
 }
+
 .guid-button {
     position: relative;
     overflow: visible;
@@ -782,22 +827,28 @@ div.guid-module{
     zoom: 1;
     margin-top: 10px;
 }
+
 .guid-skipbutton {
     margin-right: 5px;
     color: #7a7a7a;
 }
+
 .guid-prevbutton {
     -webkit-border-radius: 0.2em 0 0 0.2em;
     -moz-border-radius: 0.2em 0 0 0.2em;
     border-radius: 0.2em 0 0 0.2em;
     border-right: none;
 }
+
 .guid-nextbutton {
     -webkit-border-radius: 0 0.2em 0.2em 0;
     -moz-border-radius: 0 0.2em 0.2em 0;
     border-radius: 0 0.2em 0.2em 0;
 }
-.guid-disabled, .guid-disabled:hover, .guid-disabled:focus {
+
+.guid-disabled,
+.guid-disabled:hover,
+.guid-disabled:focus {
     color: #9a9a9a;
     border-color: #d4d4d4;
     box-shadow: none;
@@ -806,6 +857,7 @@ div.guid-module{
     background-image: none;
     text-decoration: none;
 }
+
 .guid-arrow.top {
     top: -10px;
     border-top-color: rgba(0, 0, 0, 0);
@@ -813,81 +865,85 @@ div.guid-module{
     border-bottom-color: #fff;
     border-left-color: rgba(0, 0, 0, 0);
 }
-.slide-container{
-    width:100%;
-    height:100%;
+
+.slide-container {
+    width: 100%;
+    height: 100%;
     overflow: hidden;
-    position:relative;
-    li{
-        width:94%;
-        height:100%;
-        padding:28px;
+    position: relative;
+    li {
+        width: 94%;
+        height: 100%;
+        padding: 28px;
         position: absolute;
-        padding-top:0px;
-        z-index:1;
+        padding-top: 0px;
+        z-index: 1;
         display: none;
-        img{
+        img {
             display: inline-block;
             width: 100%;
             height: 100%;
             border: none;
         }
     }
-    .prev,.next{
-        width:28px;
-        height:40px;
+    .prev,
+    .next {
+        width: 28px;
+        height: 40px;
         position: absolute;
-        top:42%;
+        top: 42%;
         display: inline-block;
         font-size: 40px;
         cursor: pointer;
-        color:#2cc3a9;
+        color: #2cc3a9;
         z-index: 20;
     }
-    .prev{
-        left:0px;
+    .prev {
+        left: 0px;
     }
-    .next{
-        right:0px;
+    .next {
+        right: 0px;
     }
-    .prev.disabled,.next.disabled{
-        color:#666;
+    .prev.disabled,
+    .next.disabled {
+        color: #666;
         opacity: 0.8;
         cursor: inherit;
     }
-    .guid-content{
+    .guid-content {
         text-align: center;
         height: 32px;
         line-height: 32px;
         font-size: 14px;
     }
-    .circle-container{
-        width:100%;
-        height:20px;
-        line-height:20px;
+    .circle-container {
+        width: 100%;
+        height: 20px;
+        line-height: 20px;
         text-align: center;
         position: absolute;
-        bottom:0px;
-        left:0px;
-        z-index:30;
-        span{
+        bottom: 0px;
+        left: 0px;
+        z-index: 30;
+        span {
             display: inline-block;
-            width:6px;
-            height:6px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
-            border:1px solid #ddd;
+            border: 1px solid #ddd;
         }
     }
 }
-.version-icon{
-    cursor:pointer;
+
+.version-icon {
+    cursor: pointer;
     display: inline-block;
     font: normal normal normal 14px/1 FontAwesome;
     font-size: inherit;
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;
     position: relative;
-    .version-update{
+    .version-update {
         position: absolute;
         &:after {
             content: "";
@@ -901,236 +957,270 @@ div.guid-module{
         }
     }
 }
-aside{
+
+aside {
     position: fixed;
     left: 0;
     top: 0;
 }
-div.mutiple-select{
-    float:left;
+
+div.mutiple-select {
+    float: left;
     position: relative;
     bottom: 0px;
-    padding:0px;
-    margin-right:10px;
+    padding: 0px;
+    margin-right: 10px;
 }
+
 .btn-container .flyer-combobox-contents {
     width: 68px !important;
 }
-.flyer-btn.mutiple-select:hover{
+
+.flyer-btn.mutiple-select:hover {
     opacity: 1!important;
 }
+
 .btn-container .flyer-combobox-contents,
-.btn-container .flyer-combobox-contents .filter-options, 
-.btn-container .flyer-combobox-contents i.fa{
+.btn-container .flyer-combobox-contents .filter-options,
+.btn-container .flyer-combobox-contents i.fa {
     line-height: 29px;
     height: 29px;
 }
+
 // .send-email-orders {
 //     height: 80%!important;
 //     overflow-x: hidden;
 //     overflow-y: scroll;
 // }
-
 .flyer-onswitch {
-        cursor: pointer;
-        position: relative;
-        display: inline-block;
-        input[type="checkbox"] {
-            display: none;
-            & + i {
-                position: relative;
-                background-color: #ccc;
-                height: 19px;
-                min-width: 40px;
-                bottom: 0px;
-                border-radius: 10px;
-                display: inline-block;
-                transition: border 0.4s, box-shadow 0.4s, background-color 1.2s;
-                top: 5px;
-                &:after {
-                    content: "";
-                    position: absolute;
-                    background-color: #fafafa;
-                    height: 17px;
-                    width: 18px;
-                    border-radius: 8px;
-                    left: 1px;
-                    top: 1px;
-                    transition: .4s;
-                }
-            }
-        }
-       input[type="checkbox"]:checked + i {
-            background-color: $green!important;
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    input[type="checkbox"] {
+        display: none;
+        &+i {
+            position: relative;
+            background-color: #ccc;
+            height: 19px;
+            min-width: 40px;
+            bottom: 0px;
+            border-radius: 10px;
+            display: inline-block;
+            transition: border 0.4s, box-shadow 0.4s, background-color 1.2s;
+            top: 5px;
             &:after {
                 content: "";
                 position: absolute;
                 background-color: #fafafa;
-                right: 1px!important;
+                height: 17px;
+                width: 18px;
+                border-radius: 8px;
+                left: 1px;
                 top: 1px;
-                left: inherit!important;
-            }
-        }
-        span:first-child{
-            float: left;
-            color: #fff;
-            margin-left: 4px;
-            margin-right: 2px;
-            line-height: 19px;
-        }
-        span:last-child{
-            float: right;
-            color: #fff;
-            margin-right: 4px;
-            margin-left: 2px;
-            line-height: 19px;
-        }
-    }
-    .flyer-input{
-        height: 30px;
-        line-height: 30px;
-        line-height: 30px;
-        border: 1px solid #e6e6e6;
-        background-color: #fff;
-        border-radius: 2px;
-        padding-left: 10px;
-        outline: none;
-     &:hover {
-            border-color: #2cc3a9 !important;
-        }
-      &:focus {
-            border: 1px solid #2cc3a9 !important;
-        }
-    }
-    #myFolderUl{
-         li {
-            padding-left: 46px;
-            font-size: 13px;
-            line-height: 24px;
-            color: #777;
-            &:hover{
-                color: $green;
-                cursor: pointer;
+                transition: .4s;
             }
         }
     }
-    li.flyer-tab-active{
-        color: $green;
+    input[type="checkbox"]:checked+i {
+        background-color: $green!important;
+        &:after {
+            content: "";
+            position: absolute;
+            background-color: #fafafa;
+            right: 1px!important;
+            top: 1px;
+            left: inherit!important;
+        }
     }
-    // .flyer-tab-content .flyer-tab-item:first-child{
-    //     display: block;
-    // }
-    
-.flyer-combobox-items>ul>li div {
-     text-align: left;
-     overflow: hidden;
-     white-space: nowrap;
-     text-overflow: ellipsis;
+    span:first-child {
+        float: left;
+        color: #fff;
+        margin-left: 4px;
+        margin-right: 2px;
+        line-height: 19px;
+    }
+    span:last-child {
+        float: right;
+        color: #fff;
+        margin-right: 4px;
+        margin-left: 2px;
+        line-height: 19px;
+    }
 }
-div#original-content{
+
+.flyer-input {
+    height: 30px;
+    line-height: 30px;
+    line-height: 30px;
+    border: 1px solid #e6e6e6;
+    background-color: #fff;
+    border-radius: 2px;
+    padding-left: 10px;
+    outline: none;
+    &:hover {
+        border-color: #2cc3a9 !important;
+    }
+    &:focus {
+        border: 1px solid #2cc3a9 !important;
+    }
+}
+
+#myFolderUl {
+    li {
+        padding-left: 46px;
+        font-size: 13px;
+        line-height: 24px;
+        color: #777;
+        &:hover {
+            color: $green;
+            cursor: pointer;
+        }
+    }
+}
+
+li.flyer-tab-active {
+    color: $green;
+}
+
+// .flyer-tab-content .flyer-tab-item:first-child{
+//     display: block;
+// }
+.flyer-combobox-items>ul>li div {
+    text-align: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+div#original-content {
     word-wrap: break-word;
 }
-.not_link a.flyer-layout-link{
-    padding-left:0px;
+
+.not_link a.flyer-layout-link {
+    padding-left: 0px;
 }
-.edit_folder,.delete_folder{
-    cursor:pointer;
+
+.edit_folder,
+.delete_folder {
+    cursor: pointer;
 }
-.edit_folder{
+
+.edit_folder {
     margin-right: 4px;
 }
+
 .flyer-form .flyer-radio input[type=radio]:checked+i:after {
     background: $green;
 }
+
 .flyer-form .flyer-radio input[type=radio]:checked+i {
     border: 1px solid $green;
 }
+
 .flyer-combobox-items {
     z-index: 5!important;
 }
-.myFolderUl{
+
+.myFolderUl {
     li {
-       padding-left: 46px;
-       font-size: 13px;
-       line-height: 20px;
-       color: #999;
-       &:hover{
-           color: $green;
-           cursor: pointer;
-       }
-   }
+        padding-left: 46px;
+        font-size: 13px;
+        line-height: 20px;
+        color: #999;
+        &:hover {
+            color: $green;
+            cursor: pointer;
+        }
+    }
 }
-pre{
+
+pre {
     white-space: pre-wrap;
     word-wrap: break-word;
 }
+
 div.mutiple-select,
 section.flyer-layout-content .btn-container button {
     height: 32px;
     box-sizing: border-box;
 }
-.flyer-layout-aside  .myFolderUl .flyer-layout-link {
+
+.flyer-layout-aside .myFolderUl .flyer-layout-link {
     height: inherit;
     font-size: inherit;
 }
-.newFolder li[data-key='add']{
+
+.newFolder li[data-key='add'] {
     position: relative;
-    &::after{
+    &::after {
         content: "";
-        position:absolute;
+        position: absolute;
         width: 80%;
-        top:0;
+        top: 0;
         height: 1px;
-        background-color:#ddd;
+        background-color: #ddd;
         left: 10px;
     }
 }
+
 .flyer-layout-aside .flyer-layout-link i.icon-unfinish,
 .flyer-layout-aside .flyer-layout-link i.icon-my-folder,
-.flyer-layout-aside .flyer-layout-link i.icon-email-send-abnormal{
+.flyer-layout-aside .flyer-layout-link i.icon-email-send-abnormal {
     font-size: 12px!important;
     display: inline-block;
 }
+
 .flyer-layout-aside .flyer-layout-link i.icon-finish,
 .flyer-layout-aside .flyer-layout-link i.icon-receiving-rules,
 .flyer-layout-aside .flyer-layout-link i.icon-sensitive-word,
-.flyer-layout-aside .flyer-layout-link i.icon-send{
+.flyer-layout-aside .flyer-layout-link i.icon-send {
     font-size: 15px!important;
     display: inline-block;
 }
-[class^="icon-"], [class*=" icon-"] {
+
+[class^="icon-"],
+[class*=" icon-"] {
     font-size: 16px;
 }
-.flyer-form-item .flyer-input{
+
+.flyer-form-item .flyer-input {
     font-size: 14px!important;
 }
-.flyer-table [class^="icon-"]{
+
+.flyer-table [class^="icon-"] {
     font-size: 14px;
 }
+
 #bodyTable tbody,
 #bodyTable table,
 #bodyTable tbody tr,
-td#bodyCell{
+td#bodyCell {
     width: 100%!important;
 }
+
 center.wrapper,
-center.wrapper .webkit{
+center.wrapper .webkit {
     overflow: hidden;
 }
-#bodyTable *{
-    max-width:600px!important;
+
+#bodyTable * {
+    max-width: 600px!important;
     word-wrap: break-word;
 }
+
 .flyer-combobox-items>ul>li div {
     padding-right: 20px;
 }
+
 .flyer-combobox-items li.selected:after {
     top: 10px;
 }
+
 .select-tick .flyer-combobox-items li.selected:after {
     background-color: transparent!important;
     color: #2cc3a9!important;
 }
+
 .select-tick .flyer-combobox-items li.selected:after {
     content: "\2714";
     width: inherit;
@@ -1142,54 +1232,70 @@ center.wrapper .webkit{
     top: 4px;
     color: #fff;
 }
-.nav-top span.group-name{
-    color:#2cc3a9;
+
+.nav-top span.group-name {
+    color: #2cc3a9;
 }
 
-ul.myFolderUl{
+ul.myFolderUl {
     max-height: 100px;
     overflow-y: auto;
 }
-.flyer-date{
-    z-index: 99999}
-.flyer-tab-content{
-    min-height:550px;
+
+.flyer-date {
+    z-index: 99999
 }
+
+.flyer-tab-content {
+    min-height: 550px;
+}
+
 .flyer-combobox-contents {
     bottom: 0px!important;
 }
-button#advancedSearchBtn{
+
+button#advancedSearchBtn {
     border-color: #dedede;
 }
+
 .flyer-combobox-contents i.fa {
     right: 1px;
 }
+
 .flyer-combobox-contents .filter-options {
     border: 0;
 }
+
 .flyer-btn.mutiple-select {
     border: none;
 }
+
 .flyer-combobox-contents {
     height: 30px!important;
 }
-.flyer-layout-sendEmail .emailBox .flyer-combobox-contents{
+
+.flyer-layout-sendEmail .emailBox .flyer-combobox-contents {
     height: 36px !important;
 }
-.attachment_img{
+
+.attachment_img {
     display: inline-block;
-    width:100%;
-    height:auto;
+    width: 100%;
+    height: auto;
 }
+
 .creat-rules .flyer-combobox-contents {
     height: 32px !important;
 }
+
 .creat-rules .flyer-input {
     height: 32px;
 }
+
 #addFormContianer .flyer-combobox-contents {
     height: 36px !important;
 }
+
 span.top-untreated-num {
     margin-left: 6px;
     padding: 0 6px;
@@ -1200,24 +1306,27 @@ span.top-untreated-num {
     display: inline-block;
     color: #fff;
 }
+
 span.top-untreated {
     padding-right: 20px;
     display: inline-block;
     cursor: pointer;
-    &:hover{
+    &:hover {
         color: $green;
     }
 }
+
 .flyer-layout-aside .flyer-layout-tree {
     margin-top: 84px;
     background-color: #f6f9fa;
     color: #666;
-    padding-top:35px;
-    i{
-        color: #666;  
+    padding-top: 35px;
+    i {
+        color: #666;
     }
 }
-p.tree-shrink{
+
+p.tree-shrink {
     position: fixed;
     z-index: 10;
     left: 0;
@@ -1225,10 +1334,10 @@ p.tree-shrink{
     width: 180px;
     text-align: center;
     color: #666;
-    border-bottom:1px solid #eee;
+    border-bottom: 1px solid #eee;
     height: 30px;
     line-height: 30px;
-    background:#f6f9fa;
+    background: #f6f9fa;
     cursor: pointer;
     i.fa.fa-bars {
         color: #b6c1c7;
@@ -1240,7 +1349,8 @@ p.tree-shrink{
         -o-transform: rotate(90deg);
     }
 }
-p.tree-shrink.transform-shrink{
+
+p.tree-shrink.transform-shrink {
     width: 58px;
     i.fa.fa-bars {
         font-size: 14px;
@@ -1251,31 +1361,36 @@ p.tree-shrink.transform-shrink{
         -o-transform: rotate(0deg);
     }
 }
-.flyer-layout-tree.small-tree{
-   width: 58px;
-     .flyer-layout-link{
+
+.flyer-layout-tree.small-tree {
+    width: 58px;
+    .flyer-layout-link {
         overflow: hidden;
         [class^="icon-"] {
             margin-right: 20px;
         }
-     } 
-     .myFolderUl{
-         display: none!important;
-     }
+    }
+    .myFolderUl {
+        display: none!important;
+    }
 }
-body.bg{
+
+body.bg {
     background: #f5faf9!important;
 }
-.flyer-email-recored{
+
+.flyer-email-recored {
     display: none;
     position: relative;
 }
-.flyer-preview{
+
+.flyer-preview {
     display: inline-block;
-    width:100%;
-    height:99%;
+    width: 100%;
+    height: 99%;
 }
-#coverOrder{
+
+#coverOrder {
     position: fixed;
     right: 0;
     bottom: 31px;
@@ -1283,41 +1398,49 @@ body.bg{
     height: 10px;
     background: #fff;
 }
-.flyer-edit{
-    border:1px solid #eee !important;
+
+.flyer-edit {
+    border: 1px solid #eee !important;
 }
-.flyer-combobox-items>ul>li{
+
+.flyer-combobox-items>ul>li {
     color: #666;
 }
+
 span#nomatch {
     color: #666;
 }
-.btn-right{
+
+.btn-right {
     float: right;
 }
-td .complaint{
-    color:#000;
+
+td .complaint {
+    color: #000;
     position: inherit;
-    margin-right:4px;
-    font-size:14px !important;
+    margin-right: 4px;
+    font-size: 14px !important;
 }
+
 td .icon-customer-complaint.complaint-no {
     color: #666;
     position: inherit;
     margin-right: 4px;
     font-size: 14px !important;
- }
-td .icon-customer-complaint-black.complaint {
-    color:#666;
 }
+
+td .icon-customer-complaint-black.complaint {
+    color: #666;
+}
+
 .flyer-checkbox-radio {
     cursor: pointer;
     padding-right: 26px;
     display: inline-block;
-  input[type="radio"] {
+    input[type="radio"] {
         display: none;
     }
- input[type="radio"] + i {
+    input[type="radio"]+i {
         display: inline-block;
         padding: 0 6px;
         height: 28px;
@@ -1327,11 +1450,11 @@ td .icon-customer-complaint-black.complaint {
         color: #fff;
         position: relative;
     }
-  input[type="radio"]:checked + i {
+    input[type="radio"]:checked+i {
         background-color: $green;
         transition: .1s;
     }
- input[type="radio"] + i:after {
+    input[type="radio"]+i:after {
         content: "\2714";
         position: absolute;
         right: -24px;
@@ -1343,19 +1466,22 @@ td .icon-customer-complaint-black.complaint {
         box-sizing: border-box;
         border: 1px solid #d2d2d2;
     }
- input[type="radio"]:checked + i:after {
+    input[type="radio"]:checked+i:after {
         color: $green;
         border: 1px solid $green;
         transition: .1s;
     }
 }
-textarea.flyer-input{
-    font-family: Arial,Console,Verdana,Courier New!important;
+
+textarea.flyer-input {
+    font-family: Arial, Console, Verdana, Courier New!important;
 }
+
 .flyer-pager-view .active {
-    color:$green;
+    color: $green;
 }
-.flyer-tab-ul .tab-bubble{
+
+.flyer-tab-ul .tab-bubble {
     font-size: 12px;
     color: #fff;
     padding-left: 0;
@@ -1370,39 +1496,46 @@ textarea.flyer-input{
     margin-left: 14px;
     margin-top: 6px;
 }
-.language-manage .flyer-form-label{
-    padding:0px;
+
+.language-manage .flyer-form-label {
+    padding: 0px;
 }
-.language-manage input:not(.filter-options){
-    width:74%!important;
+
+.language-manage input:not(.filter-options) {
+    width: 74%!important;
 }
-.public-butModal-language{
-    width:74%!important;
-    input{
-        width:100%!important;
+
+.dialog-form-container-language {
+    width: 74%!important;
+    input {
+        width: 100%!important;
     }
 }
-.i18n-container.flyer-btn input{
+
+.i18n-container.flyer-btn input {
     height: 26px;
     line-height: 26px;
     top: -5px;
     position: relative;
     width: 100%;
-    padding:0 6px;
+    padding: 0 6px;
     background: transparent;
     color: #fff;
 }
-.i18n-container.flyer-btn .fa.fa-angle-down{
+
+.i18n-container.flyer-btn .fa.fa-angle-down {
     height: 26px;
     line-height: 26px;
     top: -1px;
     right: 0px;
 }
-.i18n-container .flyer-combobox-contents{
+
+.i18n-container .flyer-combobox-contents {
     height: 26px !important;
     box-sizing: border-box;
     border: none;
 }
+
 .i18n-container .flyer-combobox-contents i.fa {
     height: 26px;
     line-height: 26px;
@@ -1410,40 +1543,49 @@ textarea.flyer-input{
     background: transparent;
     color: #fff;
 }
+
 .i18n-container.flyer-btn:hover {
     opacity: 1;
 }
+
 .i18n-container .flyer-combobox-items.open {
     background-color: #23292d;
-    border:none;
+    border: none;
 }
+
 .i18n-container .flyer-combobox-items>ul>li div {
     color: #fff;
     line-height: 20px;
     height: 20px;
 }
+
 .i18n-container .flyer-combobox-items li.selected:after {
     top: 6px;
 }
-.public-butModal div.mutiple-select {
+
+.dialog-form-container div.mutiple-select {
     padding-left: 10px;
 }
+
 @media screen and (max-width:1700px) {
-    #flyer-date-orderTimeEmail{
+    #flyer-date-orderTimeEmail {
         left: inherit!important;
         right: 10px!important;
     }
 }
+
 @media screen and (max-width: 1500px) {
     #flyerEmailDetailTab .flyer-tab-title>ul>li {
         padding: 0 10px;
     }
 }
+
 @media screen and (max-width: 1330px) {
     #flyerEmailDetailTab .flyer-tab-title>ul>li {
         padding: 0 6px;
     }
 }
+
 @media screen and (max-width: 1240px) {
     .flyer-table {
         width: 100%!important;
@@ -1452,50 +1594,62 @@ textarea.flyer-input{
         font-size: 12px;
     }
 }
-@media screen and (max-width: 1100px){
-#flyerEmailDetailTab .flyer-tab-title > ul > li {
-    padding: 0 2px;
+
+@media screen and (max-width: 1100px) {
+    #flyerEmailDetailTab .flyer-tab-title>ul>li {
+        padding: 0 2px;
+    }
 }
-}
+
 @media screen and (max-width:760px) {
     .flyer-edit-content {
-         height: 250px;
-     }
-     .flyer-layout-sendEmail .flyer-layout-submitBox{
-         padding-top:0px;
-     }
- }
-#ASIN,#SKU{
+        height: 250px;
+    }
+    .flyer-layout-sendEmail .flyer-layout-submitBox {
+        padding-top: 0px;
+    }
+}
+
+#ASIN,
+#SKU {
     margin-left: 10px;
     display: inline-block;
     width: 346px!important;
 }
-#productName{
+
+#productName {
     width: 346px!important;
 }
-input#keyword{
+
+input#keyword {
     width: 447px;
 }
-.customer-advanced-search{
+
+.customer-advanced-search {
     div#storeSelectContainer,
     div#productTypeSelect,
     div#productGroupSelect,
     div#countriesSelect,
     div#questionTypeSelect,
-    div#resolveMethodSelect{
+    div#resolveMethodSelect {
         width: 456px;
     }
 }
+
 .customer-complaint-history {
-    #ASIN, #SKU ,#productName{
+    #ASIN,
+    #SKU,
+    #productName {
         margin-left: 0;
         display: inline-block;
         width: 60%!important;
     }
 }
+
 .receiving-rules i.table-btn {
     width: 62px;
 }
+
 .flyer-date {
     position: fixed;
 }

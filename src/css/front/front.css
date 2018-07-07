@@ -580,7 +580,7 @@ header .main ul li a.active {
   filter: grayscale(100%);
   width: 20%;
   height: 35px;
-  background-image: url("../imgs/logo@1x.png");
+  background-image: url("../../imgs/logo.png");
   background-size: 150px 35px;
   background-repeat: no-repeat; }
 

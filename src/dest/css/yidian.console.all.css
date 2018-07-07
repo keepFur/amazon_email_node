@@ -1,18 +1,17 @@
-/*** Parameters ***/
 .access-right {
   text-align: center;
   overflow: hidden;
   margin-top: 140px;
   margin: 150px auto 0;
   max-width: 592px; }
-  .access-right .access-right-leftImg {
+  .access-right .access-right-leftimg {
     float: left; }
-  .access-right .access-right-rightBox {
+  .access-right .access-right-rightbox {
     float: left;
     margin-left: 50px;
     text-align: left;
     margin-top: 50px; }
-    .access-right .access-right-rightBox p {
+    .access-right .access-right-rightbox p {
       text-align: left;
       font-size: 20px;
       color: #aeaeae;
@@ -21,62 +20,7 @@
     margin-top: 10px;
     border-top: 2px dotted #ddd; }
 
-section.flyer-layout-content {
-  margin-left: 220px;
-  padding: 20px;
-  box-sizing: border-box;
-  padding-top: 120px;
-  padding-bottom: 40px;
-  overflow: hidden;
-  min-height: 550px; }
-
 /*** Parameters ***/
-
-/*** Parameters ***/
-.change-email .flyer-input-block span {
-  display: inline-block;
-  width: 110px;
-  text-align: right;
-  margin-right: 2px; }
-
-.change-email .flyer-form {
-  margin-right: 0; }
-  .change-email .flyer-form .flyer-input {
-    display: inline-block;
-    width: 350px;
-    height: 34px;
-    line-height: 34px; }
-  .change-email .flyer-form .flyer-input-block {
-    padding-left: 0;
-    margin-bottom: 8px; }
-
-.change-email h5 {
-  font-size: 14px;
-  font-weight: bold;
-  margin-left: 20px;
-  color: #333; }
-
-.change-email .change-email-h5 {
-  margin-top: 16px; }
-
-.change-email .flyer-radio {
-  margin-left: 156px;
-  margin-bottom: 6px; }
-  .change-email .flyer-radio + span {
-    display: inline-block;
-    line-height: 20px; }
-
-.change-email .flyer-input-block select {
-  display: inline-block !important; }
-
-.change-email .change-email-otrherSend {
-  margin-top: 10px;
-  padding-left: 50px; }
-  .change-email .change-email-otrherSend .flyer-input {
-    width: 235px; }
-  .change-email .change-email-otrherSend span {
-    margin-right: 0px;
-    font-size: 13px; }
 
 /*** Parameters ***/
 .change-signs-contant .change-signs-groups {
@@ -311,6 +255,29 @@ section.flyer-layout-content {
     margin-top: 6px; } }
 
 /*** Parameters ***/
+.dialog-form-container .inline {
+  width: calc(100% - 64px); }
+
+.dialog-form-container .flyer-form {
+  margin-right: 0; }
+
+.dialog-form-container .dialog-form-item {
+  margin-bottom: 14px;
+  width: 100%;
+  display: inline-block;
+  height: 38px; }
+  .dialog-form-container .dialog-form-item label {
+    float: left;
+    height: 38px;
+    line-height: 38px;
+    width: 56px;
+    text-align: right;
+    margin-right: 8px; }
+
+.dialog-form-container .dialog-form-item:last-child {
+  margin-bottom: 0; }
+
+/*** Parameters ***/
 .email_detail_two {
   position: relative;
   height: 100%; }
@@ -487,124 +454,6 @@ section.flyer-layout-content {
     padding: 8px;
     min-width: 400px;
     width: 50%; }
-
-@font-face {
-  font-family: 'icomoon';
-  src:  url('../fonts/icomoon.eot?4icbu4');
-  src:  url('../fonts/icomoon.eot?4icbu4#iefix') format('embedded-opentype'),
-    url('../fonts/icomoon.ttf?4icbu4') format('truetype'),
-    url('../fonts/icomoon.woff?4icbu4') format('woff'),
-    url('../fonts/icomoon.svg?4icbu4#icomoon') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-[class^="icon-"], [class*=" icon-"] {
-  /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'icomoon' !important;
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-
-  /* Better Font Rendering =========== */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.icon-email-send-abnormal:before {
-  content: "\e91c";
-}
-.icon-no-tips:before {
-  content: "\e91d";
-}
-.icon-customer-complaint-black:before {
-  content: "\e91b";
-}
-.icon-accessory:before {
-  content: "\e900";
-}
-.icon-account-list:before {
-  content: "\e901";
-}
-.icon-add:before {
-  content: "\e902";
-}
-.icon-add-account:before {
-  content: "\e903";
-}
-.icon-add-template:before {
-  content: "\e904";
-}
-.icon-assigned:before {
-  content: "\e905";
-}
-.icon-base-data:before {
-  content: "\e906";
-}
-.icon-change-signs:before {
-  content: "\e907";
-}
-.icon-customer-complaint:before {
-  content: "\e908";
-}
-.icon-finish:before {
-  content: "\e909";
-}
-.icon-global:before {
-  content: "\e90a";
-}
-.icon-hint:before {
-  content: "\e90b";
-}
-.icon-home:before {
-  content: "\e90c";
-}
-.icon-my-folder:before {
-  content: "\e90d";
-}
-.icon-other-email:before {
-  content: "\e90e";
-}
-.icon-out:before {
-  content: "\e90f";
-}
-.icon-pen:before {
-  content: "\e910";
-}
-.icon-receiving-rules:before {
-  content: "\e911";
-}
-.icon-remove:before {
-  content: "\e912";
-}
-.icon-resolved:before {
-  content: "\e913";
-}
-.icon-search:before {
-  content: "\e914";
-}
-.icon-send:before {
-  content: "\e915";
-}
-.icon-sensitive-word:before {
-  content: "\e916";
-}
-.icon-sent-mails:before {
-  content: "\e917";
-}
-.icon-templates:before {
-  content: "\e918";
-}
-.icon-unassigned:before {
-  content: "\e919";
-}
-.icon-unfinish:before {
-  content: "\e91a";
-}
-
 
 /*** Parameters ***/
 .flyer-frame-Box {
@@ -796,634 +645,6 @@ section.flyer-layout-content {
   .flyer-write-title {
     font-size: 12px; } }
 
-@charset "UTF-8";
-/******************** 
-   复写默认样式 
-********************/
-html {
-  font-size: 62.5%;
-  color: #222; }
-
-body {
-  font-size: 1.2rem;
-  line-height: 1.5;
-  background-color: #f7f7f7; }
-
-::selection {
-  background-color: #b3d3f4;
-  text-shadow: none; }
-
-ul {
-  margin: 0;
-  padding: 0; }
-
-li {
-  list-style: none; }
-
-a {
-  color: #666;
-  text-decoration: none; }
-
-a:hover,
-a:active {
-  color: #0ae;
-  text-decoration: underline; }
-
-/******************* 
-   工具类 
-***************************/
-/* 元素剧中 */
-.center-block {
-  display: block;
-  margin-left: auto;
-  margin-right: auto; }
-
-/* 右浮动 */
-.pull-right {
-  float: right; }
-
-/* 左浮动 */
-.pull-left {
-  float: left; }
-
-/* 文本居左显示 */
-.text-left {
-  text-align: left; }
-
-/* 文本居中显示 */
-.text-center {
-  text-align: center; }
-
-/* 文本居右显示 */
-.text-right {
-  text-align: right; }
-
-/* 文本隐藏 */
-.text-hide {
-  font: 0/0 a;
-  color: transparent;
-  text-shadow: none;
-  background-color: transparent;
-  border: 0; }
-
-/* 隐藏 */
-.hide {
-  display: none !important; }
-
-/* 显示 */
-.show {
-  display: block !important; }
-
-/* 不可见 */
-.unvisibility {
-  visibility: hidden; }
-
-/* 清除浮动 */
-.clearfix::before,
-.clearfix::after {
-  content: ' ';
-  display: table; }
-
-.clearfix::after {
-  clear: both; }
-
-/* 多余文本用省略号显示 */
-.text-ellipsis {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap; }
-
-/******************************* 
-   页面样式 
-****************************/
-/***************************** 
-   浏览器更新样式 
-******************************/
-.browserupgrade {
-  margin: 0;
-  padding: 1rem;
-  background-color: #ccc; }
-
-/*********************************
-   头部样式 
-*********************************/
-header {
-  width: 100%;
-  background: #fff;
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0.35); }
-
-header .main {
-  padding: 0; }
-
-header .main .brand {
-  padding: 1rem 1.5rem 0; }
-
-header .main ul li {
-  display: inline-block;
-  border-left: 1px solid #f0ede9; }
-
-header .main ul li a {
-  display: inline-block;
-  padding: 0 2.5rem;
-  line-height: 5.5rem;
-  font-size: 1.6rem;
-  font-weight: bold;
-  color: #7c7a65;
-  text-decoration: none; }
-
-header .main ul li a:hover,
-header .main ul li a:active,
-header .main ul li a.active {
-  color: #ffb300;
-  background-color: #f8f6f1; }
-
-@media only screen and (max-width: 50em) {
-  header .top ul li a {
-    padding: 0 1rem; } }
-
-@media only screen and (max-width: 30em) {
-  header .top .tel,
-  header .top ul li:nth-child(3),
-  header .top ul li:nth-child(4) {
-    display: none; } }
-
-@media only screen and (max-width: 50em) {
-  header .main .brand {
-    float: none;
-    display: block;
-    padding: 0;
-    margin: 1.5rem auto 0.5rem;
-    text-align: center; }
-  header .main ul {
-    text-align: center; }
-  header .main ul li {
-    border: none; }
-  header .main ul li a {
-    padding: 0 1.5rem; } }
-
-@media only screen and (max-width: 30em) {
-  header .main ul li {
-    line-height: 3rem; }
-  header .main ul li:first-child {
-    display: none; }
-  header .main ul li a {
-    font-weight: normal;
-    padding: 0 0.5rem; } }
-
-/************************ 
-   主体内容 
-****************************/
-.container {
-  width: 100%; }
-
-/*************************
-   交易金额 
-*****************/
-.container .transaction {
-  width: 100%;
-  background: #7c7376; }
-
-.container .trans-content {
-  max-width: 90%;
-  margin: 0 auto;
-  font-size: 1.5rem; }
-
-.container .trans-content .trans-data {
-  padding: 1rem; }
-
-.trans-data span {
-  display: inline-block;
-  line-height: 3rem;
-  color: #fff; }
-
-.trans-data span.trans-money {
-  font-size: 2.2rem;
-  color: #ff9900;
-  letter-spacing: 3px;
-  margin: 0 1rem;
-  padding: 0 1rem;
-  border-radius: 3px;
-  /* 如果想要单纯的背景使用透明度的话 使用rgba  opacity会使文字也透明 */
-  background-color: rgba(255, 255, 255, 0.9);
-  box-shadow: 1px 2px 1px #333 inset; }
-
-.trans-report a {
-  display: inline-block;
-  padding: 1rem;
-  line-height: 3rem;
-  color: #fff; }
-
-@media only screen and (max-width: 50em) {
-  .trans-data {
-    padding: 1rem 0.5rem; }
-  .trans-data span {
-    font-size: 1.2rem; }
-  .trans-data span.trans-money {
-    font-size: 1.6rem;
-    margin: 0;
-    padding: 0;
-    letter-spacing: inherit;
-    box-shadow: none;
-    background: transparent; }
-  .trans-report a {
-    font-size: 1.2rem; } }
-
-@media only screen and (max-width: 30em) {
-  .transaction {
-    padding: 0.5rem 0; }
-  .trans-data,
-  .trans-report {
-    float: none;
-    text-align: center; }
-  .trans-data,
-  .trans-report a {
-    padding: 0; } }
-
-/***********************
-   广告
-************************** */
-.container .ad {
-  width: 100%; }
-
-.ad .item {
-  width: 100%;
-  height: 524px;
-  background-size: 100%;
-  background-repeat: no-repeat; }
-
-.ad .item:first-child {
-  background-image: url("../imgs/ad001-l.png"); }
-
-.ad .item:nth-child(2) {
-  background-image: url("../imgs/ad002-l.png"); }
-
-.ad .item:nth-child(3) {
-  background-image: url("../imgs/ad003-l.png"); }
-
-.ad .control {
-  margin-top: 1rem; }
-
-.ad .control li {
-  display: inline-block; }
-
-.ad .control li span {
-  width: 10px;
-  height: 10px;
-  margin: 5px 7px;
-  background: #d6d6d6;
-  display: block;
-  backface-visibility: visible;
-  -webkit-backface-visibility: visible;
-  -webkit-transition: opacity 200ms ease;
-  -moz-transition: opacity 200ms ease;
-  -ms-transition: opacity 200ms ease;
-  -o-transition: opacity 200ms ease;
-  transition: opacity 200ms ease;
-  -webkit-border-radius: 30px;
-  -moz-border-radius: 30px;
-  border-radius: 30px; }
-
-.ad .control li.active span {
-  background: #869791; }
-
-/* 中屏幕下 */
-@media only screen and (min-width: 30.0625em) and (max-width: 50em) {
-  .ad .item {
-    height: 299px;
-    background-repeat: no-repeat; }
-  .ad .item:first-child {
-    background-image: url("../imgs/ad001-m.png"); }
-  .ad .item:nth-child(2) {
-    background-image: url("../imgs/ad002-m.png"); }
-  .ad .item:nth-child(3) {
-    background-image: url("../imgs/ad003-m.png"); } }
-
-@media only screen and (max-width: 30em) {
-  .ad .item {
-    height: 180px;
-    background-repeat: no-repeat; }
-  .ad .item:first-child {
-    /* background-size: 360px 250px; */
-    background-image: url("../imgs/ad001.png"); }
-  .ad .item:nth-child(2) {
-    /* background-size: 360px 250px; */
-    background-image: url("../imgs/ad002.png"); }
-  .ad .item:nth-child(3) {
-    /* background-size: 360px 250px; */
-    background-image: url("../imgs/ad003.png"); } }
-
-/*********************** 功能介绍 ************************** */
-.container .feature {
-  width: 90%;
-  margin: 2rem auto;
-  font-size: 0; }
-
-.feature .item {
-  display: inline-block;
-  width: calc(33.33333333333% - 3rem);
-  padding: 1rem;
-  font-size: 1.4rem;
-  background-color: #fff;
-  box-shadow: 0 0 4px #ccc; }
-
-.feature .item + .item {
-  margin-left: 1.5rem; }
-
-.feature .item h3 {
-  display: inline-block;
-  width: 40%;
-  margin: 0;
-  padding: 0;
-  vertical-align: top;
-  font-size: 3.3rem;
-  color: #ff9900; }
-
-.feature .item p {
-  display: inline-block;
-  width: 55%;
-  margin: 0;
-  padding: 0;
-  color: #999; }
-
-@media only screen and (min-width: 30.0625em) and (max-width: 50em) {
-  .feature .item h3,
-  .feature .item p {
-    display: block;
-    width: 100%;
-    font-size: 2.6rem;
-    text-align: center; }
-  .feature .item p {
-    font-size: 1.2rem; } }
-
-@media only screen and (max-width: 30em) {
-  .feature {
-    width: 96%;
-    margin: 1rem auto; }
-  .feature .item {
-    display: block;
-    width: auto; }
-  .feature .item + .item {
-    margin: 1rem 0 0; } }
-
-/********************** 
-   网站公告
- *************************/
-.container .notice {
-  width: 90%;
-  margin: 2rem auto;
-  font-size: 1.4rem;
-  line-height: 3rem;
-  background-color: #fff;
-  box-shadow: 0 0 4px #ccc; }
-
-.notice a {
-  display: inline-block;
-  width: 70%;
-  margin-left: 2rem;
-  text-decoration: none; }
-
-.notice a span {
-  color: #999;
-  font-size: 1.2rem;
-  margin-right: 1rem; }
-
-.notice a.more {
-  width: auto;
-  margin-right: 2rem;
-  color: #f90; }
-
-@media only screen and (max-width: 30em) {
-  .notice {
-    width: 96%;
-    margin: 1rem auto;
-    font-size: 1.2rem; }
-  .notice a {
-    margin-left: 1rem; }
-  .notice a span {
-    display: none; } }
-
-/********************** 
-   产品介绍
- *************************/
-.container .product {
-  width: 90%;
-  margin: 2rem auto;
-  font-size: 1.4rem;
-  background-color: #f5f9fa;
-  border-top: 2px solid #f90;
-  box-shadow: 0 0 4px #ccc; }
-
-/* 标题 */
-.product h2 {
-  width: 20%;
-  margin-top: 3rem;
-  font-size: 2.4rem;
-  font-weight: normal;
-  color: #635c51; }
-
-.product h2 em {
-  display: block;
-  margin-top: 1rem;
-  font-size: 1.6rem; }
-
-.product h2 em:first-child {
-  margin-top: 4rem; }
-
-/* 内容 */
-.product .product-content {
-  width: 79.5%;
-  border-left: 1px solid #eee;
-  background-color: #fff; }
-
-.product .product-content .item {
-  width: 100%; }
-
-.product .product-content .item + .item {
-  border: 1px solid #eee; }
-
-.product .product-content .item h3 {
-  float: left;
-  width: 30%;
-  margin: 1.5rem 0;
-  font-size: 1.4rem;
-  font-weight: normal;
-  text-align: center; }
-
-.product .product-content .item h3 i {
-  display: block;
-  font-size: 1.2rem;
-  font-style: normal;
-  color: #999; }
-
-.product .product-content .item h3 em {
-  margin-right: 0.5rem;
-  font-size: 3.6rem;
-  font-style: normal;
-  color: #8b999d; }
-
-.product .product-content .item .info {
-  float: left;
-  width: 48%;
-  padding: 1rem;
-  border-left: 1px solid #eee;
-  border-right: 1px solid #eee;
-  font-size: 14px; }
-
-.product .product-content .item .info p {
-  float: left;
-  display: inline-block;
-  text-align: center;
-  width: 56%; }
-
-.product .product-content .item .info p:last-child {
-  width: 40%; }
-
-.product .product-content .item .info p span {
-  display: block;
-  font-size: 2.4rem;
-  color: #f90; }
-
-.product .product-content .item .info p span i {
-  font-size: 1.2rem;
-  font-style: normal;
-  color: #999; }
-
-.product .product-content .item .buy {
-  float: left;
-  width: calc(22% - 4.4rem);
-  padding: 1rem; }
-
-.product .product-content .item .buy a {
-  display: block;
-  width: 90%;
-  margin: 1.5rem auto;
-  max-width: 12rem;
-  line-height: 4rem;
-  text-align: center;
-  text-decoration: none;
-  color: #fff;
-  background-color: #f90;
-  border-radius: 5px; }
-
-.product .product-content .item .buy a.disabled {
-  background: #ccc;
-  cursor: not-allowed; }
-
-@media only screen and (max-width: 50em) {
-  .product h2 {
-    float: none;
-    width: 100%;
-    margin-top: 2rem;
-    font-size: 2.2rem; }
-  .product h2 em:first-child {
-    margin-top: 0; }
-  .product h2 em {
-    display: inline;
-    font-size: 1.2rem; }
-  .product .product-content {
-    float: none;
-    width: 100%; }
-  .product .product-content .item h3 {
-    margin-bottom: 0; }
-  .product .product-content .item h3 em {
-    font-size: 2.4rem; }
-  .product .product-content .item .info {
-    padding: 1rem 1rem 0;
-    font-size: 1.2rem; }
-  .product .product-content .item .info p span {
-    font-size: 2rem; }
-  .product .product-content .item .buy a {
-    margin: 0.5rem auto; } }
-
-@media only screen and (max-width: 30em) {
-  .product {
-    width: 96%; }
-  .product h2 em:first-child:before {
-    content: ' ';
-    display: table; }
-  .product .product-content .item h3 em {
-    font-size: 2rem;
-    margin-right: 0; }
-  .product .product-content .item .info {
-    float: right;
-    width: 70%;
-    padding: 1rem 0;
-    border: none; }
-  .product .product-content .item .info p span {
-    font-size: 1.8rem; }
-  .product .product-content .item .buy {
-    clear: both;
-    float: none;
-    width: 100%;
-    padding: 1rem 0 2rem; }
-  .product .product-content .item .buy a {
-    margin-top: 0;
-    max-width: 26rem; } }
-
-/********************** 
-   底部导航链接
- *************************/
-.container .footer {
-  padding: 3rem 0;
-  background-color: #fff;
-  border-top: 2px solid #eee; }
-
-.footer .footer-content {
-  width: 90%;
-  margin: 0 auto; }
-
-.footer-content p.brand {
-  display: block;
-  -webkit-filter: grayscale(100%);
-  filter: grayscale(100%);
-  width: 20%;
-  height: 35px;
-  background-image: url("../imgs/logo@1x.png");
-  background-size: 150px 35px;
-  background-repeat: no-repeat; }
-
-.footer-content ul {
-  float: left;
-  width: 15%; }
-
-.footer-content ul li {
-  font-size: 1.4rem;
-  line-height: 2.4rem; }
-
-.footer-content ul li.title {
-  font-size: 1.6rem;
-  line-height: 3rem; }
-
-@media only screen and (max-width: 50em) {
-  .footer-content p.brand {
-    display: none; }
-  .footer-content ul {
-    width: 20%; }
-  .footer-content ul li {
-    font-size: 1.2rem;
-    line-height: 2rem; }
-  .footer-content ul li.title {
-    font-size: 1.4rem;
-    line-height: 2.5rem; } }
-
-@media only screen and (max-width: 30em) {
-  .footer-content {
-    width: 98%; }
-  .footer-content ul li.title {
-    font-size: 1.2rem;
-    line-height: 2rem; } }
-
-/********************** 
-   底部样式
- *************************/
-.front-footer {
-  width: 100%;
-  padding: 3rem 0 5rem;
-  background: #ededed; }
-
-.front-footer p {
-  color: #999; }
-
 /*** Parameters ***/
 #account-echart {
   width: 68%;
@@ -1600,7 +821,7 @@ header .main ul li a.active {
 /*** Parameters ***/
 body {
   color: #333;
-  font-family: Arial,Console,Verdana,Courier New; }
+  font-family: Arial, Console, Verdana, Courier New; }
 
 .flyer-layout-aside {
   position: fixed; }
@@ -1618,7 +839,8 @@ body {
     border-bottom: 1px solid #f2f2f2;
     font-size: 15px;
     font-weight: bold; }
-    .flyer-layout-aside .flyer-layout-title [class^="icon-"], .flyer-layout-aside .flyer-layout-title .fa {
+    .flyer-layout-aside .flyer-layout-title [class^="icon-"],
+    .flyer-layout-aside .flyer-layout-title .fa {
       margin-right: 10px;
       width: 18px;
       text-align: center;
@@ -1640,7 +862,8 @@ body {
     -ms-user-select: none;
     -webkit-user-select: none;
     position: relative; }
-    .flyer-layout-aside .flyer-layout-link [class^="icon-"], .flyer-layout-aside .flyer-layout-link .fa {
+    .flyer-layout-aside .flyer-layout-link [class^="icon-"],
+    .flyer-layout-aside .flyer-layout-link .fa {
       font-size: 14px;
       margin-right: 8px;
       width: 18px;
@@ -1653,7 +876,8 @@ body {
       line-height: 30px; }
     .flyer-layout-aside .flyer-layout-link:hover {
       color: #2cc3a9; }
-      .flyer-layout-aside .flyer-layout-link:hover [class^="icon-"], .flyer-layout-aside .flyer-layout-link:hover .fa {
+      .flyer-layout-aside .flyer-layout-link:hover [class^="icon-"],
+      .flyer-layout-aside .flyer-layout-link:hover .fa {
         color: #2cc3a9; }
     .flyer-layout-aside .flyer-layout-link span {
       font-size: 12px;
@@ -1679,7 +903,8 @@ body {
       height: 30px; }
   .flyer-layout-aside .flyer-layout-linkActive {
     color: #2cc3a9; }
-    .flyer-layout-aside .flyer-layout-linkActive [class^="icon-"], .flyer-layout-aside .flyer-layout-linkActive .fa {
+    .flyer-layout-aside .flyer-layout-linkActive [class^="icon-"],
+    .flyer-layout-aside .flyer-layout-linkActive .fa {
       color: #2cc3a9; }
   .flyer-layout-aside .flyer-layout:after {
     content: "";
@@ -2031,8 +1256,7 @@ table .exchange .fa {
   display: inline-block;
   float: left; }
 
-table .span.exchange
-.rightIcon {
+table .span.exchange .rightIcon {
   float: right;
   margin: 2px 2px;
   cursor: pointer;
@@ -2088,8 +1312,7 @@ i.icon-accessory.rightIcon {
   background-color: #2cc3a9;
   color: #fff; }
 
-flyer-form .flyer-input:hover
-flyer-form .flyer-input:focus {
+flyer-form .flyer-input:hover flyer-form .flyer-input:focus {
   border: 1px solid #2cc3a9 !important; }
 
 .flyer-form .flyer-input:hover,
@@ -2294,7 +1517,9 @@ div.guid-module {
   -moz-border-radius: 0 0.2em 0.2em 0;
   border-radius: 0 0.2em 0.2em 0; }
 
-.guid-disabled, .guid-disabled:hover, .guid-disabled:focus {
+.guid-disabled,
+.guid-disabled:hover,
+.guid-disabled:focus {
   color: #9a9a9a;
   border-color: #d4d4d4;
   box-shadow: none;
@@ -2328,7 +1553,8 @@ div.guid-module {
       width: 100%;
       height: 100%;
       border: none; }
-  .slide-container .prev, .slide-container .next {
+  .slide-container .prev,
+  .slide-container .next {
     width: 28px;
     height: 40px;
     position: absolute;
@@ -2342,7 +1568,8 @@ div.guid-module {
     left: 0px; }
   .slide-container .next {
     right: 0px; }
-  .slide-container .prev.disabled, .slide-container .next.disabled {
+  .slide-container .prev.disabled,
+  .slide-container .next.disabled {
     color: #666;
     opacity: 0.8;
     cursor: inherit; }
@@ -2497,7 +1724,8 @@ div#original-content {
 .not_link a.flyer-layout-link {
   padding-left: 0px; }
 
-.edit_folder, .delete_folder {
+.edit_folder,
+.delete_folder {
   cursor: pointer; }
 
 .edit_folder {
@@ -2558,7 +1786,8 @@ section.flyer-layout-content .btn-container button {
   font-size: 15px !important;
   display: inline-block; }
 
-[class^="icon-"], [class*=" icon-"] {
+[class^="icon-"],
+[class*=" icon-"] {
   font-size: 16px; }
 
 .flyer-form-item .flyer-input {
@@ -2824,9 +2053,9 @@ textarea.flyer-input {
 .language-manage input:not(.filter-options) {
   width: 74% !important; }
 
-.public-butModal-language {
+.dialog-form-container-language {
   width: 74% !important; }
-  .public-butModal-language input {
+  .dialog-form-container-language input {
     width: 100% !important; }
 
 .i18n-container.flyer-btn input {
@@ -2872,7 +2101,7 @@ textarea.flyer-input {
 .i18n-container .flyer-combobox-items li.selected:after {
   top: 6px; }
 
-.public-butModal div.mutiple-select {
+.dialog-form-container div.mutiple-select {
   padding-left: 10px; }
 
 @media screen and (max-width: 1700px) {
@@ -2904,7 +2133,8 @@ textarea.flyer-input {
   .flyer-layout-sendEmail .flyer-layout-submitBox {
     padding-top: 0px; } }
 
-#ASIN, #SKU {
+#ASIN,
+#SKU {
   margin-left: 10px;
   display: inline-block;
   width: 346px !important; }
@@ -2923,7 +2153,9 @@ input#keyword {
 .customer-advanced-search div#resolveMethodSelect {
   width: 456px; }
 
-.customer-complaint-history #ASIN, .customer-complaint-history #SKU, .customer-complaint-history #productName {
+.customer-complaint-history #ASIN,
+.customer-complaint-history #SKU,
+.customer-complaint-history #productName {
   margin-left: 0;
   display: inline-block;
   width: 60% !important; }
@@ -2935,126 +2167,12 @@ input#keyword {
   position: fixed; }
 
 /*** Parameters ***/
-#changeEmailTab .flyer-tab-content {
-  min-height: 180px !important; }
-
-/*** Parameters ***/
-.my-folder .my-folder-reomove {
-  margin-left: 10px; }
-
-.my-folder table span:hover {
-  color: #2cc3a9;
-  cursor: pointer; }
-
-.my-folder .edit_folder i {
-  color: #666;
-  font-size: 16px; }
-  .my-folder .edit_folder i:hover {
-    color: #2cc3a9; }
-
-.my-folder button.flyer-btn.flyer-btn-default {
-  border: 1px solid #dedede; }
-
-.mail-aging {
-  height: 32px;
-  line-height: 32px; }
-
-/*** Parameters ***/
 .other-email .other-email-reomove {
   margin-left: 10px; }
 
 .other-email table span:hover {
   color: #2cc3a9;
   cursor: pointer; }
-
-/*** Parameters ***/
-.public-butModal input,
-.public-butModal .flyer-combobox-contents {
-  height: 32px !important;
-  line-height: 32px !important;
-  box-sizing: border-box; }
-
-.public-butModal .flyer-combobox-contents .filter-options {
-  width: 326px;
-  height: 30px !important;
-  float: left; }
-
-.public-butModal .flyer-combobox-contents i.fa {
-  height: 29px;
-  line-height: 29px; }
-
-.public-butModal .flyer-form-item {
-  min-height: 32px;
-  height: 32px;
-  line-height: 32px; }
-
-.public-butModal .public-butModal-search {
-  display: inline-block; }
-  .public-butModal .public-butModal-search i {
-    position: absolute;
-    right: 6px;
-    top: 8px;
-    color: #666; }
-
-.public-butModal .public-butModal-endTime,
-.public-butModal .public-butModal-startTime {
-  width: 346px;
-  float: left;
-  margin-left: 10px; }
-
-.public-butModal .public-butModal-datepicker {
-  float: left;
-  width: 216px; }
-
-.public-butModal .flyer-form {
-  margin-right: 0; }
-
-.public-butModal .flyer-form .flyer-input-inline {
-  width: 83%;
-  margin-left: 15%; }
-
-.public-butModal div.mutiple-select {
-  float: left;
-  position: relative;
-  bottom: 0px;
-  padding: 0px;
-  margin-right: 0;
-  padding-left: 10px;
-  box-sizing: border-box;
-  width: 356px; }
-
-.public-butModal .public-butModal-inputBox {
-  margin-bottom: 14px;
-  width: 100%;
-  display: inline-block;
-  height: 34PX; }
-  .public-butModal .public-butModal-inputBox label {
-    float: left;
-    height: 32px;
-    line-height: 32px;
-    width: 56px;
-    text-align: right; }
-  .public-butModal .public-butModal-inputBox span.datepicker-spilt {
-    float: left;
-    position: relative;
-    top: 5px; }
-
-.public-butModal input.flyer-input.i18n {
-  margin-left: 10px;
-  display: inline-block;
-  box-sizing: border-box; }
-
-.advanced-search-pop input.flyer-input.i18n {
-  width: 346px !important; }
-
-.advanced-search-pop div.customer-service-select {
-  width: 346px !important; }
-
-.advanced-search-pop input.customer-search-keyword {
-  width: 346px !important; }
-
-.advanced-search-pop div.mutiple-select {
-  width: 356px; }
 
 /*** Parameters ***/
 .receiving-rules .receiving-rules-addRule {
@@ -3090,305 +2208,6 @@ input#keyword {
     min-width: 62px; }
   .receiving-rules .flyer-onswitch input[type="checkbox"] + i:after {
     height: 14px; }
-
-/*! normalize.css v8.0.0 | MIT License | github.com/necolas/normalize.css */
-/* Document
-   ========================================================================== */
-/**
- * 1. Correct the line height in all browsers.
- * 2. Prevent adjustments of font size after orientation changes in iOS.
- */
-html {
-  line-height: 1.15;
-  /* 1 */
-  -webkit-text-size-adjust: 100%;
-  /* 2 */ }
-
-/* Sections
-   ========================================================================== */
-/**
- * Remove the margin in all browsers.
- */
-body {
-  margin: 0; }
-
-/**
- * Correct the font size and margin on `h1` elements within `section` and
- * `article` contexts in Chrome, Firefox, and Safari.
- */
-h1 {
-  font-size: 2em;
-  margin: 0.67em 0; }
-
-/* Grouping content
-   ========================================================================== */
-/**
- * 1. Add the correct box sizing in Firefox.
- * 2. Show the overflow in Edge and IE.
- */
-hr {
-  box-sizing: content-box;
-  /* 1 */
-  height: 0;
-  /* 1 */
-  overflow: visible;
-  /* 2 */ }
-
-/**
- * 1. Correct the inheritance and scaling of font size in all browsers.
- * 2. Correct the odd `em` font sizing in all browsers.
- */
-pre {
-  font-family: monospace, monospace;
-  /* 1 */
-  font-size: 1em;
-  /* 2 */ }
-
-/* Text-level semantics
-   ========================================================================== */
-/**
- * Remove the gray background on active links in IE 10.
- */
-a {
-  background-color: transparent; }
-
-/**
- * 1. Remove the bottom border in Chrome 57-
- * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
- */
-abbr[title] {
-  border-bottom: none;
-  /* 1 */
-  text-decoration: underline;
-  /* 2 */
-  text-decoration: underline dotted;
-  /* 2 */ }
-
-/**
- * Add the correct font weight in Chrome, Edge, and Safari.
- */
-b,
-strong {
-  font-weight: bolder; }
-
-/**
- * 1. Correct the inheritance and scaling of font size in all browsers.
- * 2. Correct the odd `em` font sizing in all browsers.
- */
-code,
-kbd,
-samp {
-  font-family: monospace, monospace;
-  /* 1 */
-  font-size: 1em;
-  /* 2 */ }
-
-/**
- * Add the correct font size in all browsers.
- */
-small {
-  font-size: 80%; }
-
-/**
- * Prevent `sub` and `sup` elements from affecting the line height in
- * all browsers.
- */
-sub,
-sup {
-  font-size: 75%;
-  line-height: 0;
-  position: relative;
-  vertical-align: baseline; }
-
-sub {
-  bottom: -0.25em; }
-
-sup {
-  top: -0.5em; }
-
-/* Embedded content
-   ========================================================================== */
-/**
- * Remove the border on images inside links in IE 10.
- */
-img {
-  border-style: none; }
-
-/* Forms
-   ========================================================================== */
-/**
- * 1. Change the font styles in all browsers.
- * 2. Remove the margin in Firefox and Safari.
- */
-button,
-input,
-optgroup,
-select,
-textarea {
-  font-family: inherit;
-  /* 1 */
-  font-size: 100%;
-  /* 1 */
-  line-height: 1.15;
-  /* 1 */
-  margin: 0;
-  /* 2 */ }
-
-/**
- * Show the overflow in IE.
- * 1. Show the overflow in Edge.
- */
-button,
-input {
-  /* 1 */
-  overflow: visible; }
-
-/**
- * Remove the inheritance of text transform in Edge, Firefox, and IE.
- * 1. Remove the inheritance of text transform in Firefox.
- */
-button,
-select {
-  /* 1 */
-  text-transform: none; }
-
-/**
- * Correct the inability to style clickable types in iOS and Safari.
- */
-button,
-[type='button'],
-[type='reset'],
-[type='submit'] {
-  -webkit-appearance: button; }
-
-/**
- * Remove the inner border and padding in Firefox.
- */
-button::-moz-focus-inner,
-[type='button']::-moz-focus-inner,
-[type='reset']::-moz-focus-inner,
-[type='submit']::-moz-focus-inner {
-  border-style: none;
-  padding: 0; }
-
-/**
- * Restore the focus styles unset by the previous rule.
- */
-button:-moz-focusring,
-[type='button']:-moz-focusring,
-[type='reset']:-moz-focusring,
-[type='submit']:-moz-focusring {
-  outline: 1px dotted ButtonText; }
-
-/**
- * Correct the padding in Firefox.
- */
-fieldset {
-  padding: 0.35em 0.75em 0.625em; }
-
-/**
- * 1. Correct the text wrapping in Edge and IE.
- * 2. Correct the color inheritance from `fieldset` elements in IE.
- * 3. Remove the padding so developers are not caught out when they zero out
- *    `fieldset` elements in all browsers.
- */
-legend {
-  box-sizing: border-box;
-  /* 1 */
-  color: inherit;
-  /* 2 */
-  display: table;
-  /* 1 */
-  max-width: 100%;
-  /* 1 */
-  padding: 0;
-  /* 3 */
-  white-space: normal;
-  /* 1 */ }
-
-/**
- * Add the correct vertical alignment in Chrome, Firefox, and Opera.
- */
-progress {
-  vertical-align: baseline; }
-
-/**
- * Remove the default vertical scrollbar in IE 10+.
- */
-textarea {
-  overflow: auto; }
-
-/**
- * 1. Add the correct box sizing in IE 10.
- * 2. Remove the padding in IE 10.
- */
-[type='checkbox'],
-[type='radio'] {
-  box-sizing: border-box;
-  /* 1 */
-  padding: 0;
-  /* 2 */ }
-
-/**
- * Correct the cursor style of increment and decrement buttons in Chrome.
- */
-[type='number']::-webkit-inner-spin-button,
-[type='number']::-webkit-outer-spin-button {
-  height: auto; }
-
-/**
- * 1. Correct the odd appearance in Chrome and Safari.
- * 2. Correct the outline style in Safari.
- */
-[type='search'] {
-  -webkit-appearance: textfield;
-  /* 1 */
-  outline-offset: -2px;
-  /* 2 */ }
-
-/**
- * Remove the inner padding in Chrome and Safari on macOS.
- */
-[type='search']::-webkit-search-decoration {
-  -webkit-appearance: none; }
-
-/**
- * 1. Correct the inability to style clickable types in iOS and Safari.
- * 2. Change font properties to `inherit` in Safari.
- */
-::-webkit-file-upload-button {
-  -webkit-appearance: button;
-  /* 1 */
-  font: inherit;
-  /* 2 */ }
-
-/* Interactive
-   ========================================================================== */
-/*
- * Add the correct display in Edge, IE 10+, and Firefox.
- */
-details {
-  display: block; }
-
-/*
- * Add the correct display in all browsers.
- */
-summary {
-  display: list-item; }
-
-/* Misc
-   ========================================================================== */
-/**
- * Add the correct display in IE 10+.
- */
-template {
-  display: none; }
-
-/**
- * Add the correct display in IE 10.
- */
-[hidden] {
-  display: none; }
 
 /*** Parameters ***/
 .flyer-layout-sendEmail, .flyer-frame-Box {
