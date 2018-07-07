@@ -20,7 +20,7 @@ $(function() {
             var $links = $(".flyer-layout-tree .flyer-layout-link");
             $links.removeClass("flyer-layout-linkActive");
             $(this).addClass("flyer-layout-linkActive");
-            setDocumentTitle($(this).text());
+            setDocumentTitle($(this).data('pagename'));
             core.setWindowHash(pageHash);
         });
 

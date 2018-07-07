@@ -11,6 +11,7 @@
     <link type="text/css" href="../plugins/css/font-awesome.min.css?v=<%=package.version %>" rel="stylesheet">
     <link type="text/css" href="../plugins/css/animate.min.css?v=<%=package.version %>" rel="stylesheet">
     <link type="text/css" href="../dest/css/yidian.console.all.css?v=<%=package.version %>" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.loli.net/ajax/libs/mdui/0.4.1/css/mdui.min.css">
 </head>
 
 <body>
@@ -38,10 +39,8 @@
                 <p class='tree-shrink' id="asideToggle"><i class='fa fa-bars'></i></p>
                 <% menus.forEach(function(val,index,items){ %>
                     <li>
-                        <a data-url="<%= val.url %>" data-hash="<%= val.hash %>" class="flyer-layout-link"><i class="<%= val.icons %>" aria-hidden="true"></i><label><%= val.pageName %></label>
-                        <% if(val.hasTag){%>
-                            <span>#</span>
-                        <% } %></a>
+                        <a data-url="<%= val.url %>" data-hash="<%= val.hash %>" data-pagename="<%=val.pageName%>" class="flyer-layout-link"><i class="mdui-icon material-icons"><%= val.icons %></i><label><%= val.pageName %></label>
+                        </a>
                     </li>
                     <% }) %>
             </ul>
@@ -70,6 +69,7 @@
     <script type="text/javascript" src="../plugins/js/jquery.min.js?v=<%=package.version %>"></script>
     <script type="text/javascript" src="../js/common/jquery.extend.js?v=<%=package.version %>"></script>
     <script type="text/javascript" src="../plugins/js/flyer.all.js?v=<%=package.version %>"></script>
+    <script src="//cdnjs.loli.net/ajax/libs/mdui/0.4.1/js/mdui.min.js"></script>
     <script type="text/javascript" src="../plugins/js/echarts.simple.min.js?v=<%=package.version %>"></script>
     <script type="text/javascript" src="../js/common/aside.js?v=<%=package.version %>"></script>
     <script type="text/javascript" src="../js/core.js?v=<%=package.version %>"></script>

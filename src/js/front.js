@@ -1,9 +1,13 @@
 'use strict';
 $(function() {
+    var userNameMinLength = 5;
+    var userNameMaxLength = 20;
+
     function init() {
         inieEvent();
     }
 
+    // 事件初始化
     function inieEvent() {
         // 注册
         $('#userRegister').on('click', userRegisterHandler);
@@ -11,6 +15,7 @@ $(function() {
         $('#userLogin').on('click', userLoginHandler);
     }
 
+    // 用户登录
     function userLoginHandler(event) {
         flyer.open({
             pageUrl: '/html/user_login.html',
@@ -19,38 +24,39 @@ $(function() {
             title: '用户登录',
             btns: [{
                 text: '登录',
-                skin: 'flyer-btn-blue',
                 click: function(ele) {
                     var that = this;
-                    $.ajax({
-                        url: '/api/userLogin',
-                        type: 'POST',
-                        data: {
-                            userName: 'surong',
-                            password: 'surong',
-                            phone: '18098971690',
-                            QQ: '838472035',
-                            email: 'keepFur@163.com'
-                        },
-                        beforeSend: function(jqXHR, settings) {
-                            $.lockedBtn($(ele), true, ('登录中'));
-                        },
-                        success: function(data, textStatus, jqXHR) {
-                            flyer.msg(data.success ? ('操作成功') : ('操作失败'));
-                            that.close();
-                            getTableDatas(1, 20);
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            flyer.msg(baseDatas.errorMsg);
-                        },
-                        complete: function(jqXHR, textStatus) {
-                            $.unlockBtn($(ele), ('登录'));
-                        }
-                    });
+                    var userInfo = getUserInfo($('form[name=userLoginForm]'));
+                    var validResult = validUserInfo(userInfo, false);
+                    if (validResult.isPass) {
+                        $.ajax({
+                            url: '/api/userLogin',
+                            type: 'POST',
+                            data: userInfo,
+                            beforeSend: function(jqXHR, settings) {
+                                $.lockedBtn($(ele), true, ('登录中'));
+                            },
+                            success: function(data, textStatus, jqXHR) {
+                                if (data.success) {
+                                    flyer.msg('操作成功');
+                                    that.close();
+                                } else {
+                                    flyer.msg('操作失败：用户名或密码错误');
+                                }
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                flyer.msg(baseDatas.errorMsg);
+                            },
+                            complete: function(jqXHR, textStatus) {
+                                $.unlockBtn($(ele), ('登录'));
+                            }
+                        });
+                    } else {
+                        flyer.msg(validResult.msg);
+                    }
                 }
             }, {
                 text: '取消',
-                skin: 'flyer-btn-default',
                 click: function() {
                     this.close();
                 }
@@ -59,8 +65,116 @@ $(function() {
         return false;
     }
 
+    // 用户注册
     function userRegisterHandler(event) {
+        flyer.open({
+            pageUrl: '/html/user_register.html',
+            isModal: true,
+            area: [440, 350],
+            title: '用户注册',
+            btns: [{
+                text: '注册',
+                click: function(ele) {
+                    var that = this;
+                    var userInfo = getUserInfo($('form[name=userRegisterForm]'));
+                    var validResult = validUserInfo(userInfo, true);
+                    if (validResult.isPass) {
+                        $.ajax({
+                            url: '/api/createUser',
+                            type: 'POST',
+                            data: userInfo,
+                            beforeSend: function(jqXHR, settings) {
+                                $.lockedBtn($(ele), true, ('注册中'));
+                            },
+                            success: function(data, textStatus, jqXHR) {
+                                if (data.success) {
+                                    flyer.msg('操作成功');
+                                    that.close();
+                                } else {
+                                    flyer.msg('操作失败：网络错误');
+                                }
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                flyer.msg(baseDatas.errorMsg);
+                            },
+                            complete: function(jqXHR, textStatus) {
+                                $.unlockBtn($(ele), ('注册'));
+                            }
+                        });
+                    } else {
+                        flyer.msg(validResult.msg);
+                    }
+                }
+            }, {
+                text: '取消',
+                click: function() {
+                    this.close();
+                }
+            }]
+        });
         return false;
+    }
+
+    // 获取用户表单信息
+    function getUserInfo($form) {
+        var userInfo = {};
+        var serializeArray = [];
+        if (!$form || !$form.length) {
+            $.writeLog('front-getUserInfo', '参数错误');
+            return {};
+        }
+        serializeArray = $form.serializeArray();
+        serializeArray.forEach(function(element) {
+            userInfo[element.name] = $.trim(element.value);
+        }, this);
+        return userInfo;
+    }
+
+    // 校验表单信息,用户名和密码不能为空
+    function validUserInfo(userInfo, isRegister) {
+        if (!userInfo) {
+            $.writeLog('front-validUserInfo', '参数错误');
+            return {
+                isPass: false,
+                msg: '参数错误'
+            };
+        }
+
+        // 判断用户名
+        if (!userInfo.userName ||
+            userInfo.userName.length > userNameMaxLength ||
+            userInfo.userName.length < userNameMinLength) {
+            return {
+                isPass: false,
+                msg: '用户名不能为空且长度是5-20位'
+            };
+        }
+        // 判断密码
+        if (!userInfo.password ||
+            userInfo.password.length > userNameMaxLength ||
+            userInfo.password.length < userNameMinLength) {
+            return {
+                isPass: false,
+                msg: '密码不能为空且长度是5-20位'
+            };
+        }
+
+        // 判断两次密码是否一致
+        if (isRegister && userInfo.password !== userInfo.confirmPassword) {
+            return {
+                isPass: false,
+                msg: '两次密码不一致'
+            };
+        }
+        return {
+            isPass: true,
+            msg: '校验通过'
+        };
+    }
+
+    // 判断用户名是否存在
+    function isExistUser(userInfo) {
+
     }
     init();
 });

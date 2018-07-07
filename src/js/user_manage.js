@@ -33,8 +33,18 @@ flyer.define('user_manage', function(exports, module) {
     function initEvent() {
         // 创建用户
         $('.createUser').on('click', createUserHandle);
-        // 删除用户
-        $('.deleteUser').on('click', deleteUserHandle);
+        // 积分充值
+        $('.addMoneyUser').on('click', addMoneyUserHandle);
+        // 会员等级修改
+        $('.updateLevelUser').on('click', updateLevelUserHandle);
+        // 禁用用户
+        $('.disabledUser').on('click', {
+            type: 0
+        }, toggleUserHandle);
+        // 启用用户
+        $('.enabledUser').on('click', {
+            type: 1
+        }, toggleUserHandle);
     }
 
     /**
@@ -44,7 +54,7 @@ flyer.define('user_manage', function(exports, module) {
      */
     function createUserHandle(events) {
         flyer.open({
-            pageUrl: '/html/create_user.html',
+            pageUrl: '/html/user_register.html',
             isModal: true,
             area: [440, 350],
             title: '注册用户',
@@ -89,27 +99,148 @@ flyer.define('user_manage', function(exports, module) {
     }
 
     /**
-     * 删除客诉记录按钮点击事件处理函数(批量删除)
+     *  积分充值的点击事件处理函数
      * 
      * @param {any} events 
      */
-    function deleteUserHandle(events) {
-        var selectDatas = flyer.exports.baseData.getTableCheckedDatas(baseDatas.$table);
-        if (selectDatas.length !== 1) {
-            flyer.confirm("确定删除吗?", function(result) {}, {
+    function addMoneyUserHandle(events) {
+        var selectDatas = core.getTableCheckedDatas(baseDatas.$table);
+        if (selectDatas.length === 1) {
+            flyer.open({
+                pageUrl: '/html/user_add_money.html',
+                isModal: true,
+                area: [400, 150],
+                title: '积分充值',
                 btns: [{
-                        text: ('确定'),
-                        skin: "flyer-btn-blue",
+                    text: '充值',
+                    click: function(ele) {
+                        var that = this;
+                        var money = $.trim($('input[name=money]').val());
+                        var validAddMoneyUserResult = validAddMoneyUser(money);
+                        if (validAddMoneyUserResult.isPass) {
+                            $.ajax({
+                                url: '/api/userAddMoney',
+                                type: 'POST',
+                                data: {
+                                    money: money,
+                                    id: selectDatas[0].id
+                                },
+                                beforeSend: function(jqXHR, settings) {
+                                    $.lockedBtn($(ele), true, ('充值中'));
+                                },
+                                success: function(data, textStatus, jqXHR) {
+                                    flyer.msg(data.success ? ('操作成功') : ('操作失败' + data.message));
+                                    that.close();
+                                    getTableDatas(1, 20);
+                                },
+                                error: function(jqXHR, textStatus, errorThrown) {
+                                    flyer.msg(baseDatas.errorMsg);
+                                },
+                                complete: function(jqXHR, textStatus) {
+                                    $.unlockBtn($(ele), '充值');
+                                }
+                            });
+                        } else {
+                            flyer.msg(validAddMoneyUserResult.msg);
+                        }
+                    }
+                }, {
+                    text: '取消',
+                    click: function() {
+                        this.close();
+                    }
+                }]
+            });
+        } else {
+            flyer.msg(baseDatas.operatorErrMsg.single);
+        }
+        return false;
+    }
+
+    /**
+     * 会员等级修改的点击事件处理函数
+     * 会员升级一次 1000积分
+     * @param {any} events 
+     */
+    function updateLevelUserHandle(events) {
+        var selectDatas = core.getTableCheckedDatas(baseDatas.$table);
+        var minMoney = 1000;
+        var tipMsg = `<span style="color:#f00;">确定升级吗？</br>升级之后可以享受<strong>九折</strong>优惠!</br>升级会从账户中抵扣${minMoney}积分，</br>请确保账户中有足够的积分！</span>`;
+        if (selectDatas.length === 1) {
+            // 获取用户的积分，判断月是否大于等于1000
+            readUserById(selectDatas[0].id, function(data) {
+                if (data.success) {
+                    var money = data.data.rows[0].money;
+                    if (money >= minMoney) {
+                        flyer.confirm(tipMsg, function(result) {}, {
+                            btns: [{
+                                    text: '确定',
+                                    click: function(elm) {
+                                        this.close();
+                                        $.ajax({
+                                            url: '/api/updateLevelUser',
+                                            type: 'POST',
+                                            data: {
+                                                id: selectDatas[0].id,
+                                                level: 2
+                                            },
+                                            success: function(data, textStatus, jqXHR) {
+                                                flyer.msg(data.success ? '操作成功' : ('操作失败' + data.message));
+                                                getTableDatas(1, 20);
+                                            },
+                                            error: function(jqXHR, textStatus, errorThrown) {
+                                                flyer.msg(baseDatas.netErrMsg);
+                                            }
+                                        });
+                                    }
+                                },
+                                {
+                                    text: ("取消"),
+                                    click: function(elm) {
+                                        this.close();
+                                    }
+                                }
+                            ],
+                            title: "询问框",
+                            isModal: true
+                        });
+                    } else {
+                        flyer.msg(`您的积分余额不足${minMoney}， 请充值之后再升级。当前积分余额是 ${money}积分!`);
+                    }
+                } else {
+                    flyer.msg(data.message);
+                }
+            });
+        } else {
+            flyer.msg(baseDatas.operatorErrMsg.single);
+        }
+        return false;
+    }
+
+    /**
+     * 切换用户状态按钮点击事件处理函数
+     * 
+     * @param {any} events 
+     */
+    function toggleUserHandle(events) {
+        var selectDatas = core.getTableCheckedDatas(baseDatas.$table);
+        var type = events.data.type;
+        var tipMsg = type === 0 ? '确定禁用吗？' : '确定启用吗？';
+        if (selectDatas.length === 1) {
+            flyer.confirm(tipMsg, function(result) {}, {
+                btns: [{
+                        text: '确定',
                         click: function(elm) {
                             this.close();
                             $.ajax({
-                                url: '/api/deleteUser',
+                                url: '/api/toggleUser',
                                 type: 'POST',
                                 data: {
-                                    id: selectDatas[0].id
+                                    id: selectDatas[0].id,
+                                    status: type
                                 },
                                 success: function(data, textStatus, jqXHR) {
-                                    flyer.msg(data.success ? ('操作成功') : ('操作失败'));
+                                    flyer.msg(data.success ? '操作成功' : ('操作失败' + data.message));
                                     getTableDatas(1, 20);
                                 },
                                 error: function(jqXHR, textStatus, errorThrown) {
@@ -153,22 +284,34 @@ flyer.define('user_manage', function(exports, module) {
                     title: '用户名',
                     field: "userName"
                 }, {
-                    title: '创建时间',
-                    field: "createdDate"
+                    title: '当前积分',
+                    field: "money"
                 }, {
-                    title: '等级',
-                    field: "level"
+                    title: '会员等级',
+                    field: "level",
+                    formatter: function(row) {
+                        return row.level === 1 ? '普通会员' : '金牌会员';
+                    }
+                }, {
+                    title: '邮箱',
+                    field: "email"
+                }, {
+                    title: '电话',
+                    field: "phone"
+                }, {
+                    title: 'QQ',
+                    field: "QQ"
+                }, {
+                    title: '创建时间',
+                    field: "createdDate",
+                    formatter: function(row, rows) {
+                        return flyer.formatDate('yyyy-MM-dd hh:mm', row.createdDate);
+                    }
                 }, {
                     title: '状态',
-                    field: 'status'
-                }, {
-                    title: '操作',
-                    styles: {
-                        width: 120
-                    },
+                    field: 'status',
                     formatter: function(row) {
-                        return '<span class="table-btn" title="编辑"><i class="icon-pen table-btn flyer-edittype-btn" data-id="' + row.ID + '" data-producttype = "' + row.productType + '" style="padding-right:8px;"></i></span>' +
-                            '<span class="table-btn" title="删除" style="display:none;"><i class="icon-remove table-btn flyer-deletetype-btn" data-id="' + row.ID + '" style="padding-right:8px;"></i></span>'
+                        return row.status === 1 ? '启用' : '停用';
                     }
                 }],
                 data: datas
@@ -186,9 +329,9 @@ flyer.define('user_manage', function(exports, module) {
      */
     function randerDOMPager($table, datas, total, pagerObj) {
         // 没有数据的时候
-        core.tableNoMatch($table, '暂时没有相关商品品类记录');
+        core.tableNoMatch($table, '暂时没有用户');
         // 初始化下拉框，显示每页数据条数的下拉框
-        baseDatas.pageSizeSelectObj = core.initPagerSizeSelect($('#proTypePagerSize'), core.getPageListByTotal(total), String(pagerObj.pageSize || 20), {
+        baseDatas.pageSizeSelectObj = core.initPagerSizeSelect($('#userPagerSize'), core.getPageListByTotal(total), String(pagerObj.pageSize || 20), {
             callback: getTableDatas,
             pagerObj: baseDatas.pagerObj,
             total: datas.total,
@@ -215,13 +358,12 @@ flyer.define('user_manage', function(exports, module) {
      * @param {any} total 总数居
      */
     function setMountValue(currentTotal, total) {
-        $('#currentProTypeMountSpan').text(currentTotal);
-        $('#proTypeMountSpan').text(total);
+        $('#currentUserMountSpan').text(currentTotal);
+        $('#userMountSpan').text(total);
     }
 
     /**
      * 获取表格数据
-     * 
      * 
      * @param {Number} pageNumber 当前显示页数，默认为0
      * @param {NUmber} pageSize 煤业显示的数据条数，默认为20
@@ -251,10 +393,6 @@ flyer.define('user_manage', function(exports, module) {
                     });
                     setMountValue(data.data.rows.length, data.data.total);
                     core.bindCheckboxEvent(baseDatas.$table);
-                    // 修改商品品类
-                    // $('.flyer-edittype-btn').off('click').on('click', updateProTypeHandle);
-                    // 删除商品品类(单个操作)
-                    // $('.flyer-deletetype-btn').off('click').on('click', deleteProTypeSingleHandle);
                 } else {
                     flyer.msg(data.message);
                     renderTable($table, []);
@@ -270,50 +408,66 @@ flyer.define('user_manage', function(exports, module) {
     }
 
     /**
-     * 判断是否已经存在这个类型了，存在的会自动去除掉，
+     * 根基用户的id获取用户的信息
      * 
-     * 
-     * @param {Array} arr 需要判断的数组
-     * @returns 返回经过筛选之后的数组，如果传入的参数，是非数组或者数组长度为0的话，返回一个空数组
+     * @param {Number} id 用户id
+     * @param {funciton} callback 回调函数
      */
-    function hasProductType(inputArr, orginArr) {
-        var returnArr = [];
-        if (inputArr && inputArr.length) {
-            for (var i = 0; i < inputArr.length; i++) {
-                if (orginArr.indexOf(inputArr[i]) === -1) {
-                    returnArr.push(inputArr[i]);
-                }
+    function readUserById(id, callback) {
+        if (!id) {
+            if (typeof callback === 'function') {
+                callback({
+                    success: false,
+                    message: '用户id不能为空'
+                });
             }
+            return;
         }
-        return returnArr;
-    }
-
-    /**
-     * 导入基础数据，品类列表
-     * 
-     */
-    function importDatas() {
-        var productType = flyer.exports.baseData.unniqueArr(flyer.store.get('datasasa').split(','));
         $.ajax({
-            url: core.url + '/create_product_type',
-            type: 'POST',
+            url: '/api/readUserById',
             data: {
-                productType: productType,
-                createByID: baseDatas.userID,
-                createByName: baseDatas.userName,
-                companyOrgID: baseDatas.companyOrgID,
-                companyOrgName: baseDatas.companyOrgName
+                id: id
             },
-            success: function(data, textStatus, jqXHR) {
-                getTableDatas(1, 20);
+            success: function(data) {
+                callback(data);
             },
-            error: function(jqXHR, textStatus, errorThrown) {
-                flyer.msg(baseDatas.errorMsg);
+            error: function(error) {
+                callback(data);
             }
         });
     }
-    // 导入数据
-    exports.importDatas = importDatas;
+
+    /**
+     * 校验积分金额，正整数，大于1000
+     * 
+     * @param {Number} money 积分
+     */
+    function validAddMoneyUser(money) {
+        if (!money) {
+            return {
+                isPass: false,
+                msg: '请输入充值金额'
+            }
+        }
+
+        if (money < 1000) {
+            return {
+                isPass: false,
+                msg: '充值金额不能小于1000'
+            }
+        }
+        if (isNaN(money)) {
+            return {
+                isPass: false,
+                msg: '充值金额只能是正整数'
+            }
+        }
+        return {
+            isPass: true,
+            msg: ''
+        };
+    }
+
     // 页面入口
     init();
 });

@@ -77,6 +77,33 @@ app.post('/api/userLogin', function(req, res) {
     }
 });
 
+// 切换用户状态
+app.post('/api/toggleUser', function(req, res) {
+    try {
+        userManage.toggleUser(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 用户升级 
+app.post('/api/updateLevelUser', function(req, res) {
+    try {
+        userManage.updateLevelUser(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 用户充值
+app.post('/api/userAddMoney', function(req, res) {
+    try {
+        userManage.addMoneyUser(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
 // 入口
 app.get("/console", function(req, res, next) {
     Core.flyer.log('开始进入项目:' + new Date());

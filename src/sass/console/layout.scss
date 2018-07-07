@@ -35,11 +35,11 @@ body {
         &-link {
             display: inline-block;
             vertical-align: top;
-            height: 30px;
+            height: 48px;
             cursor: pointer;
             font-size: 14px;
             padding-left: 20px;
-            line-height: 30px;
+            line-height: 48px;
             width: 100%;
             box-sizing: border-box;
             user-select: none;
@@ -55,8 +55,8 @@ body {
                 text-align: center;
                 color: #666;
                 float: left;
-                height: 30px;
-                line-height: 30px;
+                height: 48px;
+                line-height: 48px;
             }
             &:hover {
                 color: $green;
@@ -85,9 +85,7 @@ body {
                 cursor: pointer;
                 width: 90px;
                 overflow: hidden;
-                float: left;
-                line-height: 30px;
-                height: 30px;
+                margin-left: 24px;
             }
         }
         &-linkActive {
@@ -897,21 +895,6 @@ section.flyer-layout-content .btn-container button {
     box-sizing: border-box;
 }
 
-.flyer-layout-aside .flyer-layout-link i.icon-unfinish,
-.flyer-layout-aside .flyer-layout-link i.icon-my-folder,
-.flyer-layout-aside .flyer-layout-link i.icon-email-send-abnormal {
-    font-size: 12px!important;
-    display: inline-block;
-}
-
-.flyer-layout-aside .flyer-layout-link i.icon-finish,
-.flyer-layout-aside .flyer-layout-link i.icon-receiving-rules,
-.flyer-layout-aside .flyer-layout-link i.icon-sensitive-word,
-.flyer-layout-aside .flyer-layout-link i.icon-send {
-    font-size: 15px!important;
-    display: inline-block;
-}
-
 [class^="icon-"],
 [class*=" icon-"] {
     font-size: 16px;
@@ -1081,9 +1064,6 @@ p.tree-shrink.transform-shrink {
         [class^="icon-"] {
             margin-right: 20px;
         }
-    }
-    .myFolderUl {
-        display: none!important;
     }
 }
 
