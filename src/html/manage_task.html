@@ -1,0 +1,43 @@
+<div>
+    <div class="flyer-tab flyer-tab-default">
+        <div class="flyer-tab-title">
+            <ul id="manageTaskTab">
+                <li data-index="0" data-task-plant="" class="flyer-tab-active">全部任务</li>
+                <li data-index="1" data-task-plant="TB">淘宝任务</li>
+                <li data-index="2" data-task-plant="JD">京东任务</li>
+            </ul>
+        </div>
+        <div class="flyer-tab-content">
+            <div class="flyer-layout-previewTitle">
+                <span class="flyer-layout-blod">任务列表</span>
+                <span>(当前显示</span>
+                <span id="currentTaskMountSpan">0</span>
+                <span>个，共</span>
+                <span class="flyer-layout-allNum" id="taskMountSpan">0</span>
+                <span>个</span>
+                <span class="flyer-search-conditions"></span>)
+            </div>
+            <!-- 按钮结构 -->
+            <div class='btn-container'>
+                <button class="flyer-btn flyer-btn-blue createTask">创建任务</button>
+                <button class="flyer-btn flyer-btn-default updateTask">修改</button>
+                <button class="flyer-btn flyer-btn-default disabledTask">禁用</button>
+                <button class="flyer-btn flyer-btn-default enabledTask">启用</button>
+                <!-- 分页插件 -->
+                <div class='paper-container first'></div>
+                <div class="pager-size-container" id="taskPagerSize"></div>
+            </div>
+            <!-- 表单结构 -->
+            <div class='table-container' id="taskTable"></div>
+            <div class='btn-container footer-upper'>
+                <button class="flyer-btn flyer-btn-blue createTask">创建任务</button>
+                <button class="flyer-btn flyer-btn-default updateTask">修改</button>
+                <button class="flyer-btn flyer-btn-default disabledTask">禁用</button>
+                <button class="flyer-btn flyer-btn-default enabledTask">启用</button>
+                <!-- 分页插件 -->
+                <div class='paper-container'></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../js/manage_task.js"></script>
