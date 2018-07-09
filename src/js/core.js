@@ -276,5 +276,74 @@ var core = {
             formValueObject[element.name] = $.trim(element.value);
         }, this);
         return formValueObject;
+    },
+
+    /**
+     * 计算两个日期想差的天数
+     * 
+     * @param {stringany} date1 
+     * @param {string} date2 
+     * @returns 返回差值
+     */
+    computeDifferentDay: function(date1, date2) {
+        var diffDay = 1;
+        if (!date1 || !date2) {
+            return diffDay;
+        }
+        date1 = flyer.formatDate('yyyy/mm/dd', date1);
+        date2 = flyer.formatDate('yyyy/mm/dd', date2);
+        diffDay = (new Date(date2).getTime() - new Date(date1).getTime()) / (1000 * 60 * 60 * 24);
+        diffDay ? diffDay : 1;
+        return diffDay;
+    },
+
+    /**
+     * 根据key获取流量入口value
+     * 
+     * @param {stringany} typeKey 
+     * @returns 返回value
+     */
+    getTaskChildType: function(typeKey) {
+        var types = {
+            APP_TRAFFIC: 'APP流量',
+            PC_TRAFFIC: 'PC流量',
+            DIRECT_TRAFFIC: '直访流量',
+            SEARCH_COLLECT: '搜索收藏',
+            PRODUCT_COLLECT: '商品收藏',
+            SHOP_COLLECT: '店铺收藏',
+            JUHUASUNAN: '聚划算',
+            SEARCH_ADDCART: '搜索加购',
+            DIRECT_ADDCART: '直接加购',
+            EXPERT_ATTENTION_P: '达人关注（普通粉）',
+            EXPERT_ATTENTION_G: '达人关注（高级粉）',
+            WEITAO_GOOD: '微淘点赞',
+            LIVE_WATCH: '直播观看',
+            APPOINTMENT_SOLD: '预约抢购',
+            SHOP_ATTENTION: '店铺关注',
+            EXPERT_ATTENTION_P: '达人关注',
+        };
+        if (!typeKey) {
+            return types.APP_TRAFFIC;
+        }
+        return types[typeKey];
+    },
+    /**
+     * 根据key获取任务类型value
+     * 
+     * @param {stringany} typeKey 
+     * @returns 返回value
+     */
+    getTaskParentype: function(typeKey) {
+        var types = {
+            TRAFFIC: '流量任务',
+            COLLECT: '收藏任务',
+            ADD_CART: '加购任务',
+            TB_LIVE: '淘宝直播任务',
+            JD_SHOP_ATTENTION: '京东店铺关注任务',
+        };
+        if (!typeKey) {
+            return types.TRAFFIC;
+        }
+        return types[typeKey];
     }
 };
