@@ -14,11 +14,11 @@
  *@License：MIT
  ***/
 "use strict";
-(function (global, $, factory) {
+(function(global, $, factory) {
 
     if (typeof module === "object" && typeof module.exports === "object") {
 
-        module.exports = global.document ? factory(global, true) : function (w) {
+        module.exports = global.document ? factory(global, true) : function(w) {
             if (!w.document) {
                 throw new Error("The plug-in needs to be on the support document rendering environment.");
             } else if (!$) {
@@ -31,13 +31,13 @@
         factory(global, $);
     }
 
-})(typeof window !== "undefined" ? window : this, jQuery, function (window, $, noGlobal) {
+})(typeof window !== "undefined" ? window : this, jQuery, function(window, $, noGlobal) {
     "use strick";
 
     //声明一个载体
-    var fly = function () {
-        this.vision = "0.1.3";
-    },
+    var fly = function() {
+            this.vision = "0.1.3";
+        },
         win = window,
         slice = Array.prototype.slice,
         loca = win.location,
@@ -47,7 +47,7 @@
              * 对字符串进行占位符格式化,例如 format("{1},{2}","a","b");
              * @returns str
              */
-            format: function () {
+            format: function() {
                 var args = slice.call(arguments),
                     len = args.length;
                 if (len > 0) {
@@ -65,7 +65,7 @@
              * @param {any} date 
              * @returns 
              */
-            formatDate: function (format, date) {
+            formatDate: function(format, date) {
                 if (typeof format !== "string") {
                     flyer.log("error", "format is not defined.");
                     return false;
@@ -84,7 +84,7 @@
              * @param {any} date 
              * @returns 
              */
-            getDate: function (date) {
+            getDate: function(date) {
                 date = this.isString(date) ? new Date(date) : (date || new Date());
                 return {
                     year: date.getFullYear(),
@@ -101,7 +101,7 @@
              * @param {any} time 
              * @returns 
              */
-            fullTime: function (time) {
+            fullTime: function(time) {
                 return time >= 10 ? time : ("0" + time);
             },
             /**
@@ -110,7 +110,7 @@
              * @param {any} name 
              * @returns 
              */
-            getQueryString: function (name) {
+            getQueryString: function(name) {
                 // var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
                 // var r = loca.search.substr(1).match(reg);
                 // if (r !== null) return unescape(r[2]);
@@ -128,7 +128,7 @@
              * @param {any} text 
              * @returns 
              */
-            escapeHTML: function (text) {
+            escapeHTML: function(text) {
                 if (typeof text === 'string' && text.length > 0) {
                     return text
                         .replace(/&/g, "&amp;")
@@ -147,7 +147,7 @@
              * @param {any} text 
              * @returns 
              */
-            unescapeHTML: function (text) {
+            unescapeHTML: function(text) {
                 if (typeof text === 'string' && text.length > 0) {
                     return text
                         .replace(/&amp;/g, "&")
@@ -165,7 +165,7 @@
              * 
              * @returns 
              */
-            today: function () {
+            today: function() {
                 return new Date().toISOString().replace(/T.+/, "");
             },
             /**
@@ -174,7 +174,7 @@
              * @param {any} o 
              * @returns 
              */
-            isEmptyObject: function (o) {
+            isEmptyObject: function(o) {
                 var i;
                 for (i in o)
                     return false;
@@ -185,7 +185,7 @@
              * 
              * @param {any} e 
              */
-            stop: function (e) {
+            stop: function(e) {
                 e.stopPropagation ? e.stopPropagation() : e.cancelBubble = true;
             },
             /**
@@ -194,7 +194,7 @@
              * @param {any} fn 
              * @returns 
              */
-            getFnName: function (fn) {
+            getFnName: function(fn) {
                 return (/^[\s\(]*function(?:\s+([\w$_][\w\d$_]*))?\(/).exec(fn.toString())[1] || '';
             },
             /**
@@ -203,7 +203,7 @@
              * @param {any} value 
              * @returns 
              */
-            isEmpty: function (value) {
+            isEmpty: function(value) {
                 var comparable = [null, "undefined", undefined, "N/A", "0", 0, "null", false, "false"];
                 return comparable.indexOf(value) > 0 ? false : true;
             },
@@ -213,7 +213,7 @@
              * @param {any} obj 
              * @returns 
              */
-            isObject: function (obj) {
+            isObject: function(obj) {
                 return typeof obj === "object";
             },
             /**
@@ -222,7 +222,7 @@
              * @param {any} obj 
              * @returns 
              */
-            isFunction: function (obj) {
+            isFunction: function(obj) {
                 return typeof obj === "function";
             },
 
@@ -231,7 +231,7 @@
              * 
              * @param {any} obj 
              */
-            isArray: function (obj) {
+            isArray: function(obj) {
                 return obj instanceof Array;
             },
             /**
@@ -240,7 +240,7 @@
              * @param {any} obj 
              * @returns 
              */
-            isString: function (obj) {
+            isString: function(obj) {
                 return typeof obj === "string";
             },
             /**
@@ -249,7 +249,7 @@
              * @param {any} obj 
              * @returns 
              */
-            isjQuery: function (obj) {
+            isjQuery: function(obj) {
                 return obj instanceof jQuery;
             },
             /**
@@ -258,7 +258,7 @@
              * @param {any} obj 
              * @returns 
              */
-            isUndefined: function (obj) {
+            isUndefined: function(obj) {
                 return typeof obj === "undefined";
             },
             /**
@@ -267,7 +267,7 @@
              * @param {any} type 
              * @param {any} msg 
              */
-            log: function (type, msg) {
+            log: function(type, msg) {
                 if (typeof console) {
                     var args = slice.call(arguments);
                     if (args.length === 1) {
@@ -286,7 +286,7 @@
      * @param {String} name 
      * @param {Object} callback 
      */
-    fn.extend = function (name, callback) {
+    fn.extend = function(name, callback) {
         fn[name] = callback;
     }
 
@@ -297,7 +297,7 @@
      * @param {Object} options 
      * @returns 
      */
-    fn.define = function (namespace, options) {
+    fn.define = function(namespace, options) {
         var nspace = {},
             o;
 
@@ -340,11 +340,11 @@
  *备注：将 flyer 挂载在 jQuery 插件上
  ***/
 "use strict";
-(function ($, fly) {
+(function($, fly) {
     for (var o in fly) {
-        (function (o, $) {
-            $.fn[o] = function (options) {
-                return this.each(function () {
+        (function(o, $) {
+            $.fn[o] = function(options) {
+                return this.each(function() {
                     return fly[o](this, options);
                 });
             }
@@ -359,15 +359,15 @@
  ***/
 "use strict";
 //定义成 flyer 内置模块
-flyer.extend("codes", function (elm, opts) {
+flyer.extend("codes", function(elm, opts) {
 
     /*
      *  定义一个代码修饰器的构造函数
      */
-    var Codes = function (selector, options) {
+    var Codes = function(selector, options) {
         var _this = this;
         if (selector.length > 1) {
-            selector.each(function () {
+            selector.each(function() {
                 _this.init($(this), options);
             })
         } else {
@@ -397,28 +397,28 @@ flyer.extend("codes", function (elm, opts) {
     Codes.prototype = {
 
         //实例化的入口
-        init: function (selector, options) {
+        init: function(selector, options) {
             this[0] = selector;
             this.options = $.extend(true, {}, Codes.DEFAULTS, options);
             this[0].replaceWith(this.template());
         },
 
         //渲染修饰器
-        template: function () {
+        template: function() {
             var arryHtmls = ['<' + this.options.tagName + ' class="codes">',
                 '<h1>',
-            this.options.title, this.options.about ? '<a href="#">flyer.code</a>' : '',
+                this.options.title, this.options.about ? '<a href="#">flyer.code</a>' : '',
                 '</h1>',
                 '<ol>',
-            this.adornContent(),
+                this.adornContent(),
                 '</ol>',
-            '</' + this.options.tagName + '>'
+                '</' + this.options.tagName + '>'
             ];
             return arryHtmls.join("");
         },
 
         //修饰内容
-        adornContent: function () {
+        adornContent: function() {
             var arryText = this[0].html(),
                 arryHtmls = [];
 
@@ -443,7 +443,7 @@ flyer.extend("codes", function (elm, opts) {
  *@License：MIT
  ***/
 "use strict";
-flyer.extend("combobox", function (selector, options) {
+flyer.extend("combobox", function(selector, options) {
 
     /*
      *   功能说明：1、单选 2、多选 3、添加值 4、获取值
@@ -457,7 +457,7 @@ flyer.extend("combobox", function (selector, options) {
         win = window;
 
     //声明一个下拉框构造函数 
-    var ComboBox = function (selector, options) {
+    var ComboBox = function(selector, options) {
         return this.init(selector, options);
     }
 
@@ -520,22 +520,22 @@ flyer.extend("combobox", function (selector, options) {
         defaultValue: "",
 
         //类型：Function ,开放一个数据结构处理的方法
-        fnDataProcessing: function () {
+        fnDataProcessing: function() {
             this.data = this.data.rows;
         },
 
         //类型：Function,选中事件
-        fnSelected: function () {
+        fnSelected: function() {
             return false;
         },
 
         //类型：Function ,选中之前事件
-        fnBeforeSelected: function () {
+        fnBeforeSelected: function() {
             //废弃后的事件...
         },
 
         //类型：Function,先中之后事件
-        fnAfterSelected: function () {
+        fnAfterSelected: function() {
             //废弃后的事件...
         }
 
@@ -544,7 +544,7 @@ flyer.extend("combobox", function (selector, options) {
     ComboBox.prototype = {
 
         //页面加载的实例化入口
-        init: function (selector, options) {
+        init: function(selector, options) {
             this.options = $.extend(true, {}, ComboBox.DEFAULTS, options);
             this.selector = selector;
             this[0] = $(selector);
@@ -555,7 +555,7 @@ flyer.extend("combobox", function (selector, options) {
         },
 
         //加载模板
-        template: function () {
+        template: function() {
             var opts = this.options,
                 _this = this;
             var arryHtmls = [
@@ -591,7 +591,7 @@ flyer.extend("combobox", function (selector, options) {
         },
 
         //渲染下拉数据
-        readerItems: function () {
+        readerItems: function() {
             var arryHtmls = [],
                 _this = this,
                 opts = this.options,
@@ -605,13 +605,13 @@ flyer.extend("combobox", function (selector, options) {
         },
 
         //拼装数据
-        requestData: function () {
+        requestData: function() {
             var _this = this,
                 opts = this.options,
                 data = this._filterData.length > 0 ? this._filterData : opts.data;
 
             if (data.length === 0 && opts.url.length > 0) {
-                $.getJSON(this.options.url, function (data) {
+                $.getJSON(this.options.url, function(data) {
                     _this.options.data = data;
                     opts.fnDataProcessing();
                     _this.template();
@@ -628,12 +628,12 @@ flyer.extend("combobox", function (selector, options) {
         },
 
         //判断是否是 Select 标签
-        isSelectHtml: function () {
+        isSelectHtml: function() {
             return this[0].prop("tagName") === "SELECT";
         },
 
         //如果是 Select 标签就将标签转换为JSON对象
-        readHtmlToData: function () {
+        readHtmlToData: function() {
             var select = this[0].get(0),
                 children = select.children;
 
@@ -653,14 +653,14 @@ flyer.extend("combobox", function (selector, options) {
         },
 
         //添加事件
-        initEvents: function () {
+        initEvents: function() {
 
             var _this = this,
                 opts = _this.options;
             if (opts.disabled === true) {
                 return false;
             }
-            _this.$contents.off("click").on("click", function (e) {
+            _this.$contents.off("click").on("click", function(e) {
                 if (_this.$itemContainer.hasClass(styles[8])) {
                     _this.hideItems.call(_this);
                 } else {
@@ -673,18 +673,18 @@ flyer.extend("combobox", function (selector, options) {
                 flyer.stop(e);
             });
 
-            _this.$search.find("input").off("keyup").on("keyup", function (e) {
+            _this.$search.find("input").off("keyup").on("keyup", function(e) {
                 var _text = this;
                 if (timer) {
                     clearTimeout(timer);
                 }
-                timer = setTimeout(function () {
+                timer = setTimeout(function() {
                     _this.filterData(_text.value);
                 }, 500);
             });
 
-            _this.$items.each(function () {
-                $(this).off("click").on("click", function (e) {
+            _this.$items.each(function() {
+                $(this).off("click").on("click", function(e) {
 
                     var $this = $(this),
                         del = $this.hasClass(styles[7]) ? true : false;
@@ -721,7 +721,7 @@ flyer.extend("combobox", function (selector, options) {
                 });
             });
 
-            $(document).on("click", function (e) {
+            $(document).on("click", function(e) {
                 //$("." + styles[4]).removeClass(styles[8]);
                 if (!$(e.target.parentElement).hasClass(styles[5])) {
                     _this.hideItems();
@@ -732,13 +732,13 @@ flyer.extend("combobox", function (selector, options) {
         },
 
         //是否允许添加全部选项
-        allowAllItem: function () {
+        allowAllItem: function() {
             var opts = this.options;
             return opts.selectAll && opts.isMulti && opts.data.length > 1;
         },
 
         //将选中的值显示在内容区域
-        showSelectedItem: function (item, del) {
+        showSelectedItem: function(item, del) {
 
             var opts = this.options,
                 keys = this.$filterOptions.data("key") || "",
@@ -770,7 +770,7 @@ flyer.extend("combobox", function (selector, options) {
         },
 
         //全部选中
-        selectAllItems: function (elm) {
+        selectAllItems: function(elm) {
             var _this = this,
                 opts = this.options,
                 $elm = $(elm);
@@ -781,7 +781,7 @@ flyer.extend("combobox", function (selector, options) {
                 _this.empty();
             } else {
 
-                this.$items.each(function () {
+                this.$items.each(function() {
                     var $this = $(this),
                         item = {
                             fieldKey: $this.data("key"),
@@ -798,7 +798,7 @@ flyer.extend("combobox", function (selector, options) {
         },
 
         //移除选中的all项
-        unselectAll: function () {
+        unselectAll: function() {
             var $all = this.$itemContainer.find("[data-index='-1']");
             if ($all.hasClass(styles[7])) {
                 $all.removeClass(styles[7]);
@@ -808,7 +808,7 @@ flyer.extend("combobox", function (selector, options) {
         },
 
         //检测是否是全部选中了
-        checkSelectAll: function () {
+        checkSelectAll: function() {
             var selectedLength = this.$itemContainer.find("." + styles[7]).length,
                 $all = this.$itemContainer.find("[data-index='-1']");
             if (selectedLength === this.options.data.length) {
@@ -818,16 +818,16 @@ flyer.extend("combobox", function (selector, options) {
         },
 
         //隐藏下拉框
-        hideItems: function () {
+        hideItems: function() {
             this.$itemContainer.removeClass(styles[8]);
             this.$contents.find("i").removeClass(styles[10]).addClass(styles[9]);
         },
 
         //快捷检索出需要的数据
-        filterData: function (matchValue) {
+        filterData: function(matchValue) {
             var data = this.options.data,
                 _this = this,
-                filterData = data.filter(function (item) {
+                filterData = data.filter(function(item) {
                     return item[_this.options.fieldValuePY || _this.options.fieldValue].toLowerCase().indexOf(matchValue.toLowerCase()) >= 0;
                 });
             _this._filterData = filterData;
@@ -838,22 +838,22 @@ flyer.extend("combobox", function (selector, options) {
         },
 
         //得到选中的值对象
-        getSelectedData: function () {
+        getSelectedData: function() {
             return this._data;
         },
 
         //得到选中的值
-        getSelectedValue: function () {
+        getSelectedValue: function() {
             return this.clearLastSeparator(this._data.fieldKey);
         },
 
         //得到选中的文本
-        getSelectedText: function () {
+        getSelectedText: function() {
             return this.clearLastSeparator(this._data.fieldValue);
         },
 
         //修正输出值,去掉最后的追加符
-        clearLastSeparator: function (value) {
+        clearLastSeparator: function(value) {
             value = String(value);
             var lastIndexOf = value.lastIndexOf(this.options.multipleSeparator);
             if (lastIndexOf + 1 === value.length) {
@@ -863,7 +863,7 @@ flyer.extend("combobox", function (selector, options) {
         },
 
         //给对象赋值
-        setValue: function (data) {
+        setValue: function(data) {
 
             var $selectedItem = this.$itemContainer.find("[data-key='" + data.fieldKey + "']");
             this._data = {
@@ -876,7 +876,7 @@ flyer.extend("combobox", function (selector, options) {
         },
 
         //给对象数组赋值
-        setValues: function (data) {
+        setValues: function(data) {
             var keys = "",
                 values = "",
                 opts = this.options;
@@ -896,7 +896,7 @@ flyer.extend("combobox", function (selector, options) {
         },
 
         //清空选中的值
-        empty: function () {
+        empty: function() {
             this._data = {
                 fieldKey: "",
                 fieldValue: ""
@@ -908,7 +908,7 @@ flyer.extend("combobox", function (selector, options) {
         },
 
         //初始化组件时同时初始化一个默认值
-        initDefaultValue: function () {
+        initDefaultValue: function() {
             var defaultValue = this.options.defaultValue;
             if (flyer.isString(defaultValue) && defaultValue.length > 0) {
                 this.setValue({ fieldKey: defaultValue });
@@ -916,12 +916,12 @@ flyer.extend("combobox", function (selector, options) {
         },
 
         //重新给下拉框数据设置值
-        setData: function (data) {
+        setData: function(data) {
             this.options.data = data;
         },
 
         //增加一个 reload 方法，用于重新装载数据
-        reload: function () {
+        reload: function() {
             this.requestData();
             this.initDefaultValue();
         }
@@ -938,7 +938,7 @@ flyer.extend("combobox", function (selector, options) {
  ***/
 //定义成 flyer 内置模块
 "use strict";
-flyer.define("cookie", function () {
+flyer.define("cookie", function() {
     var regKey = /^[0-9A-Za-z_@-]*$/;
     //判断 localStorage 的 Key 值是否合法
     function isValidKey(key) {
@@ -951,7 +951,7 @@ flyer.define("cookie", function () {
     return {
 
         //设置 localStorage 单条记录
-        set: function (name, value) {
+        set: function(name, value) {
             if (isValidKey(name)) {
                 var Days = 30;
                 var exp = new Date();
@@ -961,7 +961,7 @@ flyer.define("cookie", function () {
         },
 
         //读取 localStorage 单条记录
-        get: function (name) {
+        get: function(name) {
             if (isValidKey(name)) {
                 var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
                 arr = document.cookie.match(reg);
@@ -974,7 +974,7 @@ flyer.define("cookie", function () {
         },
 
         //移除 localStorage 单条记录
-        remove: function (name) {
+        remove: function(name) {
             if (isValidKey(name)) {
                 var exp = new Date();
                 exp.setTime(exp.getTime() - 1);
@@ -992,12 +992,12 @@ flyer.define("cookie", function () {
  *@License：MIT
  ***/
 "use strict";
-flyer.extend("date", function (selector, options) {
+flyer.extend("date", function(selector, options) {
 
     /*
      * 在这里写要实例插件的代码,定义的变量名以实际组件的名称为准
      */
-    var Datepicker = function (selector, options) {
+    var Datepicker = function(selector, options) {
         return this.init(selector, options);
     }
 
@@ -1034,12 +1034,12 @@ flyer.extend("date", function (selector, options) {
         isPrecision: false,
 
         //类型 Function ,点击日期时触发的事件
-        click: function () {
+        click: function() {
             return false;
         },
 
         //类型 Function ,选择好时间后触发的事件
-        choose: function () {
+        choose: function() {
             return false;
         }
     }
@@ -1047,7 +1047,7 @@ flyer.extend("date", function (selector, options) {
     Datepicker.prototype = {
 
         //页面加载的实例化入口
-        init: function (selector, options) {
+        init: function(selector, options) {
             this.options = $.extend(true, {}, Datepicker.DEFAULTS, options);
             this.selector = this.isJQuery(selector) ? selector : $(selector);
             this._date = this.getYMD(this.selector.val().replace(/-/ig, "/"));
@@ -1057,7 +1057,7 @@ flyer.extend("date", function (selector, options) {
         },
 
         //判断是否有非本次实例的脏数据
-        hasDirtyElm: function () {
+        hasDirtyElm: function() {
             var oldContainer = $("#flyer-date-" + this.selector.attr("id"));
             if (oldContainer.length > 0) {
                 oldContainer.remove();
@@ -1065,7 +1065,7 @@ flyer.extend("date", function (selector, options) {
         },
 
         //刷新 
-        refresh: function () {
+        refresh: function() {
             this.template();
             this.events();
             this.isPickerBtnStatus();
@@ -1077,7 +1077,7 @@ flyer.extend("date", function (selector, options) {
         },
 
         //实例化一个容器模板
-        template: function () {
+        template: function() {
             var ymd = this._date,
                 opts = this.options;
             var arryHtmls = [
@@ -1156,7 +1156,7 @@ flyer.extend("date", function (selector, options) {
         },
 
         //实例化年选择器
-        initYears: function (year) {
+        initYears: function(year) {
             var arryHtmls = [],
                 years = parseInt(year || this._date.year);
             for (var i = years - 4; i < years + 8; i++) {
@@ -1167,7 +1167,7 @@ flyer.extend("date", function (selector, options) {
         },
 
         //实例化月选择器
-        initMonths: function () {
+        initMonths: function() {
             var arryHtmls = [];
             for (var i = 1; i <= 12; i++) {
                 arryHtmls.push("<span class='" + (this.ifEffectiveDateForMonth(i) ? "" : "flyer-dont-select") + "' month='" + i + "'>" + this.justShowText(i) + "</span>")
@@ -1177,7 +1177,7 @@ flyer.extend("date", function (selector, options) {
         },
 
         //实例化时分秒选择器
-        initHMS: function () {
+        initHMS: function() {
 
             var arryHtmls = ['<div class="flyer-date-time">',
                 '<label>时间</label>',
@@ -1194,7 +1194,7 @@ flyer.extend("date", function (selector, options) {
         },
 
         //实例化日选择器
-        initDays: function () {
+        initDays: function() {
 
             var arryHtmls = [],
                 start = this.getStart(),
@@ -1238,7 +1238,7 @@ flyer.extend("date", function (selector, options) {
         },
 
         //是否是在有效可选的时间内
-        isEffectiveDate: function (day, month, year) {
+        isEffectiveDate: function(day, month, year) {
             day = day || this._date.day;
             month = month || this._date.month;
             year = year || this._date.year;
@@ -1252,7 +1252,7 @@ flyer.extend("date", function (selector, options) {
             return (curDate <= maxDate && curDate >= minDate);
         },
 
-        precisionFormat: function (day, month, year) {
+        precisionFormat: function(day, month, year) {
             var hh = this._date.hours,
                 mm = this._date.minutes,
                 ss = this._date.second;
@@ -1261,7 +1261,7 @@ flyer.extend("date", function (selector, options) {
         },
 
         //判断是否在有效期的年份内
-        isEffectiveDateForYear: function (year) {
+        isEffectiveDateForYear: function(year) {
             var minDate = new Date(this.minDate || this.options.minDate),
                 maxDate = new Date(this.maxDate || this.options.maxDate);
 
@@ -1269,7 +1269,7 @@ flyer.extend("date", function (selector, options) {
         },
 
         //判断是否在有效期的月份内
-        ifEffectiveDateForMonth: function (month) {
+        ifEffectiveDateForMonth: function(month) {
             month = month || this._date.month;
             var year = this._date.year;
 
@@ -1283,7 +1283,7 @@ flyer.extend("date", function (selector, options) {
         },
 
         //是否是在有效可选的时间内
-        isEffectiveForDate: function (date) {
+        isEffectiveForDate: function(date) {
             var minDate = new Date(this.minDate || this.options.minDate),
                 maxDate = new Date(this.maxDate || this.options.maxDate),
                 curDate = new Date(date);
@@ -1292,7 +1292,7 @@ flyer.extend("date", function (selector, options) {
         },
 
         //判断面板上的按钮状态
-        isPickerBtnStatus: function () {
+        isPickerBtnStatus: function() {
             if (!this.isEffectiveForDate(new Date())) {
                 this.$footerBts.find(".flyer-today").addClass("flyer-dont-select");
             } else {
@@ -1307,12 +1307,12 @@ flyer.extend("date", function (selector, options) {
         },
 
         //实例化小时选择器面板
-        initHours: function () {
+        initHours: function() {
             var _this = this;
             return ['<div class="flyer-date-hours">',
                 '<div class="flyer-date-minTool">小时<span>x</span></div>',
                 '<div class="flyer-hours">',
-                (function () {
+                (function() {
                     var arryHtmls = [];
                     for (var i = 1; i < 24; i++) {
                         arryHtmls.push("<span>" + _this.justShowText(i) + "</span>")
@@ -1325,12 +1325,12 @@ flyer.extend("date", function (selector, options) {
         },
 
         //实例化分钟选择器面板
-        initMinutes: function () {
+        initMinutes: function() {
             var _this = this;
             return ['<div class="flyer-date-minutes">',
                 '<div class="flyer-date-minTool">分钟<span>x</span></div>',
                 '<div class="flyer-minutes">',
-                (function () {
+                (function() {
                     var arryHtmls = [];
                     for (var i = 1; i < 60; i++) {
                         arryHtmls.push("<span>" + _this.justShowText(i) + "</span>")
@@ -1343,12 +1343,12 @@ flyer.extend("date", function (selector, options) {
         },
 
         //实例化秒数的选择器面板
-        initSeconds: function () {
+        initSeconds: function() {
             var _this = this;
             return ['<div class="flyer-date-seconds">',
                 '<div class="flyer-date-minTool">秒数<span>x</span></div>',
                 '<div class="flyer-seconds">',
-                (function () {
+                (function() {
                     var arryHtmls = [];
                     for (var i = 1; i < 60; i++) {
                         arryHtmls.push("<span>" + _this.justShowText(i) + "</span>")
@@ -1361,7 +1361,7 @@ flyer.extend("date", function (selector, options) {
         },
 
         //判断当天是润年还是平年
-        isLeapYear: function (Year) {
+        isLeapYear: function(Year) {
             if (((Year % 4) == 0) && ((Year % 100) != 0) || ((Year % 400) == 0)) {
                 return (true);
             } else {
@@ -1370,7 +1370,7 @@ flyer.extend("date", function (selector, options) {
         },
 
         //得到当天的年月日
-        getYMD: function (date) {
+        getYMD: function(date) {
             var curDate = new Date(date || this.options.startDate);
             return {
                 year: curDate.getFullYear(),
@@ -1383,12 +1383,12 @@ flyer.extend("date", function (selector, options) {
         },
 
         //较正日期显示格式
-        justShowText: function (time) {
+        justShowText: function(time) {
             return time >= 10 ? time : ("0" + time);
         },
 
         //得到月的天数
-        getMonthDays: function (month, year) {
+        getMonthDays: function(month, year) {
             switch (parseInt(month)) {
                 case 2:
                     {
@@ -1411,24 +1411,24 @@ flyer.extend("date", function (selector, options) {
         },
 
         //根据参数时间得到是星期几
-        getDay: function (time) {
+        getDay: function(time) {
             return new Date(time).getDay();
         },
 
         //得到日期面板的起始时间
-        getStart: function () {
+        getStart: function() {
             var ymd = this._date;
             return this.getDay(ymd.year + "/" + ymd.month + "/01");
         },
 
         //得到日期面板的结速时间
-        getEnd: function () {
+        getEnd: function() {
             var ymd = this._date;
             return this.getDay(ymd.year + "/" + ymd.month + "/" + this.getMonthDays(ymd.month, ymd.year));
         },
 
         //格式化日期
-        formatDate: function () {
+        formatDate: function() {
             return this.options.format
                 .replace(/yyyy/ig, this._date.year)
                 .replace(/mm/, this._date.month)
@@ -1439,28 +1439,28 @@ flyer.extend("date", function (selector, options) {
         },
 
         //关闭日期选择面板
-        close: function () {
+        close: function() {
             this.container.css({
                 display: "none"
             });
         },
 
         //关闭所有日期选择面板
-        closeAll: function () {
+        closeAll: function() {
             $(".flyer-date").hide();
         },
 
         //设置最大可选日期
-        setMaxDate: function (date) {
+        setMaxDate: function(date) {
             this.maxDate = date;
         },
 
         //设置最小可选日期
-        setMinDate: function (date) {
+        setMinDate: function(date) {
             this.minDate = date;
         },
 
-        targetIsShow: function ($target) {
+        targetIsShow: function($target) {
             if ($target.hasClass("flyer-date-show")) {
                 $target.removeClass("flyer-date-show");
             } else {
@@ -1468,15 +1468,15 @@ flyer.extend("date", function (selector, options) {
             }
         },
 
-        isJQuery: function (obj) {
+        isJQuery: function(obj) {
             return obj instanceof jQuery;
         },
 
         //实例化挂载事件
-        initEvent: function () {
+        initEvent: function() {
             var _this = this;
             //点击控件框显示日期
-            this.selector.on("click", function (e) {
+            this.selector.on("click", function(e) {
                 _this.closeAll();
                 _this.refresh();
                 var $datepicker = $("#flyer-date-" + _this.selector.attr("id")),
@@ -1491,30 +1491,30 @@ flyer.extend("date", function (selector, options) {
         },
 
         //添加事件
-        events: function () {
+        events: function() {
             var _this = this;
 
             //显示年面板
-            this.$headerYear.on("click", ".more,.flyer-year", function () {
+            this.$headerYear.on("click", ".more,.flyer-year", function() {
                 var $target = $(this).parent().find(".flyer-date-yearMore");
                 _this.targetIsShow($target);
             });
 
             //点击月面板
-            this.$headerMonth.on("click", ".more,.flyer-month", function () {
+            this.$headerMonth.on("click", ".more,.flyer-month", function() {
                 var $target = $(this).parent().find(".flyer-date-monthMore");
                 _this.targetIsShow($target);
             });
 
             //点击左右年事件
-            this.$headerYear.on("click", ".next,.prev", function () {
+            this.$headerYear.on("click", ".next,.prev", function() {
                 var isNext = $(this).hasClass("next");
                 _this._date.year = isNext ? (parseInt(_this._date.year) + 1) : (parseInt(_this._date.year) - 1);
                 _this.refresh();
             });
 
             //点击左右月事件
-            this.$headerMonth.on("click", ".next,.prev", function () {
+            this.$headerMonth.on("click", ".next,.prev", function() {
                 var isNext = $(this).hasClass("next");
                 if (isNext) {
                     if (parseInt(_this._date.month) < 12) {
@@ -1529,19 +1529,19 @@ flyer.extend("date", function (selector, options) {
             });
 
             //选中年点击后事件
-            this.$headerMonth.on("click", ".flyer-date-monthMore span:not([class='flyer-dont-select'])", function () {
+            this.$headerMonth.on("click", ".flyer-date-monthMore span:not([class='flyer-dont-select'])", function() {
                 _this._date.month = $(this).text();
                 _this.refresh();
             })
 
             //自定义年点击后事件
-            this.$headerYear.on("click", ".flyer-date-yearMore span:not([class='flyer-dont-select'])", function () {
+            this.$headerYear.on("click", ".flyer-date-yearMore span:not([class='flyer-dont-select'])", function() {
                 _this._date.year = $(this).text();
                 _this.refresh();
             })
 
             //点击年面板上下刷新事件
-            this.$headerYear.on("click", ".prev-more,.next-more", function () {
+            this.$headerYear.on("click", ".prev-more,.next-more", function() {
                 var isNext = $(this).hasClass("next-more");
                 if (isNext) {
                     _this.$headerYear.find(".years").html((_this.initYears(_this.$headerYear.find(".flyer-date-yearMore span").last(0).text())));
@@ -1552,7 +1552,7 @@ flyer.extend("date", function (selector, options) {
 
             //点击日期天数的事件
             this.$body.find("td:not([class='flyer-dont-select'])").off("click");
-            this.$body.on("click", "td:not([class='flyer-dont-select'])", function () {
+            this.$body.on("click", "td:not([class='flyer-dont-select'])", function() {
                 if (!$(this).hasClass("flyer-dont-select")) {
                     _this._date.day = _this.justShowText($(this).text());
                     _this.options.click.call(this, _this.formatDate(), _this._date);
@@ -1563,13 +1563,13 @@ flyer.extend("date", function (selector, options) {
             });
 
             //给小时关闭按钮绑定事件
-            this.$footerTime.on("click", ".hour,.flyer-date-hours .flyer-date-minTool span", function () {
+            this.$footerTime.on("click", ".hour,.flyer-date-hours .flyer-date-minTool span", function() {
                 var $target = _this.$footerTime.find(".flyer-date-hours");
                 _this.targetIsShow($target);
             });
 
             //给小时绑定选中事件
-            this.$footerTime.on("click", ".flyer-date-hours .flyer-hours span", function () {
+            this.$footerTime.on("click", ".flyer-date-hours .flyer-hours span", function() {
 
                 var $target = _this.$footerTime.find(".flyer-date-hours");
                 _this.targetIsShow($target);
@@ -1580,14 +1580,14 @@ flyer.extend("date", function (selector, options) {
             });
 
             //给秒数关闭按钮绑定事件
-            this.$footerTime.on("click", ".minute,.flyer-date-minutes .flyer-date-minTool span", function () {
+            this.$footerTime.on("click", ".minute,.flyer-date-minutes .flyer-date-minTool span", function() {
                 var $target = _this.$footerTime.find(".flyer-date-minutes");
                 _this.targetIsShow($target);
 
             });
 
             //给分钟绑定选中事件
-            this.$footerTime.on("click", ".flyer-date-minutes .flyer-minutes span", function () {
+            this.$footerTime.on("click", ".flyer-date-minutes .flyer-minutes span", function() {
                 var $target = _this.$footerTime.find(".flyer-date-minutes");
                 _this.targetIsShow($target);
                 _this.$footerTime.find(".minute").html($(this).text());
@@ -1596,13 +1596,13 @@ flyer.extend("date", function (selector, options) {
             });
 
             //给秒数关闭按钮绑定事件
-            this.$footerTime.on("click", ".second,.flyer-date-seconds .flyer-date-minTool span", function () {
+            this.$footerTime.on("click", ".second,.flyer-date-seconds .flyer-date-minTool span", function() {
                 var $target = _this.$footerTime.find(".flyer-date-seconds");
                 _this.targetIsShow($target);
             });
 
             //给秒数绑定选中事件
-            this.$footerTime.on("click", ".flyer-date-seconds .flyer-seconds span", function () {
+            this.$footerTime.on("click", ".flyer-date-seconds .flyer-seconds span", function() {
                 var $target = _this.$footerTime.find(".flyer-date-seconds");
                 _this.targetIsShow($target);
                 _this.$footerTime.find(".second").html($(this).text());
@@ -1611,14 +1611,14 @@ flyer.extend("date", function (selector, options) {
             });
 
             //清空
-            this.$footerBts.on("click", ".flyer-clear", function () {
+            this.$footerBts.on("click", ".flyer-clear", function() {
                 _this.selector.val("");
                 _this._date = _this.getYMD();
                 _this.close();
             });
 
             //今天
-            this.$footerBts.on("click", ".flyer-today", function () {
+            this.$footerBts.on("click", ".flyer-today", function() {
                 _this._date = _this.getYMD(new Date());
                 _this.options.click.call(this, _this.formatDate(), _this._date);
                 _this.selector.val(_this.formatDate());
@@ -1627,18 +1627,18 @@ flyer.extend("date", function (selector, options) {
             });
 
             //确认
-            this.$footerBts.on("click", ".flyer-confirm", function () {
+            this.$footerBts.on("click", ".flyer-confirm", function() {
                 _this.options.click.call(this, _this.formatDate(), _this._date);
                 _this.selector.val(_this.formatDate());
                 _this.options.choose.call(this, _this.formatDate(), _this._date);
                 _this.close();
             });
 
-            $(this.container).on("click", function (e) {
+            $(this.container).on("click", function(e) {
                 flyer.stop(e);
             })
 
-            $(document).on("click", function (e) {
+            $(document).on("click", function(e) {
                 //$("." + styles[4]).removeClass(styles[8]);
                 _this.close();
             });
@@ -1654,11 +1654,11 @@ flyer.extend("date", function (selector, options) {
  *备注:关于 flyer  插件拓展的使用说明及规范范本.
  ***/
 "use strict";
-flyer.extend("demo", function (selector, options) {
+flyer.extend("demo", function(selector, options) {
     /*
      * 在这里写要实例插件的代码,定义的变量名以实际组件的名称为准
      */
-    var Demo = function (selector, options) {
+    var Demo = function(selector, options) {
         return this.init(selector, options);
     }
 
@@ -1669,7 +1669,7 @@ flyer.extend("demo", function (selector, options) {
     Demo.prototype = {
 
         //页面加载的实例化入口
-        init: function (selector, options) {
+        init: function(selector, options) {
             this.options = $.extend(true, {}, Demo.DEFAULTS, options);
 
             //方法实例化代码
@@ -1685,529 +1685,529 @@ flyer.extend("demo", function (selector, options) {
  *@License：MIT
  ***/
 "use strict";
-flyer.define(function (selector, options) {
-    //定义一个样式数组集合
-    var styles = ["flyer-modal", "flyer-dialog", "flyer-dialog-title", "flyer-dialog-toolbar", "flyer-close", "flyer-dialog-content", "flyer-dialog-footer", "flyer-btn", "flyer-dialog-move"],
-        body = document.body,
-        doc = document,
-        loca = location,
-        win = window;
+flyer.define(function(selector, options) {
+        //定义一个样式数组集合
+        var styles = ["flyer-modal", "flyer-dialog", "flyer-dialog-title", "flyer-dialog-toolbar", "flyer-close", "flyer-dialog-content", "flyer-dialog-footer", "flyer-btn", "flyer-dialog-move"],
+            body = document.body,
+            doc = document,
+            loca = location,
+            win = window;
 
-    //定义一个弹框组件
-    // selector 分页组件完成后要装入的容器
-    // options 分页组件时要定制的属性
-    var dialog = function (options) {
-        return this.init(options);
-    }
+        //定义一个弹框组件
+        // selector 分页组件完成后要装入的容器
+        // options 分页组件时要定制的属性
+        var dialog = function(options) {
+            return this.init(options);
+        }
 
-    //定制属性
-    dialog.DEFAULTS = {
+        //定制属性
+        dialog.DEFAULTS = {
 
-        //类型:String ,要挂载的容器对象。
-        container: "body",
+            //类型:String ,要挂载的容器对象。
+            container: "body",
 
-        //类型:String ,显示的标题,默认值为"",如果为空则不显示标题部分.
-        title: "",
+            //类型:String ,显示的标题,默认值为"",如果为空则不显示标题部分.
+            title: "",
 
-        //类型:String / DOM ,显示的内容，可以是文本型的也可以是DOM的加载 ,默认值为 ""
-        content: "",
+            //类型:String / DOM ,显示的内容，可以是文本型的也可以是DOM的加载 ,默认值为 ""
+            content: "",
 
-        //类型:Boolean ,是否可以移动,默认值为true
-        isMove: true,
+            //类型:Boolean ,是否可以移动,默认值为true
+            isMove: true,
 
-        //类型:Int ,计时器，这里一般用于定时关闭，默认值为 2000
-        timer: 4000,
+            //类型:Int ,计时器，这里一般用于定时关闭，默认值为 2000
+            timer: 4000,
 
-        //类型:String / Array ,弹层的位置定位，可以是文本型，也可以是数据值，数组类型索引值0为X坐标值，索引值1为Y坐标值，多写忽略，也就是只取前两值
-        offset: "auto",
+            //类型:String / Array ,弹层的位置定位，可以是文本型，也可以是数据值，数组类型索引值0为X坐标值，索引值1为Y坐标值，多写忽略，也就是只取前两值
+            offset: "auto",
 
-        //类型:Boolean ,是否固定显示在可视区域,默认为true
-        fixed: true,
+            //类型:Boolean ,是否固定显示在可视区域,默认为true
+            fixed: true,
 
-        //类型:String ,个性皮肤样式,默认值为""
-        skin: "",
-
-        //类型:Array ,宽高,以数组的形式,索引0是宽度，索引1是高度，多写忽略,也就是只取前两个值
-        area: [],
-
-        //类型:String ,按钮排列位置,可选值为 l 左对齐，c 居中对齐, r 右对齐(默认值)
-        btnAlign: "c",
-
-        //类型:Function ,点击弹框右上角关闭的事件.自身上下文等于整个弹框
-        cancel: function () {
-            return false;
-        },
-
-        //类型：Boolean ,是否显示右上角关闭按钮
-        showCancelBtn: true,
-
-        //类型:Boolean ,是否点击遮罩层关闭,默认为false
-        modalClose: false,
-
-        //类型: Boolean ,是否是对话框模式
-        isModal: false,
-
-        //类型：Boolean ,是否自动关闭,目前只针对消息框有效
-        autoClose: true,
-
-        //类型：String ,页面引用地址,用于显示在模态框的内容区域（目前只适用于模态框)，优先级高于 content
-        pageUrl: "",
-
-        //类型: String ,动画样式名称，需要自写好动画样式
-        anim: "bounceInDown",
-
-        //类型: Boolean 是否输出动画效果
-        isOutAnim: true,
-
-        //类型:Array ,按钮组,每个元素是一个对象，每个对象的结构由text类型String,显示文本，skin类型String ,按钮皮肤,click类型Function点击事件组成
-        btns: [{
-            text: "取消",
+            //类型:String ,个性皮肤样式,默认值为""
             skin: "",
-            click: function () {
-                this.close();
-            }
-        }],
-        // 创建完成之后，此时dom可用
-        afterCreated: function () {
 
+            //类型:Array ,宽高,以数组的形式,索引0是宽度，索引1是高度，多写忽略,也就是只取前两个值
+            area: [],
+
+            //类型:String ,按钮排列位置,可选值为 l 左对齐，c 居中对齐, r 右对齐(默认值)
+            btnAlign: "c",
+
+            //类型:Function ,点击弹框右上角关闭的事件.自身上下文等于整个弹框
+            cancel: function() {
+                return false;
+            },
+
+            //类型：Boolean ,是否显示右上角关闭按钮
+            showCancelBtn: true,
+
+            //类型:Boolean ,是否点击遮罩层关闭,默认为false
+            modalClose: false,
+
+            //类型: Boolean ,是否是对话框模式
+            isModal: false,
+
+            //类型：Boolean ,是否自动关闭,目前只针对消息框有效
+            autoClose: true,
+
+            //类型：String ,页面引用地址,用于显示在模态框的内容区域（目前只适用于模态框)，优先级高于 content
+            pageUrl: "",
+
+            //类型: String ,动画样式名称，需要自写好动画样式
+            anim: "bounceInDown",
+
+            //类型: Boolean 是否输出动画效果
+            isOutAnim: true,
+
+            //类型:Array ,按钮组,每个元素是一个对象，每个对象的结构由text类型String,显示文本，skin类型String ,按钮皮肤,click类型Function点击事件组成
+            btns: [{
+                text: "取消",
+                skin: "",
+                click: function() {
+                    this.close();
+                }
+            }],
+            // 创建完成之后，此时dom可用
+            afterCreated: function() {
+
+            }
         }
-    }
 
-    dialog.prototype = {
+        dialog.prototype = {
 
-        //装载组件
-        init: function (options) {
+            //装载组件
+            init: function(options) {
 
-            this.index = new Date().getTime();
+                this.index = new Date().getTime();
 
-            //内置一些属性，用于补漏
-            this.options = $.extend(true, {}, dialog.DEFAULTS, options);
+                //内置一些属性，用于补漏
+                this.options = $.extend(true, {}, dialog.DEFAULTS, options);
 
-            //实例好要挂载的容器
-            this.$container = $(this.options.container);
-            this.template();
-            this.bindEvents();
-        },
+                //实例好要挂载的容器
+                this.$container = $(this.options.container);
+                this.template();
+                this.bindEvents();
+            },
 
-        //添加事件
-        bindEvents: function () {
-            var _this = this,
-                opts = _this.options;
+            //添加事件
+            bindEvents: function() {
+                var _this = this,
+                    opts = _this.options;
 
-            this.$title.on("mousedown", function (e) {
-                _this.mousedown(e);
-            });
+                this.$title.on("mousedown", function(e) {
+                    _this.mousedown(e);
+                });
 
-            $(document).mousemove(function (e) {
-                _this.mousemove(e);
-            });
+                $(document).mousemove(function(e) {
+                    _this.mousemove(e);
+                });
 
-            $(document).mouseup(function (e) {
-                _this.mouseup(e);
-            });
+                $(document).mouseup(function(e) {
+                    _this.mouseup(e);
+                });
 
-            this.$btnClose.on("click", function (e) {
-                opts.cancel.call(this);
-                _this.close();
-                flyer.stop(e);
-            })
-            for (var i = 0, optsBtns = opts.btns, btns = _this.$btns, len = this.$btns.length; i < len; i++) {
-                (function (elm, evnt) {
-                    //修复IE浏览器得不到function.name的bug
-                    //$(elm).on(evnt.click.name, function() {
-                    $(elm).on("click", function () {
-                        evnt.click.call(_this, elm);
-                    });
-                })(btns[i], optsBtns[i]);
-            };
-        },
-
-        //加载模板
-        template: function () {
-
-            var opts = this.options,
-                _this = this;
-
-            this.selector = styles[1] + this.index;
-            this.modalSelector = styles[0] + this.selector;
-
-            var arryHtmls = ['<div id="' + this.modalSelector + '" class="' + styles[0] + '"></div>',
-            '<div id="' + this.selector + '" class="' + styles[1] + (opts.skin.length > 0 ? (" " + opts.skin) : "") + (opts.anim.length && opts.isOutAnim > 0 ? (" " + opts.anim) : "") + '">',
-            '<div class="' + styles[2] + (opts.isMove ? ' flyer-move' : '') + '">',
-                '<h4> ',
-            opts.title,
-                '</h4>',
-                '</div>',
-            '<div class="' + styles[3] + '">',
-            opts.showCancelBtn ? '<i class="' + styles[4] + '">x</i>' : "",
-                '</div>',
-            '<div class="' + styles[5] + '">',
-            opts.content,
-                '</div>',
-            '<div class="' + styles[6] + '">',
-            this.builderBtn(),
-                '</div>',
-                '</div>'
-            ];
-
-            if (!opts.isModal) {
-                arryHtmls.splice(0, 1);
-            }
-
-            this.$container.append(arryHtmls.join(""));
-
-            this.$el = $("#" + this.selector);
-            this.$title = this.$el.find("." + styles[2]);
-            this.$content = this.$el.find("." + styles[5]);
-            this.$footer = this.$el.find("." + styles[6]);
-            this.$toolbar = this.$el.find("." + styles[3]);
-            this.$btnClose = this.$el.find("." + styles[4]);
-            this.$btns = this.$footer.find("." + styles[7]);
-            this.$modal = $("#" + this.modalSelector);
-
-            this.handtailor();
-            this.setOffset();
-        },
-
-        //根据定制属性展现
-        handtailor: function () {
-
-            var opts = this.options,
-                _this = this;
-
-            if (opts.modalClose && opts.isModal) {
-                _this.$modal.on("click", function () {
+                this.$btnClose.on("click", function(e) {
+                    opts.cancel.call(this);
                     _this.close();
+                    flyer.stop(e);
                 })
-            }
-
-            //如果标题未填写则不显示标题
-            if (opts.title.length === 0) {
-                this.$title.remove();
-            }
-
-            if (opts.area.length > 1) {
-                this.$content.css({ "width": opts.area[0], "height": opts.area[1] });
-            }
-
-            if (opts.offset instanceof Array && opts.offset.length > 1) {
-                this.$el.css({ "top": opts.offset[0], "left": opts.offset[1] });
-            }
-
-            if (opts.fixed) {
-                this.$el.css("position", "fixed");
-            }
-
-            switch (opts.btnAlign) {
-                case "c":
-                    this.$footer.css("text-align", "center");
-                    break;
-                case "r":
-                    this.$footer.css("text-align", "right");
-                    break;
-                case "l":
-                    this.$footer.css("text-align", "left");
-                    break;
-            }
-        },
-
-        //鼠标移动点击时
-        mousedown: function (e) {
-
-            var opts = this.options,
-                $title = $("#" + this.selector).find("." + styles[2]);
-
-            this.isMove = typeof opts !== "undefined" && typeof opts.isMove != "undefined" ? opts.isMove : true;
-
-            //配置了可以移动
-            if (this.isMove) {
-                this.offsetX = e.offsetX;
-                this.offsetY = e.offsetY;
-                this.$el.data("position", this.$el.css("position"));
-                this.$el.css({ "position": "absolute", "top": (parseInt(this.$el.css("top")) + parseInt(this.getScrollTop())) });
-
-                //屏蔽点击鼠标会选中文本内容
-                document.body.onselectstart = function () {
-                    return false;
-                }
-            }
-        },
-
-        //鼠标移动时
-        mousemove: function (e) {
-            if (this.isMove) {
-                var x = e.clientX - this.offsetX,
-                    y = e.clientY - this.offsetY + parseInt(this.getScrollTop());
-                this.$el.css({ "top": y, "left": x });
-            }
-        },
-
-        //鼠标移动松开时
-        mouseup: function () {
-            if (this.isMove) {
-                this.isMove = false;
-                this.$el.css({ "position": this.$el.data("position"), "top": (parseInt(this.$el.css("top")) - parseInt(this.getScrollTop())) });
-
-                document.body.onselectstart = function () {
-                    return true;
-                }
-            }
-        },
-
-        //生成操作按钮
-        builderBtn: function () {
-            var opts = this.options,
-                btns = opts.btns,
-                btnHtmls = [];
-            for (var i = 0, len = btns.length; i < len; i++) {
-                btnHtmls.push('<button class="' + styles[7] + ' ' + btns[i].skin + '">' + btns[i].text + '</button>');
-            }
-            return btnHtmls.join("");
-        },
-
-        //关闭层
-        close: function () {
-            this.$el.remove();
-            this.$modal.remove();
-        },
-
-        //设置弹层的坐标
-        setOffset: function () {
-            var _this = this;
-            switch (_this.options.offset) {
-                case "auto":
-                    {
-                        var xy = this.getOffset(_this.$el.get(0));
-                        _this.$el.css({
-                            "top": String(xy.y) + "px",
-                            "left": String(xy.x) + "px"
-                        })
-                    }
-                    break;
-            }
-        },
-
-        //得到当前滚动条的高度
-        getScrollTop: function () {
-            var h = document.documentElement.scrollTop;
-            if (h === 0) {
-                h = document.body.scrollTop;
-            }
-            return h;
-        },
-
-        //获得屏幕的中心坐标
-        getOffset: function (self) {
-            try {
-                var mode = "body";
-                var bodyX = $(mode).width();
-                var bodyY = window.screen.height;
-                var selfX = typeof self !== "undefined" ? self.offsetWidth : 0;
-                var selfY = typeof self !== "undefined" ? self.offsetHeight : 0;
-                return {
-                    x: bodyX / 2 - selfX / 2,
-                    y: bodyY / 3 - selfY / 2,
-                    w: mode.offsetWidth,
-                    h: mode.clientHeight
+                for (var i = 0, optsBtns = opts.btns, btns = _this.$btns, len = this.$btns.length; i < len; i++) {
+                    (function(elm, evnt) {
+                        //修复IE浏览器得不到function.name的bug
+                        //$(elm).on(evnt.click.name, function() {
+                        $(elm).on("click", function() {
+                            evnt.click.call(_this, elm);
+                        });
+                    })(btns[i], optsBtns[i]);
                 };
-            } catch (ex) { }
-        }
-    }
+            },
 
-    //制作一些快捷弹框方法
-    return {
+            //加载模板
+            template: function() {
 
-        //提示框
-        alert: function (text, options) {
+                var opts = this.options,
+                    _this = this;
 
-            //确保参数的正确性
-            options = options || {};
-            options.content = text;
-            options.title = options.title || "提示";
-            options.skin = options.skin || "flyer-dialog-alert";
-            var o = new dialog(options);
-            //o.$el.addClass("flyer-dialog-alert");
-            return o;
-        },
+                this.selector = styles[1] + this.index;
+                this.modalSelector = styles[0] + this.selector;
 
-        //确认提示框
-        confirm: function (text, callback, options) {
-            options = $.extend({
-                btns: [{
-                    text: "确定",
-                    skin: "flyer-btn-blue",
-                    click: function (elm) {
-                        this.close();
-                        if (typeof callback === "function") {
-                            callback.call(this, elm, true);
-                        }
-                    }
-                },
-                {
-                    text: "取消",
-                    skin: "",
-                    click: function (elm) {
-                        this.close();
-                        if (typeof callback === "function") {
-                            callback.call(this, elm, false);
-                        }
+                var arryHtmls = ['<div id="' + this.modalSelector + '" class="' + styles[0] + '"></div>',
+                    '<div id="' + this.selector + '" class="' + styles[1] + (opts.skin.length > 0 ? (" " + opts.skin) : "") + (opts.anim.length && opts.isOutAnim > 0 ? (" " + opts.anim) : "") + '">',
+                    '<div class="' + styles[2] + (opts.isMove ? ' flyer-move' : '') + '">',
+                    '<h4> ',
+                    opts.title,
+                    '</h4>',
+                    '</div>',
+                    '<div class="' + styles[3] + '">',
+                    opts.showCancelBtn ? '<i class="' + styles[4] + '">x</i>' : "",
+                    '</div>',
+                    '<div class="' + styles[5] + '">',
+                    opts.content,
+                    '</div>',
+                    '<div class="' + styles[6] + '">',
+                    this.builderBtn(),
+                    '</div>',
+                    '</div>'
+                ];
+
+                if (!opts.isModal) {
+                    arryHtmls.splice(0, 1);
+                }
+
+                this.$container.append(arryHtmls.join(""));
+
+                this.$el = $("#" + this.selector);
+                this.$title = this.$el.find("." + styles[2]);
+                this.$content = this.$el.find("." + styles[5]);
+                this.$footer = this.$el.find("." + styles[6]);
+                this.$toolbar = this.$el.find("." + styles[3]);
+                this.$btnClose = this.$el.find("." + styles[4]);
+                this.$btns = this.$footer.find("." + styles[7]);
+                this.$modal = $("#" + this.modalSelector);
+
+                this.handtailor();
+                this.setOffset();
+            },
+
+            //根据定制属性展现
+            handtailor: function() {
+
+                var opts = this.options,
+                    _this = this;
+
+                if (opts.modalClose && opts.isModal) {
+                    _this.$modal.on("click", function() {
+                        _this.close();
+                    })
+                }
+
+                //如果标题未填写则不显示标题
+                if (opts.title.length === 0) {
+                    this.$title.remove();
+                }
+
+                if (opts.area.length > 1) {
+                    this.$content.css({ "width": opts.area[0], "height": opts.area[1] });
+                }
+
+                if (opts.offset instanceof Array && opts.offset.length > 1) {
+                    this.$el.css({ "top": opts.offset[0], "left": opts.offset[1] });
+                }
+
+                if (opts.fixed) {
+                    this.$el.css("position", "fixed");
+                }
+
+                switch (opts.btnAlign) {
+                    case "c":
+                        this.$footer.css("text-align", "center");
+                        break;
+                    case "r":
+                        this.$footer.css("text-align", "right");
+                        break;
+                    case "l":
+                        this.$footer.css("text-align", "left");
+                        break;
+                }
+            },
+
+            //鼠标移动点击时
+            mousedown: function(e) {
+
+                var opts = this.options,
+                    $title = $("#" + this.selector).find("." + styles[2]);
+
+                this.isMove = typeof opts !== "undefined" && typeof opts.isMove != "undefined" ? opts.isMove : true;
+
+                //配置了可以移动
+                if (this.isMove) {
+                    this.offsetX = e.offsetX;
+                    this.offsetY = e.offsetY;
+                    this.$el.data("position", this.$el.css("position"));
+                    this.$el.css({ "position": "absolute", "top": (parseInt(this.$el.css("top")) + parseInt(this.getScrollTop())) });
+
+                    //屏蔽点击鼠标会选中文本内容
+                    document.body.onselectstart = function() {
+                        return false;
                     }
                 }
-                ]
-            }, options);
-            options.content = text;
-            options.skin = options.skin || "flyer-dialog-confirm";
-            var o = new dialog(options);
-            //o.$el.addClass("flyer-dialog-confirm");
-            return o;
-        },
+            },
 
-        //打开一个模态框
-        open: function (options) {
-            options.skin = options.skin || "flyer-dialog-open";
-            var o = new dialog(options);
-            if (o.options.pageUrl.length > 0) {
-                o.$content.load(o.options.pageUrl, function () {
+            //鼠标移动时
+            mousemove: function(e) {
+                if (this.isMove) {
+                    var x = e.clientX - this.offsetX,
+                        y = e.clientY - this.offsetY + parseInt(this.getScrollTop());
+                    this.$el.css({ "top": y, "left": x });
+                }
+            },
+
+            //鼠标移动松开时
+            mouseup: function() {
+                if (this.isMove) {
+                    this.isMove = false;
+                    this.$el.css({ "position": this.$el.data("position"), "top": (parseInt(this.$el.css("top")) - parseInt(this.getScrollTop())) });
+
+                    document.body.onselectstart = function() {
+                        return true;
+                    }
+                }
+            },
+
+            //生成操作按钮
+            builderBtn: function() {
+                var opts = this.options,
+                    btns = opts.btns,
+                    btnHtmls = [];
+                for (var i = 0, len = btns.length; i < len; i++) {
+                    btnHtmls.push('<button class="' + styles[7] + ' ' + btns[i].skin + '">' + btns[i].text + '</button>');
+                }
+                return btnHtmls.join("");
+            },
+
+            //关闭层
+            close: function() {
+                this.$el.remove();
+                this.$modal.remove();
+            },
+
+            //设置弹层的坐标
+            setOffset: function() {
+                var _this = this;
+                switch (_this.options.offset) {
+                    case "auto":
+                        {
+                            var xy = this.getOffset(_this.$el.get(0));
+                            _this.$el.css({
+                                "top": String(xy.y) + "px",
+                                "left": String(xy.x) + "px"
+                            })
+                        }
+                        break;
+                }
+            },
+
+            //得到当前滚动条的高度
+            getScrollTop: function() {
+                var h = document.documentElement.scrollTop;
+                if (h === 0) {
+                    h = document.body.scrollTop;
+                }
+                return h;
+            },
+
+            //获得屏幕的中心坐标
+            getOffset: function(self) {
+                try {
+                    var mode = "body";
+                    var bodyX = $(mode).width();
+                    var bodyY = window.screen.height;
+                    var selfX = typeof self !== "undefined" ? self.offsetWidth : 0;
+                    var selfY = typeof self !== "undefined" ? self.offsetHeight : 0;
+                    return {
+                        x: bodyX / 2 - selfX / 2,
+                        y: bodyY / 3 - selfY / 2,
+                        w: mode.offsetWidth,
+                        h: mode.clientHeight
+                    };
+                } catch (ex) {}
+            }
+        }
+
+        //制作一些快捷弹框方法
+        return {
+
+            //提示框
+            alert: function(text, options) {
+
+                //确保参数的正确性
+                options = options || {};
+                options.content = text;
+                options.title = options.title || "提示";
+                options.skin = options.skin || "flyer-dialog-alert";
+                var o = new dialog(options);
+                //o.$el.addClass("flyer-dialog-alert");
+                return o;
+            },
+
+            //确认提示框
+            confirm: function(text, callback, options) {
+                options = $.extend({
+                    btns: [{
+                            text: "确定",
+                            skin: "flyer-btn-blue",
+                            click: function(elm) {
+                                this.close();
+                                if (typeof callback === "function") {
+                                    callback.call(this, elm, true);
+                                }
+                            }
+                        },
+                        {
+                            text: "取消",
+                            skin: "",
+                            click: function(elm) {
+                                this.close();
+                                if (typeof callback === "function") {
+                                    callback.call(this, elm, false);
+                                }
+                            }
+                        }
+                    ]
+                }, options);
+                options.content = text;
+                options.skin = options.skin || "flyer-dialog-confirm";
+                var o = new dialog(options);
+                //o.$el.addClass("flyer-dialog-confirm");
+                return o;
+            },
+
+            //打开一个模态框
+            open: function(options) {
+                options.skin = options.skin || "flyer-dialog-open";
+                var o = new dialog(options);
+                if (o.options.pageUrl.length > 0) {
+                    o.$content.load(o.options.pageUrl, function() {
+                        if (typeof options.afterCreated === 'function') {
+                            options.afterCreated();
+                        }
+                        o.setOffset();
+                    });
+                } else {
                     if (typeof options.afterCreated === 'function') {
                         options.afterCreated();
                     }
-                    o.setOffset();
-                });
-            } else {
-                if (typeof options.afterCreated === 'function') {
-                    options.afterCreated();
                 }
-            }
-            return o;
-        },
+                return o;
+            },
 
-        // //加载提示
-        // loadding: function(options) {
-        //     var o = new dialog(options);
-        //     o.$title.remove();
-        //     o.$footer.remove();
-        //     return o;
-        // },
+            // //加载提示
+            // loadding: function(options) {
+            //     var o = new dialog(options);
+            //     o.$title.remove();
+            //     o.$footer.remove();
+            //     return o;
+            // },
 
-        //轻量消息层
-        msg: function (text, options) {
-            //确保参数的正确性
-            options = options || {};
-            options.content = text;
-            options.showCancelBtn = typeof options.showCancelBtn !== "undefined" ? options.showCancelBtn : false;
-            options.autoClose = typeof options.autoClose !== "undefined" ? options.autoClose : true;
-            options.anim = options.anim || "bounceIn";
-            options.skin = options.skin || "flyer-dialog-msg";
-            var o = new dialog(options);
-            //o.$el.addClass("flyer-dialog-msg");
-            o.$title.remove();
-            o.$footer.remove();
+            //轻量消息层
+            msg: function(text, options) {
+                //确保参数的正确性
+                options = options || {};
+                options.content = text;
+                options.showCancelBtn = typeof options.showCancelBtn !== "undefined" ? options.showCancelBtn : false;
+                options.autoClose = typeof options.autoClose !== "undefined" ? options.autoClose : true;
+                options.anim = options.anim || "bounceIn";
+                options.skin = options.skin || "flyer-dialog-msg";
+                var o = new dialog(options);
+                //o.$el.addClass("flyer-dialog-msg");
+                o.$title.remove();
+                o.$footer.remove();
 
-            if (options.autoClose) {
-                setTimeout(function () {
-                    o.close();
-                }, o.options.timer);
-            }
+                if (options.autoClose) {
+                    setTimeout(function() {
+                        o.close();
+                    }, o.options.timer);
+                }
 
-            return o;
-        },
+                return o;
+            },
 
-        tip: function (text, options) {
+            tip: function(text, options) {
 
-            //确保参数的正确性
-            options = options || {};
-            options.skin = options.skin || "flyer-dialog-tip";
-            options.anim = options.anim || "bounceInDown";
-            options.offset = options.offset || [0, 0];
-            var o = this.msg(text, options);
+                //确保参数的正确性
+                options = options || {};
+                options.skin = options.skin || "flyer-dialog-tip";
+                options.anim = options.anim || "bounceInDown";
+                options.offset = options.offset || [0, 0];
+                var o = this.msg(text, options);
 
-            return o;
-        },
+                return o;
+            },
 
-        //关闭层
-        closeAll: function (type) {
-            if (typeof type === "undefined") {
-                $("." + styles[1]).remove();
-                $("." + styles[0]).remove();
-            } else {
-                switch (type) {
-                    case "alert":
-                        $(".flyer-dialog-alert").remove();
-                        break;
-                    case "confirm":
-                        $(".flyer-dialog-confirm").remove();
-                        break;
-                    case "open":
-                        $(".flyer-dialog-open").remove();
-                        break;
-                    case "msg":
-                        $(".flyer-dialog-msg").remove();
-                        break;
-                    case "tip":
-                        $(".flyer-dialog-tip").remove();
-                        break;
+            //关闭层
+            closeAll: function(type) {
+                if (typeof type === "undefined") {
+                    $("." + styles[1]).remove();
+                    $("." + styles[0]).remove();
+                } else {
+                    switch (type) {
+                        case "alert":
+                            $(".flyer-dialog-alert").remove();
+                            break;
+                        case "confirm":
+                            $(".flyer-dialog-confirm").remove();
+                            break;
+                        case "open":
+                            $(".flyer-dialog-open").remove();
+                            break;
+                        case "msg":
+                            $(".flyer-dialog-msg").remove();
+                            break;
+                        case "tip":
+                            $(".flyer-dialog-tip").remove();
+                            break;
+                    }
                 }
             }
         }
-    }
-})
-/***
- *@Name: fiyer v0.1.1 富文本框组件
- *@Author: Ken (郑鹏飞)
- *@Site : http://www.flyerui.com
- *@License：MIT
- *备注:关于 flyer  插件拓展的使用说明及规范范本.
- ***/
-//定义成 flyer 内置模块
+    })
+    /***
+     *@Name: fiyer v0.1.1 富文本框组件
+     *@Author: Ken (郑鹏飞)
+     *@Site : http://www.flyerui.com
+     *@License：MIT
+     *备注:关于 flyer  插件拓展的使用说明及规范范本.
+     ***/
+    //定义成 flyer 内置模块
 "use strict";
-flyer.extend("edit", function (selector, options) {
+flyer.extend("edit", function(selector, options) {
     /*
      * 在这里写要实例插件的代码
      */
-    var Edit = function (selector, options) {
+    var Edit = function(selector, options) {
         return this.init(selector, options);
     }
 
     Edit.DEFAULTS = {
         //内置的属性
         tools: [{
-            name: "document",
-            groups: [
-                "bold",
-                "italic",
-                "underline",
-                "strike",
-                "sub",
-                "super",
-            ]
-        },
-        {
-            name: "typeset",
-            groups: [
-                // "ol",
-                // "ul",
-                "left",
-                "center",
-                "right",
-                // "indent",
-                // "outdent"
-            ]
-        },
-        {
-            name: "insert",
-            groups: [
-                // "link",
-                // "unlink",
-                "template",
-                "pagerclip",
-                // "img"
-            ]
-        }
+                name: "document",
+                groups: [
+                    "bold",
+                    "italic",
+                    "underline",
+                    "strike",
+                    "sub",
+                    "super",
+                ]
+            },
+            {
+                name: "typeset",
+                groups: [
+                    // "ol",
+                    // "ul",
+                    "left",
+                    "center",
+                    "right",
+                    // "indent",
+                    // "outdent"
+                ]
+            },
+            {
+                name: "insert",
+                groups: [
+                    // "link",
+                    // "unlink",
+                    "template",
+                    "pagerclip",
+                    // "img"
+                ]
+            }
         ],
-        minHeight: 150,// 编辑窗口最小高度
+        minHeight: 150, // 编辑窗口最小高度
         maxHeight: 416, // 编辑窗口最大高度
         isResize: false, // 是否可以改变窗口大小
-        resizeCallback: function (type) {
+        resizeCallback: function(type) {
 
         }, // 大小改变的时候，执行的回掉函数，只有isResize 为true是有效
         //removeTools: []
@@ -2216,82 +2216,82 @@ flyer.extend("edit", function (selector, options) {
     var dictionary = {
         bold: {
             index: "bold",
-            template: '<i class="fa fa-bold bold" data-cmd="bold" title="' + flyer.i18n.initTitle("字体加粗") + '" aria-hidden="true"></i>'
+            template: '<i class="fa fa-bold bold" data-cmd="bold" title="' + ("字体加粗") + '" aria-hidden="true"></i>'
         },
         italic: {
             index: "italic",
-            template: '<i class="fa fa-italic italic" data-cmd="italic" title="' + flyer.i18n.initTitle("引用斜体") + '" aria-hidden="true"></i>'
+            template: '<i class="fa fa-italic italic" data-cmd="italic" title="' + ("引用斜体") + '" aria-hidden="true"></i>'
         },
         underline: {
             index: "underline",
-            template: '<i class="fa fa-underline underline" data-cmd="underline" title="' + flyer.i18n.initTitle("字体下划线") + '" aria-hidden="true"></i>'
+            template: '<i class="fa fa-underline underline" data-cmd="underline" title="' + ("字体下划线") + '" aria-hidden="true"></i>'
         },
         strike: {
             index: "strike",
-            template: '<i class="fa fa-strikethrough strike" data-cmd="strikeThrough" title="' + flyer.i18n.initTitle("字体删除线") + '" aria-hidden="true"></i>'
+            template: '<i class="fa fa-strikethrough strike" data-cmd="strikeThrough" title="' + ("字体删除线") + '" aria-hidden="true"></i>'
         },
         sub: {
             index: "sub",
-            template: '<i class="fa fa-subscript sub" data-cmd="subscript" title="' + flyer.i18n.initTitle("下标") + '" name="mark" data-name="mark" aria-hidden="true"></i>'
+            template: '<i class="fa fa-subscript sub" data-cmd="subscript" title="' + ("下标") + '" name="mark" data-name="mark" aria-hidden="true"></i>'
         },
         super: {
             index: "super",
-            template: '<i class="fa fa-superscript super" data-cmd="superscript" title="' + flyer.i18n.initTitle("上标") + '" name="mark" data-name="mark" aria-hidden="true"></i>'
+            template: '<i class="fa fa-superscript super" data-cmd="superscript" title="' + ("上标") + '" name="mark" data-name="mark" aria-hidden="true"></i>'
         },
         ol: {
             index: "ol",
-            template: '<i class="fa fa-list-ol ol" name="list" data-name="list" data-cmd="superscript" title="' + flyer.i18n.initTitle("编号列表") + '" aria-hidden="true"></i>'
+            template: '<i class="fa fa-list-ol ol" name="list" data-name="list" data-cmd="superscript" title="' + ("编号列表") + '" aria-hidden="true"></i>'
         },
         ul: {
             index: "ul",
-            template: '<i class="fa fa-list-ul ul" name="list" data-name="list" title="' + flyer.i18n.initTitle("项目列表") + '" aria-hidden="true"></i>'
+            template: '<i class="fa fa-list-ul ul" name="list" data-name="list" title="' + ("项目列表") + '" aria-hidden="true"></i>'
         },
         left: {
             index: "left",
-            template: '<i class="fa fa-align-left left" name="align" data-name="align" data-cmd="justifyLeft" title="' + flyer.i18n.initTitle("左对齐") + '" aria-hidden="true"></i>'
+            template: '<i class="fa fa-align-left left" name="align" data-name="align" data-cmd="justifyLeft" title="' + ("左对齐") + '" aria-hidden="true"></i>'
         },
         center: {
             index: "center",
-            template: '<i class="fa fa-align-center center" name="align" data-name="align" data-cmd="justifyCenter" title="' + flyer.i18n.initTitle("居中对齐") + '" aria-hidden="true"></i>'
+            template: '<i class="fa fa-align-center center" name="align" data-name="align" data-cmd="justifyCenter" title="' + ("居中对齐") + '" aria-hidden="true"></i>'
         },
         right: {
             index: "right",
-            template: '<i class="fa fa-align-right right" name="align" data-name="align" data-cmd="justifyRight" title="' + flyer.i18n.initTitle("右对齐") + '" aria-hidden="true"></i>'
+            template: '<i class="fa fa-align-right right" name="align" data-name="align" data-cmd="justifyRight" title="' + ("右对齐") + '" aria-hidden="true"></i>'
         },
         link: {
             index: "link",
-            template: '<i class="fa fa-link link" title="' + flyer.i18n.initTitle("添加链接") + '" aria-hidden="true"></i>'
+            template: '<i class="fa fa-link link" title="' + ("添加链接") + '" aria-hidden="true"></i>'
         },
         unlink: {
             index: "unlink",
-            template: '<i class="fa fa-unlink unlink" title="' + flyer.i18n.initTitle("清除链接") + '" aria-hidden="true"></i>'
+            template: '<i class="fa fa-unlink unlink" title="' + ("清除链接") + '" aria-hidden="true"></i>'
         },
         template: {
             index: "template",
-            template: '<i class="fa fa-file-text template inActive" title="' + flyer.i18n.initTitle("引用模板") + '" aria-hidden="true"></i>'
+            template: '<i class="fa fa-file-text template inActive" title="' + ("引用模板") + '" aria-hidden="true"></i>'
         },
         pagerclip: {
             index: "pagerclip",
-            template: '<i class="fa fa-paperclip pagerclip inActive" title="' + flyer.i18n.initTitle("添加附件") + '" aria-hidden="true"></i>'
+            template: '<i class="fa fa-paperclip pagerclip inActive" title="' + ("添加附件") + '" aria-hidden="true"></i>'
         },
         img: {
             index: "img",
-            template: '<i class="fa fa-image img inActive" title="' + flyer.i18n.initTitle("引用图片") + '" aria-hidden="true"></i>'
+            template: '<i class="fa fa-image img inActive" title="' + ("引用图片") + '" aria-hidden="true"></i>'
         },
         indent: {
             index: "indent",
-            template: '<i class="fa fa-indent" data-cmd="indent" title="' + flyer.i18n.initTitle("增加缩进量") + '" aria-hidden="true"></i>'
+            template: '<i class="fa fa-indent" data-cmd="indent" title="' + ("增加缩进量") + '" aria-hidden="true"></i>'
         },
         outdent: {
             index: "outdent",
-            template: '<i class="fa fa-outdent" data-cmd="outdent" title="' + flyer.i18n.initTitle("减少缩进量") + '" aria-hidden="true"></i>'
+            template: '<i class="fa fa-outdent" data-cmd="outdent" title="' + ("减少缩进量") + '" aria-hidden="true"></i>'
         }
     }
 
     Edit.prototype = {
 
         //页面加载的实例化入口
-        init: function (selector, options) {
+        init: function(selector, options) {
             this.options = $.extend(true, {}, Edit.DEFAULTS, options);
             this[0] = selector;
             this.parent = this[0].parent();
@@ -2301,7 +2301,7 @@ flyer.extend("edit", function (selector, options) {
         },
 
         //初始化 dom 
-        template: function () {
+        template: function() {
             var _ops = this.options;
             var aryHtmls = [
                 '<div class="flyer-edit">',
@@ -2322,10 +2322,11 @@ flyer.extend("edit", function (selector, options) {
 
         },
 
-        initEvents: function () {
-            var _this = this, _ops = this.options;
-            this.elms.tools.each(function (i) {
-                $(this).on("click", function () {
+        initEvents: function() {
+            var _this = this,
+                _ops = this.options;
+            this.elms.tools.each(function(i) {
+                $(this).on("click", function() {
                     var $this = $(this),
                         cmd = $this.data("cmd"),
                         name = $this.data("name");
@@ -2342,12 +2343,17 @@ flyer.extend("edit", function (selector, options) {
                 });
             });
 
-            this.elms.editer.off("click").on("click", function (e) {
-                var target = e.target, $target = $(target), aryParents = $target.parents(), cmds = [], className = "flyer-edit-write", strs = [];
+            this.elms.editer.off("click").on("click", function(e) {
+                var target = e.target,
+                    $target = $(target),
+                    aryParents = $target.parents(),
+                    cmds = [],
+                    className = "flyer-edit-write",
+                    strs = [];
 
                 if (!$target.hasClass(className)) {
                     cmds.push(target.tagName);
-                    var tagNames = aryParents.filter(function (i, item) {
+                    var tagNames = aryParents.filter(function(i, item) {
                         return item.tagName !== "BODY" && item.tagName !== "HTML" && item.className !== className && item.tagName !== "DIV";
                     });
                     for (var i = 0, len = tagNames.length; i < len; i++) {
@@ -2379,9 +2385,10 @@ flyer.extend("edit", function (selector, options) {
         },
 
         // 改变窗口大小
-        onresize: function () {
-            var _this = this, _opts = _this.options;
-            $('#resize').click(function (e) {
+        onresize: function() {
+            var _this = this,
+                _opts = _this.options;
+            $('#resize').click(function(e) {
                 // 展开
                 if ($(this).hasClass('fa-expand')) {
                     $(this).removeClass('fa-expand').addClass('fa-compress').attr('title', '点击缩小');
@@ -2401,7 +2408,7 @@ flyer.extend("edit", function (selector, options) {
         },
 
         //得到包含内容中所有元素的标签
-        findElements: function (elm, result) {
+        findElements: function(elm, result) {
             result = flyer.isArray(result) ? result : [];
             if (elm.children && elm.children.length > 0) {
                 if (elm.lastChild.tagName) {
@@ -2412,7 +2419,7 @@ flyer.extend("edit", function (selector, options) {
         },
 
         //在命令字典中查找命令
-        findDictionary: function (str) {
+        findDictionary: function(str) {
             switch (str) {
                 case "B":
                     return "bold";
@@ -2432,7 +2439,7 @@ flyer.extend("edit", function (selector, options) {
         },
 
         //收集所有命令
-        getCommands: function (strs) {
+        getCommands: function(strs) {
             var cmds = [];
             for (var i = 0, len = strs.length; i < len; i++) {
                 var cmd = this.findDictionary(strs[i]);
@@ -2444,7 +2451,7 @@ flyer.extend("edit", function (selector, options) {
         },
 
         //批量执行命令
-        lotCommand: function (cmds) {
+        lotCommand: function(cmds) {
             var _this = this;
             for (var i = 0, len = cmds.length; i < len; i++) {
                 var $item = _this.elms.container.find("i." + cmds[i]),
@@ -2456,7 +2463,7 @@ flyer.extend("edit", function (selector, options) {
         },
 
         //命令
-        command: function (cmd) {
+        command: function(cmd) {
             if (cmd) {
                 this.elms.editer.focus()
                 var bool = this.elms.iframeWindow.document.execCommand(cmd);
@@ -2465,7 +2472,7 @@ flyer.extend("edit", function (selector, options) {
         },
 
         //初始化操作元素
-        initElms: function () {
+        initElms: function() {
             var _this = this;
             this.elms.container = this.parent.find(".flyer-edit");
             this.elms.content = this.parent.find(".flyer-edit-content");
@@ -2474,7 +2481,7 @@ flyer.extend("edit", function (selector, options) {
             this.elms.iframe = this.elms.container.find("iframe");
             //this.elms.iframe.contents().find("head").eq(0).append('<link type="text/css" href="../css/flyer-edit-content.css" rel="stylesheet">');
             this.elms.iframeWindow = this.elms.iframe[0].contentWindow;
-            setTimeout(function () {
+            setTimeout(function() {
                 _this.elms.iframe.contents().find("head").append('<style>* {margin: 0px;padding: 0px;outline: 0px solid transparent; }body {  font-family:"Helvetica Neue", Helvetica, "PingFang SC", sans-serif;  font-size: 15px;  color: #333;  background-color: #fff;  margin: 10px; }a {  color: #0782C1; }ol, ul, dl {  *margin-right: 0px;  padding: 0 40px; }h1, h2, h3, h4, h5, h6 {  font-weight: normal;  line-height: 1.2; }hr {  border: 0px;  border-top: 1px solid #ccc; }.flyer-edit-write {  min-height: 100px;}::-webkit-scrollbar{ width: 6px; height: 6px;}::-webkit-scrollbar-thumb{    background-color: rgba(50,50,50,.3);    border-radius: 4px;}::-webkit-scrollbar-track{    background-color: rgba(50,50,50,.1);}.flyer-write-title{    font-size: 14px;    border-top: 1px dashed #ccc;    padding-top: 5px;    padding-bottom: 5px;    color: #888;}.flyer-write-html pre { white-space: pre-wrap; word-wrap: break-word;}.flyer-write-html{    margin-left: 10px;    line-height: 24px;    border-left: 1px solid #ccc;    padding-left: 10px;    color: #888;}</style>')
                 _this.elms.iframe.contents().find("body").append("<div class='flyer-edit-write' style='min-height:100px;position:relative;' contenteditable='true'></div>");
                 _this.elms.editer = $(_this.elms.iframeWindow.document.getElementsByClassName("flyer-edit-write")[0]);
@@ -2483,7 +2490,7 @@ flyer.extend("edit", function (selector, options) {
         },
 
         //加载工具条
-        initTools: function () {
+        initTools: function() {
             var _this = this,
                 opts = _this.options,
                 aryHtmls = [];
@@ -2503,12 +2510,12 @@ flyer.extend("edit", function (selector, options) {
         },
 
         //获得文本框中的内容
-        getContent: function () {
+        getContent: function() {
             return this.elms.editer.html();
         },
 
         //获得文本框中的内容
-        getText: function () {
+        getText: function() {
             var htmls = this.getContent();
             htmls = htmls.replace(/(<\/div>)|(<br>|<br\/>)/ig, "\n");
             htmls = htmls.replace(/<[^>]+>/ig, "");
@@ -2517,7 +2524,7 @@ flyer.extend("edit", function (selector, options) {
         },
 
         //获取所有的文本Text
-        getFullText: function () {
+        getFullText: function() {
             var elmReadOnly = this.elms.iframeWindow.document.getElementsByClassName("flyer-readyonly-html");
             if (elmReadOnly.length > 0) {
                 return this.getText() + $(elmReadOnly[0]).text();
@@ -2527,7 +2534,7 @@ flyer.extend("edit", function (selector, options) {
         },
 
         //获取所有的文本内容
-        getFullContent: function () {
+        getFullContent: function() {
             var elmReadOnly = this.elms.iframeWindow.document.getElementsByClassName("flyer-readyonly-html");
             if (elmReadOnly.length > 0) {
                 return this.getContent() + elmReadOnly[0].innerHTML;
@@ -2537,13 +2544,13 @@ flyer.extend("edit", function (selector, options) {
         },
 
         //设置文本的内容
-        setContent: function (htmls) {
+        setContent: function(htmls) {
             var _this = this;
-            setTimeout(function () { _this.elms.editer.html(htmls); }, 1);
+            setTimeout(function() { _this.elms.editer.html(htmls); }, 1);
         },
 
         //设置只读内容追加
-        setReadonlyText: function (htmls) {
+        setReadonlyText: function(htmls) {
             var doc = this.elms.iframeWindow.document,
                 div = doc.createElement("div");
             div.className = "flyer-readyonly-html";
@@ -2561,12 +2568,12 @@ flyer.extend("edit", function (selector, options) {
  *@License：MIT
  ***/
 "use strict";
-flyer.extend("form", function (selector, options, callback) {
+flyer.extend("form", function(selector, options, callback) {
 
     /*
      * 在这里写要实例插件的代码,定义的变量名以实际组件的名称为准
      */
-    var Form = function (selector, options, callback) {
+    var Form = function(selector, options, callback) {
         return this.init(selector, options, callback);
     }
 
@@ -2585,7 +2592,7 @@ flyer.extend("form", function (selector, options, callback) {
         isFormSumbit: false,
 
         //表单验证之前
-        validBefore: function () {
+        validBefore: function() {
             return false;
         }
     }
@@ -2593,7 +2600,7 @@ flyer.extend("form", function (selector, options, callback) {
     Form.prototype = {
 
         //页面加载的实例化入口
-        init: function (selector, options, callback) {
+        init: function(selector, options, callback) {
 
             this.options = $.extend(true, {}, Form.DEFAULTS, options);
 
@@ -2612,9 +2619,9 @@ flyer.extend("form", function (selector, options, callback) {
         },
 
         //加载事件，主要是实例化点击事件
-        initEvent: function (callback) {
+        initEvent: function(callback) {
             var _this = this;
-            $(this.formElm).find(this.options.submit).on("click", function (e) {
+            $(this.formElm).find(this.options.submit).on("click", function(e) {
                 try {
                     _this.submit(e, callback);
                 } catch (ex) {
@@ -2626,12 +2633,12 @@ flyer.extend("form", function (selector, options, callback) {
         },
 
         //得到表单内的所有验证元素
-        elements: function () {
+        elements: function() {
             return $(this.formElm).find("input, select, textarea, [contenteditable]").not(":submit, :reset, :image, :disabled");
         },
 
         //得到元素的值
-        elementValue: function (element) {
+        elementValue: function(element) {
 
             //代码来源于 jquery.validation
             var $element = $(element),
@@ -2648,7 +2655,7 @@ flyer.extend("form", function (selector, options, callback) {
         },
 
         //收集元素属性的配置
-        attributeRules: function (element) {
+        attributeRules: function(element) {
 
             var _this = this,
                 rules = {};
@@ -2663,7 +2670,7 @@ flyer.extend("form", function (selector, options, callback) {
         },
 
         //获取验证配置
-        getValidData: function () {
+        getValidData: function() {
             for (var i = 0, elements = this.elements(), rules = this.options.rules, len = elements.length; i < len; i++) {
                 var name = elements[i].name,
                     rule = this.attributeRules(elements[i]);
@@ -2675,7 +2682,7 @@ flyer.extend("form", function (selector, options, callback) {
         },
 
         //验证表单
-        formCheck: function () {
+        formCheck: function() {
 
             //获取表单验证之前，再次获取一次验证规则,解决异步问题。
             this.getValidData();
@@ -2691,12 +2698,12 @@ flyer.extend("form", function (selector, options, callback) {
         },
 
         //得到元素的验证规则
-        getElementRulesByName: function (name) {
+        getElementRulesByName: function(name) {
             return this.options.rules[name];
         },
 
         //验证表单元素
-        check: function (element) {
+        check: function(element) {
 
             var vaule = this.elementValue(element),
                 name = element.name,
@@ -2713,9 +2720,9 @@ flyer.extend("form", function (selector, options, callback) {
         },
 
         //格式化函数
-        format: function (source, params) {
+        format: function(source, params) {
             if (arguments.length === 1) {
-                return function () {
+                return function() {
                     var args = $.makeArray(arguments);
                     args.unshift(source);
                     return $.validator.format.apply(this, args);
@@ -2730,8 +2737,8 @@ flyer.extend("form", function (selector, options, callback) {
             if (params.constructor !== Array) {
                 params = [params];
             }
-            $.each(params, function (i, n) {
-                source = source.replace(new RegExp("\\{" + i + "\\}", "g"), function () {
+            $.each(params, function(i, n) {
+                source = source.replace(new RegExp("\\{" + i + "\\}", "g"), function() {
                     return n;
                 });
             });
@@ -2759,7 +2766,7 @@ flyer.extend("form", function (selector, options, callback) {
             min: "请输入一个最小为 {0} 的值"
         },
 
-        defaultMessage: function (message, parameters) {
+        defaultMessage: function(message, parameters) {
             var theregex = /\$?\{(\d+)\}/g;
             if (theregex.test(message)) {
                 message = this.format(message, parameters);
@@ -2768,33 +2775,33 @@ flyer.extend("form", function (selector, options, callback) {
         },
 
         //添加一个自定义验证方法
-        addMethods: function (name, method, message) {
+        addMethods: function(name, method, message) {
             this.methods[name] = method;
             this.messages[name] = typeof message !== "undefined" ? message : this.message[name];
         },
 
         //验证是否是单选或复选框
-        checkable: function (element) {
+        checkable: function(element) {
             return (/radio|checkbox/i).test(element.type);
         },
 
-        isEmptyObject: function (o) {
+        isEmptyObject: function(o) {
             var i;
             for (i in o)
                 return false;
             return true;
         },
 
-        optional: function (element) {
+        optional: function(element) {
             var val = this.elementValue(element);
             return !this.methods.required.call(this, val, element) && "dependency-mismatch";
         },
 
-        findByName: function (name) {
+        findByName: function(name) {
             return $(this.formElm).find("[name='" + name + "']");
         },
 
-        getLength: function (value, element) {
+        getLength: function(value, element) {
             switch (element.nodeName.toLowerCase()) {
                 case "select":
                     return $("option:selected", element).length;
@@ -2810,7 +2817,7 @@ flyer.extend("form", function (selector, options, callback) {
         methods: {
 
             //验证非空
-            required: function (value, element, param) {
+            required: function(value, element, param) {
 
                 // Check if dependency is met
                 if (!param) {
@@ -2829,84 +2836,84 @@ flyer.extend("form", function (selector, options, callback) {
             },
 
             //验证是否是邮箱
-            email: function (value, element) {
+            email: function(value, element) {
                 return this.optional(element) || /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(value);
             },
 
             //验证是否是URL地址
-            url: function (value, element) {
+            url: function(value, element) {
                 return this.optional(element) || /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})).?)(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(value);
             },
 
             //必须输入正确格式的日期，日期校验ie6出错，慎用
-            date: function (value, element) {
+            date: function(value, element) {
                 return this.optional(element) || !/Invalid|NaN/.test(new Date(value).toString());
             },
 
             //必须输入正确格式的日期(ISO)，例如：2009-06-23，1998/01/22 只验证格式，不验证有效性          
-            dateISO: function (value, element) {
+            dateISO: function(value, element) {
                 return this.optional(element) || /^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/.test(value);
             },
 
             //必须输入合法的数字(负数，小数)
-            number: function (value, element) {
+            number: function(value, element) {
                 return this.optional(element) || /^(?:-?\d+|-?\d{1,3}(?:,\d{3})+)?(?:\.\d+)?$/.test(value);
             },
 
             //必须输入整数
-            digits: function (value, element) {
+            digits: function(value, element) {
                 return this.optional(element) || /^\d+$/.test(value);
             },
 
             //输入长度最小是10的字符串(汉字算一个字符)
-            minlength: function (value, element, param) {
+            minlength: function(value, element, param) {
                 var length = $.isArray(value) ? value.length : this.getLength(value, element);
                 return this.optional(element) || length >= param;
             },
 
             //输入长度最多是5的字符串(汉字算一个字符)
-            maxlength: function (value, element, param) {
+            maxlength: function(value, element, param) {
                 var length = $.isArray(value) ? value.length : this.getLength(value, element);
                 return this.optional(element) || length <= param;
             },
 
             //输入长度必须介于 5 和 10 之间的字符串 ")(汉字算一个字符)
-            rangelength: function (value, element, param) {
+            rangelength: function(value, element, param) {
                 var length = $.isArray(value) ? value.length : this.getLength(value, element);
                 return this.optional(element) || (length >= param[0] && length <= param[1]);
             },
 
-            min: function (value, element, param) {
+            min: function(value, element, param) {
                 return this.optional(element) || value >= param;
             },
 
-            max: function (value, element, param) {
+            max: function(value, element, param) {
                 return this.optional(element) || value <= param;
             },
 
-            range: function (value, element, param) {
+            range: function(value, element, param) {
                 return this.optional(element) || (value >= param[0] && value <= param[1]);
             },
 
-            step: function (value, element, param) {
+            step: function(value, element, param) {
 
             },
 
             //输入值必须和#password相同
-            equalTo: function (value, element, param) {
+            equalTo: function(value, element, param) {
 
                 var target = this.formElm.find("[name='" + param + "']");
                 return value === target.val();
             },
 
             // http://jqueryvalidation.org/remote-method/
-            remote: function (value, element, param, method) {
+            remote: function(value, element, param, method) {
 
             }
         },
 
         //提交表单
-        submit: function (event, callback) {
+        submit: function(event, callback) {
 
             this.options.validBefore.call(this);
             this.elements().removeClass("flyer-form-error");
@@ -2928,7 +2935,7 @@ flyer.extend("form", function (selector, options, callback) {
         },
 
         //提示错误信息
-        showError: function (name, element) {
+        showError: function(name, element) {
 
             if (flyer && flyer.msg) {
                 flyer.closeAll("msg");
@@ -2955,7 +2962,7 @@ flyer.extend("form", function (selector, options, callback) {
         },
 
         //得到表单数据
-        getData: function () {
+        getData: function() {
             var data = [];
             data.push("{");
             for (var i = 0, elements = this.elements(), len = elements.length; i < len; i++) {
@@ -2980,7 +2987,7 @@ flyer.extend("form", function (selector, options, callback) {
  *@License : LGPL
  */
 "use strict";
-flyer.extend("page", function (elm, opts) {
+flyer.extend("page", function(elm, opts) {
 
     //定义一个分页组件
     // elm 分页组件完成后要装入的容器
@@ -3033,17 +3040,17 @@ flyer.extend("page", function (elm, opts) {
         isReload: false,
 
         //类型:Function ,点击翻页之前事件
-        fnBeforeClick: function () {
+        fnBeforeClick: function() {
             return false;
         },
 
         //类型:Function ,点击翻页事件
-        fnClick: function () {
+        fnClick: function() {
             return false;
         },
 
         //类型:Function ,点击翻页之后事件
-        fnAfterClick: function () {
+        fnAfterClick: function() {
             return false;
         },
 
@@ -3052,16 +3059,16 @@ flyer.extend("page", function (elm, opts) {
     pager.prototype = {
 
         //加载分页控件
-        init: function (elm, opts) {
+        init: function(elm, opts) {
             this.options = this.getOptions(opts);
             this[0] = elm;
             this.render();
         },
 
         //渲染分页控件
-        render: function () {
+        render: function() {
             var
-                //声明一个自身对象的副本用于当前作用域的调用
+            //声明一个自身对象的副本用于当前作用域的调用
                 _this = this,
 
                 //声明一个定制属性的副本用于当前的作用域的调用
@@ -3095,17 +3102,17 @@ flyer.extend("page", function (elm, opts) {
         },
 
         //得到配置属性对象
-        getOptions: function (opts) {
+        getOptions: function(opts) {
             return $.extend(true, {}, pager.DEFAULTS, opts);
         },
 
         //重新渲染
-        reload: function () {
+        reload: function() {
             this.render();
         },
 
         //分页控件模版
-        template: function () {
+        template: function() {
             var tmplHtml = "<div class=\"flyer-pager-wrapper\"><div class=\"flyer-pager-view\"><ul>",
                 opts = this.options,
 
@@ -3173,7 +3180,7 @@ flyer.extend("page", function (elm, opts) {
         },
 
         //简单的分页渲染
-        simpleTemplate: function () {
+        simpleTemplate: function() {
             var tmplHtml = "<div class=\"flyer-pager-wrapper\"><div class=\"flyer-pager-view\"><ul>",
                 opts = this.options,
 
@@ -3202,10 +3209,10 @@ flyer.extend("page", function (elm, opts) {
         },
 
         //给所有分页添加事件
-        addEvent: function () {
+        addEvent: function() {
             var
 
-                //声明一个自身对象的副本用于当前作用域的调用
+            //声明一个自身对象的副本用于当前作用域的调用
                 _this = this,
 
                 //声明一个定制属性的副本用于当前作用域的调用
@@ -3214,7 +3221,7 @@ flyer.extend("page", function (elm, opts) {
                 //得到所有的 li 按钮
                 $lis = $(_this[0]).find(".flyer-pager-view").find("li");
 
-            $lis.each(function () {
+            $lis.each(function() {
                 var $this = $(this);
 
                 //存在 omit 类样式的不作处理
@@ -3222,7 +3229,7 @@ flyer.extend("page", function (elm, opts) {
                     return;
                 }
 
-                $this.on("click", function () {
+                $this.on("click", function() {
 
                     //获取到当前页
                     if ($this.hasClass("next")) {
@@ -3275,7 +3282,7 @@ flyer.extend("page", function (elm, opts) {
  *@License：MIT
  ***/
 "use strict";
-flyer.extend("searches", function (selector, options) {
+flyer.extend("searches", function(selector, options) {
 
     function Searches(selector, options) {
         return this.init(selector, options);
@@ -3318,18 +3325,18 @@ flyer.extend("searches", function (selector, options) {
         emptyMsg: "未检索到相关的数据..",
 
         //类型:Function ,是否去重相关的提示方法
-        fnDistinckTips: function (key, that) {
+        fnDistinckTips: function(key, that) {
             flyer.closeAll("msg");
             flyer.msg("你已经选择了[ " + $(that).text() + " ]");
         },
 
         //类型:Function ,开放一个数据结构处理的方法
-        fnDataProcessing: function () {
+        fnDataProcessing: function() {
             this._data = this._data.rows;
         },
 
         //类型:Function ,选中之后的方法
-        fnSelected: function () {
+        fnSelected: function() {
             return false;
         }
 
@@ -3338,7 +3345,7 @@ flyer.extend("searches", function (selector, options) {
     Searches.prototype = {
 
         //加载 Searches 组件的入口
-        init: function (elm, options) {
+        init: function(elm, options) {
 
             //拼装 Searches 定制属性
             this.options = $.extend(true, {}, Searches.DEFAULT, options);
@@ -3351,7 +3358,7 @@ flyer.extend("searches", function (selector, options) {
         },
 
         //tab 的html模版
-        template: function () {
+        template: function() {
             var tmplHtml = ['<div class="flyer-searches">',
                 '<div class="keywords"></div>',
                 '<input type="text" data-selected="" class="flyer-seraches-input" />',
@@ -3365,7 +3372,7 @@ flyer.extend("searches", function (selector, options) {
         },
 
         //获取数据源
-        requestData: function (keyword) {
+        requestData: function(keyword) {
 
             var _this = this,
                 opts = _this.options,
@@ -3380,7 +3387,7 @@ flyer.extend("searches", function (selector, options) {
                     url: opts.url,
                     type: "get",
                     data: data,
-                    success: function (data) {
+                    success: function(data) {
                         _this._data = data;
                         opts.fnDataProcessing.call(_this, data);
                         _this.render(data);
@@ -3391,7 +3398,7 @@ flyer.extend("searches", function (selector, options) {
         },
 
         //事件集
-        events: function () {
+        events: function() {
             var
                 _this = this,
                 opts = _this.options,
@@ -3403,7 +3410,7 @@ flyer.extend("searches", function (selector, options) {
 
 
             //文本框输入响应事件    
-            _this.$input.on("keyup", function (e) {
+            _this.$input.on("keyup", function(e) {
 
                 if (timer) {
                     clearInterval(timer);
@@ -3428,7 +3435,7 @@ flyer.extend("searches", function (selector, options) {
                             _this.$items.parent().hide();
                             if (this.value.length == 0) {
                                 if (this.getAttribute("del") == "del") {
-                                    setTimeout(function () { _this.$keywords.find("span>i").last().click(); }, 100);
+                                    setTimeout(function() { _this.$keywords.find("span>i").last().click(); }, 100);
                                 } else {
                                     this.setAttribute("del", "del");
                                     _this.$keywords.find("span").last().css("border", "1px solid #F7B824");
@@ -3457,7 +3464,7 @@ flyer.extend("searches", function (selector, options) {
                         break;
                 }
 
-                timer = setTimeout(function () {
+                timer = setTimeout(function() {
                     if (keyword.length > 0) {
                         _this.requestData(keyword);
                     }
@@ -3465,7 +3472,7 @@ flyer.extend("searches", function (selector, options) {
 
             });
 
-            $(document).on("click", function (e) {
+            $(document).on("click", function(e) {
                 _this.$items.parent().hide();
                 flyer.stop(e);
             });
@@ -3473,10 +3480,10 @@ flyer.extend("searches", function (selector, options) {
         },
 
         //检索出来的下拉数据选中事件
-        eventSelected: function () {
+        eventSelected: function() {
             var _this = this,
                 opts = _this.options;
-            _this.$items.find("li").on("click", function () {
+            _this.$items.find("li").on("click", function() {
 
                 //得到当前选中的 Key 值 
                 var key = $(this).data("key");
@@ -3511,7 +3518,7 @@ flyer.extend("searches", function (selector, options) {
                 opts.fnSelected.call(_this, this);
 
                 //修正输入焦点位置
-                setTimeout(function () { _this.$input.css("padding-left", _this.$keywords.get(0).offsetWidth + 10) }, 10);
+                setTimeout(function() { _this.$input.css("padding-left", _this.$keywords.get(0).offsetWidth + 10) }, 10);
 
                 //初始化上下键的索引值
                 _this.keyIndex = 0;
@@ -3520,19 +3527,19 @@ flyer.extend("searches", function (selector, options) {
         },
 
         //插入一个选中的标签
-        insertSpan: function (opts) {
+        insertSpan: function(opts) {
             var $this = $(this),
                 html = "<span data-key='" + $this.data("key") + "'>" + $(this).text() + opts.separtor + "<i class='" + styles[3] + "'></i></span>";
             return html;
         },
 
         //删除一件选中的标签事件
-        eventDeleteSpan: function () {
+        eventDeleteSpan: function() {
             var
                 _this = this,
                 $input = this.$input,
                 opts = this.options;
-            _this.$keywords.find("span>i").on("click", function () {
+            _this.$keywords.find("span>i").on("click", function() {
                 var selectedValue = _this.$input.data("selected") || "";
                 $input.data("selected", selectedValue.replace($(this).parent().data("key") + opts.separtor, ""));
                 $(this).parent().remove();
@@ -3545,7 +3552,7 @@ flyer.extend("searches", function (selector, options) {
         },
 
         //渲染数据成下拉表
-        render: function () {
+        render: function() {
             var data = this._data;
             var arryHtmls = [],
                 opts = this.options;
@@ -3564,7 +3571,7 @@ flyer.extend("searches", function (selector, options) {
         },
 
         //键盘向下选中
-        keyUp: function () {
+        keyUp: function() {
             //向上
             var
                 _this = this,
@@ -3580,7 +3587,7 @@ flyer.extend("searches", function (selector, options) {
         },
 
         //键盘向上选中
-        keyDown: function () {
+        keyDown: function() {
             //向下
             var
                 _this = this,
@@ -3595,14 +3602,14 @@ flyer.extend("searches", function (selector, options) {
         },
 
         //去掉重复选中
-        hasValue: function (key) {
+        hasValue: function(key) {
             var strKeys = this.$input.data("selected");
             var regs = new RegExp(key, "ig");
             return regs.test(strKeys);
         },
 
         //获取选中的值
-        getSelectedData: function () {
+        getSelectedData: function() {
             return {
                 fieldValue: this.$input.data("selected"),
                 fieldName: this.$keywords.find("span").text()
@@ -3624,7 +3631,7 @@ flyer.extend("searches", function (selector, options) {
  ***/
 //定义成 flyer 内置模块
 "use strict";
-flyer.define("store", function () {
+flyer.define("store", function() {
     var regKey = /^[0-9A-Za-z_@-]*$/,
         store;
 
@@ -3647,48 +3654,48 @@ flyer.define("store", function () {
     return {
 
         //设置 localStorage 单条记录
-        set: function (key, value) {
+        set: function(key, value) {
             var success = false;
             if (isValidKey(key) && init()) {
                 try {
                     value += "";
                     store.setItem(key, value);
                     success = true;
-                } catch (e) { }
+                } catch (e) {}
             }
             return success;
         },
 
         //读取 localStorage 单条记录
-        get: function (key) {
+        get: function(key) {
             if (isValidKey(key) && init()) {
                 try {
                     return store.getItem(key);
-                } catch (e) { }
+                } catch (e) {}
             }
             return null;
         },
 
         //移除 localStorage 单条记录
-        remove: function (key) {
+        remove: function(key) {
             if (isValidKey(key) && init()) {
                 try {
                     store.removeItem(key);
                     return true;
-                } catch (e) { }
+                } catch (e) {}
             }
             return false;
         },
 
         //清除 localStorage 所有记录
-        clear: function () {
+        clear: function() {
             if (init()) {
                 try {
                     for (var key in store) {
                         store.removeItem(key);
                     }
                     return true;
-                } catch (e) { }
+                } catch (e) {}
                 return false;
             }
         }
@@ -3702,7 +3709,7 @@ flyer.define("store", function () {
  *@License：MIT
  ***/
 "use strict";
-flyer.extend("tab", function (selector, options) {
+flyer.extend("tab", function(selector, options) {
 
     //定义一个Tab 页签组件
     // selector 分页组件完成后要装入的容器
@@ -3719,31 +3726,31 @@ flyer.extend("tab", function (selector, options) {
         //类型: Array ,tab 页签的标题
         tabs: [{
 
-            //类型: String ,单个页签的标题
-            title: "tab1",
+                //类型: String ,单个页签的标题
+                title: "tab1",
 
-            //类型: String ,单个页签对应的内容
-            content: "",
+                //类型: String ,单个页签对应的内容
+                content: "",
 
-            //类型: String ,单个页签对应的请求路径
-            url: "",
+                //类型: String ,单个页签对应的请求路径
+                url: "",
 
-            //类型: Boolean ,是否缓存
-            cache: false
-        },
-        {
-            //类型: String ,单个页签的标题
-            title: "tab2",
+                //类型: Boolean ,是否缓存
+                cache: false
+            },
+            {
+                //类型: String ,单个页签的标题
+                title: "tab2",
 
-            //类型: String ,单个页签对应的内容
-            content: "",
+                //类型: String ,单个页签对应的内容
+                content: "",
 
-            //类型: String ,单个页签对应的请求路径
-            url: "",
+                //类型: String ,单个页签对应的请求路径
+                url: "",
 
-            //类型: Boolean ,是否缓存
-            cache: false
-        }
+                //类型: Boolean ,是否缓存
+                cache: false
+            }
         ],
 
         //是否缓存,这里的是否缓存区别于单个，该缓存设置是所有的页签都缓存
@@ -3757,26 +3764,26 @@ flyer.extend("tab", function (selector, options) {
         skin: "flyer-tab-default",
 
         //类型: Function ,点击之前事件
-        beforeClick: function () {
+        beforeClick: function() {
             return false;
         },
 
         //类型: Function ,点击事件
-        click: function () {
+        click: function() {
             return false;
         },
 
         //类型: Function ,点击之后事件
-        afetrClick: function () {
+        afetrClick: function() {
             return false;
         },
 
         //类型: Function ,构建之前
-        beforeCreated: function () {
+        beforeCreated: function() {
             return false;
         },
         //类型: Function ,构建之后
-        afterCreated: function () {
+        afterCreated: function() {
             return false;
         }
     }
@@ -3784,7 +3791,7 @@ flyer.extend("tab", function (selector, options) {
     Tab.prototype = {
 
         //加载 Tab 页签组件的入口
-        init: function (elm, options) {
+        init: function(elm, options) {
 
             //拼装 Tab 页签定制属性
             this.options = $.extend(true, {}, Tab.DEFAULT, options);
@@ -3812,7 +3819,7 @@ flyer.extend("tab", function (selector, options) {
         },
 
         //判断是否需要自生成 TAB 标签 
-        hasTag: function () {
+        hasTag: function() {
             if ($(this[0]).find("." + styles[0]).length > 0) {
                 this.haveTag = true;
             } else {
@@ -3821,17 +3828,17 @@ flyer.extend("tab", function (selector, options) {
         },
 
         //tab 的html模版
-        template: function () {
+        template: function() {
             var
                 opts = this.options,
                 arryTitleHtml = [],
                 arryContentHtml = [],
                 tmplHtml = ['<div class="' + styles[0] + (opts.skin.length > 0 ? (" " + opts.skin) : "") + '">',
-                '<div class="' + styles[1] + '">',
+                    '<div class="' + styles[1] + '">',
                     '<ul>',
                     '</ul>',
                     '</div>',
-                '<div class="' + styles[2] + '">',
+                    '<div class="' + styles[2] + '">',
                     '</div>',
                     '</div>'
                 ],
@@ -3848,14 +3855,14 @@ flyer.extend("tab", function (selector, options) {
         },
 
         //事件集
-        events: function () {
+        events: function() {
             var
                 _this = this,
                 _opts = this.options;
             _this.$title = $(this[0]).find("." + styles[1]);
             _this.$content = $(this[0]).find("." + styles[2]);
             _this.$tabs = this.$title.find("li");
-            _this.$tabs.on("click", function () {
+            _this.$tabs.on("click", function() {
                 var
                     $this = $(this),
                     index = $(this).data("index");
@@ -3866,18 +3873,17 @@ flyer.extend("tab", function (selector, options) {
                 } else {
                     _this.showContent(index);
                 }
-
-                _opts.click.call(_this, this);
             });
         },
 
         //填充内容
-        fullContent: function (index) {
+        fullContent: function(index) {
             var tabData = this.options.tabs[index],
                 $content = this.$content,
                 $items = this.$content.find("." + styles[4]),
                 $item = $items.eq(index),
                 _this = this,
+                _opts = this.options,
                 text = "";
 
             if ($item.length === 0) {
@@ -3890,11 +3896,12 @@ flyer.extend("tab", function (selector, options) {
             if (tabData.content) {
                 if (!tabData.cache || text.length === 0) {
                     $item.html(tabData.content);
+                    _opts.click.call(_this, index);
                 }
             } else if (tabData.url) {
                 if (!tabData.cache || text.length === 0) {
-                    $item.load(tabData.url, function () {
-                        flyer.i18n && flyer.i18n.initTargetData();
+                    $item.load(tabData.url, function() {
+                        _opts.click.call(_this, index);
                     });
                 }
             }
@@ -3902,7 +3909,7 @@ flyer.extend("tab", function (selector, options) {
         },
 
         //显示用户布局的内容
-        showContent: function (index) {
+        showContent: function(index) {
             var $items = this.$content.find("." + styles[4]),
                 $item = $items.eq(index);
             if ($item.length == 0) {
@@ -3920,12 +3927,12 @@ flyer.extend("tab", function (selector, options) {
  *@License：MIT
  ***/
 "use strict";
-flyer.extend("table", function (selector, options) {
+flyer.extend("table", function(selector, options) {
 
     /*
      * 在这里写要实例插件的代码,定义的变量名以实际组件的名称为准
      */
-    var Table = function (selector, options) {
+    var Table = function(selector, options) {
         return this.init(selector, options);
     }
 
@@ -3950,12 +3957,12 @@ flyer.extend("table", function (selector, options) {
         fixedHeader: true,
 
         //行双击事件
-        rowdblClick: function () {
+        rowdblClick: function() {
 
         },
 
         //行点击事件
-        rowClick: function () {
+        rowClick: function() {
 
         }
     }
@@ -3981,7 +3988,7 @@ flyer.extend("table", function (selector, options) {
     Table.prototype = {
 
         //页面加载的实例化入口
-        init: function (selector, options) {
+        init: function(selector, options) {
             this.options = $.extend(true, {}, Table.DEFAULTS, options);
 
             this.selector = selector;
@@ -3997,7 +4004,7 @@ flyer.extend("table", function (selector, options) {
         },
 
         //重新渲染数据
-        reload: function () {
+        reload: function() {
 
             //方法实例化代码
             this.template();
@@ -4010,7 +4017,7 @@ flyer.extend("table", function (selector, options) {
         },
 
         //加载表格模版
-        template: function () {
+        template: function() {
 
             var arryHtml = [
                 '<div class="flyer-table" style="width:' + this.options.width + ';height:' + this.options.height + '">',
@@ -4042,11 +4049,11 @@ flyer.extend("table", function (selector, options) {
         },
 
         //配置样式属性
-        initHeaderThemes: function () {
+        initHeaderThemes: function() {
             var _this = this,
                 opts = _this.options,
                 flagColumns = _this._flagColumns;
-            this.$header.find("th").each(function () {
+            this.$header.find("th").each(function() {
                 var $this = $(this),
                     dataIndex = $this.data("index");
                 $this.css(flagColumns[dataIndex].styles);
@@ -4055,7 +4062,7 @@ flyer.extend("table", function (selector, options) {
         },
 
         //加载表头
-        initHeader: function () {
+        initHeader: function() {
             var arryHtml = [];
             this._flagColumns = {};
 
@@ -4081,7 +4088,7 @@ flyer.extend("table", function (selector, options) {
         },
 
         //加载表内容
-        initBody: function () {
+        initBody: function() {
             var arryHtml = [];
             for (var j = 0, data = this.options.data, jLen = data.length; j < jLen; j++) {
                 var arryTd = [];
@@ -4106,60 +4113,60 @@ flyer.extend("table", function (selector, options) {
         },
 
         //重新设置数据
-        setData: function (datas) {
+        setData: function(datas) {
             this.options.data = datas;
         },
 
         //获取当前的值
-        getDatas: function () {
+        getDatas: function() {
             return this.options.data;
         },
 
         //追加一条数据值
-        insertData: function (data) {
+        insertData: function(data) {
             var datas = this.getDatas();
             datas.push(data);
         },
 
         //加载表页脚
-        initFooter: function () {
+        initFooter: function() {
 
         },
 
         //加载事件
-        initEvents: function () {
+        initEvents: function() {
             var _this = this;
             this.checkAll();
-            this.$body.find("tr").on("dblclick", function (e) {
+            this.$body.find("tr").on("dblclick", function(e) {
                 var rowIndex = $(this).data("index"),
                     datas = _this.getDatas(),
                     item = datas[rowIndex];
                 _this.options.rowdblClick.call(this, rowIndex, item, datas, e);
             });
-            this.$body.find("tr").on("click", function (e) {
+            this.$body.find("tr").on("click", function(e) {
                 var rowIndex = $(this).data("index"),
                     datas = _this.getDatas(),
                     item = datas[rowIndex];
                 _this.options.rowClick.call(this, rowIndex, item, datas, e);
             });
-            _this.$body.find(".flyer-table-checkbox").on("click", function (e) {
+            _this.$body.find(".flyer-table-checkbox").on("click", function(e) {
                 flyer.stop(e);
             });
         },
 
         //设置选中全部
-        checkAll: function () {
+        checkAll: function() {
             var _this = this;
-            _this.$header.find("input[type='checkbox']").on("click", function (e) {
+            _this.$header.find("input[type='checkbox']").on("click", function(e) {
                 var ckHead = this;
-                _this.selector.find("input[name='" + ckHead.name + "']").each(function () {
+                _this.selector.find("input[name='" + ckHead.name + "']").each(function() {
                     this.checked = ckHead.checked;
                 });
                 flyer.stop(e);
             });
         },
         //列拖动
-        columnResizer: function (e) {
+        columnResizer: function(e) {
             var _this = this,
                 $resizerItems = this.selector.find(".flyer-grips .flyer-grips-resizer"),
                 $table = this.selector.find(".flyer-table"),
@@ -4167,8 +4174,8 @@ flyer.extend("table", function (selector, options) {
                 tableWidth = $table.width();
             _this.ismove = false;
 
-            $resizerItems.bind("mousedown", function (e) {
-                document.body.onselectstart = function () {
+            $resizerItems.bind("mousedown", function(e) {
+                document.body.onselectstart = function() {
                     return false;
                 }
                 _this.ismove = true;
@@ -4185,7 +4192,7 @@ flyer.extend("table", function (selector, options) {
                 _this.rgripElm.addClass("flyer-grips-drag");
                 $table.addClass("user-select-none");
             });
-            $(document).mousemove(function (e) {
+            $(document).mousemove(function(e) {
 
                 if (_this.ismove) {
                     var left = (_this.rgripElm.get(0).offsetWidth + e.clientX) - tableLeft;
@@ -4202,8 +4209,8 @@ flyer.extend("table", function (selector, options) {
 
                 }
             });
-            $(document).mouseup(function (e) {
-                document.body.onselectstart = function () {
+            $(document).mouseup(function(e) {
+                document.body.onselectstart = function() {
                     return true;
                 };
 
@@ -4228,7 +4235,7 @@ flyer.extend("table", function (selector, options) {
         },
 
         //构建可以拖动列宽的结构
-        initGrips: function () {
+        initGrips: function() {
             var arryRgrips = [],
                 $table = this.selector.find(".flyer-table-body table"),
                 tableWidth = $table.width(),
@@ -4237,7 +4244,7 @@ flyer.extend("table", function (selector, options) {
 
             arryRgrips.push("<div class='flyer-grips' style='width:" + tableWidth + "px;'>");
             //先将表格的列宽设置好
-            this.$header.find("th").each(function () {
+            this.$header.find("th").each(function() {
 
                 var $this = $(this),
                     left = ($this.offset().left + $this.width()) - tableLeft;
@@ -4285,14 +4292,14 @@ flyer.extend("table", function (selector, options) {
  */
 "use strict";
 //定义成 flyer 内置模块
-flyer.extend("tree", function (selector, options) {
+flyer.extend("tree", function(selector, options) {
 
     /*
      * 在这里写要实例插件的代码,定义的变量名以实际组件的名称为准
      */
-    var Tree = function (selector, options) {
-        return this.init(selector, options);
-    },
+    var Tree = function(selector, options) {
+            return this.init(selector, options);
+        },
         styles = ["flyer-tree", "flyer-tree-root", "fa-caret-right", "fa-caret-down", "fa-folder-o", "fa-folder-open-o", "flyer-tree-show", "flyer-tree-node"];
 
     Tree.DEFAULTS = {
@@ -4307,7 +4314,7 @@ flyer.extend("tree", function (selector, options) {
         skin: "",
 
         //类型: Function ,用于装载树形菜单的数据
-        click: function () {
+        click: function() {
             return false;
         }
     }
@@ -4334,7 +4341,7 @@ flyer.extend("tree", function (selector, options) {
     Tree.prototype = {
 
         //页面加载的实例化入口
-        init: function (selector, options) {
+        init: function(selector, options) {
             this.options = $.extend(true, {}, Tree.DEFAULTS, options);
             this.selector = selector;
             this.template();
@@ -4343,15 +4350,15 @@ flyer.extend("tree", function (selector, options) {
         },
 
         //模板
-        template: function () {
+        template: function() {
             var arryHtmls = ['<div class="' + styles[0] + '">',
-            this.recursion(this.options.data, true, ""),
+                this.recursion(this.options.data, true, ""),
                 '</div>'
             ];
             this.selector.append(arryHtmls.join(""));
         },
 
-        recursion: function (nodes, spread, flag) {
+        recursion: function(nodes, spread, flag) {
             var arryHtmls = ['<ul class="flyer-tree-node ' + (spread ? "flyer-tree-show" : "") + '">'];
             for (var i = 0, _index, len = nodes.length; i < len; i++) {
                 _index = String(flag).length > 0 ? (flag + "." + i) : i;
@@ -4370,7 +4377,7 @@ flyer.extend("tree", function (selector, options) {
         },
 
         //修改树形图表状态
-        changeIcon: function (target, open) {
+        changeIcon: function(target, open) {
 
             var $parent = $(target).parent(),
                 $icons = $parent.find("i");
@@ -4386,11 +4393,11 @@ flyer.extend("tree", function (selector, options) {
         },
 
         //加载事件
-        events: function () {
+        events: function() {
             var _this = this,
                 classs = [".flyer-tree", ".fa-caret-right", ".fa-folder-o", ".fa-folder-open-o", ".fa-caret-down"];
             this.selector.find(classs[0]).off("click", classs.splice(1, 4));
-            this.selector.find(classs[0]).on("click", classs.splice(1, 4), function (e) {
+            this.selector.find(classs[0]).on("click", classs.splice(1, 4), function(e) {
 
                 var $node = $(e.target).nextAll("." + styles[7]);
 
@@ -4406,13 +4413,13 @@ flyer.extend("tree", function (selector, options) {
                 flyer.stop(e);
             });
             this.selector.find(classs[0]).off("click", "a");
-            this.selector.find(classs[0]).on("click", "a", function (e) {
+            this.selector.find(classs[0]).on("click", "a", function(e) {
                 _this.options.click.call(this, e.target, _this.getData(e.target.getAttribute("_index")));
             });
         },
 
         //通过形成的拓扑数据结构查找JSON对象里的值
-        getData: function (tpIndex) {
+        getData: function(tpIndex) {
             var arryIndex = String(tpIndex).split("."),
                 item = this.options.data[arryIndex[0]];
             for (var i = 1, len = arryIndex.length; i < len; i++) {
@@ -4432,12 +4439,12 @@ flyer.extend("tree", function (selector, options) {
  *
  ***/
 "use strict";
-flyer.extend("upload", function (selector, options) {
+flyer.extend("upload", function(selector, options) {
 
     /*
      * 在这里写要实例插件的代码,定义的变量名以实际组件的名称为准
      */
-    var Upload = function (selector, options) {
+    var Upload = function(selector, options) {
         return this.init(selector, options);
     }
 
@@ -4465,12 +4472,12 @@ flyer.extend("upload", function (selector, options) {
         name: "avatar",
 
         //类型: Function ,上传之前的事件
-        uploadBefore: function () {
+        uploadBefore: function() {
             return true;
         },
 
         //类型: Function ,上传成功后的事件
-        success: function () {
+        success: function() {
             return false;
         }
 
@@ -4479,7 +4486,7 @@ flyer.extend("upload", function (selector, options) {
     Upload.prototype = {
 
         //页面加载的实例化入口
-        init: function (selector, options) {
+        init: function(selector, options) {
             this.options = $.extend(true, {}, Upload.DEFAULTS, options);
             this.selector = selector;
             this.template();
@@ -4489,7 +4496,7 @@ flyer.extend("upload", function (selector, options) {
         },
 
         //加载模板
-        template: function () {
+        template: function() {
             var
                 _this = this,
                 opts = _this.options,
@@ -4511,27 +4518,27 @@ flyer.extend("upload", function (selector, options) {
         },
 
         //生成一个iframe作用于无刷新提交
-        buildFrame: function () {
+        buildFrame: function() {
             if ($("#flyer_upload_iframe").length == 0) {
                 $("body").append('<iframe id="flyer_upload_iframe"  name="flyer_upload_iframe"></iframe>');
             }
         },
 
         //检测input[type='file']控件的完整性
-        checkInput: function () {
+        checkInput: function() {
             if (!this.selector.attr("name")) {
                 this.selector.attr("name", this.options.name);
             }
         },
 
         //加载事件
-        events: function () {
+        events: function() {
             var _this = this,
                 opts = _this.options;
-            this.$submit.on("click", function () {
+            this.$submit.on("click", function() {
                 _this.selector.click();
             });
-            _this.selector.on("change", function () {
+            _this.selector.on("change", function() {
 
                 if (typeof opts.uploadBefore === "function") {
                     if (opts.uploadBefore.call(this, _this.selector) === false) {
@@ -4542,7 +4549,7 @@ flyer.extend("upload", function (selector, options) {
                 _this.$form.submit();
 
                 var iframe = $("#flyer_upload_iframe"),
-                    timer = setInterval(function () {
+                    timer = setInterval(function() {
 
                         var res;
                         try {

@@ -1,5 +1,6 @@
+// 平台管理模块
 'use strict';
-flyer.define('user_manage', function(exports, module) {
+flyer.define('plant_manage', function(exports, module) {
     var baseDatas = {
         // 表格实例
         $table: null,
@@ -31,62 +32,60 @@ flyer.define('user_manage', function(exports, module) {
      * 
      */
     function initEvent() {
-        // 创建用户
-        $('.createUser').on('click', createUserHandle);
-        // 积分充值
-        $('.addMoneyUser').on('click', addMoneyUserHandle);
-        // 会员等级修改
-        $('.updateLevelUser').on('click', updateLevelUserHandle);
-        // 禁用用户
-        $('.disabledUser').on('click', {
+        // 创建平台
+        $('.createPlant').on('click', createPlantHandle);
+        // 修改平台信息
+        $('.updatePlant').on('click', updatePlantHandle);
+        // 禁用平台
+        $('.disabledPlant').on('click', {
             type: 0
-        }, toggleUserHandle);
-        // 启用用户
-        $('.enabledUser').on('click', {
+        }, togglePlantHandle);
+        // 启用平台
+        $('.enabledPlant').on('click', {
             type: 1
-        }, toggleUserHandle);
+        }, togglePlantHandle);
     }
 
     /**
-     * 创建用户的点击事件处理函数
+     * 创建平台的点击事件处理函数
      * 
      * @param {any} events 
      */
-    function createUserHandle(events) {
+    function createPlantHandle(events) {
         flyer.open({
-            pageUrl: '/html/user_register.html',
+            pageUrl: '/html/plant_create.html',
             isModal: true,
-            area: [440, 350],
-            title: '注册用户',
+            area: [400, 200],
+            title: '创建平台',
             btns: [{
-                text: '保存',
+                text: '创建',
                 click: function(ele) {
                     var that = this;
-                    $.ajax({
-                        url: '/api/createUser',
-                        type: 'POST',
-                        data: {
-                            userName: 'surong',
-                            password: 'surong',
-                            phone: '18098971690',
-                            QQ: '838472035',
-                            email: 'keepFur@163.com'
-                        },
-                        beforeSend: function(jqXHR, settings) {
-                            $.lockedBtn($(ele), true, ('保存中'));
-                        },
-                        success: function(data, textStatus, jqXHR) {
-                            flyer.msg(data.success ? ('操作成功') : ('操作失败'));
-                            that.close();
-                            getTableDatas(1, 20);
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            flyer.msg(baseDatas.errorMsg);
-                        },
-                        complete: function(jqXHR, textStatus) {
-                            $.unlockBtn($(ele), ('保存'));
-                        }
-                    });
+                    var plantInfo = core.getFormValues($('form[name=plantCreateForm]'));
+                    var validPlantInfoResult = validPlantInfo(plantInfo);
+                    if (validPlantInfoResult.isPass) {
+                        $.ajax({
+                            url: '/api/createPlant',
+                            type: 'POST',
+                            data: plantInfo,
+                            beforeSend: function(jqXHR, settings) {
+                                $.lockedBtn($(ele), true, ('创建中'));
+                            },
+                            success: function(data, textStatus, jqXHR) {
+                                flyer.msg(data.success ? ('操作成功') : ('操作失败'));
+                                that.close();
+                                getTableDatas(1, 20);
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                flyer.msg(baseDatas.errorMsg);
+                            },
+                            complete: function(jqXHR, textStatus) {
+                                $.unlockBtn($(ele), ('创建'));
+                            }
+                        });
+                    } else {
+                        flyer.msg(validPlantInfoResult.msg);
+                    }
                 }
             }, {
                 text: '取消',
@@ -99,34 +98,44 @@ flyer.define('user_manage', function(exports, module) {
     }
 
     /**
-     *  积分充值的点击事件处理函数
-     * 
+     * 平台信息修改的点击事件处理函数
      * @param {any} events 
      */
-    function addMoneyUserHandle(events) {
+    function updatePlantHandle(events) {
         var selectDatas = core.getTableCheckedDatas(baseDatas.$table);
         if (selectDatas.length === 1) {
+            var plantName = selectDatas[0].plantName;
+            var description = selectDatas[0].description;
             flyer.open({
-                pageUrl: '/html/user_add_money.html',
+                content: `<div class="flyer-form-item dialog-form-container">
+                            <form class="flyer-form" name="plantUpdateForm">
+                                <div class="dialog-form-item">
+                                    <label>名称</label>
+                                    <input type="text" placeholder="可以是中文、字母、数字、下划线5-20位" class="flyer-input inline" name="plantName" value="${plantName}">
+                                </div>
+                                <div class="dialog-form-item">
+                                    <label>描述</label>
+                                    <input type="text" placeholder="简单的描述平台" class="flyer-input inline" name="description" value="${description}">
+                                </div>
+                            </form>
+                          </div>`,
                 isModal: true,
-                area: [400, 150],
-                title: '积分充值',
+                area: [400, 200],
+                title: '平台信息修改',
                 btns: [{
-                    text: '充值',
+                    text: '确定',
                     click: function(ele) {
                         var that = this;
-                        var money = $.trim($('input[name=money]').val());
-                        var validAddMoneyUserResult = validAddMoneyUser(money);
-                        if (validAddMoneyUserResult.isPass) {
+                        var plantInfo = core.getFormValues($('form[name=plantUpdateForm]'));
+                        var validPlantInfoResult = validPlantInfo(plantInfo);
+                        plantInfo.id = selectDatas[0].id;
+                        if (validPlantInfoResult.isPass) {
                             $.ajax({
-                                url: '/api/userAddMoney',
+                                url: '/api/updatePlant',
                                 type: 'POST',
-                                data: {
-                                    money: money,
-                                    id: selectDatas[0].id
-                                },
+                                data: plantInfo,
                                 beforeSend: function(jqXHR, settings) {
-                                    $.lockedBtn($(ele), true, ('充值中'));
+                                    $.lockedBtn($(ele), true, ('修改中'));
                                 },
                                 success: function(data, textStatus, jqXHR) {
                                     flyer.msg(data.success ? ('操作成功') : ('操作失败' + data.message));
@@ -137,11 +146,11 @@ flyer.define('user_manage', function(exports, module) {
                                     flyer.msg(baseDatas.errorMsg);
                                 },
                                 complete: function(jqXHR, textStatus) {
-                                    $.unlockBtn($(ele), '充值');
+                                    $.unlockBtn($(ele), ('确定'));
                                 }
                             });
                         } else {
-                            flyer.msg(validAddMoneyUserResult.msg);
+                            flyer.msg(validPlantInfoResult.msg);
                         }
                     }
                 }, {
@@ -158,71 +167,11 @@ flyer.define('user_manage', function(exports, module) {
     }
 
     /**
-     * 会员等级修改的点击事件处理函数
-     * 会员升级一次 1000积分
-     * @param {any} events 
-     */
-    function updateLevelUserHandle(events) {
-        var selectDatas = core.getTableCheckedDatas(baseDatas.$table);
-        var minMoney = 1000;
-        var tipMsg = `<span style="color:#f00;">确定升级吗？</br>升级之后可以享受<strong>九折</strong>优惠!</br>升级会从账户中抵扣${minMoney}积分，</br>请确保账户中有足够的积分！</span>`;
-        if (selectDatas.length === 1) {
-            // 获取用户的积分，判断月是否大于等于1000
-            readUserById(selectDatas[0].id, function(data) {
-                if (data.success) {
-                    var money = data.data.rows[0].money;
-                    if (money >= minMoney) {
-                        flyer.confirm(tipMsg, function(result) {}, {
-                            btns: [{
-                                    text: '确定',
-                                    click: function(elm) {
-                                        this.close();
-                                        $.ajax({
-                                            url: '/api/updateLevelUser',
-                                            type: 'POST',
-                                            data: {
-                                                id: selectDatas[0].id,
-                                                level: 2
-                                            },
-                                            success: function(data, textStatus, jqXHR) {
-                                                flyer.msg(data.success ? '操作成功' : ('操作失败' + data.message));
-                                                getTableDatas(1, 20);
-                                            },
-                                            error: function(jqXHR, textStatus, errorThrown) {
-                                                flyer.msg(baseDatas.netErrMsg);
-                                            }
-                                        });
-                                    }
-                                },
-                                {
-                                    text: ("取消"),
-                                    click: function(elm) {
-                                        this.close();
-                                    }
-                                }
-                            ],
-                            title: "询问框",
-                            isModal: true
-                        });
-                    } else {
-                        flyer.msg(`您的积分余额不足${minMoney}， 请充值之后再升级。当前积分余额是 ${money}积分!`);
-                    }
-                } else {
-                    flyer.msg(data.message);
-                }
-            });
-        } else {
-            flyer.msg(baseDatas.operatorErrMsg.single);
-        }
-        return false;
-    }
-
-    /**
-     * 切换用户状态按钮点击事件处理函数
+     * 切换平台状态按钮点击事件处理函数
      * 
      * @param {any} events 
      */
-    function toggleUserHandle(events) {
+    function togglePlantHandle(events) {
         var selectDatas = core.getTableCheckedDatas(baseDatas.$table);
         var type = events.data.type;
         var tipMsg = type === 0 ? '确定禁用吗？' : '确定启用吗？';
@@ -233,7 +182,7 @@ flyer.define('user_manage', function(exports, module) {
                         click: function(elm) {
                             this.close();
                             $.ajax({
-                                url: '/api/toggleUser',
+                                url: '/api/togglePlant',
                                 type: 'POST',
                                 data: {
                                     id: selectDatas[0].id,
@@ -281,35 +230,29 @@ flyer.define('user_manage', function(exports, module) {
                         width: 34
                     }
                 }, {
-                    title: '用户名',
-                    field: "userName"
+                    title: '平台名称',
+                    field: "plantName"
                 }, {
-                    title: '当前积分',
-                    field: "money"
-                }, {
-                    title: '会员等级',
-                    field: "level",
-                    formatter: function(row) {
-                        return row.level === 1 ? '普通会员' : '金牌会员';
-                    }
-                }, {
-                    title: '邮箱',
-                    field: "email"
-                }, {
-                    title: '电话',
-                    field: "phone"
-                }, {
-                    title: 'QQ',
-                    field: "QQ"
+                    title: '描述',
+                    field: "description"
                 }, {
                     title: '创建时间',
                     field: "createdDate",
                     formatter: function(row, rows) {
-                        return flyer.formatDate('yyyy-MM-dd hh:mm', row.createdDate);
+                        return flyer.formatDate('yyyy-mm-dd hh:MM', row.createdDate);
+                    }
+                }, {
+                    title: '最后修改时间',
+                    field: "updateDate",
+                    formatter: function(row, rows) {
+                        return row.updateDate ? flyer.formatDate('yyyy-mm-dd hh:MM', row.updateDate) : '-';
                     }
                 }, {
                     title: '状态',
                     field: 'status',
+                    styles: {
+                        width: 56
+                    },
                     formatter: function(row) {
                         return row.status === 1 ? '启用' : '停用';
                     }
@@ -329,16 +272,16 @@ flyer.define('user_manage', function(exports, module) {
      */
     function randerDOMPager($table, datas, total, pagerObj) {
         // 没有数据的时候
-        core.tableNoMatch($table, '暂时没有用户');
+        core.tableNoMatch($table, '暂时没有平台');
         // 初始化下拉框，显示每页数据条数的下拉框
-        baseDatas.pageSizeSelectObj = core.initPagerSizeSelect($('#userPagerSize'), core.getPageListByTotal(total), String(pagerObj.pageSize || 20), {
+        baseDatas.pageSizeSelectObj = core.initPagerSizeSelect($('#plantPagerSize'), core.getPageListByTotal(total), String(pagerObj.pageSize || 20), {
             callback: getTableDatas,
             pagerObj: baseDatas.pagerObj,
             total: datas.total,
             exports: exports
         });
         // 初始化分页
-        baseDatas.pagerObj = core.initPager($('.paper-container-type'), total, pagerObj.pageSize || 20, {
+        baseDatas.pagerObj = core.initPager($('.paper-container'), total, pagerObj.pageSize || 20, {
             callback: getTableDatas,
             pageNumber: pagerObj.pageNumber || 1,
             pageSizeSelectObj: baseDatas.pageSizeSelectObj,
@@ -358,8 +301,8 @@ flyer.define('user_manage', function(exports, module) {
      * @param {any} total 总数居
      */
     function setMountValue(currentTotal, total) {
-        $('#currentUserMountSpan').text(currentTotal);
-        $('#userMountSpan').text(total);
+        $('#currentPlantMountSpan').text(currentTotal);
+        $('#plantMountSpan').text(total);
     }
 
     /**
@@ -376,9 +319,9 @@ flyer.define('user_manage', function(exports, module) {
                 keyword: '',
                 companyOrgID: baseDatas.companyOrgID
             },
-            $table = $('#userTable');
+            $table = $('#plantTable');
         $.ajax({
-            url: '/api/readUserPage',
+            url: '/api/readPlantPage',
             type: 'GET',
             data: conditions,
             beforeSend: function(jqXHR, settings) {
@@ -413,18 +356,18 @@ flyer.define('user_manage', function(exports, module) {
      * @param {Number} id 用户id
      * @param {funciton} callback 回调函数
      */
-    function readUserById(id, callback) {
+    function readPlantById(id, callback) {
         if (!id) {
             if (typeof callback === 'function') {
                 callback({
                     success: false,
-                    message: '用户id不能为空'
+                    message: '平台id不能为空'
                 });
             }
             return;
         }
         $.ajax({
-            url: '/api/readUserById',
+            url: '/api/readPlantById',
             data: {
                 id: id
             },
@@ -438,28 +381,29 @@ flyer.define('user_manage', function(exports, module) {
     }
 
     /**
-     * 校验积分金额，正整数，大于1000
+     * 校验平台信息
      * 
-     * @param {Number} money 积分
+     * @param {Object} plantInfo 平台信息对象
      */
-    function validAddMoneyUser(money) {
-        if (!money) {
+    function validPlantInfo(plantInfo) {
+        if (!plantInfo) {
             return {
                 isPass: false,
-                msg: '请输入充值金额'
+                msg: '参数错误'
             }
         }
 
-        if (money < 1000) {
+        if (!plantInfo.plantName) {
             return {
                 isPass: false,
-                msg: '充值金额不能小于1000'
+                msg: '平台名称不能为空'
             }
         }
-        if (isNaN(money)) {
+
+        if (!plantInfo.description) {
             return {
                 isPass: false,
-                msg: '充值金额只能是正整数'
+                msg: '平台描述不能为空'
             }
         }
         return {

@@ -13,8 +13,12 @@ let express = require("express"),
     Cookie = require('cookie-parser');
 
 // 业务逻辑模块
-let UserManage = require('./lib/user_manage');
+let UserManage = require('./lib/manage_user_service');
 let userManage = new UserManage();
+let PlantManage = require('./lib/manage_plant_service');
+let plantMange = new PlantManage();
+let TbTask = require('./lib/tb_task_service');
+let tbTask = new TbTask();
 
 app.use(session({
     secret: `${Math.random(10)}`, //secret的值建议使用随机字符串
@@ -99,6 +103,108 @@ app.post('/api/updateLevelUser', function(req, res) {
 app.post('/api/userAddMoney', function(req, res) {
     try {
         userManage.addMoneyUser(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 用户信息修改
+app.post('/api/updateUser', function(req, res) {
+    try {
+        userManage.updateUser(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+
+/***************平台管理模块路由*************/
+// 获取平台列表，支持分页
+app.get('/api/readPlantPage', function(req, res) {
+    try {
+        plantMange.readPlantPage(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 通过id获取平台信息
+app.get('/api/readPlantById', function(req, res) {
+    try {
+        plantMange.readPlantById(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 创建平台
+app.post('/api/createPlant', function(req, res) {
+    try {
+        plantMange.createPlant(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 切换平台状态
+app.post('/api/togglePlant', function(req, res) {
+    try {
+        plantMange.togglePlant(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 修改平台信息
+app.post('/api/updatePlant', function(req, res) {
+    try {
+        plantMange.updatePlant(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+/***********************淘宝任务模块**********************/
+// 创建任务 
+app.post('/api/createTask', function(req, res) {
+    try {
+        tbTask.createTask(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 获取任务列表，支持分页
+app.get('/api/readTaskPage', function(req, res) {
+    try {
+        tbTask.readTaskPage(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 通过id获取任务信息
+app.get('/api/readTaskById', function(req, res) {
+    try {
+        tbTask.readTaskById(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 切换任务状态
+app.post('/api/toggleTask', function(req, res) {
+    try {
+        tbTask.toggleTask(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 修改任务信息
+app.post('/api/updateTask', function(req, res) {
+    try {
+        tbTask.updateTask(req, res, req.body);
     } catch (error) {
         Core.flyer.log(error);
     }

@@ -138,11 +138,16 @@ header {
     .logo-link {
         display: $inlineB;
         height: 50px;
-        width: 160px;
+        width: 180px;
         min-height: 50px;
-        min-width: 160px;
+        min-width: 180px;
         background: $green;
-        float: left;
+        display: inline-block;
+        color: #fff;
+        text-align: center;
+        line-height: 47px;
+        font-size: 28px;
+        font-family: Hannotate SC;
         img {
             position: relative;
             top: -6px;
@@ -1015,7 +1020,7 @@ span.top-untreated {
     margin-top: 84px;
     background-color: #f6f9fa;
     color: #666;
-    padding-top: 35px;
+    padding-top: 53px;
     i {
         color: #666;
     }
@@ -1030,8 +1035,8 @@ p.tree-shrink {
     text-align: center;
     color: #666;
     border-bottom: 1px solid #eee;
-    height: 30px;
-    line-height: 30px;
+    height: 48px;
+    line-height: 48px;
     background: #f6f9fa;
     cursor: pointer;
     i.fa.fa-bars {

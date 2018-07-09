@@ -256,5 +256,25 @@ var core = {
             });
         }
         return arr;
+    },
+
+    /**
+     * 获取表单的value
+     * 
+     * @param {any} $form 表单对象
+     * @returns 返回一个对象
+     */
+    getFormValues: function($form) {
+        var formValueObject = {};
+        var serializeArray = [];
+        if (!$form || !$form.length) {
+            $.writeLog('core-getFormValues', '参数错误');
+            return {};
+        }
+        serializeArray = $form.serializeArray();
+        serializeArray.forEach(function(element) {
+            formValueObject[element.name] = $.trim(element.value);
+        }, this);
+        return formValueObject;
     }
 };
