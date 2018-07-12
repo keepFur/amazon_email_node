@@ -35,16 +35,9 @@ flyer.define('task_manage', function(exports, module) {
      */
     function initEvent() {
         // 页签点击事件
-        $('#manageTaskTab li').on('click', function(event) {
-            var index = $(this).data('index') || 0;
-            if ($(this).hasClass('flyer-tab-active')) {
-                return false;
-            }
-            $('#manageTaskTab li').removeClass('flyer-tab-active');
-            $(this).addClass('flyer-tab-active');
-            baseDatas.taskPlant = $(this).data('task-plant');
+        core.initTabClick($('#manageTaskTab li'), function($li) {
+            baseDatas.taskPlant = $li.data('task-plant');
             getTableDatas(baseDatas.curIndex, 20);
-            return false;
         });
         // 创建任务
         $('.createTask').on('click', createTaskHandle);
@@ -147,7 +140,7 @@ flyer.define('task_manage', function(exports, module) {
     function toggleTaskHandle(events) {
         var selectDatas = core.getTableCheckedDatas(baseDatas.$table);
         var type = events.data.type;
-        var tipMsg = type === 0 ? '确定禁用吗？' : '确定启用吗？';
+        var tipMsg = type === 0 ? '确定暂停吗？' : '确定恢复吗？';
         if (selectDatas.length === 1) {
             flyer.confirm(tipMsg, function(result) {}, {
                 btns: [{
@@ -261,13 +254,16 @@ flyer.define('task_manage', function(exports, module) {
                     title: '状态',
                     field: 'status',
                     styles: {
-                        width: 56
+                        width: 60
                     },
                     formatter: function(row) {
-                        return row.status === 1 ? '启用' : '停用';
+                        return row.status === 1 ? '进行中' : '已暂停';
                     }
                 }],
-                data: datas
+                data: datas,
+                rowClick: function() {
+                    core.setWindowHash('task_create', '');
+                }
             });
         } else {
             flyer.msg(baseDatas.paramErrMsg);

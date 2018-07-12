@@ -38,6 +38,8 @@ $(function() {
      * 
      */
     function initEvent() {
+        // 自定义页签的点击事件
+        core.initTabClick($('#taskTab li'), toggleTaskIndex);
         // 任务平台的点击事件
         $('form[name=taskForm]').find('input[name=taskPlant]').on('change', function(event) {
             if ($('#taskTab li[data-index=2]').hasClass('flyer-tab-active')) {
@@ -228,5 +230,22 @@ $(function() {
         };
     }
 
+    /**
+     * 根据页签的索引值动态的显示任务的流量入口
+     * 
+     * @param {any} $li 页签元素
+     */
+    function toggleTaskIndex($li) {
+        var $taskIndex = $('.js-task-index');
+        var $form = $('form[name=taskForm]');
+        var $taskPlant = $form.find('input[name=taskPlant]');
+        var index = $li.data('index');
+        $taskIndex.addClass('mdui-hidden').find('input[type=radio]').prop('checked', false);
+        $taskIndex.eq(index).removeClass('mdui-hidden').find('input[type=radio]').first().prop('checked', true);
+        // 店铺关注任务，只能是京东才有，所以需要禁用淘宝
+        $taskPlant.first().prop('disabled', index === 4).prop('checked', index !== 4).end().last().prop('checked', index === 4);
+        // 淘宝直播任务只能是淘宝平台
+        $taskPlant.last().prop('disabled', index === 3).prop('checked', index !== 3).end().first().prop('checked', index === 3);
+    }
     init();
 });

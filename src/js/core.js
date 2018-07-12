@@ -345,5 +345,42 @@ var core = {
             return types.TRAFFIC;
         }
         return types[typeKey];
-    }
+    },
+
+    /**
+     *  初始自定义的页签
+     * 
+     * @param {object} $tabContainer 页签容器
+     * @param {function} callback 初始化之后的回调函数
+     */
+    initTabClick: function($tabContainer, callback) {
+        if ($tabContainer && $tabContainer.length) {
+            $tabContainer.off('click').on('click', function(event) {
+                var index = $(this).data('index') || 0;
+                if ($(this).hasClass('flyer-tab-active')) {
+                    return false;
+                }
+                $tabContainer.removeClass('flyer-tab-active');
+                $(this).addClass('flyer-tab-active');
+                if (callback && typeof callback === 'function') {
+                    callback($(this));
+                }
+                return false;
+            });
+        } else {
+            $.writeLog('core-initTanClick', '页签容器为空');
+        }
+        return;
+    },
+
+    /**
+     *  获取系统时间戳
+     * 
+     * @param {function} callback 回调函数
+     */
+    getSysNow: function(callback) {
+        $.get('http://api.lieliu.com:1024/api/sys_now?format=json', function(data) {
+            callback(data);
+        });
+    },
 };
