@@ -1,0 +1,64 @@
+<div>
+    <div class="flyer-tab flyer-tab-default">
+        <div class="flyer-tab-title">
+            <ul id="taskTab">
+                <li data-index="0" class="flyer-tab-active">积分充值</li>
+            </ul>
+        </div>
+        <div class="flyer-tab-content">
+            <form name="addMoneyForm">
+                <div class="mdui-textfield">
+                    <label class="mdui-textfield-label">充值账号</label>
+                    <input class="mdui-textfield-input" type="text" name="userName" disabled/>
+                </div>
+                <div class="mdui-textfield">
+                    <label class="mdui-textfield-label">充值套餐</label>
+                    <!--容器-->
+                    <div class="js-add-package-type-container">
+                    </div>
+                </div>
+                <div class="mdui-textfield">
+                    <label class="mdui-textfield-label">支付方式</label>
+                    <label class="mdui-radio">
+                        <input type="radio" name="payMethod" checked value="1"/>
+                        <i class="mdui-radio-icon"></i>
+                        支付宝
+                    </label>
+                    <label class="mdui-radio">
+                        <input type="radio" name="payMethod" value="0"/>
+                        <i class="mdui-radio-icon"></i>
+                        微信
+                    </label>
+                </div>
+            </form>
+            <div class="mdui-row-xs-1 task-detail-container">
+                <div class="mdui-col">
+                    <span>预计效果：
+                        <em id="purchaseScore" class="mdui-text-color-pink"></em>
+                        <span>购买积分=</span>
+                    <em id="trafficCount" class="mdui-text-color-pink"></em>
+                    <span>个标准流量（0.01元/个），</span>
+                    <em id="presentScore" class="mdui-text-color-pink"></em>
+                    <span>赠送积分=</span>
+                    <em id="collectCount" class="mdui-text-color-pink"></em>
+                    <span>个收藏任务（0.08元/个）</span>
+                    </span>
+                </div>
+            </div>
+            <div class="mdui-row-xs-2 task-detail-container">
+                <div class="mdui-col">
+                    <span>充值积分：<em id="addScore"></em></span>
+                </div>
+                <div class="mdui-col">
+                    <span>支付金额：<em id="payMoney"></em>元</span>
+                </div>
+            </div>
+            <div class="mdui-row-xs-1 task-add-container">
+                <div class="mdui-col">
+                    <button class="mdui-btn mdui-btn-raised mdui-btn-block mdui-color-pink" id="addMoney"><i class="mdui-icon material-icons">&#xe569;</i>立即充值</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../js/add_money.js"></script>

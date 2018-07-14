@@ -77,8 +77,9 @@ $(function() {
                                 if (data.success) {
                                     flyer.msg('操作成功');
                                     that.close();
+                                    window.location.assign('/console');
                                 } else {
-                                    flyer.msg('操作失败：用户名或密码错误');
+                                    flyer.msg('操作失败：' + data.message);
                                 }
                             },
                             error: function(jqXHR, textStatus, errorThrown) {
@@ -127,8 +128,9 @@ $(function() {
                                 if (data.success) {
                                     flyer.msg('操作成功');
                                     that.close();
+                                    window.location.assign('/console');
                                 } else {
-                                    flyer.msg('操作失败：网络错误');
+                                    flyer.msg('操作失败：' + data.message);
                                 }
                             },
                             error: function(jqXHR, textStatus, errorThrown) {

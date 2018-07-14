@@ -42,9 +42,13 @@
                 <li>
                     <a href="/console">控制台</a>
                 </li>
-                <li>
-                    <a href="/console">个人信息<i class="mdui-icon material-icons">&#xe5c5;</i></a>
-                </li>
+                <% if(user){ %>
+                    <li>
+                        <a href="/api/logout">
+                            <%= user.userName%>
+                        </a>
+                    </li>
+                    <% } %>
             </ul>
         </nav>
     </header>

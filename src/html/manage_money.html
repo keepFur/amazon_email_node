@@ -1,3 +1,41 @@
 <div>
-    money_manage
+    <div class="flyer-tab flyer-tab-default">
+        <div class="flyer-tab-title">
+            <ul id="managePackageTab">
+                <li data-index="0" class="flyer-tab-active">充值套餐</li>
+            </ul>
+        </div>
+        <div class="flyer-tab-content">
+            <div class="flyer-layout-previewTitle">
+                <span class="flyer-layout-blod">套餐列表</span>
+                <span>(当前显示</span>
+                <span id="currentPackageMountSpan">0</span>
+                <span>个，共</span>
+                <span class="flyer-layout-allNum" id="packageMountSpan">0</span>
+                <span>个</span>
+                <span class="flyer-search-conditions"></span>)
+            </div>
+            <!-- 按钮结构 -->
+            <div class='btn-container'>
+                <button class="flyer-btn flyer-btn-blue createPackage">新增套餐</button>
+                <button class="flyer-btn flyer-btn-default updatePackage">修改</button>
+                <button class="flyer-btn flyer-btn-default disabledPackage">停用</button>
+                <button class="flyer-btn flyer-btn-default enabledPackage">启用</button>
+                <!-- 分页插件 -->
+                <div class='paper-container first'></div>
+                <div class="pager-size-container" id="packagePagerSize"></div>
+            </div>
+            <!-- 表单结构 -->
+            <div class='table-container' id="packageTable"></div>
+            <div class='btn-container footer-upper'>
+                <button class="flyer-btn flyer-btn-blue createPackage">新增套餐</button>
+                <button class="flyer-btn flyer-btn-default updatePackage">修改</button>
+                <button class="flyer-btn flyer-btn-default disabledPackage">停用</button>
+                <button class="flyer-btn flyer-btn-default enabledPackage">启用</button>
+                <!-- 分页插件 -->
+                <div class='paper-container'></div>
+            </div>
+        </div>
+    </div>
 </div>
+<script src="../js/manage_money.js"></script>

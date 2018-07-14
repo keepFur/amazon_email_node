@@ -551,5 +551,13 @@ var core = {
         }
         result = result.replace(/^&/, '');
         return result;
+    },
+
+    //  将一个数字抓换为记账写法 例如 1000000  1，000，000
+    numberToLocalString: function(num) {
+        if (num && !isNaN(num)) {
+            return Number(num + '.00').toLocaleString();
+        }
+        return '';
     }
 };

@@ -10,7 +10,9 @@ let express = require("express"),
     permissionData = require("./lib/permission_data"),
     Package = require("./package"),
     Core = require("./lib/core"),
+    userMiddleware = require('./lib/middleware/user'),
     Cookie = require('cookie-parser');
+
 
 // 业务逻辑模块
 let UserManage = require('./lib/manage_user_service');
@@ -21,6 +23,8 @@ let NoticeManage = require('./lib/manage_notice_service');
 let noticeMange = new NoticeManage();
 let TbTask = require('./lib/tb_task_service');
 let tbTask = new TbTask();
+let PackageManage = require('./lib/manage_package_service');
+let packageManage = new PackageManage();
 let APIUtil = require('./lib/api_util');
 
 app.use(session({
@@ -33,6 +37,7 @@ app.use(session({
 }));
 app.use(Cookie());
 app.use(express.static("src"));
+app.use(userMiddleware);
 app.use('/html', express.static("src/html"));
 app.use(
     bodyParser.urlencoded({
@@ -79,6 +84,18 @@ app.post('/api/createUser', function(req, res) {
 app.post('/api/userLogin', function(req, res) {
     try {
         userManage.userLogin(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 退出登录
+app.get('/api/logout', function(req, res) {
+    try {
+        req.session.destroy(function(err) {
+            if (err) throw err;
+            res.redirect('/');
+        });
     } catch (error) {
         Core.flyer.log(error);
     }
@@ -259,6 +276,52 @@ app.post('/api/updateTask', function(req, res) {
     }
 });
 
+/***********************充值套餐模块**********************/
+// 创建套餐
+app.post('/api/createPackage', function(req, res) {
+    try {
+        packageManage.createPackage(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 获取套餐列表，支持分页
+app.get('/api/readPackagePage', function(req, res) {
+    try {
+        packageManage.readPackagePage(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 通过id获取套餐信息
+app.get('/api/readPackageById', function(req, res) {
+    try {
+        packageManage.readPackageById(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 切换套餐状态
+app.post('/api/togglePackage', function(req, res) {
+    try {
+        packageManage.togglePackage(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 修改套餐信息
+app.post('/api/updatePackage', function(req, res) {
+    try {
+        packageManage.updatePackage(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
 /* *****************API工具类****************** */
 //生成signkey签名
 app.post('/api/generateSignKey', function(req, res) {
@@ -273,7 +336,7 @@ app.post('/api/generateSignKey', function(req, res) {
 app.get("/console", function(req, res, next) {
     Core.flyer.log('开始进入项目:' + new Date());
     try {
-        if (true) {
+        if (res.locals.user) {
             // let username = req.session.username,
             //     isMulti = req.session.isMulti,
             //     permissionData = req.session.permissionData,
@@ -302,14 +365,12 @@ app.get("/console", function(req, res, next) {
                 package: Package,
                 baiyi_home: Config.url_list.baiyi_home,
                 isMulti: false,
-                username: 'surong'
+                user: res.locals.user
             });
             Core.flyer.log('已经进入项目:当前路由:"/"' + new Date());
         } else {
-            Core.flyer.log("session验证失败" + (req.session.hasOwnProperty("sign") && req.session.sign));
-            res.redirect(
-                Config.url_list.redirect_logout
-            );
+            Core.flyer.log("用户未登录：" + (req.session.hasOwnProperty("sign") && req.session.sign));
+            res.redirect('/');
         }
     } catch (err) {
         Core.flyer.log('进入项目发生异常:当前路由:"/"' + err);
@@ -321,7 +382,8 @@ app.get("/console", function(req, res, next) {
 app.get('/', function(req, res) {
     try {
         res.render('front.ejs', {
-            package: Package
+            package: Package,
+            user: res.locals.user
         });
     } catch (error) {
         res.redirect('/error');
@@ -448,17 +510,6 @@ app.get("/auth_dev", function(req, res, next) {
                 Config.url_list.redirect_logout
             );
         }
-    } catch (err) {
-        Core.flyer.log(err);
-    }
-});
-
-// 退出
-app.get("/logout", function(req, res, next) {
-    try {
-        req.session.sign = false;
-        req.session.username = null;
-        res.redirect(Config.url_list.redirect_logout);
     } catch (err) {
         Core.flyer.log(err);
     }
