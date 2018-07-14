@@ -17,8 +17,11 @@ let UserManage = require('./lib/manage_user_service');
 let userManage = new UserManage();
 let PlantManage = require('./lib/manage_plant_service');
 let plantMange = new PlantManage();
+let NoticeManage = require('./lib/manage_notice_service');
+let noticeMange = new NoticeManage();
 let TbTask = require('./lib/tb_task_service');
 let tbTask = new TbTask();
+let APIUtil = require('./lib/api_util');
 
 app.use(session({
     secret: `${Math.random(10)}`, //secret的值建议使用随机字符串
@@ -164,6 +167,52 @@ app.post('/api/updatePlant', function(req, res) {
     }
 });
 
+/***************通知管理模块路由*************/
+// 获取通知列表，支持分页
+app.get('/api/readNoticePage', function(req, res) {
+    try {
+        noticeMange.readNoticePage(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 通过id获取通知信息
+app.get('/api/readNoticeById', function(req, res) {
+    try {
+        noticeMange.readNoticeById(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 创建通知
+app.post('/api/createNotice', function(req, res) {
+    try {
+        noticeMange.createNotice(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 切换通知状态
+app.post('/api/toggleNotice', function(req, res) {
+    try {
+        noticeMange.toggleNotice(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 修改通知信息
+app.post('/api/updateNotice', function(req, res) {
+    try {
+        noticeMange.updateNotice(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
 /***********************淘宝任务模块**********************/
 // 创建任务 
 app.post('/api/createTask', function(req, res) {
@@ -205,6 +254,16 @@ app.post('/api/toggleTask', function(req, res) {
 app.post('/api/updateTask', function(req, res) {
     try {
         tbTask.updateTask(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+/* *****************API工具类****************** */
+//生成signkey签名
+app.post('/api/generateSignKey', function(req, res) {
+    try {
+        APIUtil.generateSignkey(req, res, req.body);
     } catch (error) {
         Core.flyer.log(error);
     }
@@ -258,10 +317,15 @@ app.get("/console", function(req, res, next) {
     }
 });
 
+// 回到首页
 app.get('/', function(req, res) {
-    res.render('front.ejs', {
-        package: Package
-    });
+    try {
+        res.render('front.ejs', {
+            package: Package
+        });
+    } catch (error) {
+        res.redirect('/error');
+    }
 });
 
 //开发入口

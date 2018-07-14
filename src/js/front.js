@@ -4,6 +4,9 @@ $(function() {
     var userNameMaxLength = 20;
 
     function init() {
+        // 初始化通知组件
+        initNoticeComponent();
+        // 初始化事件
         inieEvent();
     }
 
@@ -13,6 +16,40 @@ $(function() {
         $('#userRegister').on('click', userRegisterHandler);
         // 登录
         $('#userLogin').on('click', userLoginHandler);
+    }
+
+    // 初始化通知组件
+    function initNoticeComponent() {
+        $.get('/api/readNoticePage', {
+            limit: 5,
+            offset: 1
+        }, function(res) {
+            if (res.success) {
+                var $noticeContainer = $('.js-notice-container');
+                $.each(res.data.rows, function(index, item) {
+                    var createdDate = flyer.formatDate('yyyy-mm-dd HH:MM', item.createdDate);
+                    var $template = `<a href="#" class="pull-left text-ellipsis js-notice-item ${index===0?' js-notice-item-active':' hide'}" data-id="${item.id}">
+                                        <span class="js-notice-title">${createdDate+'#' + item.noticeTitle}</span>
+                                        <span class="js-notice-content">${item.noticeContent}</span>
+                                     </a>`;
+                    $noticeContainer.append($template);
+                });
+                // $noticeItemClone.remove();
+                // 做一个定时器
+                var timer = setInterval(function() {
+                    var $item = $('.js-notice-item');
+                    var length = $item.length;
+                    var $currentItem = $('.js-notice-item-active');
+                    var currentItemIndex = $item.index($currentItem[0]);
+                    // 最后一个
+                    if (currentItemIndex === length - 1) {
+                        currentItemIndex = -1;
+                    }
+                    $currentItem.removeClass('js-notice-item-active').addClass('hide');
+                    $item.eq(currentItemIndex + 1).addClass('js-notice-item-active').removeClass('hide');
+                }, 10000);
+            }
+        });
     }
 
     // 用户登录

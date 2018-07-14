@@ -1,107 +1,256 @@
 // api工具类
 'use strict';
 // 构造函数
-function APIUtil() {
-    this.userKey = `asdassadasdasd`;
-    this.username = 'keepFur';
-    this.domain = 'http://api.lieliu.com:1024/api/';
-};
-
-// 获取服务端的时间戳
-APIUtil.prototype.getServerTimestamp = function(callback) {
-    const url = this.domain + '/sys_now?format=json';
-    $.get(url, function(res) {
-        console.log(res);
-    });
-};
-
-// 生成数字签名（signkey）
-APIUtil.prototype.generateSignkey = function(apiName, params) {
-    let str = `${apiName}?${params}&${this.userKey}`;
-    let urlEncode = encodeURI(str);
-    let hash = crypto.createHash('md5');
-    return hash.unpipe(urlEncode).digest('hex');
-};
-
-// 生成订单号(取系统时间+随机6位数数字相连)
-APIUtil.prototype.generateOrderNumer = function() {
-    let random = Math.ceil(Math.random() * 1000000);
-    let date = new Date();
-    let year = date.getFullYear();
-    let month = this.fillZero((date.getMonth() + 1));
-    let day = this.fillZero(date.getDate());
-    let hours = this.fillZero(date.getHours());
-    let minutes = this.fillZero(date.getMinutes());
-    let seconds = this.fillZero(date.getSeconds());
-    return '' + year + month + day + hours + minutes + seconds + random;
-};
-
-// 小于10前面0填充
-APIUtil.prototype.fillZero = function(number) {
-    return number > 10 ? number : '0' + number;
-};
-
-// 创建任务
-APIUtil.prototype.createTask = function(taskInfo, callback) {
-    const apiUrl = this.domain + 'll/task_add';
-    let params = {
-        username: this.username,
-        id: this.generateOrderNumer(),
-        count: 1000,
-        hour: new Array().fill(1).join(','),
-        begin_time: '2018-7-10',
-        type: 0,
-        target: 'asdasdadasdsadasda',
-        keyword: '那幢',
-        sUrl: 'https://www.tmall.com',
-        goodsBrowsingTime: 100,
-        timestamp: new Date().getTime(),
-        ver: 4,
-        format: 'json'
-    };
-    this.getServerTimestamp((time) => {
-        params.timestamp = time;
-        params.signkey = this.generateSignkey('/ll/task_add', params);
-        params = querystring.stringify(params);
-        let req = http.request({
-            host: 'api.lieliu.com',
-            port: 1024,
-            path: '/ll/task_add',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Content-Length': Buffer.byteLength(params)
-            }
-        }, res => {
-            res.setEncoding('utf8');
-            let rawData = '';
-            res.on('data', (chunk) => { rawData += chunk; });
-            res.on('end', () => {
-                try {
-                    const parsedData = JSON.parse(rawData);
-                    console.log(parsedData);
-                } catch (e) {
-                    console.error(e.message);
+var APIUtil = {
+    domain: 'http://api.lieliu.com:1024',
+    userKey: 'c1e5606f7b40e680d3b5bfc7dbb042ff',
+    getServerTimestamp: function(callback) {
+        var url = this.domain + '/api/sys_now?format=json';
+        callback = callback || function(res) {
+            flyer.msg('sys_now==>' + res.data.time);
+        };
+        $.get(url, function(data) {
+            callback(data);
+        });
+    },
+    generateOrderNumer: function() {
+        let random = Math.ceil(Math.random() * 1000000);
+        let date = new Date();
+        let year = date.getFullYear();
+        let month = core.padStart((date.getMonth() + 1));
+        let day = core.padStart(date.getDate());
+        let hours = core.padStart(date.getHours());
+        let minutes = core.padStart(date.getMinutes());
+        let seconds = core.padStart(date.getSeconds());
+        let mill = core.padStart(date.getMilliseconds());
+        return '' + year + month + day + hours + minutes + seconds + random;
+    },
+    signkey: function(apiName, params) {
+        var encodeUlr = encodeURIComponent(`${apiName}?${params}&${this.userKey}`);
+        return $.md5(encodeUlr);
+    },
+    createTask: function(params, callback) {
+        var url = this.domain + '/ll/task_add';
+        var orderNumber = this.generateOrderNumer();
+        var _this = this;
+        this.getServerTimestamp(function(data) {
+            params = $.extend(params, {
+                format: 'json',
+                ver: 4,
+                timestamp: data.data.time,
+                id: orderNumber,
+                username: 'u_1657222',
+            });
+            params.signkey = _this.signkey('/ll/task_add', core.objectToString(params));
+            $.ajax({
+                url: url,
+                data: params,
+                success: function(res) {
+                    res.orderNumber = orderNumber;
+                    callback(res);
+                },
+                error: function(error) {
+                    callback({}, error);
                 }
             });
-        }).on('error', (e) => {
-            console.error(`错误: ${e.message}`);
+            // params = {
+            //     count: 24,
+            //     begin_time: '2018-7-12',
+            //     format: 'json',
+            //     goodsBrowsingTime: 100,
+            //     hour: new Array(24).fill(1).join(),
+            //     id: orderNumber,
+            //     keyword: '女装',
+            //     target: `https://item.taobao.com/item.htm?spm=a211pk.steins68998.wb-qs-fp-20180312-ruiyu-video-pc6.3.129fjVNljVNl6G&id=39878007598`,
+            //     timestamp: data.data.time,
+            //     type: 1,
+            //     sUrl: 'https://www.taobao.com',
+            //     username: 'u_1657222',
+            //     ver: 4
+            // };
         });
-        // 写入数据到请求主体
-        req.write(params);
-        req.end();
-    });
+    },
+    // 查询任务
+    listTask: function(params, callback) {
+        var url = this.domain + '/ll/task_list';
+        var orderNumber = this.generateOrderNumer();
+        var signKey = '';
+        var _this = this;
+        this.getServerTimestamp(function(data) {
+            params = $.extend(params, {
+                format: 'json',
+                timestamp: data.data.time,
+                username: 'u_1657222',
+                ver: 4
+            });
+            params.signkey = _this.signkey('/ll/task_list', core.objectToString(params));
+            $.ajax({
+                url: 'http://api.lieliu.com:1024/ll/task_list',
+                data: params,
+                success: function(res) {
+                    callback(res);
+                },
+                error: function(error) {
+                    flyer.msg(error.message)
+                }
+            });
+        });
+    },
+    // 取消任务
+    cancelTask: function(orderNumber, callback) {
+        var url = this.domain + '/ll/task_cancel';
+        var signKey = '';
+        var _this = this;
+        this.getServerTimestamp(function(data) {
+            var params = {
+                format: 'json',
+                timestamp: data.data.time,
+                username: 'u_1657222',
+                ver: 4,
+                id: orderNumber
+            };
+            params.signkey = _this.signkey('/ll/task_cancel', core.objectToString(params));
+            $.ajax({
+                url: url,
+                data: params,
+                success: function(res) {
+                    callback(res);
+                },
+                error: function(error) {
+                    flyer.msg(error.message)
+                }
+            });
+        });
+    }
 };
 
-function test() {
-    let util = new APIUtil();
-    console.log(util.generateOrderNumer());
-    console.log(util.generateSignkey('/api/getmethod', '&a=1&b=10&c=123123asd'));
-    util.getServerTimestamp(function(data) {
-        console.log(data);
-    });
-    // util.createTask();
-}
-test();
+// // 获取服务端的时间戳
+// APIUtil.prototype.getServerTimestamp = function(callback) {
+//     var url = this.domain + '/api/sys_now?format=json';
+//     callback = callback || function(res) {
+//         flyer.msg('sys_now==>' + res.data.time);
+//     };
+//     $.get(url, function(data) {
+//         callback(data);
+//     });
+// };
 
-module.exports.APIUtil = new APIUtil();
+// // 生成数字签名（signkey）
+// APIUtil.prototype.generateSignkey = function(apiName, params, callback) {
+//     $.post(`/api/generateSignKey`, {
+//         apiName: apiName,
+//         params: params,
+//         urlEncode: params
+//     }, function(res) {
+//         callback(res);
+//     });
+// };
+
+// // 生成订单号(取系统时间+随机6位数数字相连)
+// APIUtil.prototype.generateOrderNumer = function() {
+//     let random = Math.ceil(Math.random() * 1000000);
+//     let date = new Date();
+//     let year = date.getFullYear();
+//     let month = core.padStart((date.getMonth() + 1));
+//     let day = core.padStart(date.getDate());
+//     let hours = core.padStart(date.getHours());
+//     let minutes = core.padStart(date.getMinutes());
+//     let seconds = core.padStart(date.getSeconds());
+//     let mill = core.padStart(date.getMilliseconds());
+//     return '' + year + month + day + hours + minutes + seconds + random;
+// };
+
+// //  生成签名
+// APIUtil.prototype.signkey = function(apiName, params) {
+//     var encodeUlr = encodeURIComponent(`${apiName}?${params}&${this.userKey}`);
+//     console.log(encodeUlr);
+//     return $.md5(encodeUlr);
+// };
+
+// //  创建任务
+// APIUtil.prototype.createTask = function(params, callback) {
+//     var url = this.domain + '/ll/task_add';
+//     var orderNumber = this.generateOrderNumer();
+//     var _this = this;
+//     this.getServerTimestamp(function(data) {
+//         params = $.extend(params, {
+//             format: 'json',
+//             ver: 4,
+//             timestamp: data.data.time,
+//             id: orderNumber,
+//             username: 'u_1657222',
+//         });
+//         params.signkey = _this.signkey('/ll/task_add', core.objectToString(params));
+//         $.ajax({
+//             url: url,
+//             data: params,
+//             success: function(res) {
+//                 callback(res);
+//             },
+//             error: function(error) {
+//                 callback({}, error);
+//             }
+//         });
+//         // params = {
+//         //     count: 24,
+//         //     begin_time: '2018-7-12',
+//         //     format: 'json',
+//         //     goodsBrowsingTime: 100,
+//         //     hour: new Array(24).fill(1).join(),
+//         //     id: orderNumber,
+//         //     keyword: '女装',
+//         //     target: `https://item.taobao.com/item.htm?spm=a211pk.steins68998.wb-qs-fp-20180312-ruiyu-video-pc6.3.129fjVNljVNl6G&id=39878007598`,
+//         //     timestamp: data.data.time,
+//         //     type: 1,
+//         //     sUrl: 'https://www.taobao.com',
+//         //     username: 'u_1657222',
+//         //     ver: 4
+//         // };
+//     });
+// };
+
+// APIUtil.prototype.listTask = function(params, callback) {
+//     var url = this.domain + '/ll/task_list';
+//     var orderNumber = this.generateOrderNumer();
+//     var signKey = '';
+//     var _this = this;
+//     this.getServerTimestamp(function(data) {
+//         params = {
+//             format: 'json',
+//             timestamp: data.data.time,
+//             username: 'u_1657222',
+//             ver: 4
+//         };
+//         params.signkey = _this.signkey('/ll/task_list', core.objectToString(params));
+//         $.ajax({
+//             url: 'http://api.lieliu.com:1024/ll/task_list',
+//             data: params,
+//             success: function(res) {
+//                 if (res.data.status === '1') {
+//                     console.log('socre==>' + res.data.score);
+//                     console.log('socre2==>' + res.data.score2);
+//                     console.log('price==>' + res.data.preice);
+//                     console.log('tips==>' + res.data.tips);
+//                 } else {
+//                     flyer.msg(res.data.tips);
+//                 }
+//             }
+//         });
+//     });
+// };
+
+function test() {
+    // var util = new APIUtil();
+    // flyer.msg('orderNumber==>' + util.generateOrderNumer());
+    // util.generateSignkey('/ll/add_task', core.objectToString({
+    //     a: '123',
+    //     k: '123',
+    //     g: 'buzhidao'
+    // }));
+    // util.getServerTimestamp();
+    // util.createTask();
+
+    // util.listTask();
+}
+
+// test();

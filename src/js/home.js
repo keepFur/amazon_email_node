@@ -5,4 +5,6 @@ function getSysNow() {
     });
 }
 
-getSysNow();
+// getSysNow();
+
+console.log(APIUtil.domain);

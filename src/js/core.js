@@ -327,6 +327,142 @@ var core = {
         }
         return types[typeKey];
     },
+
+    /**
+     * 根据key获取流量入口code和name
+     * 
+     * @param {stringany} typeKey 
+     * @returns 返回code
+     */
+    getTypeCodeByValue: function(typeKey) {
+        var types = {
+            APP_SEARCH: {
+                code: 0,
+                price: 100,
+                name: 'APP搜索',
+                plant: 'TB'
+            },
+            PC_SEARCH: {
+                code: 1,
+                price: 30,
+                name: 'PC搜索',
+                plant: 'TB'
+            },
+            DIRECT_SHOP: {
+                code: 2,
+                price: 30,
+                name: '直仿店铺',
+                plant: 'TB'
+            },
+            DIRECT_PRODUCT: {
+                code: 3,
+                price: 30,
+                name: '直仿商品',
+                plant: 'TB'
+            },
+            SHOP_COLLECT_APP: {
+                code: 6,
+                price: 30,
+                name: '店铺收藏APP端',
+                plant: 'TB'
+            },
+            PRODUCT_COLLECT_APP: {
+                code: 7,
+                price: 30,
+                name: '商品收藏APP端',
+                plant: 'TB'
+            },
+            SEARCH_COLLECT_APP: {
+                code: 9,
+                price: 30,
+                name: '搜索收藏APP端',
+                plant: 'TB'
+            },
+            SEARCH_ADDCART: {
+                code: 10,
+                price: 30,
+                name: '搜索加购',
+                plant: 'TB'
+            },
+            DIRECT_ADDCART: {
+                code: 11,
+                price: 30,
+                name: '直接加购',
+                plant: 'TB'
+            },
+            LIVE_ATTENTION: {
+                code: 12,
+                price: 30,
+                name: '直播关注',
+                plant: 'TB'
+            },
+            WEITAO_GOOD: {
+                code: 13,
+                price: 30,
+                name: '微淘点赞',
+                plant: 'TB'
+            },
+            LIVE_WATCH: {
+                code: 14,
+                price: 30,
+                name: '直播观看',
+                plant: 'TB'
+            },
+            START_TIP: {
+                code: 15,
+                price: 30,
+                name: '开团提醒',
+                plant: 'TB'
+            },
+            JD_TRIFFIC: {
+                code: 70,
+                price: 30,
+                name: '京东流量',
+                plant: 'JD'
+            },
+            JD_PRODUCT_COLLECT: {
+                code: 71,
+                price: 30,
+                name: '京东商品收藏',
+                plant: 'JD'
+            },
+            JD_SHOP_ATTENTION: {
+                code: 72,
+                price: 30,
+                name: '京东店铺关注',
+                plant: 'JD'
+            },
+            JD_ADD_CART: {
+                code: 73,
+                price: 30,
+                name: '京东加购',
+                plant: 'JD'
+            },
+            JD_EXPERT_ATTENTION: {
+                code: 74,
+                price: 30,
+                name: '京东达人关注',
+                plant: 'JD'
+            },
+            JD_APPOINTMENT_SOLD: {
+                code: 75,
+                price: 30,
+                name: '预约抢购',
+                plant: 'JD'
+            },
+            PDD_APP_TRAFFIC: {
+                code: 90,
+                price: 30,
+                name: '拼多多流量APP端',
+                plant: 'PDD'
+            },
+        };
+        if (!typeKey) {
+            return types.APP_SEARCH;
+        }
+        return types[typeKey] ? types[typeKey] : types.APP_SEARCH;
+    },
+
     /**
      * 根据key获取任务类型value
      * 
@@ -383,4 +519,37 @@ var core = {
             callback(data);
         });
     },
+
+    /**
+     *  将一个数字，如果小于10的话，使用指定的字符串填充，默认是0
+     * 
+     * @param {number} number 原数据
+     * @param {string|number} pad 填充的字符串
+     */
+    padStart: function(number, pad) {
+        pad = pad || '0';
+        return number > 10 ? number : pad + number;
+    },
+
+    /**
+     *  将一个对象转换为查询字符串,需要按照顺序来
+     * 例如 {a:1,b:2,c:3}==> a=1&b=2&c=3
+     * 
+     * @param {object} obj 原数据
+     */
+    objectToString: function(obj, result) {
+        result = result || ``;
+        if (typeof obj !== 'object') {
+            $.writeLog('core-objectToString', '参数错误');
+            return result;
+        }
+        var keys = Object.keys(obj).sort(function(a, b) {
+            return a > b;
+        });
+        for (var i = 0; i < keys.length; i++) {
+            result += '&' + keys[i] + '=' + obj[keys[i]];
+        }
+        result = result.replace(/^&/, '');
+        return result;
+    }
 };

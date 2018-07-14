@@ -375,7 +375,7 @@ header .main ul li a.active {
 
 .feature .item {
   display: inline-block;
-  width: calc(33.33333333333% - 3rem);
+  width: calc(25% - 3.18rem);
   padding: 1rem;
   font-size: 1.4rem;
   background-color: #fff;
@@ -386,7 +386,7 @@ header .main ul li a.active {
 
 .feature .item h3 {
   display: inline-block;
-  width: 40%;
+  width: 74%;
   margin: 0;
   padding: 0;
   vertical-align: top;
@@ -395,7 +395,6 @@ header .main ul li a.active {
 
 .feature .item p {
   display: inline-block;
-  width: 55%;
   margin: 0;
   padding: 0;
   color: #999; }
@@ -491,10 +490,8 @@ header .main ul li a.active {
   background-color: #fff; }
 
 .product .product-content .item {
+  border: 1px solid #eee;
   width: 100%; }
-
-.product .product-content .item + .item {
-  border: 1px solid #eee; }
 
 .product .product-content .item h3 {
   float: left;
@@ -519,14 +516,13 @@ header .main ul li a.active {
 .product .product-content .item .info {
   float: left;
   width: 48%;
-  padding: 1rem;
+  padding: 2rem 1rem;
   border-left: 1px solid #eee;
   border-right: 1px solid #eee;
   font-size: 14px; }
 
 .product .product-content .item .info p {
   float: left;
-  display: inline-block;
   text-align: center;
   width: 56%; }
 
@@ -673,7 +669,7 @@ header .main ul li a.active {
  *************************/
 .front-footer {
   width: 100%;
-  padding: 3rem 0 5rem;
+  padding: 3rem 0 3rem;
   background: #ededed; }
 
 .front-footer p {

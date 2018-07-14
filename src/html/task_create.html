@@ -2,16 +2,17 @@
     <div class="flyer-tab flyer-tab-default">
         <div class="flyer-tab-title">
             <ul id="taskTab">
-                <li data-index="0" data-task-parent-type="TRFFIC" class="flyer-tab-active">流量任务</li>
-                <li data-index="1" data-task-parent-type="COLLECT">收藏任务</li>
-                <li data-index="2" data-task-parent-type="ADD_CART">加购任务</li>
+                <li data-index="0" data-task-parent-type="TRFFIC" class="flyer-tab-active">淘宝流量任务</li>
+                <li data-index="1" data-task-parent-type="COLLECT">淘宝收藏任务</li>
+                <li data-index="2" data-task-parent-type="ADD_CART">淘宝加购任务</li>
                 <li data-index="3" data-task-parent-type="TB_LIVE">淘宝直播任务</li>
-                <li data-index="4" data-task-parent-type="JD_SHOP_ATTENTION">京东店铺关注任务</li>
+                <li data-index="4" data-task-parent-type="JD_SHOP_ATTENTION">京东店铺任务</li>
+                <li data-index="5" data-task-parent-type="PDD_APP_TRAFFIC">拼多多流量APP</li>
             </ul>
         </div>
         <div class="flyer-tab-content">
             <form name="taskForm">
-                <div class="mdui-textfield">
+                <!-- <div class="mdui-textfield">
                     <label class="mdui-textfield-label">任务平台</label>
                     <label class="mdui-radio">
                         <input type="radio" name="taskPlant" checked value="1"/>
@@ -23,46 +24,59 @@
                         <i class="mdui-radio-icon"></i>
                         京东
                     </label>
+                </div> -->
+                <div class="mdui-textfield js-task-search-index">
+                    <label class="mdui-textfield-label">搜索入口（天猫商品允许淘宝入口，淘宝商品不允许天猫入口）</label>
+                    <label class="mdui-radio">
+                        <input type="radio" name="sUrl" checked value="https://www.taobao.com"/>
+                        <i class="mdui-radio-icon"></i>
+                        淘宝
+                    </label>
+                    <label class="mdui-radio">
+                        <input type="radio" name="sUrl" value="https://www.tmall.com"/>
+                        <i class="mdui-radio-icon"></i>
+                        天猫
+                    </label>
                 </div>
                 <div class="mdui-textfield">
                     <label class="mdui-textfield-label">流量入口</label>
                     <div class="js-task-index" data-index='0'>
                         <label class="mdui-radio">
-                            <input type="radio" name="taskChildType" checked value="APP_TRAFFIC"/>
+                            <input type="radio" name="taskChildType" checked value="APP_SEARCH"/>
                             <i class="mdui-radio-icon"></i>
-                            APP流量
+                            APP搜索流量
                         </label>
                         <label class="mdui-radio">
-                            <input type="radio" name="taskChildType" value="PC_TRAFFIC"/>
+                            <input type="radio" name="taskChildType" value="PC_SEARCH"/>
                             <i class="mdui-radio-icon"></i>
-                            PC流量
+                            PC搜索流量
                         </label>
                         <label class="mdui-radio">
-                            <input type="radio" name="taskChildType" value="DIRECT_TRAFFIC"/>
+                            <input type="radio" name="taskChildType" value="DIRECT_SHOP"/>
                             <i class="mdui-radio-icon"></i>
-                            直访流量
+                            直访店铺流量
+                        </label>
+                        <label class="mdui-radio">
+                            <input type="radio" name="taskChildType" value="DIRECT_PRODUCT"/>
+                            <i class="mdui-radio-icon"></i>
+                            直访商品流量
                         </label>
                     </div>
                     <div class="js-task-index mdui-hidden" data-index='1'>
                         <label class="mdui-radio">
-                            <input type="radio" name="taskChildType" value="SEARCH_COLLECT"/>
+                            <input type="radio" name="taskChildType" value="SEARCH_COLLECT_APP"/>
                             <i class="mdui-radio-icon"></i>
-                            搜索收藏
+                            搜索收藏APP端
                         </label>
                         <label class="mdui-radio">
-                            <input type="radio" name="taskChildType" value="PRODUCT_COLLECT"/>
+                            <input type="radio" name="taskChildType" value="PRODUCT_COLLECT_APP"/>
                             <i class="mdui-radio-icon"></i>
-                            商品收藏
+                            商品收藏APP端
                         </label>
                         <label class="mdui-radio">
-                            <input type="radio" name="taskChildType" value="SHOP_COLLECT"/>
+                            <input type="radio" name="taskChildType" value="SHOP_COLLECT_APP"/>
                             <i class="mdui-radio-icon"></i>
-                            店铺收藏
-                        </label>
-                        <label class="mdui-radio">
-                            <input type="radio" name="taskChildType" value="JUHUASUAN"/>
-                            <i class="mdui-radio-icon"></i>
-                            聚划算
+                            店铺收藏APP端
                         </label>
                     </div>
                     <div class="js-task-index mdui-hidden" data-index='2'>
@@ -76,22 +90,12 @@
                             <i class="mdui-radio-icon"></i>
                             直接加购
                         </label>
-                        <label class="mdui-radio">
-                            <input type="radio" name="taskChildType" value="APPOINTMENT_SOLD" disabled/>
-                            <i class="mdui-radio-icon"></i>
-                            预约抢购
-                        </label>
                     </div>
                     <div class="js-task-index mdui-hidden" data-index='3'>
                         <label class="mdui-radio">
-                            <input type="radio" name="taskChildType" value="EXPERT_ATTENTION_P"/>
+                            <input type="radio" name="taskChildType" value="LIVE_ATTENTION"/>
                             <i class="mdui-radio-icon"></i>
-                            达人关注（普通粉）
-                        </label>
-                        <label class="mdui-radio">
-                            <input type="radio" name="taskChildType" value="EXPERT_ATTENTION_G"/>
-                            <i class="mdui-radio-icon"></i>
-                            达人关注（高级粉）
+                            直播关注
                         </label>
                         <label class="mdui-radio">
                             <input type="radio" name="taskChildType" value="WEITAO_GOOD"/>
@@ -103,53 +107,85 @@
                             <i class="mdui-radio-icon"></i>
                             直播观看
                         </label>
+                        <label class="mdui-radio">
+                            <input type="radio" name="taskChildType" value="START_TIP"/>
+                            <i class="mdui-radio-icon"></i>
+                            开团提醒
+                        </label>
                     </div>
                     <div class="js-task-index mdui-hidden" data-index='4'>
                         <label class="mdui-radio">
-                            <input type="radio" name="taskChildType" value="SHOP_ATTENTION"/>
+                            <input type="radio" name="taskChildType" value="JD_TRIFFIC"/>
                             <i class="mdui-radio-icon"></i>
-                            店铺关注
+                            京东流量
                         </label>
                         <label class="mdui-radio">
-                            <input type="radio" name="taskChildType" value="EXPERT_ATTENTION_P"/>
+                            <input type="radio" name="taskChildType" value="JD_PRODUCT_COLLECT"/>
                             <i class="mdui-radio-icon"></i>
-                            达人关注
+                            京东商品收藏
+                        </label>
+                        <label class="mdui-radio">
+                            <input type="radio" name="taskChildType" value="JD_SHOP_ATTENTION"/>
+                            <i class="mdui-radio-icon"></i>
+                            京东店铺关注
+                        </label>
+                        <label class="mdui-radio">
+                            <input type="radio" name="taskChildType" value="JD_ADD_CART"/>
+                            <i class="mdui-radio-icon"></i>
+                            京东加购
+                        </label>
+                        <label class="mdui-radio">
+                            <input type="radio" name="taskChildType" value="JD_EXPERT_ATTENTION"/>
+                            <i class="mdui-radio-icon"></i>
+                            京东达人关注
+                        </label>
+                        <label class="mdui-radio">
+                            <input type="radio" name="taskChildType" value="JD_APPOINTMENT_SOLD"/>
+                            <i class="mdui-radio-icon"></i>
+                            京东预约抢购
+                        </label>
+                    </div>
+                    <div class="js-task-index mdui-hidden" data-index='5'>
+                        <label class="mdui-radio">
+                            <input type="radio" name="taskChildType" value="PDD_APP_TRAFFIC"/>
+                            <i class="mdui-radio-icon"></i>
+                            拼多多APP流量
                         </label>
                     </div>
                 </div>
                 <div class="mdui-row-xs-2">
                     <div class="mdui-textfield mdui-col">
-                        <label class="mdui-textfield-label">任务日期（开始）</label>
+                        <label class="mdui-textfield-label">任务开始日期（可不填，默认是今天）</label>
                         <input class="mdui-textfield-input" type="text" name="taskStartDate" id="taskStartDate" />
                     </div>
                     <div class="mdui-textfield mdui-col">
-                        <label class="mdui-textfield-label">任务日期（结束）</label>
-                        <input class="mdui-textfield-input" type="text" name="taskEndDate" id="taskEndDate" />
+                        <label class="mdui-textfield-label">任务名称（可不填）</label>
+                        <input class="mdui-textfield-input" type="text" name="taskName" />
                     </div>
                 </div>
                 <div class="mdui-textfield">
-                    <label class="mdui-textfield-label">任务名称（可不填）</label>
-                    <input class="mdui-textfield-input" type="text" name="taskName" />
-                </div>
-                <div class="mdui-textfield">
-                    <label class="mdui-textfield-label">宝贝链接或淘口令</label>
+                    <label class="mdui-textfield-label">宝贝链接（商品链接/店铺链接/京东商品链接/京东店铺链接/拼多多商品链接）</label>
                     <input class="mdui-textfield-input" type="text" name="taskBabyLinkToken" />
                 </div>
+                <div class="mdui-textfield">
+                    <label class="mdui-textfield-label">宝贝停留时间（APP端不能低于50秒，PC端不能低于30秒）</label>
+                    <input class="mdui-textfield-input" type="text" name="taskGoodsBrowsingTime" />
+                </div>
                 <div class="js-keyword-quantity-container">
-                    <div class="mdui-row-xs-3 js-keyword-quantity-item">
+                    <div class="mdui-row-xs-2 js-keyword-quantity-item">
                         <div class="mdui-textfield mdui-col">
-                            <label class="mdui-textfield-label js-task-keyword">关键词1</label>
-                            <input class="mdui-textfield-input" type="text" name="taskKeyword" placeholder="一次输入一个关键词" />
+                            <label class="mdui-textfield-label js-task-keyword">关键词（多个关键词用空格隔开）</label>
+                            <input class="mdui-textfield-input" type="text" name="taskKeyword" />
                         </div>
                         <div class="mdui-textfield mdui-col">
-                            <label class="mdui-textfield-label js-task-quantity">数量1</label>
+                            <label class="mdui-textfield-label js-task-quantity">数量（主人，这个只能输入正整数）</label>
                             <input class="mdui-textfield-input" type="text" name="taskQuantity" />
                         </div>
-                        <div class="mdui-textfield mdui-col">
+                        <!-- <div class="mdui-textfield mdui-col">
                             <label class="mdui-textfield-label">操作</label>
                             <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-pink js-delete-keyword-quantity">删除</button>
                             <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-pink js-add-keyword-quantity">新增</button>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </form>
@@ -158,10 +194,10 @@
                     <span>任务耗时：<em id="taskSumTime">1</em>天</span>
                 </div>
                 <div class="mdui-col">
-                    <span>单词消费：<em id="taskPrice">10</em>积分</span>
+                    <span>单次消费：<em id="taskPrice">100</em>积分</span>
                 </div>
                 <div class="mdui-col">
-                    <span>总消费：<em id="taskSumMoney">1000</em>积分</span>
+                    <span>总消费：<em id="taskSumMoney">0</em>积分</span>
                 </div>
             </div>
             <div class="mdui-row-xs-1 task-add-container">
@@ -172,4 +208,6 @@
         </div>
     </div>
 </div>
+<!-- <script src="../plugins/js/md5.js"></script> -->
+<!-- <script type="text/javascript" src="../js/api_util.js"></script> -->
 <script src="../js/task_create.js"></script>

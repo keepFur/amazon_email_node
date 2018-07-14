@@ -1,6 +1,6 @@
-// 任务管理模块
+// 通知管理模块
 'use strict';
-flyer.define('task_manage', function(exports, module) {
+flyer.define('notice_manage', function(exports, module) {
     var baseDatas = {
         // 表格实例
         $table: null,
@@ -13,9 +13,7 @@ flyer.define('task_manage', function(exports, module) {
         operatorErrMsg: {
             single: '请选择一条数据操作',
             batch: '请至少选择一条数据操作'
-        },
-        // 任务平台
-        taskPlant: ''
+        }
     };
 
     /**
@@ -34,72 +32,108 @@ flyer.define('task_manage', function(exports, module) {
      * 
      */
     function initEvent() {
-        // 页签点击事件
-        core.initTabClick($('#manageTaskTab li'), function($li) {
-            baseDatas.taskPlant = $li.data('task-plant');
-            getTableDatas(baseDatas.curIndex, 20);
-        });
-        // 创建任务
-        $('.createTask').on('click', createTaskHandle);
-        // 修改任务信息
-        $('.updateTask').on('click', updateTaskHandle);
-        // 禁用任务
-        $('.disabledTask').on('click', {
+        // 创建通知
+        $('.createNotice').on('click', createNoticeHandle);
+        // 修改通知信息
+        $('.updateNotice').on('click', updateNoticeHandle);
+        // 禁用通知
+        $('.disabledNotice').on('click', {
             type: 0
-        }, toggleTaskHandle);
-        // 启用任务
-        $('.enabledTask').on('click', {
+        }, toggleNoticeHandle);
+        // 启用通知
+        $('.enabledNotice').on('click', {
             type: 1
-        }, toggleTaskHandle);
+        }, toggleNoticeHandle);
     }
 
     /**
-     * 创建任务的点击事件处理函数
+     * 创建通知的点击事件处理函数
      * 
      * @param {any} events 
      */
-    function createTaskHandle(events) {
-        $(".flyer-layout-tree .flyer-layout-link[data-hash=task_create]").click();
+    function createNoticeHandle(events) {
+        flyer.open({
+            pageUrl: '/html/notice_create.html',
+            isModal: true,
+            area: [400, 200],
+            title: '创建通知',
+            btns: [{
+                text: '创建',
+                click: function(ele) {
+                    var that = this;
+                    var noticeInfo = core.getFormValues($('form[name=noticeCreateForm]'));
+                    var validNoticeInfoResult = validNoticeInfo(noticeInfo);
+                    if (validNoticeInfoResult.isPass) {
+                        $.ajax({
+                            url: '/api/createNotice',
+                            type: 'POST',
+                            data: noticeInfo,
+                            beforeSend: function(jqXHR, settings) {
+                                $.lockedBtn($(ele), true, ('创建中'));
+                            },
+                            success: function(data, textStatus, jqXHR) {
+                                flyer.msg(data.success ? ('操作成功') : ('操作失败'));
+                                that.close();
+                                getTableDatas(1, 20);
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                flyer.msg(baseDatas.errorMsg);
+                            },
+                            complete: function(jqXHR, textStatus) {
+                                $.unlockBtn($(ele), ('创建'));
+                            }
+                        });
+                    } else {
+                        flyer.msg(validNoticeInfoResult.msg);
+                    }
+                }
+            }, {
+                text: '取消',
+                click: function() {
+                    this.close();
+                }
+            }]
+        });
         return false;
     }
 
     /**
-     * 任务信息修改的点击事件处理函数
+     * 通知信息修改的点击事件处理函数
      * @param {any} events 
      */
-    function updateTaskHandle(events) {
+    function updateNoticeHandle(events) {
         var selectDatas = core.getTableCheckedDatas(baseDatas.$table);
         if (selectDatas.length === 1) {
-            var plantName = selectDatas[0].plantName;
-            var description = selectDatas[0].description;
+            var noticeTitle = selectDatas[0].noticeTitle;
+            var noticeContent = selectDatas[0].noticeContent;
             flyer.open({
                 content: `<div class="flyer-form-item dialog-form-container">
-                            <form class="flyer-form" name="plantUpdateForm">
+                            <form class="flyer-form" name="noticeUpdateForm">
                                 <div class="dialog-form-item">
-                                    <label>名称</label>
-                                    <input type="text" placeholder="可以是中文、字母、数字、下划线5-20位" class="flyer-input inline" name="plantName" value="${plantName}">
+                                    <label>标题</label>
+                                    <input type="text" class="flyer-input inline" name="noticeTitle" value="${noticeTitle}">
                                 </div>
                                 <div class="dialog-form-item">
-                                    <label>描述</label>
-                                    <input type="text" placeholder="简单的描述任务" class="flyer-input inline" name="description" value="${description}">
+                                    <label>内容</label>
+                                    <input type="text" class="flyer-input inline" name="noticeContent" value="${noticeContent}">
                                 </div>
                             </form>
                           </div>`,
                 isModal: true,
                 area: [400, 200],
-                title: '任务信息修改',
+                title: '通知信息修改',
                 btns: [{
                     text: '确定',
                     click: function(ele) {
                         var that = this;
-                        var plantInfo = core.getFormValues($('form[name=plantUpdateForm]'));
-                        var validTaskInfoResult = validTaskInfo(plantInfo);
-                        plantInfo.id = selectDatas[0].id;
-                        if (validTaskInfoResult.isPass) {
+                        var noticeInfo = core.getFormValues($('form[name=noticeUpdateForm]'));
+                        var validNoticeInfoResult = validNoticeInfo(noticeInfo);
+                        noticeInfo.id = selectDatas[0].id;
+                        if (validNoticeInfoResult.isPass) {
                             $.ajax({
-                                url: '/api/updateTask',
+                                url: '/api/updateNotice',
                                 type: 'POST',
-                                data: plantInfo,
+                                data: noticeInfo,
                                 beforeSend: function(jqXHR, settings) {
                                     $.lockedBtn($(ele), true, ('修改中'));
                                 },
@@ -116,7 +150,7 @@ flyer.define('task_manage', function(exports, module) {
                                 }
                             });
                         } else {
-                            flyer.msg(validTaskInfoResult.msg);
+                            flyer.msg(validNoticeInfoResult.msg);
                         }
                     }
                 }, {
@@ -133,14 +167,14 @@ flyer.define('task_manage', function(exports, module) {
     }
 
     /**
-     * 切换任务状态按钮点击事件处理函数
+     * 切换通知状态按钮点击事件处理函数
      * 
      * @param {any} events 
      */
-    function toggleTaskHandle(events) {
+    function toggleNoticeHandle(events) {
         var selectDatas = core.getTableCheckedDatas(baseDatas.$table);
         var type = events.data.type;
-        var tipMsg = type === 0 ? '确定暂停吗？' : '确定恢复吗？';
+        var tipMsg = type === 0 ? '确定禁用吗？' : '确定启用吗？';
         if (selectDatas.length === 1) {
             flyer.confirm(tipMsg, function(result) {}, {
                 btns: [{
@@ -148,7 +182,7 @@ flyer.define('task_manage', function(exports, module) {
                         click: function(elm) {
                             this.close();
                             $.ajax({
-                                url: '/api/toggleTask',
+                                url: '/api/toggleNotice',
                                 type: 'POST',
                                 data: {
                                     id: selectDatas[0].id,
@@ -196,59 +230,20 @@ flyer.define('task_manage', function(exports, module) {
                         width: 34
                     }
                 }, {
-                    title: '订单号',
-                    field: 'taskOrderNumber'
+                    title: '标题',
+                    field: "noticeTitle"
                 }, {
-                    title: '数量和关键词',
-                    field: "",
-                    styles: {
-                        width: 120
-                    },
-                    formatter: function(row) {
-                        return '（' + row.taskQuantity + '）' + row.taskKeyword;
-                        // return '<i class="mdui-icon material-icons mdui-text-color-pink">&#xe417;</i>';
-                    }
-                }, {
-                    title: '任务类型',
-                    field: "",
-                    formatter: function(row) {
-                        var type = core.getTypeCodeByValue(row.taskChildType);
-                        var taskPlant = type.plant === 'TB' ? '淘宝' : type.plant === 'JD' ? '京东' : '拼多多';
-                        return taskPlant + '（' + type.name + '）';
-                    }
-                }, {
-                    title: '任务名称',
-                    field: "taskName"
-                }, {
-                    title: '开始日期',
-                    field: "",
-                    formatter: function(row) {
-                        return flyer.formatDate('yyyy-mm-dd', row.taskStartDate);
-                    }
-                }, {
-                    title: '链接',
-                    field: "taskBabyLinkToken"
-                }, {
-                    title: '总消费',
-                    field: "taskSumMoney",
-                    styles: {
-                        width: 70
-                    }
+                    title: '内容',
+                    field: "noticeContent"
                 }, {
                     title: '创建时间',
                     field: "createdDate",
-                    styles: {
-                        width: 130
-                    },
                     formatter: function(row, rows) {
                         return flyer.formatDate('yyyy-mm-dd hh:MM', row.createdDate);
                     }
                 }, {
-                    title: '修改时间',
+                    title: '最后修改时间',
                     field: "updateDate",
-                    styles: {
-                        width: 130
-                    },
                     formatter: function(row, rows) {
                         return row.updateDate ? flyer.formatDate('yyyy-mm-dd hh:MM', row.updateDate) : '-';
                     }
@@ -256,16 +251,13 @@ flyer.define('task_manage', function(exports, module) {
                     title: '状态',
                     field: 'status',
                     styles: {
-                        width: 60
+                        width: 56
                     },
                     formatter: function(row) {
-                        return '<i class="mdui-icon material-icons mdui-text-color-pink js-view-status" data-id="' + row.id + '" data-task-order-number="' + row.taskOrderNumber + '">&#xe417;</i>';
+                        return row.status === 1 ? '启用' : '停用';
                     }
                 }],
-                data: datas,
-                rowClick: function() {
-                    // core.setWindowHash('task_create', '');
-                }
+                data: datas
             });
         } else {
             flyer.msg(baseDatas.paramErrMsg);
@@ -280,9 +272,9 @@ flyer.define('task_manage', function(exports, module) {
      */
     function randerDOMPager($table, datas, total, pagerObj) {
         // 没有数据的时候
-        core.tableNoMatch($table, '暂时没有任务');
+        core.tableNoMatch($table, '暂时没有通知');
         // 初始化下拉框，显示每页数据条数的下拉框
-        baseDatas.pageSizeSelectObj = core.initPagerSizeSelect($('#plantPagerSize'), core.getPageListByTotal(total), String(pagerObj.pageSize || 20), {
+        baseDatas.pageSizeSelectObj = core.initPagerSizeSelect($('#noticePagerSize'), core.getPageListByTotal(total), String(pagerObj.pageSize || 20), {
             callback: getTableDatas,
             pagerObj: baseDatas.pagerObj,
             total: datas.total,
@@ -309,8 +301,8 @@ flyer.define('task_manage', function(exports, module) {
      * @param {any} total 总数居
      */
     function setMountValue(currentTotal, total) {
-        $('#currentTaskMountSpan').text(currentTotal);
-        $('#taskMountSpan').text(total);
+        $('#currentNoticeMountSpan').text(currentTotal);
+        $('#noticeMountSpan').text(total);
     }
 
     /**
@@ -324,11 +316,12 @@ flyer.define('task_manage', function(exports, module) {
                 offset: pageNumber || 1,
                 limit: pageSize || 20,
                 nocache: window.Date.now(),
-                taskPlant: baseDatas.taskPlant
+                keyword: '',
+                companyOrgID: baseDatas.companyOrgID
             },
-            $table = $('#taskTable');
+            $table = $('#noticeTable');
         $.ajax({
-            url: '/api/readTaskPage',
+            url: '/api/readNoticePage',
             type: 'GET',
             data: conditions,
             beforeSend: function(jqXHR, settings) {
@@ -343,27 +336,6 @@ flyer.define('task_manage', function(exports, module) {
                     });
                     setMountValue(data.data.rows.length, data.data.total);
                     core.bindCheckboxEvent(baseDatas.$table);
-                    $('.js-view-status').off('click').on('click', function(event) {
-                        var taskOrderNumber = $(this).data('task-order-number');
-                        var content = '';
-                        APIUtil.listTask({
-                            id: taskOrderNumber
-                        }, function(res) {
-                            if (res.data.status !== '1') {
-                                content = res.data.tips;
-                            } else if (res.data.list.l.length > 0) {
-                                var data = res.data.list.l[0];
-                                content = `任务单号：${taskOrderNumber}</br>任务状态：${data.m}</br>任务总量：${data.c}</br>剩余量：${data.e}`;
-                            } else {
-                                content = '查无此订单信息，请联系客服';
-                            }
-                            var tooltip = new mdui.Tooltip(event.target, {
-                                position: 'left',
-                                content: content
-                            });
-                            tooltip.open();
-                        });
-                    });
                 } else {
                     flyer.msg(data.message);
                     renderTable($table, []);
@@ -384,18 +356,18 @@ flyer.define('task_manage', function(exports, module) {
      * @param {Number} id 用户id
      * @param {funciton} callback 回调函数
      */
-    function readTaskById(id, callback) {
+    function readNoticeById(id, callback) {
         if (!id) {
             if (typeof callback === 'function') {
                 callback({
                     success: false,
-                    message: '任务id不能为空'
+                    message: '通知id不能为空'
                 });
             }
             return;
         }
         $.ajax({
-            url: '/api/readTaskById',
+            url: '/api/readNoticeById',
             data: {
                 id: id
             },
@@ -409,39 +381,35 @@ flyer.define('task_manage', function(exports, module) {
     }
 
     /**
-     * 校验任务信息
+     * 校验通知信息
      * 
-     * @param {Object} plantInfo 任务信息对象
+     * @param {Object} noticeInfo 通知信息对象
      */
-    function validTaskInfo(plantInfo) {
-        if (!plantInfo) {
+    function validNoticeInfo(noticeInfo) {
+        if (!noticeInfo) {
             return {
                 isPass: false,
                 msg: '参数错误'
             }
         }
 
-        if (!plantInfo.plantName) {
+        if (!noticeInfo.noticeTitle) {
             return {
                 isPass: false,
-                msg: '任务名称不能为空'
+                msg: '通知标题不能为空'
             }
         }
 
-        if (!plantInfo.description) {
+        if (!noticeInfo.noticeContent) {
             return {
                 isPass: false,
-                msg: '任务描述不能为空'
+                msg: '通知内容不能为空'
             }
         }
         return {
             isPass: true,
             msg: ''
         };
-    }
-
-    function getTaskStatus() {
-        alert(123);
     }
 
     // 页面入口

@@ -16,21 +16,23 @@ $(function() {
         var taskStartDate = flyer.date($('#taskStartDate'), {
             format: 'yyyy-mm-dd',
             click: function(date) {
-                taskEndDate.setMinDate(date);
-                setTaskDetail({
-                    taskSumTime: core.computeDifferentDay(date, $('#taskEndDate').val())
-                });
+                // taskEndDate.setMinDate(date);
+                // setTaskDetail({
+                //     taskSumTime: core.computeDifferentDay(date, $('#taskEndDate').val())
+                // });
             }
         });
-        var taskEndDate = flyer.date($('#taskEndDate'), {
-            format: 'yyyy-mm-dd',
-            click: function(date) {
-                taskStartDate.setMaxDate(date);
-                setTaskDetail({
-                    taskSumTime: core.computeDifferentDay($('#taskStartDate').val(), date)
-                });
-            }
-        });
+        // var taskEndDate = flyer.date($('#taskEndDate'), {
+        //     format: 'yyyy-mm-dd',
+        //     click: function(date) {
+        //         taskStartDate.setMaxDate(date);
+        //         // setTaskDetail({
+        //         //     taskSumTime: core.computeDifferentDay($('#taskStartDate').val(), date)
+        //         // });
+        //     }
+        // });
+        // 设置单价的值
+        $('#taskPrice').text(core.getTypeCodeByValue($('input[type=radio][name=taskChildType]:checked').val()).price);
     }
 
     /**
@@ -50,10 +52,14 @@ $(function() {
             }
             return false;
         });
+        // 任务类型的点击事件，动态的更新价格
+        $('.js-task-index').on('change', 'input[type=radio][name=taskChildType]', function(event) {
+            $('#taskPrice').text(core.getTypeCodeByValue($(this).val()).price);
+        });
         // 添加关键词和数量
-        $('button.js-add-keyword-quantity').on('click', addTaskKeywordQuantityHandle);
-        // 删除关键词和数量 
-        $('button.js-delete-keyword-quantity').on('click', deleteTaskKeywordQuantityHandle);
+        // $('button.js-add-keyword-quantity').on('click', addTaskKeywordQuantityHandle);
+        // 删除关键词和数量
+        // $('button.js-delete-keyword-quantity').on('click', deleteTaskKeywordQuantityHandle);
         // 创建任务
         $('#createTask').on('click', createTaskHandle);
     }
@@ -119,29 +125,45 @@ $(function() {
         var ele = event.target;
         var $taskForm = $('form[name=taskForm]');
         var taskInfo = getTaskInfo($taskForm);
+        var signKeyTaskInfo = getSignKeyTaskInfo(taskInfo);
         var validTaskInfoResult = validTaskInfo(taskInfo);
         if (validTaskInfoResult.isPass) {
-            $.ajax({
-                url: '/api/createTask',
-                type: 'POST',
-                data: taskInfo,
-                beforeSend: function(jqXHR, settings) {
-                    $.lockedBtn($(ele), true, '创建中');
-                },
-                success: function(data, textStatus, jqXHR) {
-                    if (data.success) {
-                        flyer.msg('操作成功');
-                        core.setWindowHash('manage_task');
-                    } else {
-                        flyer.msg('操作失败' + data.message);
-                    }
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    flyer.msg(baseDatas.errorMsg);
-                },
-                complete: function(jqXHR, textStatus) {
-                    $.unlockBtn($(ele), '<i class="mdui-icon material-icons">&#xe569;</i>创建任务');
+            APIUtil.createTask(signKeyTaskInfo, function(res, err) {
+                if (err) {
+                    flyer.msg(err.message);
+                    return false;
                 }
+                if (res.data.status !== '1') {
+                    flyer.msg(res.data.tips);
+                    return false;
+                }
+                // 调用第三方api的时候，生成的订单号，需要传回到数据库中，不能再次生成
+                taskInfo.taskOrderNumber = res.orderNumber;
+                $.ajax({
+                    url: '/api/createTask',
+                    type: 'POST',
+                    data: taskInfo,
+                    beforeSend: function(jqXHR, settings) {
+                        $.lockedBtn($(ele), true, '创建中');
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        if (data.success) {
+                            flyer.msg('操作成功！！！</br>本次共消费积分：' + res.data.price + '</br>' + '赠送积分余额：' + res.data.score + '</br>购买积分余额：' + res.data.score2);
+                            core.setWindowHash('manage_task');
+                        } else {
+                            // 操作失败需要取消当前任务
+                            APIUtil.cancelTask(taskOrderNumber, function(res) {
+                                flyer.msg('操作失败：' + res.data.tips);
+                            });
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        flyer.msg(baseDatas.errorMsg);
+                    },
+                    complete: function(jqXHR, textStatus) {
+                        $.unlockBtn($(ele), '<i class="mdui-icon material-icons">&#xe569;</i>创建任务');
+                    }
+                });
             });
         } else {
             flyer.msg(validTaskInfoResult.msg);
@@ -184,10 +206,31 @@ $(function() {
         var taskInfo = {};
         taskInfo.taskUserId = 1;
         taskInfo.taskParentType = $('#taskTab li.flyer-tab-active').data('task-parent-type');
-        taskInfo.taskUnitPrice = 10;
-        taskInfo.taskSumMoney = Math.random() * 10000;
-        taskInfo.keywordQuantity = getKeywordQuantity($form);
+        taskInfo.taskUnitPrice = $('#taskPrice').text();
+        taskInfo.taskSumMoney = taskInfo.taskUnitPrice * $('input[name=taskQuantity]').val();
+        // taskInfo.keywordQuantity = getKeywordQuantity($form);
+        // taskInfo.taskQuantity = $('input[name=taskQuantity]').val();
+        // taskInfo.taskKeyword = $('input[name=taskKeyword]').val();
         return $.extend(core.getFormValues($form), taskInfo);
+    }
+
+
+    /**
+     * 获取签名和提交到服务器用的参数
+     * 
+     * @param {any} taskInfo 
+     */
+    function getSignKeyTaskInfo(taskInfo) {
+        var signKeyTaskInfo = {};
+        signKeyTaskInfo.begin_time = taskInfo.taskStartDate;
+        signKeyTaskInfo.type = core.getTypeCodeByValue(taskInfo.taskChildType).code;
+        signKeyTaskInfo.count = taskInfo.taskQuantity;
+        signKeyTaskInfo.target = taskInfo.taskBabyLinkToken;
+        signKeyTaskInfo.keyword = taskInfo.taskKeyword;
+        signKeyTaskInfo.sUrl = taskInfo.sUrl;
+        signKeyTaskInfo.hour = new Array(24).fill(1).join();
+        signKeyTaskInfo.goodsBrowsingTime = taskInfo.taskGoodsBrowsingTime;
+        return signKeyTaskInfo;
     }
 
     /**
@@ -238,14 +281,17 @@ $(function() {
     function toggleTaskIndex($li) {
         var $taskIndex = $('.js-task-index');
         var $form = $('form[name=taskForm]');
-        var $taskPlant = $form.find('input[name=taskPlant]');
+        // var $taskPlant = $form.find('input[name=taskPlant]');
+        var $taskSearchIndex = $form.find('.js-task-search-index');
         var index = $li.data('index');
         $taskIndex.addClass('mdui-hidden').find('input[type=radio]').prop('checked', false);
         $taskIndex.eq(index).removeClass('mdui-hidden').find('input[type=radio]').first().prop('checked', true);
+        // 搜索入口只有淘宝流量入口有
+        $taskSearchIndex.toggle((index === 0 || index == 1));
         // 店铺关注任务，只能是京东才有，所以需要禁用淘宝
-        $taskPlant.first().prop('disabled', index === 4).prop('checked', index !== 4).end().last().prop('checked', index === 4);
+        // $taskPlant.first().prop('disabled', index === 4).prop('checked', index !== 4).end().last().prop('checked', index === 4);
         // 淘宝直播任务只能是淘宝平台
-        $taskPlant.last().prop('disabled', index === 3).prop('checked', index !== 3).end().first().prop('checked', index === 3);
+        // $taskPlant.last().prop('disabled', index === 3).prop('checked', index !== 3).end().first().prop('checked', index === 3);
     }
     init();
 });
