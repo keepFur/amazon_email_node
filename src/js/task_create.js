@@ -1,6 +1,7 @@
 // 淘宝任务模块
 'use strict';
 $(function() {
+    var userInfo = $('#userName').data('user');
     // 页面入口
     function init() {
         initEvent();
@@ -14,23 +15,9 @@ $(function() {
     function initComponent() {
         // 日期组件
         var taskStartDate = flyer.date($('#taskStartDate'), {
-            format: 'yyyy-mm-dd',
-            click: function(date) {
-                // taskEndDate.setMinDate(date);
-                // setTaskDetail({
-                //     taskSumTime: core.computeDifferentDay(date, $('#taskEndDate').val())
-                // });
-            }
+            format: 'yyyy-mm-dd'
         });
-        // var taskEndDate = flyer.date($('#taskEndDate'), {
-        //     format: 'yyyy-mm-dd',
-        //     click: function(date) {
-        //         taskStartDate.setMaxDate(date);
-        //         // setTaskDetail({
-        //         //     taskSumTime: core.computeDifferentDay($('#taskStartDate').val(), date)
-        //         // });
-        //     }
-        // });
+        $('#taskStartDate').val(flyer.formatDate('yyyy-mm-dd'));
         // 设置单价的值
         $('#taskPrice').text(core.getTypeCodeByValue($('input[type=radio][name=taskChildType]:checked').val()).price);
     }
@@ -54,7 +41,20 @@ $(function() {
         });
         // 任务类型的点击事件，动态的更新价格
         $('.js-task-index').on('change', 'input[type=radio][name=taskChildType]', function(event) {
+            var quantity = $('input[name=taskQuantity]').val();
             $('#taskPrice').text(core.getTypeCodeByValue($(this).val()).price);
+            if (quantity) {
+                $('#taskSumMoney').text(core.numberToLocalString($('#taskPrice').text() * quantity));
+            }
+        });
+        // 数量输入框的keyup事件
+        $('input[name=taskQuantity]').on('keyup', function(event) {
+            var value = this.value;
+            if (!isNaN(value) && value > 0) {
+                $('#taskSumMoney').text(core.numberToLocalString(value * $('#taskPrice').text()));
+            } else {
+                this.value = '';
+            }
         });
         // 添加关键词和数量
         // $('button.js-add-keyword-quantity').on('click', addTaskKeywordQuantityHandle);
@@ -117,7 +117,7 @@ $(function() {
 
     /**
      * 创建任务
-     * 
+     * 先要判断用户的积分是否足够
      * @param {any} event 
      * @returns 
      */
@@ -125,9 +125,13 @@ $(function() {
         var ele = event.target;
         var $taskForm = $('form[name=taskForm]');
         var taskInfo = getTaskInfo($taskForm);
+        // 任务开始时间默认是今天
+        taskInfo.taskStartDate = taskInfo.taskStartDate || flyer.formatDate('yyyy-mm-dd');
         var signKeyTaskInfo = getSignKeyTaskInfo(taskInfo);
         var validTaskInfoResult = validTaskInfo(taskInfo);
+        // 验证通过
         if (validTaskInfoResult.isPass) {
+            // 判断用户的积分是否充足
             APIUtil.createTask(signKeyTaskInfo, function(res, err) {
                 if (err) {
                     flyer.msg(err.message);
@@ -148,7 +152,8 @@ $(function() {
                     },
                     success: function(data, textStatus, jqXHR) {
                         if (data.success) {
-                            flyer.msg('操作成功！！！</br>本次共消费积分：' + res.data.price + '</br>' + '赠送积分余额：' + res.data.score + '</br>购买积分余额：' + res.data.score2);
+                            // 获取用户当前的积分余额并提示
+                            flyer.msg('操作成功！！！</br>本次共消费积分：' + taskInfo.taskSumMoney + '</br>' + '积分余额：' + (userInfo.money - taskInfo.taskSumMoney));
                             core.setWindowHash('manage_task');
                         } else {
                             // 操作失败需要取消当前任务
@@ -204,13 +209,10 @@ $(function() {
      */
     function getTaskInfo($form) {
         var taskInfo = {};
-        taskInfo.taskUserId = 1;
+        taskInfo.taskUserId = userInfo.id;
         taskInfo.taskParentType = $('#taskTab li.flyer-tab-active').data('task-parent-type');
         taskInfo.taskUnitPrice = $('#taskPrice').text();
         taskInfo.taskSumMoney = taskInfo.taskUnitPrice * $('input[name=taskQuantity]').val();
-        // taskInfo.keywordQuantity = getKeywordQuantity($form);
-        // taskInfo.taskQuantity = $('input[name=taskQuantity]').val();
-        // taskInfo.taskKeyword = $('input[name=taskKeyword]').val();
         return $.extend(core.getFormValues($form), taskInfo);
     }
 
@@ -222,13 +224,13 @@ $(function() {
      */
     function getSignKeyTaskInfo(taskInfo) {
         var signKeyTaskInfo = {};
-        signKeyTaskInfo.begin_time = taskInfo.taskStartDate;
+        signKeyTaskInfo.begin_time = taskInfo.taskStartDate || flyer.formatDate('yyyy-mm-dd');
         signKeyTaskInfo.type = core.getTypeCodeByValue(taskInfo.taskChildType).code;
         signKeyTaskInfo.count = taskInfo.taskQuantity;
         signKeyTaskInfo.target = taskInfo.taskBabyLinkToken;
         signKeyTaskInfo.keyword = taskInfo.taskKeyword;
         signKeyTaskInfo.sUrl = taskInfo.sUrl;
-        signKeyTaskInfo.hour = new Array(24).fill(1).join();
+        signKeyTaskInfo.hour = computeEqualPart(taskInfo.taskQuantity, computeMainHourToday());
         signKeyTaskInfo.goodsBrowsingTime = taskInfo.taskGoodsBrowsingTime;
         return signKeyTaskInfo;
     }
@@ -260,11 +262,42 @@ $(function() {
      * @param {any} taskInfo 
      */
     function validTaskInfo(taskInfo) {
+        // 判断用户的积分
+        if (userInfo.money <= 0 || userInfo.money < taskInfo.taskSumMoney) {
+            return {
+                isPass: false,
+                msg: '主人，您的积分不足，请先充值，谢谢！'
+            };
+        }
         if (!taskInfo) {
             $.writeLog('tb_task-setTaskDetail', '参数为空');
             return {
                 isPass: false,
                 msg: '参数不能为空'
+            };
+        }
+        if (!taskInfo.taskName) {
+            return {
+                isPass: false,
+                msg: '任务名称不能为空'
+            };
+        }
+        if (!taskInfo.taskBabyLinkToken) {
+            return {
+                isPass: false,
+                msg: '宝贝链接不能为空'
+            };
+        }
+        if (!taskInfo.goodsBrowsingTime || isNaN(taskInfo.goodsBrowsingTime) || taskInfo.goodsBrowsingTime < 50) {
+            return {
+                isPass: false,
+                msg: '商品浏览时间不能低于50秒'
+            };
+        }
+        if (!taskInfo.taskKeyword) {
+            return {
+                isPass: false,
+                msg: '关键词不能为空'
             };
         }
         return {
@@ -292,6 +325,39 @@ $(function() {
         // $taskPlant.first().prop('disabled', index === 4).prop('checked', index !== 4).end().last().prop('checked', index === 4);
         // 淘宝直播任务只能是淘宝平台
         // $taskPlant.last().prop('disabled', index === 3).prop('checked', index !== 3).end().first().prop('checked', index === 3);
+    }
+
+    /**
+     * 将sum的总数评分为n分，余数累加给最后一个元素
+     * 并将等分之后的数据封装程一个数组返回
+     * @param {number} sum 总数
+     * @param {number} n 份数
+     * @return {array} 
+     */
+    function computeEqualPart(sum, n) {
+        // 返回一个长度为24大的数组，默认是使用0进行填充
+        var result = new Array(24).fill(0);
+        // sun%n的磨
+        var mode = 0;
+        // sum减去余数之后的值
+        var main = sum;
+        // 填充的开始位置
+        var start = 24 - n;
+        if (isNaN(sum) || isNaN(n)) {
+            return [];
+        }
+        mode = sum % n;
+        main = sum - mode;
+        // 填充元素
+        result.fill(main / n, start, 24);
+        result[23] += mode;
+        return result;
+    }
+
+    // 计算当前还剩几个小时，在一天中
+    function computeMainHourToday() {
+        var hour = new Date().getHours();
+        return 24 - hour;
     }
     init();
 });

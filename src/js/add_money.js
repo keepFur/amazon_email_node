@@ -3,6 +3,7 @@
 $(function() {
     var collectPrice = 0.08; //0.05
     var trafficPrice = 0.01; //0.06
+    var userInfo = $('#userName').data('user');
     // 入口函数
     function init() {
         initComponment();
@@ -11,8 +12,9 @@ $(function() {
 
     // 初始化组件
     function initComponment() {
-        // 设置账号信息
+        // 设置账号信息以及用户剩余积分
         $('form[name=addMoneyForm] input[name=userName]').val($('#userName').text());
+        $('#userMainMoney').text(userInfo.money);
         // 获取所有的充值方式并渲染
         getPackageDatas();
     }

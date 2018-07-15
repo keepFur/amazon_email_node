@@ -23,7 +23,7 @@
         </a>
         <!-- 登录相关 -->
         <span class='login'>
-            <span id="userName"><%= user.userName %></span>
+            <span id="userName" data-user='<%= JSON.stringify(user) %>'><%= user.userName %></span>
         <a href="/api/logout">
             <i class="mdui-icon material-icons">&#xe879;</i>
         </a>
