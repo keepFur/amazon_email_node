@@ -315,9 +315,6 @@ flyer.define('notice_manage', function(exports, module) {
         var conditions = {
                 offset: pageNumber || 1,
                 limit: pageSize || 20,
-                nocache: window.Date.now(),
-                keyword: '',
-                companyOrgID: baseDatas.companyOrgID
             },
             $table = $('#noticeTable');
         $.ajax({

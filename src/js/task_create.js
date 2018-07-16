@@ -1,4 +1,4 @@
-// 淘宝任务模块
+// 创建任务模块
 'use strict';
 $(function() {
     var userInfo = $('#userName').data('user');
@@ -6,6 +6,10 @@ $(function() {
     function init() {
         initEvent();
         initComponent();
+        core.getUserInfoById(userInfo.id, function(user) {
+            userInfo = user;
+            $('#userName').data('user', JSON.stringify(user));
+        });
     }
 
     /**
@@ -231,7 +235,9 @@ $(function() {
         signKeyTaskInfo.keyword = taskInfo.taskKeyword;
         signKeyTaskInfo.sUrl = taskInfo.sUrl;
         signKeyTaskInfo.hour = computeEqualPart(taskInfo.taskQuantity, computeMainHourToday());
+        signKeyTaskInfo.hour = new Array(24).fill(1);
         signKeyTaskInfo.goodsBrowsingTime = taskInfo.taskGoodsBrowsingTime;
+        console.log(signKeyTaskInfo);
         return signKeyTaskInfo;
     }
 
@@ -288,7 +294,7 @@ $(function() {
                 msg: '宝贝链接不能为空'
             };
         }
-        if (!taskInfo.goodsBrowsingTime || isNaN(taskInfo.goodsBrowsingTime) || taskInfo.goodsBrowsingTime < 50) {
+        if (!taskInfo.taskGoodsBrowsingTime || isNaN(taskInfo.taskGoodsBrowsingTime) || taskInfo.taskGoodsBrowsingTime < 50) {
             return {
                 isPass: false,
                 msg: '商品浏览时间不能低于50秒'

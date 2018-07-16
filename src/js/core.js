@@ -546,6 +546,7 @@ var core = {
         var keys = Object.keys(obj).sort(function(a, b) {
             return a > b;
         });
+        console.log(keys);
         for (var i = 0; i < keys.length; i++) {
             result += '&' + keys[i] + '=' + obj[keys[i]];
         }
@@ -559,5 +560,12 @@ var core = {
             return Number(num + '.00').toLocaleString();
         }
         return '';
+    },
+    // 获取用户的信息，通过用户id
+    getUserInfoById: function(id, callback) {
+        callback = callback || function() {};
+        $.get('/api/readUserById?id=' + id, function(userInfo) {
+            callback(userInfo);
+        });
     }
 };

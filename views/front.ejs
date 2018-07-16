@@ -9,7 +9,8 @@
     <title>
         <%=package.siteName%>-官网</title>
     <!-- <link rel="shortcut icon" href="favicon.ico"> -->
-    <link type="text/css" href="../plugins/css/flyer.all.min.css?v=<%=package.version %>" rel="stylesheet">
+    <link rel="stylesheet" href="../plugins/mdui-v0-2/css/mdui.min.css">
+    <!-- <link type="text/css" href="../plugins/css/flyer.all.min.css?v=<%=package.version %>" rel="stylesheet"> -->
     <link type="text/css" href="../dest/css/yidian.front.all.css?v=<%=package.version %>" rel="stylesheet">
 </head>
 
@@ -27,28 +28,35 @@
                 <img src="../imgs/logo.png" height="40" alt="回到首页">
             </a>
             <ul class="text-right">
-                <li>
-                    <a href="#">首页</a>
+                <li class="li-selected">
+                    <a href="#" id="home">首页</a>
                 </li>
                 <li>
-                    <a href="#">充值</a>
+                    <a href="#" id="addMoney">充值</a>
                 </li>
-                <li>
-                    <a href="#" id="userLogin">登录</a>
-                </li>
-                <li>
-                    <a href="#" id="userRegister">注册</a>
-                </li>
-                <li>
-                    <a href="/console">控制台</a>
-                </li>
-                <% if(user){ %>
-                    <li>
-                        <a href="/api/logout">
-                            <%= user.userName%>
-                        </a>
+                <% if(!user){ %>
+                    <li id="userLogin">
+                        <a href="#">登录</a>
+                    </li>
+                    <li id="userRegister">
+                        <a href="#">注册</a>
                     </li>
                     <% } %>
+                        <li>
+                            <a href="#" id="console">控制台</a>
+                        </li>
+                        <% if(user){ %>
+                            <li class="li-user-info">
+                                <a href="#">
+                                    <%= user.userName%>
+                                </a>
+                            </li>
+                            <li class="li-user-info">
+                                <a href="/api/logout">
+                                    退出<i class="mdui-icon material-icons">&#xe879;</i>
+                                </a>
+                            </li>
+                            <% } %>
             </ul>
         </nav>
     </header>
@@ -56,431 +64,511 @@
     <div class="container">
         <!-- 广告轮播图 -->
         <!-- <div class="ad">
-            <div class="item">
-            </div>
-            <div class="item hide">
-            </div>
-            <div class="item hide">
-            </div>
-            <ul class="control text-center">
-                <li class="active" data-index="0">
-                    <span></span>
-                </li>
-                <li data-index="1">
-                    <span></span>
-                </li>
-                <li data-index="2">
-                    <span></span>
-                </li>
-            </ul>
         </div> -->
-        <!-- 网站功能介绍 -->
-        <section class="feature">
-            <div class="item">
-                <h3>
-                    真实访问量
-                </h3>
-                <p>完全自然人工浏览，不同地区IP
-                    <br/>真实流量，安全可靠
-                </p>
+        <!--用户登录模块-->
+        <section class="mdui-container mdui-hidden js-user-login">
+            <div class="mdui-row">
+                <div class="mdui-col-xs-12 mdui-text-center">
+                    <h1 class="mdui-text-color-pink">用户登录</h1>
+                </div>
             </div>
-            <div class="item">
-                <h3>
-                    提升店铺权重
-                </h3>
-                <p>百万人同时在线，深度访问
-                    <br/>增加店铺宝贝收藏，提高权重
-                </p>
-            </div>
-            <div class="item">
-                <h3>
-                    提高点击率
-                </h3>
-                <p>专业的关键词优化，提高点击率
-                    <br/>有点击才会有流量
-                </p>
-            </div>
-            <div class="item">
-                <h3>
-                    打造爆款
-                </h3>
-                <p>轻松为你打造店铺爆款产品
-                    <br/>从而引爆全店销量
-                </p>
-            </div>
+            <form action="javascript:void(0);" name="userLoginForm">
+                <div class="mdui-row">
+                    <div class="mdui-col-xs-6 mdui-col-offset-xs-3">
+                        <div class="mdui-textfield">
+                            <label class="mdui-textfield-label">用户名</label>
+                            <input class="mdui-textfield-input" name="userName" type="text" pattern="^.*(?=.{6,15})(?=.*[a-z]).*$" required/>
+                            <div class="mdui-textfield-error">用户名是6-15位字母组成</div>
+                        </div>
+                        <div class="mdui-textfield">
+                            <label class="mdui-textfield-label">密码</label>
+                            <input class="mdui-textfield-input" type="password" name="password" pattern="^.*(?=.{6,15})(?=.*[a-z]).*$" required/>
+                            <div class="mdui-textfield-error">密码用户名是6-15位字母组成</div>
+                        </div>
+                        <div class="mdui-row-xs-2 js-keyword-quantity-item mdui-hidden">
+                            <div class="mdui-textfield mdui-col">
+                                <label class="mdui-textfield-label">计算结果</label>
+                                <input class="mdui-textfield-input" type="text" name="loginResult" placeholder="输入右侧题目答案" />
+                            </div>
+                            <div class="mdui-textfield mdui-col">
+                                <label class="mdui-textfield-label">题目（点击刷新）</label>
+                                <input class="mdui-textfield-input" type="text" name="loginProblem" value='1+1=' disabled/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mdui-row mdui-m-t-2 mdui-m-b-2">
+                    <div class="mdui-col-xs-6 mdui-col-offset-xs-3">
+                        <a href="#" class="mdui-float-left mdui-text-color-pink mdui-hidden"> 忘记密码？立即找回</a>
+                        <a href="#" id="loginToRegister" class="mdui-float-right mdui-text-color-pink"> 没有账号？免费注册</a>
+                    </div>
+                </div>
+                <div class="mdui-row">
+                    <div class="mdui-col-xs-6 mdui-col-offset-xs-3">
+                        <button class="mdui-btn mdui-btn-raised mdui-btn-block mdui-color-pink" id="userLoginSubmit">
+                        <i class="mdui-icon material-icons">&#xe569;</i>登录
+                        </button>
+                    </div>
+                </div>
+            </form>
         </section>
-        <!-- 公告 -->
-        <div class="notice clearfix js-notice-container">
-            <!-- <a href="#" class="pull-left text-ellipsis js-notice-item js-notice-item-active">
-                <span class="js-notice-title">2018-5-19</span>
-                <span class="js-notice-content">元旦期间业务受理及值班公告元旦期间业务受理及值班公告元旦期间业务受理及值班公告元旦期间业务受</span>
-            </a> -->
-            <a href="#" class="more pull-right js-notice-view-more">更多公告</a>
-        </div>
-        <!-- 产品 -->
-        <section class="product clearfix">
-            <h2 class="pull-left text-center">淘宝任务
-                <em>真实访问量</em>
-                <em>提升店铺权重</em>
-                <em>提高点击率</em>
-                <em>打造爆款</em>
-            </h2>
-            <div class="product-content pull-right">
-                <div class="item clearfix">
+        <!--用户注册模块-->
+        <section class="mdui-container mdui-hidden js-user-register">
+            <div class="mdui-row">
+                <div class="mdui-col-xs-12 mdui-text-center">
+                    <h1 class="mdui-text-color-pink">用户注册</h1>
+                </div>
+            </div>
+            <form action="javascript:void(0);" method="post" name="userRegisterForm">
+                <div class="mdui-row">
+                    <div class="mdui-col-xs-6 mdui-col-offset-xs-3">
+                        <div class="mdui-textfield">
+                            <label class="mdui-textfield-label">用户名</label>
+                            <input class="mdui-textfield-input" name="userName" type="text" pattern="^.*(?=.{6,15})(?=.*[a-z]).*$" required/>
+                            <div class="mdui-textfield-error">用户名是6-15位的字母组成</div>
+                        </div>
+                        <div class="mdui-textfield">
+                            <label class="mdui-textfield-label">密码</label>
+                            <input class="mdui-textfield-input" name="password" type="text" pattern="^.*(?=.{6,15})(?=.*[a-z]).*$" required/>
+                            <div class="mdui-textfield-error">密码是6-15位的字母组成</div>
+                        </div>
+                        <div class="mdui-textfield">
+                            <label class="mdui-textfield-label">手机</label>
+                            <input class="mdui-textfield-input" name="phone" type="text" pattern="^1[0-9]{10}$" />
+                            <div class="mdui-textfield-error">请输入正确的手机号</div>
+                        </div>
+                        <div class="mdui-textfield">
+                            <label class="mdui-textfield-label">邮箱</label>
+                            <input class="mdui-textfield-input" name="email" type="email" />
+                            <div class="mdui-textfield-error">请输入正确的邮箱</div>
+                        </div>
+                        <div class="mdui-textfield">
+                            <label class="mdui-textfield-label">QQ</label>
+                            <input class="mdui-textfield-input" name="QQ" type="text" pattern="^[1-9][0-9]{4,12}$" />
+                            <div class="mdui-textfield-error">请输入正确的QQ</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mdui-row mdui-m-t-2 mdui-m-b-2">
+                    <div class="mdui-col-xs-6 mdui-col-offset-xs-3">
+                        <a href="#" class="mdui-text-color-pink mdui-float-right" id="registerToLogin">已有账号？立即登录</a>
+                    </div>
+                </div>
+                <div class="mdui-row">
+                    <div class="mdui-col-xs-6 mdui-col-offset-xs-3">
+                        <button class="mdui-btn mdui-btn-raised mdui-btn-block mdui-color-pink" id="userRegisterSubmit">
+                        <i class="mdui-icon material-icons">&#xe569;</i>立即注册
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </section>
+        <!-- 网站功能介绍 -->
+        <div class="js-content">
+            <section class="feature">
+                <div class="item">
                     <h3>
-                        <em>搜索流量</em>
-                        <i>
+                        真实访问量
+                    </h3>
+                    <p>完全自然人工浏览，不同地区IP
+                        <br/>真实流量，安全可靠
+                    </p>
+                </div>
+                <div class="item">
+                    <h3>
+                        提升店铺权重
+                    </h3>
+                    <p>百万人同时在线，深度访问
+                        <br/>增加店铺宝贝收藏，提高权重
+                    </p>
+                </div>
+                <div class="item">
+                    <h3>
+                        提高点击率
+                    </h3>
+                    <p>专业的关键词优化，提高点击率
+                        <br/>有点击才会有流量
+                    </p>
+                </div>
+                <div class="item">
+                    <h3>
+                        打造爆款
+                    </h3>
+                    <p>轻松为你打造店铺爆款产品
+                        <br/>从而引爆全店销量
+                    </p>
+                </div>
+            </section>
+            <!-- 公告 -->
+            <div class="notice clearfix js-notice-container">
+                <a href="#" class="more pull-right js-notice-view-more">更多公告</a>
+            </div>
+            <!-- 产品 -->
+            <section class="product clearfix">
+                <h2 class="pull-left text-center">淘宝任务
+                    <em>真实访问量</em>
+                    <em>提升店铺权重</em>
+                    <em>提高点击率</em>
+                    <em>打造爆款</em>
+                </h2>
+                <div class="product-content pull-right">
+                    <div class="item clearfix">
+                        <h3>
+                            <em>搜索流量</em>
+                            <i>
                             APP/PC
                         </i>
-                    </h3>
-                    <div class="info">
-                        <p>
-                            单次消费：
-                            <span class="year-rate">
+                        </h3>
+                        <div class="info">
+                            <p>
+                                单次消费：
+                                <span class="year-rate">
                                 50积分
                                 <i>起</i>
                             </span>
-                        </p>
-                        <p>
-                            总成交金额：
-                            <span class="year-rate">
+                            </p>
+                            <p>
+                                总成交金额：
+                                <span class="year-rate">
                                 18000
                                 <i>万积分</i>
                             </span>
-                        </p>
+                            </p>
+                        </div>
+                        <div class="buy">
+                            <a href="/console#task_create">立即下单</a>
+                        </div>
                     </div>
-                    <div class="buy">
-                        <a href="#">立即下单</a>
-                    </div>
-                </div>
-                <div class="item clearfix">
-                    <h3>
-                        <em>直仿流量</em>
-                        <i>店铺/商品</i>
-                    </h3>
-                    <div class="info">
-                        <p>
-                            单次消费：
-                            <span class="year-rate">
+                    <div class="item clearfix">
+                        <h3>
+                            <em>直仿流量</em>
+                            <i>店铺/商品</i>
+                        </h3>
+                        <div class="info">
+                            <p>
+                                单次消费：
+                                <span class="year-rate">
                                 80积分
                                 <i>起</i>
                             </span>
-                        </p>
-                        <p>
-                            总成交金额：
-                            <span class="year-rate">
+                            </p>
+                            <p>
+                                总成交金额：
+                                <span class="year-rate">
                                 100
                                 <i>万积分</i>
                             </span>
-                        </p>
+                            </p>
+                        </div>
+                        <div class="buy">
+                            <a href="/console#task_create">立即下单</a>
+                        </div>
                     </div>
-                    <div class="buy">
-                        <a href="#">立即下单</a>
-                    </div>
-                </div>
-                <div class="item clearfix">
-                    <h3>
-                        <em>收藏任务</em>
-                        <i>宝贝/搜索/店铺</i>
-                    </h3>
-                    <div class="info">
-                        <p>
-                            单次消费：
-                            <span class="year-rate">
+                    <div class="item clearfix">
+                        <h3>
+                            <em>收藏任务</em>
+                            <i>宝贝/搜索/店铺</i>
+                        </h3>
+                        <div class="info">
+                            <p>
+                                单次消费：
+                                <span class="year-rate">
                                 80积分
                                 <i>起</i>
                             </span>
-                        </p>
-                        <p>
-                            总成交金额：
-                            <span class="year-rate">
+                            </p>
+                            <p>
+                                总成交金额：
+                                <span class="year-rate">
                                 100
                                 <i>万积分</i>
                             </span>
-                        </p>
+                            </p>
+                        </div>
+                        <div class="buy">
+                            <a href="/console#task_create">立即下单</a>
+                        </div>
                     </div>
-                    <div class="buy">
-                        <a href="#">立即下单</a>
-                    </div>
-                </div>
-                <div class="item clearfix">
-                    <h3>
-                        <em>加购任务</em>
-                        <i>搜索/直接</i>
-                    </h3>
-                    <div class="info">
-                        <p>
-                            单次消费：
-                            <span class="year-rate">
+                    <div class="item clearfix">
+                        <h3>
+                            <em>加购任务</em>
+                            <i>搜索/直接</i>
+                        </h3>
+                        <div class="info">
+                            <p>
+                                单次消费：
+                                <span class="year-rate">
                                 80积分
                                 <i>起</i>
                             </span>
-                        </p>
-                        <p>
-                            总成交金额：
-                            <span class="year-rate">
+                            </p>
+                            <p>
+                                总成交金额：
+                                <span class="year-rate">
                                 100
                                 <i>万积分</i>
                             </span>
-                        </p>
+                            </p>
+                        </div>
+                        <div class="buy">
+                            <a href="/console#task_create">立即下单</a>
+                        </div>
                     </div>
-                    <div class="buy">
-                        <a href="#">立即下单</a>
-                    </div>
-                </div>
-                <div class="item clearfix">
-                    <h3>
-                        <em>淘宝直播</em>
-                        <i>关注/点赞/观看/开团提醒</i>
-                    </h3>
-                    <div class="info">
-                        <p>
-                            单次消费：
-                            <span class="year-rate">
+                    <div class="item clearfix">
+                        <h3>
+                            <em>淘宝直播</em>
+                            <i>关注/点赞/观看/开团提醒</i>
+                        </h3>
+                        <div class="info">
+                            <p>
+                                单次消费：
+                                <span class="year-rate">
                                 80积分
                                 <i>起</i>
                             </span>
-                        </p>
-                        <p>
-                            总成交金额：
-                            <span class="year-rate">
+                            </p>
+                            <p>
+                                总成交金额：
+                                <span class="year-rate">
                                 100
                                 <i>万积分</i>
                             </span>
-                        </p>
-                    </div>
-                    <div class="buy">
-                        <a href="#">立即下单</a>
+                            </p>
+                        </div>
+                        <div class="buy">
+                            <a href="/console#task_create">立即下单</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
-        <!-- 产品 -->
-        <section class="product clearfix">
-            <h2 class="pull-left text-center">京东店铺任务
-                <em>真实访问量</em>
-                <em>提升店铺权重</em>
-                <em>提高点击率</em>
-                <em>打造爆款</em>
-            </h2>
-            <div class="product-content pull-right">
-                <div class="item clearfix">
-                    <h3>
-                        <em>流量</em>
-                        <i>
+            </section>
+            <!-- 产品 -->
+            <section class="product clearfix">
+                <h2 class="pull-left text-center">京东店铺任务
+                    <em>真实访问量</em>
+                    <em>提升店铺权重</em>
+                    <em>提高点击率</em>
+                    <em>打造爆款</em>
+                </h2>
+                <div class="product-content pull-right">
+                    <div class="item clearfix">
+                        <h3>
+                            <em>流量</em>
+                            <i>
                             店铺/商品
                         </i>
-                    </h3>
-                    <div class="info">
-                        <p>
-                            单次消费：
-                            <span class="year-rate">
+                        </h3>
+                        <div class="info">
+                            <p>
+                                单次消费：
+                                <span class="year-rate">
                                 80积分
                                 <i>起</i>
                             </span>
-                        </p>
-                        <p>
-                            总成交金额：
-                            <span class="year-rate">
+                            </p>
+                            <p>
+                                总成交金额：
+                                <span class="year-rate">
                                 100
                                 <i>万积分</i>
                             </span>
-                        </p>
+                            </p>
+                        </div>
+                        <div class="buy">
+                            <a href="/console#task_create">立即下单</a>
+                        </div>
                     </div>
-                    <div class="buy">
-                        <a href="#">立即下单</a>
-                    </div>
-                </div>
-                <div class="item clearfix">
-                    <h3>
-                        <em>收藏</em>
-                        <i>
+                    <div class="item clearfix">
+                        <h3>
+                            <em>收藏</em>
+                            <i>
                             商品
                         </i>
-                    </h3>
-                    <div class="info">
-                        <p>
-                            单次消费：
-                            <span class="year-rate">
+                        </h3>
+                        <div class="info">
+                            <p>
+                                单次消费：
+                                <span class="year-rate">
                                 80积分
                                 <i>起</i>
                             </span>
-                        </p>
-                        <p>
-                            总成交金额：
-                            <span class="year-rate">
+                            </p>
+                            <p>
+                                总成交金额：
+                                <span class="year-rate">
                                 100
                                 <i>万积分</i>
                             </span>
-                        </p>
+                            </p>
+                        </div>
+                        <div class="buy">
+                            <a href="/console#task_create">立即下单</a>
+                        </div>
                     </div>
-                    <div class="buy">
-                        <a href="#">立即下单</a>
-                    </div>
-                </div>
-                <div class="item clearfix">
-                    <h3>
-                        <em>关注</em>
-                        <i>
+                    <div class="item clearfix">
+                        <h3>
+                            <em>关注</em>
+                            <i>
                             店铺/达人
                         </i>
-                    </h3>
-                    <div class="info">
-                        <p>
-                            单次消费：
-                            <span class="year-rate">
+                        </h3>
+                        <div class="info">
+                            <p>
+                                单次消费：
+                                <span class="year-rate">
                                 80积分
                                 <i>起</i>
                             </span>
-                        </p>
-                        <p>
-                            总成交金额：
-                            <span class="year-rate">
+                            </p>
+                            <p>
+                                总成交金额：
+                                <span class="year-rate">
                                 100
                                 <i>万积分</i>
                             </span>
-                        </p>
+                            </p>
+                        </div>
+                        <div class="buy">
+                            <a href="/console#task_create">立即下单</a>
+                        </div>
                     </div>
-                    <div class="buy">
-                        <a href="#">立即下单</a>
-                    </div>
-                </div>
-                <div class="item clearfix">
-                    <h3>
-                        <em>加购</em>
-                        <i>
+                    <div class="item clearfix">
+                        <h3>
+                            <em>加购</em>
+                            <i>
                         直接/搜索
                         </i>
-                    </h3>
-                    <div class="info">
-                        <p>
-                            单次消费：
-                            <span class="year-rate">
+                        </h3>
+                        <div class="info">
+                            <p>
+                                单次消费：
+                                <span class="year-rate">
                                 80积分
                                 <i>起</i>
                             </span>
-                        </p>
-                        <p>
-                            总成交金额：
-                            <span class="year-rate">
+                            </p>
+                            <p>
+                                总成交金额：
+                                <span class="year-rate">
                                 100
                                 <i>万积分</i>
                             </span>
-                        </p>
+                            </p>
+                        </div>
+                        <div class="buy">
+                            <a href="/console#task_create">立即下单</a>
+                        </div>
                     </div>
-                    <div class="buy">
-                        <a href="#" class="">立即下单</a>
-                    </div>
-                </div>
-                <div class="item clearfix">
-                    <h3>
-                        <em>抢购</em>
-                        <i>
+                    <div class="item clearfix">
+                        <h3>
+                            <em>抢购</em>
+                            <i>
                             预约
                         </i>
-                    </h3>
-                    <div class="info">
-                        <p>
-                            单次消费：
-                            <span class="year-rate">
+                        </h3>
+                        <div class="info">
+                            <p>
+                                单次消费：
+                                <span class="year-rate">
                                 80积分
                                 <i>起</i>
                             </span>
-                        </p>
-                        <p>
-                            总成交金额：
-                            <span class="year-rate">
+                            </p>
+                            <p>
+                                总成交金额：
+                                <span class="year-rate">
                                 100
                                 <i>万积分</i>
                             </span>
-                        </p>
-                    </div>
-                    <div class="buy">
-                        <a href="#">立即下单</a>
+                            </p>
+                        </div>
+                        <div class="buy">
+                            <a href="/console#task_create">立即下单</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
-        <!-- 底部导航 -->
-        <nav class="footer">
-            <div class="footer-content clearfix">
-                <!-- 此处的logo不需要链接，直接使用css处理 -->
-                <p class="brand pull-left"></p>
-                <ul>
-                    <li class="title">
-                        关于我们
-                    </li>
-                    <li>
-                        <a href="#">公司介绍</a>
-                    </li>
-                    <li>
-                        <a href="#">业务模式</a>
-                    </li>
-                    <li>
-                        <a href="#">合作机构</a>
-                    </li>
-                    <li>
-                        <a href="#">服务协议</a>
-                    </li>
-                </ul>
-                <ul>
-                    <li class="title">
-                        风险防范
-                    </li>
-                    <li>
-                        <a href="#">账户安全</a>
-                    </li>
-                    <li>
-                        <a href="#">安全保障</a>
-                    </li>
-                </ul>
-                <ul>
-                    <li class="title">
-                        理财产品
-                    </li>
-                    <li>
-                        <a href="#">固定期限</a>
-                    </li>
-                    <li>
-                        <a href="#">债券/散标</a>
-                    </li>
-                </ul>
-                <ul>
-                    <li class="title">
-                        交易帮助
-                    </li>
-                    <li>
-                        <a href="#">购买</a>
-                    </li>
-                    <li>
-                        <a href="#">赎回</a>
-                    </li>
-                    <li>
-                        <a href="#">提现</a>
-                    </li>
-                </ul>
-                <ul>
-                    <li class="title">
-                        机构服务
-                    </li>
-                    <li>
-                        <a href="#">机构中心</a>
-                    </li>
-                    <li>
-                        <a href="#">合作联系</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+            </section>
+            <!-- 底部导航 -->
+            <nav class="footer">
+                <div class="footer-content clearfix">
+                    <!-- 此处的logo不需要链接，直接使用css处理 -->
+                    <p class="brand pull-left"></p>
+                    <ul>
+                        <li class="title">
+                            关于我们
+                        </li>
+                        <li>
+                            <a href="#">公司介绍</a>
+                        </li>
+                        <li>
+                            <a href="#">业务模式</a>
+                        </li>
+                        <li>
+                            <a href="#">合作机构</a>
+                        </li>
+                        <li>
+                            <a href="#">服务协议</a>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li class="title">
+                            风险防范
+                        </li>
+                        <li>
+                            <a href="#">账户安全</a>
+                        </li>
+                        <li>
+                            <a href="#">安全保障</a>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li class="title">
+                            理财产品
+                        </li>
+                        <li>
+                            <a href="#">固定期限</a>
+                        </li>
+                        <li>
+                            <a href="#">债券/散标</a>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li class="title">
+                            交易帮助
+                        </li>
+                        <li>
+                            <a href="#">购买</a>
+                        </li>
+                        <li>
+                            <a href="#">赎回</a>
+                        </li>
+                        <li>
+                            <a href="#">提现</a>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li class="title">
+                            机构服务
+                        </li>
+                        <li>
+                            <a href="#">机构中心</a>
+                        </li>
+                        <li>
+                            <a href="#">合作联系</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
     </div>
     <!-- 底部 -->
     <footer class="front-footer">
         <p class="text-center">
             <%=package.siteName%> @2016-2018</p>
     </footer>
-    <script type="text/javascript" src="../plugins/js/jquery.min.js?v=<%=package.version %>"></script>
+    <script src="../plugins/mdui-v0-2/js/mdui.min.js"></script>
+    <!-- <script type="text/javascript" src="../plugins/js/jquery.min.js?v=<%=package.version %>"></script> -->
     <script type="text/javascript" src="../js/common/jquery.extend.js?v=<%=package.version %>"></script>
-    <script type="text/javascript" src="../plugins/js/flyer.all.js?v=<%=package.version %>"></script>
+    <!-- <script type="text/javascript" src="../plugins/js/flyer.all.js?v=<%=package.version %>"></script> -->
     <script src="../js/front.js" type="text/javascript"></script>
 </body>
 

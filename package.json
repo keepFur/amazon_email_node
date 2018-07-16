@@ -34,7 +34,9 @@
   },
   "dependencies": {
     "bcrypt": "^3.0.0",
-    "express": "4.x"
+    "express": "4.x",
+    "yz-checkstand": "^0.2.1",
+    "yz-open-sdk-nodejs": "^1.0.2"
   },
   "scripts": {
     "dev-start": "forever start -o logs/out.log -e logs/err.log app.js",

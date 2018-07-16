@@ -3,6 +3,7 @@
  * jquery的扩展方法，集合
  */
 (function($) {
+    $ = window.jQuery || mdui.JQ;
     // 定义一些常量
     var paramError = '缺少参数';
     /**
@@ -85,4 +86,10 @@
     $.writeLog = function(fn, msg, options) {
         console.error('错误时间：' + new Date() + '\n错误来源：' + fn + '\n错误消息：' + msg);
     };
-})(jQuery)
+
+    // 去除字符串两头的空格
+    $.trim = function(str) {
+        str = str || '';
+        return str.replace(/^\s*|\s*$/g, '');
+    };
+})(window.jQuery);

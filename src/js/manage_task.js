@@ -323,8 +323,7 @@ flyer.define('task_manage', function(exports, module) {
         var conditions = {
                 offset: pageNumber || 1,
                 limit: pageSize || 20,
-                nocache: window.Date.now(),
-                taskPlant: baseDatas.taskPlant
+                nocache: window.Date.now()
             },
             $table = $('#taskTable');
         $.ajax({

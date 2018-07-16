@@ -9,7 +9,7 @@ body {
     .flyer-layout {
         &-tree {
             width: $bar-width;
-            min-height: 900px;
+            overflow-y: auto;
             padding: 5px 0 20px;
             border-right: 1px solid #eee;
             margin-top: 100px;

@@ -38,12 +38,120 @@ $(function() {
         $('#presentScore').text(core.numberToLocalString(presentScore));
         $('#trafficCount').text(core.numberToLocalString(trafficCount));
         $('#collectCount').text(core.numberToLocalString(collectCount));
-        $('#addScore').text(core.numberToLocalString(purchaseScore) + '购买积分+' + core.numberToLocalString(presentScore) + '赠送积分（赠送积分不能发布收藏任务）');
+        $('#addScore').text(core.numberToLocalString(purchaseScore) + '购买积分+' + core.numberToLocalString(presentScore) + '赠送积分');
         $('#payMoney').text(core.numberToLocalString($this.data('purchaseMoney')));
     }
 
     // 充值点击函数
     function addMoneyHandle(event) {
+        var open = flyer.open({
+            pageUrl: '/html/add_money_pay.html',
+            isModal: true,
+            area: [450, 430],
+            title: '积分充值付款',
+            btns: [{
+                text: '支付完成',
+                click: function(ele) {
+                    $.lockedBtn($(ele), true, '支付状态检测中');
+                    var count = 0;
+                    clearInterval(open.timer);
+                    console.log('清空after');
+                    open.timer = setInterval(function() {
+                        count++;
+                        if (count < 5) {
+                            getQrCodePayStatus(open.qr_id, open.addPackageType, function(payStatus) {
+                                flyer.closeAll('msg');
+                                if (payStatus) {
+                                    open.payStatus = true;
+                                    clearInterval(open.timer);
+                                    flyer.msg('支付成功');
+                                    $.unlockBtn($(ele), '支付完成');
+                                    open.close();
+                                    core.setWindowHash('manage_logs');
+                                    window.location.reload(true);
+                                } else {
+                                    if (count === 5) {
+                                        flyer.msg('订单未支付');
+                                    }
+                                }
+                            });
+                        } else {
+                            clearInterval(open.timer);
+                        }
+                    }, count === 0 ? 0 : 10000);
+                }
+            }],
+            cancel: function() {
+                // 支付成功之后不需要再去检查支付状态了
+                if (!open.payStatus) {
+                    getQrCodePayStatus(open.qr_id, open.addPackageType, function(payStatus) {
+                        flyer.closeAll('msg');
+                        if (payStatus) {
+                            flyer.msg('支付成功');
+                            core.setWindowHash('manage_logs');
+                            window.location.reload(true);
+                        } else {
+                            flyer.msg('订单未支付');
+                        }
+                    });
+                }
+            },
+            afterCreated: function() {
+                $.ajax({
+                    url: '/api/createQrCode',
+                    type: 'POST',
+                    data: {
+                        qr_name: '积分充值',
+                        qr_price: 0.01,
+                        qr_type: 'QR_TYPE_NOLIMIT'
+                    },
+                    beforeSend: function() {
+                        $.addLoading($('.js-pay-container'));
+                    },
+                    success: function(data) {
+                        $('#jsPayCodeRefresh').toggle(data.success);
+                        $('#jsPayCodeRefresh').toggle(!data.success);
+                        if (data.success) {
+                            $('#jsPayCodeImg').attr('src', data.data.qr_code);
+                            open.qr_id = data.data.qr_id;
+                            open.addPackageType = $('input[type=radio][name=addPackageType]').val();
+                            var count = 0;
+                            open.timer = setInterval(function() {
+                                console.log('after');
+                                $.lockedBtn($(open.$btns[0]), true, '支付状态检测中');
+                                count++;
+                                if (count < 5) {
+                                    getQrCodePayStatus(open.qr_id, open.addPackageType, function(payStatus) {
+                                        flyer.closeAll('msg');
+                                        if (payStatus) {
+                                            open.payStatus = true;
+                                            clearInterval(open.timer);
+                                            flyer.msg('支付成功，正在为你跳转到首页。。。');
+                                            $.unlockBtn($(open.$btns[0]), '支付完成');
+                                            open.close();
+                                            core.setWindowHash('manage_logs');
+                                            window.location.reload(true);
+                                        } else {
+                                            if (count === 5) {
+                                                flyer.msg('订单未支付');
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    clearInterval(open.timer);
+                                }
+                            }, 10000);
+                        }
+                    },
+                    error: function() {
+                        flyer.msg(baseDatas.netErrMsg);
+                    },
+                    complete: function() {
+                        $.removeLoading($('.js-pay-container'));
+                    }
+                });
+            }
+        });
         return false;
     }
 
@@ -107,6 +215,27 @@ $(function() {
                             <i class="mdui-radio-icon"></i>
                             ${info.packageName}
                 </label>`;
+    }
+
+    /**
+     * 获取一个二维码的支付状态
+     * 
+     * @param {any} qr_id 
+     */
+    function getQrCodePayStatus(qr_id, addPackageType, callback) {
+        if (!qr_id) {
+            return callback(false);
+        }
+        $.ajax({
+            url: '/api/getQrCodePayStatus',
+            data: {
+                qr_id: qr_id,
+                addPackageType: addPackageType
+            },
+            success: function(payStatus) {
+                callback(payStatus.data.status);
+            }
+        });
     }
 
     init();

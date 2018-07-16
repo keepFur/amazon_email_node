@@ -25,7 +25,10 @@ let TbTask = require('./lib/tb_task_service');
 let tbTask = new TbTask();
 let PackageManage = require('./lib/manage_package_service');
 let packageManage = new PackageManage();
+let LogsScoreManage = require('./lib/manage_logs_score_service');
+let logsScoreManage = new LogsScoreManage();
 let APIUtil = require('./lib/api_util');
+let APIPay = require('./lib/api_pay');
 
 app.use(session({
     secret: `${Math.random(10)}`, //secret的值建议使用随机字符串
@@ -137,7 +140,22 @@ app.post('/api/updateUser', function(req, res) {
     }
 });
 
-
+// 获取用户的登录状态
+app.get('/api/getUserLoginStatus', function(req, res) {
+    try {
+        if (req.user) {
+            res.send({
+                status: true
+            });
+        } else {
+            res.send({
+                status: false
+            });
+        }
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
 /***************平台管理模块路由*************/
 // 获取平台列表，支持分页
 app.get('/api/readPlantPage', function(req, res) {
@@ -322,6 +340,71 @@ app.post('/api/updatePackage', function(req, res) {
     }
 });
 
+// 生成付款二维码
+app.post('/api/createQrCode', function(req, res) {
+    try {
+        // APIPay.createQrCode(req, res, req.body);
+        APIPay.checkStandCreateQr(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 获取某一个二维码的支付状态
+app.get('/api/getQrCodePayStatus', function(req, res) {
+    try {
+        APIPay.getPayStatus(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+//  接收付款有赞推送的消息
+app.post('/api/getYouzanPushMessgae', function(req, res) {
+    try {
+
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+/* *****************积分日志类****************** */
+// 创建日志积分
+app.post('/api/createLogsScore', function(req, res) {
+    try {
+        logsScoreManage.createLogsScore(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 获取日志积分列表，支持分页
+app.get('/api/readLogsScorePage', function(req, res) {
+    try {
+        logsScoreManage.readLogsScorePage(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 通过id获取日志积分信息
+app.get('/api/readLogsScoreById', function(req, res) {
+    try {
+        logsScoreManage.readLogsScoreById(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 切换日志积分状态
+app.post('/api/toggleLogsScore', function(req, res) {
+    try {
+        logsScoreManage.toggleLogsScore(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
 /* *****************API工具类****************** */
 //生成signkey签名
 app.post('/api/generateSignKey', function(req, res) {
@@ -337,34 +420,27 @@ app.get("/console", function(req, res, next) {
     Core.flyer.log('开始进入项目:' + new Date());
     try {
         if (res.locals.user) {
-            // let username = req.session.username,
-            //     isMulti = req.session.isMulti,
-            //     permissionData = req.session.permissionData,
-            //     permissionAllData = req.session.permissionAllData,
-            //     menus = permissionData.permission.menus[0].menuData,
-            //     roles = permissionData.permission.roles[0].rolesData;
-
-            // if (req.cookies["orgGroupId" + username]) {
-            //     permissionData = Core.flyer.findPermissionByGroupID(req.cookies["orgGroupId" + username], req.session.permissionData);
-            // }
+            // 第一步：判断用户是否是管理员
+            // 第二步：获取用户对应的权限keys
+            // 第三步：根据keys过滤出对应的modules，得到menu
+            // 第四步：根据menu进行渲染
             let modules = permissionData.modules;
+            let roles = permissionData.roles;
             let menus = [];
+            let userModuleKeys = res.locals.user.isSuper ? roles['super'] : roles['common'];
             for (var key in modules) {
                 if (modules.hasOwnProperty(key)) {
                     var element = modules[key];
-                    menus.push(element);
+                    if (userModuleKeys.indexOf(key) !== -1) {
+                        menus.push(element);
+                    }
                 }
             }
-            let roles = permissionData.roles;
             res.render("index.ejs", {
                 menus: menus.filter(function(item) {
                     return item.isMenu === true;
                 }),
-                roles: roles,
-                logout: Config.url_list.redirect_logout,
                 package: Package,
-                baiyi_home: Config.url_list.baiyi_home,
-                isMulti: false,
                 user: res.locals.user
             });
             Core.flyer.log('已经进入项目:当前路由:"/"' + new Date());
@@ -390,137 +466,12 @@ app.get('/', function(req, res) {
     }
 });
 
-//开发入口
-app.get("/index_dev", function(req, res, next) {
-    try {
-        if (req.session.hasOwnProperty("sign") && req.session.sign) {
-            // let username = req.session.username,
-            //     isMulti = req.session.isMulti,
-            //     permissionData = req.session.permissionData,
-            //     permissionAllData = req.session.permissionAllData,
-            //     menus = permissionData.permission.menus[0].menuData,
-            //     roles = permissionData.permission.roles[0].rolesData;
-            // if (req.cookies["orgGroupId" + username]) {
-            //     permissionData = Core.flyer.findPermissionByGroupID(req.cookies["orgGroupId" + username], req.session.permissionData);
-            //     menus = permissionData.permission.menus[0].menuData;
-            //     roles = permissionData.permission.roles[0].rolesData;
-            // }
-            try {
-                // let data = {
-                //     menus: menus.filter(function(item) {
-                //         return item.isMenu === true;
-                //     }),
-                //     roles: roles,
-                //     username: permissionData.data.username,
-                //     email: permissionData.data.email,
-                //     userid: permissionData.data.userId,
-                //     groups: permissionData.data.groups,
-                //     groupsAll: permissionAllData.data.groups,
-                //     logout: Config.url_list.redirect_logout,
-                //     package: Package,
-                //     baiyi_home: Config.url_list.baiyi_home,
-                //     isMulti: isMulti
-                // };
-                res.render("index_dev.ejs", {});
-            } catch (err) {
-                Core.flyer.log(err);
-            }
-        } else {
-            res.redirect(
-                Config.url_list.redirect_logout
-            );
-        }
-    } catch (err) {
-        Core.flyer.log(err);
-    }
-});
-
-
-//生产验证入口
-app.get("/auth", function(req, res, next) {
-    Core.flyer.log('开始验证权限:' + new Date());
-    try {
-        let username = req.query.username,
-            jsessionId = req.query.JSESSIONID,
-            random_stamp = req.query.random_stamp,
-            sign = req.query.sign,
-            private_key = "a0d7c029c89548afa934f14bb9c22334";
-
-        let comparValue = md5("JSESSIONID=" + jsessionId + "&random_stamp=" + random_stamp + "&username=" + username + private_key);
-        if (username && sign === comparValue) {
-            req.session.sign = true;
-            req.session.username = username;
-            let permission = new Permission({ userName: username });
-            let promise = permission.getRoles();
-            promise.then(function(permissionData) {
-                if (permissionData.data.groups.length === 1) {
-                    req.session.permissionData = permissionData;
-                    req.session.permissionAllData = permissionData;
-                    req.session.isMulti = false;
-                } else if (permissionData.data.groups.length > 1) {
-                    //判断有多个权限，选择一个进入.
-                    req.session.permissionData = permissionData;
-                    req.session.permissionAllData = permissionData;
-                    req.session.isMulti = true;
-                }
-                res.redirect("/");
-                Core.flyer.log('验证权限完成:' + new Date());
-            }, function(err) {
-                Core.flyer.log('权限验证错误:' + err);
-                res.redirect("/error");
-            });
-        } else {
-            Core.flyer.log("权限验证失败，现在为你跳转到登录页...");
-            res.redirect(
-                Config.url_list.redirect_logout
-            );
-        }
-    } catch (err) {
-        Core.flyer.log('权限验证发生异常:' + err);
-        res.redirect("/error");
-    }
-});
-
-//开发验证入口
-app.get("/auth_dev", function(req, res, next) {
-    try {
-        let username = req.query.username;
-        if (username) {
-            req.session.sign = true;
-            req.session.username = username;
-            let permission = new Permission({ userName: username });
-            let promise = permission.getRoles();
-            promise.then(function(permissionData) {
-                if (permissionData.data.groups.length === 1) {
-                    req.session.permissionData = permissionData;
-                    req.session.permissionAllData = permissionData;
-                    req.session.isMulti = false;
-                } else if (permissionData.data.groups.length > 1) {
-                    //判断有多个权限，选择一个进入.
-                    req.session.permissionData = permissionData;
-                    req.session.permissionAllData = permissionData;
-                    req.session.isMulti = true;
-                }
-                res.redirect("/index_dev");
-            }, function(err) {
-                res.redirect("/error");
-            });
-        } else {
-            res.redirect(
-                Config.url_list.redirect_logout
-            );
-        }
-    } catch (err) {
-        Core.flyer.log(err);
-    }
-});
-
 // 没有权限
 app.get("/error", function(req, res, next) {
     try {
         res.render("error.ejs", {
             package: Package,
-            baiyi_home: Config.url_list.baiyi_home
+            user: res.locals.user
         });
     } catch (err) {
         Core.flyer.log(err);

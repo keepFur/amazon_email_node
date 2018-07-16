@@ -26,6 +26,7 @@ var APIUtil = {
         return '' + year + month + day + hours + minutes + seconds + random;
     },
     signkey: function(apiName, params) {
+        console.log(params);
         var encodeUlr = encodeURIComponent(`${apiName}?${params}&${this.userKey}`);
         return $.md5(encodeUlr);
     },
@@ -41,6 +42,7 @@ var APIUtil = {
                 id: orderNumber,
                 username: 'u_1657222',
             });
+            console.log(params);
             params.signkey = _this.signkey('/ll/task_add', core.objectToString(params));
             $.ajax({
                 url: url,
@@ -83,6 +85,7 @@ var APIUtil = {
                 username: 'u_1657222',
                 ver: 4
             });
+            // debugger
             params.signkey = _this.signkey('/ll/task_list', core.objectToString(params));
             $.ajax({
                 url: 'http://api.lieliu.com:1024/ll/task_list',

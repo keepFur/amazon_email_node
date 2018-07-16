@@ -180,7 +180,14 @@ header .main .brand {
 
 header .main ul li {
     display: inline-block;
-    border-left: 1px solid #f0ede9;
+}
+
+header .main ul li.li-user-info {
+    border-left: 2px solid #ddd;
+}
+
+header .main ul li.li-selected {
+    background: #ffb300;
 }
 
 header .main ul li a {
@@ -193,7 +200,12 @@ header .main ul li a {
     text-decoration: none;
 }
 
+header .main ul li.li-selected a {
+    color: #fff;
+}
+
 header .main ul li a:hover,
+header .main ul li.li-selected a:hover,
 header .main ul li a:active,
 header .main ul li a.active {
     color: #ffb300;
@@ -595,10 +607,6 @@ header .main ul li a.active {
     width: 100%;
 }
 
-.product .product-content .item+.item {
-    // border: 1px solid #eee;
-}
-
 .product .product-content .item h3 {
     float: left;
     width: 30%;
@@ -822,7 +830,7 @@ header .main ul li a.active {
 
 .front-footer {
     width: 100%;
-    padding: 3rem 0 3rem;
+    padding: 1rem 0 1rem;
     background: #ededed;
 }
 

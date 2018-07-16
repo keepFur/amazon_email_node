@@ -174,8 +174,13 @@ header .main .brand {
   padding: 1rem 1.5rem 0; }
 
 header .main ul li {
-  display: inline-block;
-  border-left: 1px solid #f0ede9; }
+  display: inline-block; }
+
+header .main ul li.li-user-info {
+  border-left: 2px solid #ddd; }
+
+header .main ul li.li-selected {
+  background: #ffb300; }
 
 header .main ul li a {
   display: inline-block;
@@ -186,7 +191,11 @@ header .main ul li a {
   color: #7c7a65;
   text-decoration: none; }
 
+header .main ul li.li-selected a {
+  color: #fff; }
+
 header .main ul li a:hover,
+header .main ul li.li-selected a:hover,
 header .main ul li a:active,
 header .main ul li a.active {
   color: #ffb300;
@@ -669,7 +678,7 @@ header .main ul li a.active {
  *************************/
 .front-footer {
   width: 100%;
-  padding: 3rem 0 3rem;
+  padding: 1rem 0 1rem;
   background: #ededed; }
 
 .front-footer p {

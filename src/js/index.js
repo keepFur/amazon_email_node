@@ -7,6 +7,7 @@ $(function() {
         initEvent();
         loadPageByUrl(getPageUrlByHash());
         core.menuHeightLightByHash(window.location.hash.replace('#', '') || 'home');
+        $('.flyer-layout-tree').height(window.innerHeight - 164);
     }
 
     /**
@@ -27,6 +28,10 @@ $(function() {
         // window hashChange事件
         window.onhashchange = function() {
             loadPageByUrl(getPageUrlByHash());
+        };
+        // window的resize事件
+        window.onresize = function() {
+            $('.flyer-layout-tree').height(window.innerHeight - 164);
         };
 
         // 版本更新信息点击事件

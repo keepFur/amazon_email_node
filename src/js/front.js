@@ -1,4 +1,5 @@
 'use strict';
+var $ = mdui.JQ;
 $(function() {
     var userNameMinLength = 5;
     var userNameMaxLength = 20;
@@ -12,144 +13,199 @@ $(function() {
 
     // 事件初始化
     function inieEvent() {
-        // 注册
+        // 首页
+        $('#home').on('click', function() {
+            if (!$('.js-user-login').hasClass('mdui-hidden') || !$('.js-user-register').hasClass('mdui-hidden')) {
+                window.location.reload();
+            }
+
+            return false;
+        });
+        // 注册get
         $('#userRegister').on('click', userRegisterHandler);
-        // 登录
+        // 注册跳转到登录
+        $('#registerToLogin').on('click', function() {
+            $('#userLogin').trigger('click');
+        });
+        // 注册post
+        $('#userRegisterSubmit').on('click', userRegisterSubmitHanlder);
+        // 登录get
         $('#userLogin').on('click', userLoginHandler);
+        // 登录到注册
+        $('#loginToRegister').on('click', function() {
+            $('#userRegister').trigger('click');
+        });
+        // 登录post
+        $('#userLoginSubmit').on('click', userLoginSubmitHanlder);
+        // 控制台
+        $('#console').on('click', function(event) {
+            $.ajax({
+                url: '/api/getUserLoginStatus',
+                success: function(data) {
+                    data = JSON.parse(data);
+                    if (data.status) {
+                        window.location.assign('/console');
+                    } else {
+                        mdui.snackbar({
+                            message: '请先登录系统',
+                            position: 'top'
+                        });
+                        $('#userLogin').trigger('click');
+                    }
+                }
+            });
+            return false;
+        });
+        // 充值
+        $('#addMoney').on('click', function(event) {
+            $.ajax({
+                url: '/api/getUserLoginStatus',
+                success: function(data) {
+                    data = JSON.parse(data);
+                    if (data.status) {
+                        window.location.assign('/console#add_money');
+                    } else {
+                        mdui.snackbar({
+                            message: '请先登录系统',
+                            position: 'top'
+                        });
+                        $('#userLogin').click();
+                    }
+                }
+            });
+        });
     }
 
     // 初始化通知组件
     function initNoticeComponent() {
-        $.get('/api/readNoticePage', {
-            limit: 5,
-            offset: 1
-        }, function(res) {
-            if (res.success) {
-                var $noticeContainer = $('.js-notice-container');
-                $.each(res.data.rows, function(index, item) {
-                    var createdDate = flyer.formatDate('yyyy-mm-dd HH:MM', item.createdDate);
-                    var $template = `<a href="#" class="pull-left text-ellipsis js-notice-item ${index===0?' js-notice-item-active':' hide'}" data-id="${item.id}">
+        $.ajax({
+            url: '/api/readNoticePage',
+            data: {
+                limit: 5,
+                offset: 1
+            },
+            success: function(res) {
+                if (res.success) {
+                    var $noticeContainer = $('.js-notice-container');
+                    $.each(res.data.rows, function(index, item) {
+                        var createdDate = flyer.formatDate('yyyy-mm-dd HH:MM', item.createdDate);
+                        var $template = `<a href="#" class="pull-left text-ellipsis js-notice-item ${index===0?' js-notice-item-active':' hide'}" data-id="${item.id}">
                                         <span class="js-notice-title">${createdDate+'#' + item.noticeTitle}</span>
                                         <span class="js-notice-content">${item.noticeContent}</span>
                                      </a>`;
-                    $noticeContainer.append($template);
-                });
-                // $noticeItemClone.remove();
-                // 做一个定时器
-                var timer = setInterval(function() {
-                    var $item = $('.js-notice-item');
-                    var length = $item.length;
-                    var $currentItem = $('.js-notice-item-active');
-                    var currentItemIndex = $item.index($currentItem[0]);
-                    // 最后一个
-                    if (currentItemIndex === length - 1) {
-                        currentItemIndex = -1;
-                    }
-                    $currentItem.removeClass('js-notice-item-active').addClass('hide');
-                    $item.eq(currentItemIndex + 1).addClass('js-notice-item-active').removeClass('hide');
-                }, 10000);
+                        $noticeContainer.append($template);
+                    });
+                    // 做一个定时器
+                    var timer = setInterval(function() {
+                        var $item = $('.js-notice-item');
+                        var length = $item.length;
+                        var $currentItem = $('.js-notice-item-active');
+                        var currentItemIndex = $item.index($currentItem[0]);
+                        // 最后一个
+                        if (currentItemIndex === length - 1) {
+                            currentItemIndex = -1;
+                        }
+                        $currentItem.removeClass('js-notice-item-active').addClass('hide');
+                        $item.eq(currentItemIndex + 1).addClass('js-notice-item-active').removeClass('hide');
+                    }, 10000);
+                }
             }
         });
     }
 
     // 用户登录
     function userLoginHandler(event) {
-        flyer.open({
-            pageUrl: '/html/user_login.html',
-            isModal: true,
-            area: [400, 150],
-            title: '用户登录',
-            btns: [{
-                text: '登录',
-                click: function(ele) {
-                    var that = this;
-                    var userInfo = getUserInfo($('form[name=userLoginForm]'));
-                    var validResult = validUserInfo(userInfo, false);
-                    if (validResult.isPass) {
-                        $.ajax({
-                            url: '/api/userLogin',
-                            type: 'POST',
-                            data: userInfo,
-                            beforeSend: function(jqXHR, settings) {
-                                $.lockedBtn($(ele), true, ('登录中'));
-                            },
-                            success: function(data, textStatus, jqXHR) {
-                                if (data.success) {
-                                    flyer.msg('操作成功');
-                                    that.close();
-                                    window.location.assign('/console');
-                                } else {
-                                    flyer.msg('操作失败：' + data.message);
-                                }
-                            },
-                            error: function(jqXHR, textStatus, errorThrown) {
-                                flyer.msg(baseDatas.errorMsg);
-                            },
-                            complete: function(jqXHR, textStatus) {
-                                $.unlockBtn($(ele), ('登录'));
-                            }
-                        });
-                    } else {
-                        flyer.msg(validResult.msg);
-                    }
-                }
-            }, {
-                text: '取消',
-                click: function() {
-                    this.close();
-                }
-            }]
+        if (!$('.js-user-login').hasClass('mdui-hidden')) {
+            return false;
+        }
+        $(this).addClass('li-selected').siblings().removeClass('li-selected');
+        $('.js-content').hide();
+        $('.js-user-register').hide().addClass('mdui-hidden');
+        $('.js-user-login').show().removeClass('mdui-hidden');
+        $('.front-footer').css({
+            position: 'fixed',
+            bottom: 0
         });
         return false;
     }
 
-    // 用户注册
+    // 用户登录提交
+    function userLoginSubmitHanlder(event) {
+        var userInfo = getUserInfo($('form[name=userLoginForm]'));
+        var $btn = $(this);
+        $.ajax({
+            url: '/api/userLogin',
+            method: 'POST',
+            data: userInfo,
+            success: function(data, textStatus, jqXHR) {
+                data = JSON.parse(data);
+                if (data.success) {
+                    mdui.snackbar({
+                        message: '登录成功',
+                        position: 'top'
+                    });
+                    window.location.assign('/console');
+                } else {
+                    mdui.snackbar({
+                        message: '登录失败:' + data.message,
+                        position: 'top'
+                    });
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                mdui.snackbar({
+                    message: '网络错误',
+                    position: 'top'
+                });
+            }
+        });
+        return false;
+    }
+
+    // 用户注册get
     function userRegisterHandler(event) {
-        flyer.open({
-            pageUrl: '/html/user_register.html',
-            isModal: true,
-            area: [440, 350],
-            title: '用户注册',
-            btns: [{
-                text: '注册',
-                click: function(ele) {
-                    var that = this;
-                    var userInfo = getUserInfo($('form[name=userRegisterForm]'));
-                    var validResult = validUserInfo(userInfo, true);
-                    if (validResult.isPass) {
-                        $.ajax({
-                            url: '/api/createUser',
-                            type: 'POST',
-                            data: userInfo,
-                            beforeSend: function(jqXHR, settings) {
-                                $.lockedBtn($(ele), true, ('注册中'));
-                            },
-                            success: function(data, textStatus, jqXHR) {
-                                if (data.success) {
-                                    flyer.msg('操作成功');
-                                    that.close();
-                                    window.location.assign('/console');
-                                } else {
-                                    flyer.msg('操作失败：' + data.message);
-                                }
-                            },
-                            error: function(jqXHR, textStatus, errorThrown) {
-                                flyer.msg(baseDatas.errorMsg);
-                            },
-                            complete: function(jqXHR, textStatus) {
-                                $.unlockBtn($(ele), ('注册'));
-                            }
-                        });
-                    } else {
-                        flyer.msg(validResult.msg);
-                    }
+        if (!$('.js-user-register').hasClass('mdui-hidden')) {
+            return false;
+        }
+        $(this).addClass('li-selected').siblings().removeClass('li-selected');
+        $('.js-content').hide();
+        $('.js-user-login').hide().addClass('mdui-hidden');
+        $('.js-user-register').show().removeClass('mdui-hidden');
+        $('.front-footer').css({
+            position: 'static'
+        });
+        return false;
+    }
+
+    // 用户注册post
+    function userRegisterSubmitHanlder() {
+        var userInfo = getUserInfo($('form[name=userRegisterForm]'));
+        var $btn = $(this);
+        $.ajax({
+            url: '/api/createUser',
+            method: 'POST',
+            data: userInfo,
+            success: function(data, textStatus, jqXHR) {
+                data = JSON.parse(data);
+                if (data.success) {
+                    mdui.snackbar({
+                        message: '注册成功',
+                        position: 'top'
+                    });
+                    window.location.assign('/console');
+                } else {
+                    mdui.snackbar({
+                        message: '注册失败:' + data.message,
+                        position: 'top'
+                    });
                 }
-            }, {
-                text: '取消',
-                click: function() {
-                    this.close();
-                }
-            }]
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                mdui.snackbar({
+                    message: '网络错误，请刷新页面重试',
+                    position: 'top'
+                });
+            }
         });
         return false;
     }
