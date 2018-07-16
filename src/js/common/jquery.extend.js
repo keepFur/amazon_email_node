@@ -74,7 +74,34 @@
      * @param {date} date 日期字符串，默认时间是当前时间
      */
     $.formatDate = function(format, date) {
-
+        if (typeof format !== "string") {
+            format = "yyyy-mm-dd hh:MM:ss";
+        }
+        var getDate = function(date) {
+            date = isString(date) ? new Date(date) : (date || new Date());
+            return {
+                year: date.getFullYear(),
+                month: date.getMonth() + 1,
+                day: date.getDate(),
+                hours: date.getHours(),
+                minutes: date.getMinutes(),
+                seconds: date.getSeconds()
+            };
+        };
+        var isString = function(obj) {
+            return typeof obj === "string";
+        };
+        var fullTime = function(time) {
+            return time >= 10 ? time : ("0" + time);
+        };
+        date = getDate(date);
+        return format
+            .replace(/yyyy/gi, date.year)
+            .replace(/mm/, fullTime(date.month))
+            .replace(/dd/gi, fullTime(date.day))
+            .replace(/hh/gi, fullTime(date.hours))
+            .replace(/MM/, fullTime(date.minutes))
+            .replace(/ss/gi, fullTime(date.seconds));
     };
 
     /**

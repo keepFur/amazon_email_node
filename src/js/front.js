@@ -85,10 +85,11 @@ $(function() {
                 offset: 1
             },
             success: function(res) {
+                res = JSON.parse(res);
                 if (res.success) {
                     var $noticeContainer = $('.js-notice-container');
                     $.each(res.data.rows, function(index, item) {
-                        var createdDate = flyer.formatDate('yyyy-mm-dd HH:MM', item.createdDate);
+                        var createdDate = $.formatDate('yyyy-mm-dd HH:MM', item.createdDate);
                         var $template = `<a href="#" class="pull-left text-ellipsis js-notice-item ${index===0?' js-notice-item-active':' hide'}" data-id="${item.id}">
                                         <span class="js-notice-title">${createdDate+'#' + item.noticeTitle}</span>
                                         <span class="js-notice-content">${item.noticeContent}</span>
