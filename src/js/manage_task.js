@@ -190,78 +190,84 @@ flyer.define('task_manage', function(exports, module) {
         if ($table && $table.length && Array.isArray(datas)) {
             baseDatas.$table = flyer.table($table, {
                 columns: [{
-                    field: "",
-                    checkbox: true,
-                    styles: {
-                        width: 34
-                    }
-                }, {
-                    title: '订单号',
-                    field: 'taskOrderNumber'
-                }, {
-                    title: '数量和关键词',
-                    field: "",
-                    styles: {
-                        width: 120
+                        field: "",
+                        checkbox: true,
+                        styles: {
+                            width: 34
+                        }
+                    }, {
+                        title: '订单号',
+                        field: 'taskOrderNumber'
+                    }, {
+                        title: '数量和关键词',
+                        field: "",
+                        styles: {
+                            width: 120
+                        },
+                        formatter: function(row) {
+                            return '（' + row.taskQuantity + '）' + row.taskKeyword;
+                            // return '<i class="mdui-icon material-icons mdui-text-color-pink">&#xe417;</i>';
+                        }
+                    }, {
+                        title: '任务类型',
+                        field: "",
+                        formatter: function(row) {
+                            var type = core.getTypeCodeByValue(row.taskChildType);
+                            var taskPlant = type.plant === 'TB' ? '淘宝' : type.plant === 'JD' ? '京东' : '拼多多';
+                            return taskPlant + '（' + type.name + '）';
+                        }
+                    }, {
+                        title: '任务名称',
+                        field: "taskName"
+                    }, {
+                        title: '开始日期',
+                        field: "",
+                        styles: {
+                            width: 100
+                        },
+                        formatter: function(row) {
+                            return flyer.formatDate('yyyy-mm-dd', row.taskStartDate);
+                        }
+                    }, {
+                        title: '链接',
+                        field: "taskBabyLinkToken"
+                    }, {
+                        title: '总消费',
+                        field: "taskSumMoney",
+                        styles: {
+                            width: 70
+                        }
+                    }, {
+                        title: '创建时间',
+                        field: "createdDate",
+                        styles: {
+                            width: 130
+                        },
+                        formatter: function(row, rows) {
+                            return flyer.formatDate('yyyy-mm-dd hh:MM', row.createdDate);
+                        }
                     },
-                    formatter: function(row) {
-                        return '（' + row.taskQuantity + '）' + row.taskKeyword;
-                        // return '<i class="mdui-icon material-icons mdui-text-color-pink">&#xe417;</i>';
+                    // {
+                    //     title: '修改时间',
+                    //     field: "updateDate",
+                    //     styles: {
+                    //         width: 130,
+                    //     },
+                    //     formatter: function(row, rows) {
+                    //         return row.updateDate ? flyer.formatDate('yyyy-mm-dd hh:MM', row.updateDate) : '-';
+                    //     }
+                    // },
+                    {
+                        title: '状态',
+                        field: 'status',
+                        styles: {
+                            width: 60
+                        },
+                        formatter: function(row) {
+                            return '<i class="mdui-icon material-icons mdui-text-color-pink js-view-status" data-id="' + row.id + '" data-task-order-number="' + row.taskOrderNumber + '">&#xe417;</i>';
+                        }
                     }
-                }, {
-                    title: '任务类型',
-                    field: "",
-                    formatter: function(row) {
-                        var type = core.getTypeCodeByValue(row.taskChildType);
-                        var taskPlant = type.plant === 'TB' ? '淘宝' : type.plant === 'JD' ? '京东' : '拼多多';
-                        return taskPlant + '（' + type.name + '）';
-                    }
-                }, {
-                    title: '任务名称',
-                    field: "taskName"
-                }, {
-                    title: '开始日期',
-                    field: "",
-                    formatter: function(row) {
-                        return flyer.formatDate('yyyy-mm-dd', row.taskStartDate);
-                    }
-                }, {
-                    title: '链接',
-                    field: "taskBabyLinkToken"
-                }, {
-                    title: '总消费',
-                    field: "taskSumMoney",
-                    styles: {
-                        width: 70
-                    }
-                }, {
-                    title: '创建时间',
-                    field: "createdDate",
-                    styles: {
-                        width: 130
-                    },
-                    formatter: function(row, rows) {
-                        return flyer.formatDate('yyyy-mm-dd hh:MM', row.createdDate);
-                    }
-                }, {
-                    title: '修改时间',
-                    field: "updateDate",
-                    styles: {
-                        width: 130
-                    },
-                    formatter: function(row, rows) {
-                        return row.updateDate ? flyer.formatDate('yyyy-mm-dd hh:MM', row.updateDate) : '-';
-                    }
-                }, {
-                    title: '状态',
-                    field: 'status',
-                    styles: {
-                        width: 60
-                    },
-                    formatter: function(row) {
-                        return '<i class="mdui-icon material-icons mdui-text-color-pink js-view-status" data-id="' + row.id + '" data-task-order-number="' + row.taskOrderNumber + '">&#xe417;</i>';
-                    }
-                }],
+                ],
                 data: datas,
                 rowClick: function() {
                     // core.setWindowHash('task_create', '');
@@ -323,7 +329,8 @@ flyer.define('task_manage', function(exports, module) {
         var conditions = {
                 offset: pageNumber || 1,
                 limit: pageSize || 20,
-                nocache: window.Date.now()
+                nocache: window.Date.now(),
+                taskPlant: baseDatas.taskPlant
             },
             $table = $('#taskTable');
         $.ajax({

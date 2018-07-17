@@ -1,8 +1,8 @@
 'use strict';
 var $ = mdui.JQ;
 $(function() {
-    var userNameMinLength = 5;
-    var userNameMaxLength = 20;
+    var userNameMinLength = 6;
+    var userNameMaxLength = 15;
 
     function init() {
         // 初始化通知组件
@@ -69,10 +69,25 @@ $(function() {
                             message: '请先登录系统',
                             position: 'top'
                         });
-                        $('#userLogin').click();
+                        $('#userLogin').trigger('click');
                     }
                 }
             });
+        });
+        // 底部立即使用
+        $('#userLoginFooter').on('click', function(event) {
+            $.ajax({
+                url: '/api/getUserLoginStatus',
+                success: function(data) {
+                    data = JSON.parse(data);
+                    if (data.status) {
+                        window.location.assign('/console#task_create');
+                    } else {
+                        $('#userLogin').trigger('click');
+                    }
+                }
+            });
+            return false;
         });
     }
 
@@ -134,32 +149,40 @@ $(function() {
     function userLoginSubmitHanlder(event) {
         var userInfo = getUserInfo($('form[name=userLoginForm]'));
         var $btn = $(this);
-        $.ajax({
-            url: '/api/userLogin',
-            method: 'POST',
-            data: userInfo,
-            success: function(data, textStatus, jqXHR) {
-                data = JSON.parse(data);
-                if (data.success) {
+        var validUserInfoResult = validUserInfo(userInfo);
+        if (validUserInfoResult.isPass) {
+            $.ajax({
+                url: '/api/userLogin',
+                method: 'POST',
+                data: userInfo,
+                success: function(data, textStatus, jqXHR) {
+                    data = JSON.parse(data);
+                    if (data.success) {
+                        mdui.snackbar({
+                            message: '登录成功',
+                            position: 'top'
+                        });
+                        window.location.assign('/console');
+                    } else {
+                        mdui.snackbar({
+                            message: '登录失败:' + data.message,
+                            position: 'top'
+                        });
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
                     mdui.snackbar({
-                        message: '登录成功',
-                        position: 'top'
-                    });
-                    window.location.assign('/console');
-                } else {
-                    mdui.snackbar({
-                        message: '登录失败:' + data.message,
+                        message: '网络错误',
                         position: 'top'
                     });
                 }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                mdui.snackbar({
-                    message: '网络错误',
-                    position: 'top'
-                });
-            }
-        });
+            });
+        } else {
+            mdui.snackbar({
+                message: validUserInfoResult.msg,
+                position: 'top'
+            });
+        }
         return false;
     }
 
@@ -181,33 +204,41 @@ $(function() {
     // 用户注册post
     function userRegisterSubmitHanlder() {
         var userInfo = getUserInfo($('form[name=userRegisterForm]'));
+        var validUserInfoResult = validUserInfo(userInfo);
         var $btn = $(this);
-        $.ajax({
-            url: '/api/createUser',
-            method: 'POST',
-            data: userInfo,
-            success: function(data, textStatus, jqXHR) {
-                data = JSON.parse(data);
-                if (data.success) {
+        if (validUserInfoResult.isPass) {
+            $.ajax({
+                url: '/api/createUser',
+                method: 'POST',
+                data: userInfo,
+                success: function(data, textStatus, jqXHR) {
+                    data = JSON.parse(data);
+                    if (data.success) {
+                        mdui.snackbar({
+                            message: '注册成功',
+                            position: 'top'
+                        });
+                        window.location.assign('/console');
+                    } else {
+                        mdui.snackbar({
+                            message: '注册失败:' + data.message,
+                            position: 'top'
+                        });
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
                     mdui.snackbar({
-                        message: '注册成功',
-                        position: 'top'
-                    });
-                    window.location.assign('/console');
-                } else {
-                    mdui.snackbar({
-                        message: '注册失败:' + data.message,
+                        message: '网络错误，请刷新页面重试',
                         position: 'top'
                     });
                 }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                mdui.snackbar({
-                    message: '网络错误，请刷新页面重试',
-                    position: 'top'
-                });
-            }
-        });
+            });
+        } else {
+            mdui.snackbar({
+                message: validUserInfoResult.msg,
+                position: 'top'
+            });
+        }
         return false;
     }
 
@@ -227,7 +258,7 @@ $(function() {
     }
 
     // 校验表单信息,用户名和密码不能为空
-    function validUserInfo(userInfo, isRegister) {
+    function validUserInfo(userInfo) {
         if (!userInfo) {
             $.writeLog('front-validUserInfo', '参数错误');
             return {
@@ -242,7 +273,7 @@ $(function() {
             userInfo.userName.length < userNameMinLength) {
             return {
                 isPass: false,
-                msg: '用户名不能为空且长度是5-20位'
+                msg: '用户名是6-15位字母组成'
             };
         }
         // 判断密码
@@ -251,26 +282,13 @@ $(function() {
             userInfo.password.length < userNameMinLength) {
             return {
                 isPass: false,
-                msg: '密码不能为空且长度是5-20位'
-            };
-        }
-
-        // 判断两次密码是否一致
-        if (isRegister && userInfo.password !== userInfo.confirmPassword) {
-            return {
-                isPass: false,
-                msg: '两次密码不一致'
+                msg: '密码是6-15位字母组成'
             };
         }
         return {
             isPass: true,
             msg: '校验通过'
         };
-    }
-
-    // 判断用户名是否存在
-    function isExistUser(userInfo) {
-
     }
     init();
 });

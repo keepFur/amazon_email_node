@@ -765,64 +765,6 @@ header .main ul li a.active {
     border-top: 2px solid #eee;
 }
 
-.footer .footer-content {
-    width: 90%;
-    margin: 0 auto;
-}
-
-.footer-content p.brand {
-    display: block;
-    -webkit-filter: grayscale(100%);
-    filter: grayscale(100%);
-    width: 20%;
-    height: 35px;
-    background-image: url('../../imgs/logo.png');
-    background-size: 150px 35px;
-    background-repeat: no-repeat;
-}
-
-.footer-content ul {
-    float: left;
-    width: 15%;
-}
-
-.footer-content ul li {
-    font-size: 1.4rem;
-    line-height: 2.4rem;
-}
-
-.footer-content ul li.title {
-    font-size: 1.6rem;
-    line-height: 3rem;
-}
-
-@media only screen and (max-width: 50em) {
-    .footer-content p.brand {
-        display: none;
-    }
-    .footer-content ul {
-        width: 20%;
-    }
-    .footer-content ul li {
-        font-size: 1.2rem;
-        line-height: 2rem;
-    }
-    .footer-content ul li.title {
-        font-size: 1.4rem;
-        line-height: 2.5rem;
-    }
-}
-
-@media only screen and (max-width: 30em) {
-    .footer-content {
-        width: 98%;
-    }
-    .footer-content ul li.title {
-        font-size: 1.2rem;
-        line-height: 2rem;
-    }
-}
-
 
 /********************** 
    底部样式

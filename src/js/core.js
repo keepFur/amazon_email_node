@@ -338,121 +338,141 @@ var core = {
         var types = {
             APP_SEARCH: {
                 code: 0,
-                price: 100,
+                price: 10,
+                origin: 4,
                 name: 'APP搜索',
                 plant: 'TB'
             },
             PC_SEARCH: {
                 code: 1,
-                price: 30,
+                price: 20,
+                origin: 10,
                 name: 'PC搜索',
                 plant: 'TB'
             },
             DIRECT_SHOP: {
                 code: 2,
-                price: 30,
+                price: 20,
+                origin: 10,
                 name: '直仿店铺',
                 plant: 'TB'
             },
             DIRECT_PRODUCT: {
                 code: 3,
-                price: 30,
+                price: 20,
+                origin: 10,
                 name: '直仿商品',
                 plant: 'TB'
             },
             SHOP_COLLECT_APP: {
                 code: 6,
-                price: 30,
+                price: 50,
+                origin: 25,
                 name: '店铺收藏APP端',
                 plant: 'TB'
             },
             PRODUCT_COLLECT_APP: {
                 code: 7,
-                price: 30,
+                price: 50,
+                origin: 25,
                 name: '商品收藏APP端',
                 plant: 'TB'
             },
             SEARCH_COLLECT_APP: {
                 code: 9,
-                price: 30,
+                price: 60,
+                origin: 29,
                 name: '搜索收藏APP端',
                 plant: 'TB'
             },
             SEARCH_ADDCART: {
                 code: 10,
-                price: 30,
+                price: 85,
+                origin: 44,
                 name: '搜索加购',
                 plant: 'TB'
             },
             DIRECT_ADDCART: {
                 code: 11,
-                price: 30,
+                price: 80,
+                origin: 40,
                 name: '直接加购',
                 plant: 'TB'
             },
             LIVE_ATTENTION: {
                 code: 12,
-                price: 30,
+                price: 100,
+                origin: 50,
                 name: '直播关注',
                 plant: 'TB'
             },
             WEITAO_GOOD: {
                 code: 13,
-                price: 30,
+                price: 25,
+                origin: 12,
                 name: '微淘点赞',
                 plant: 'TB'
             },
             LIVE_WATCH: {
                 code: 14,
-                price: 30,
+                price: 10,
+                origin: 4,
                 name: '直播观看',
                 plant: 'TB'
             },
             START_TIP: {
                 code: 15,
-                price: 30,
+                price: 10,
+                origin: 4,
                 name: '开团提醒',
                 plant: 'TB'
             },
             JD_TRIFFIC: {
                 code: 70,
-                price: 30,
+                price: 20,
+                origin: 10,
                 name: '京东流量',
                 plant: 'JD'
             },
             JD_PRODUCT_COLLECT: {
                 code: 71,
-                price: 30,
+                price: 70,
+                origin: 35,
                 name: '京东商品收藏',
                 plant: 'JD'
             },
             JD_SHOP_ATTENTION: {
                 code: 72,
-                price: 30,
+                price: 50,
+                origin: 25,
                 name: '京东店铺关注',
                 plant: 'JD'
             },
             JD_ADD_CART: {
                 code: 73,
-                price: 30,
+                price: 70,
+                origin: 35,
                 name: '京东加购',
                 plant: 'JD'
             },
             JD_EXPERT_ATTENTION: {
                 code: 74,
-                price: 30,
+                price: 60,
+                origin: 25,
                 name: '京东达人关注',
                 plant: 'JD'
             },
             JD_APPOINTMENT_SOLD: {
                 code: 75,
-                price: 30,
+                price: 70,
+                origin: 35,
                 name: '预约抢购',
                 plant: 'JD'
             },
             PDD_APP_TRAFFIC: {
                 code: 90,
-                price: 30,
+                price: 20,
+                origin: 10,
                 name: '拼多多流量APP端',
                 plant: 'PDD'
             },

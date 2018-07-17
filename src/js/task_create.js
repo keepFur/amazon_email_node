@@ -217,6 +217,7 @@ $(function() {
         taskInfo.taskParentType = $('#taskTab li.flyer-tab-active').data('task-parent-type');
         taskInfo.taskUnitPrice = $('#taskPrice').text();
         taskInfo.taskSumMoney = taskInfo.taskUnitPrice * $('input[name=taskQuantity]').val();
+        taskInfo.taskPlant = core.getTypeCodeByValue($('input[name=taskChildType]:checked').val()).plant;
         return $.extend(core.getFormValues($form), taskInfo);
     }
 
@@ -237,7 +238,6 @@ $(function() {
         signKeyTaskInfo.hour = computeEqualPart(taskInfo.taskQuantity, computeMainHourToday());
         signKeyTaskInfo.hour = new Array(24).fill(1);
         signKeyTaskInfo.goodsBrowsingTime = taskInfo.taskGoodsBrowsingTime;
-        console.log(signKeyTaskInfo);
         return signKeyTaskInfo;
     }
 

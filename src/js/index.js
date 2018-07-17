@@ -27,8 +27,11 @@ $(function() {
 
         // window hashChange事件
         window.onhashchange = function() {
-            loadPageByUrl(getPageUrlByHash());
+            var url = getPageUrlByHash();
+            triggerHomeClick(window.location.hash);
+            loadPageByUrl(url);
         };
+
         // window的resize事件
         window.onresize = function() {
             $('.flyer-layout-tree').height(window.innerHeight - 164);
@@ -75,7 +78,6 @@ $(function() {
             },
             error: function(error) {
                 triggerHomeClick();
-                // core.menuHeightLightByHash('home');
                 $.writeLog('index-loadPage', '没有找到[' + getPageUrlByHash() + ']页面');
             }
         });
@@ -93,8 +95,9 @@ $(function() {
     /**
      * 触发home菜单的点击事件
      */
-    function triggerHomeClick() {
-        $('.flyer-layout-tree').find('a[data-url="home.html' + '"]').click();
+    function triggerHomeClick(hash) {
+        hash = hash.replace('#', '') || 'home';
+        $('.flyer-layout-tree').find(`a[data-url='${hash}.html']`).click();
     }
 
     init();
