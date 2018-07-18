@@ -11,6 +11,7 @@ let express = require("express"),
     Package = require("./package"),
     Core = require("./lib/core"),
     userMiddleware = require('./lib/middleware/user'),
+    favicon = require('serve-favicon'),
     Cookie = require('cookie-parser');
 
 
@@ -38,6 +39,8 @@ app.use(session({
     saveUninitialized: false,
     rolling: true
 }));
+
+app.use(favicon(path.join(__dirname, 'favicon.ico')));
 app.use(Cookie());
 app.use(express.static("src"));
 app.use(userMiddleware);
@@ -362,7 +365,25 @@ app.get('/api/getQrCodePayStatus', function(req, res) {
 //  接收付款有赞推送的消息
 app.post('/api/getYouzanPushMessgae', function(req, res) {
     try {
-
+        let message = JSON.parse(req.body);
+        // 1. 判断消息是否测试— > 解析 test
+        if (!message.test) {
+            // 2. 判断消息推送的模式— > 解析 mode
+            if (message.mode === 1) {
+                // 3. 判断消息是否伪造— > 解析 sign
+                // 4. 判断消息版本— > 解析 version
+                // 5. 判断消息的业务— > 解析 type
+                if (message.type === 'TRADE_ORDER_STATE') {
+                    // 6. 处理消息体— > 解码 msg， 反序列化消息结构体
+                    res.send({
+                        ver: message.version,
+                        msg: decodeURIComponent(message.msg)
+                    });
+                }
+            }
+        }
+        // 7. 返回接收成功标识 { "code": 0, "msg": "success" }
+        res.body = { code: 0, msg: 'success' };
     } catch (error) {
         Core.flyer.log(error);
     }
