@@ -16,13 +16,13 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `yidian_logs_score`
+-- Table structure for table `yidian`.`yidian_logs_score`
 --
 
-DROP TABLE IF EXISTS `yidian_logs_score`;
+DROP TABLE IF EXISTS `yidian`.`yidian_logs_score`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `yidian_logs_score` (
+CREATE TABLE `yidian`.`yidian_logs_score` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `status` int(2) NOT NULL DEFAULT '1' COMMENT '数据状态\n1是启用\n0是禁用',
@@ -35,23 +35,23 @@ CREATE TABLE `yidian_logs_score` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `yidian_logs_score`
+-- Dumping data for table `yidian`.`yidian_logs_score`
 --
 
-LOCK TABLES `yidian_logs_score` WRITE;
-/*!40000 ALTER TABLE `yidian_logs_score` DISABLE KEYS */;
-INSERT INTO `yidian_logs_score` VALUES (1,17,1,'2018-07-16 10:52:36','surongzhizhang',110000,1),(2,17,1,'2018-07-17 12:49:32','surongzhizhang',110000,1);
-/*!40000 ALTER TABLE `yidian_logs_score` ENABLE KEYS */;
+LOCK TABLES `yidian`.`yidian_logs_score` WRITE;
+/*!40000 ALTER TABLE `yidian`.`yidian_logs_score` DISABLE KEYS */;
+INSERT INTO `yidian`.`yidian_logs_score` VALUES (1,17,1,'2018-07-16 10:52:36','surongzhizhang',110000,1),(2,17,1,'2018-07-17 12:49:32','surongzhizhang',110000,1);
+/*!40000 ALTER TABLE `yidian`.`yidian_logs_score` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `yidian_notice`
+-- Table structure for table `yidian`.`yidian_notice`
 --
 
-DROP TABLE IF EXISTS `yidian_notice`;
+DROP TABLE IF EXISTS `yidian`.`yidian_notice`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `yidian_notice` (
+CREATE TABLE `yidian`.`yidian_notice` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `notice_title` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT 'title' COMMENT '通知标题',
   `notice_content` varchar(45) COLLATE utf8_bin NOT NULL DEFAULT 'content' COMMENT '通知内容',
@@ -64,23 +64,23 @@ CREATE TABLE `yidian_notice` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `yidian_notice`
+-- Dumping data for table `yidian`.`yidian_notice`
 --
 
-LOCK TABLES `yidian_notice` WRITE;
-/*!40000 ALTER TABLE `yidian_notice` DISABLE KEYS */;
-INSERT INTO `yidian_notice` VALUES (1,'玛丽亚','玛丽亚马上就累了！！！',1,'2018-07-12 22:25:01','2018-07-12 22:29:59',NULL),(2,'不知打','不知道你打的啊的啊等你',1,'2018-07-12 23:07:54',NULL,NULL),(3,'水珠送的','睡不好岁啊是啊的',1,'2018-07-12 23:08:03',NULL,NULL),(4,'放假通知','明天上班',1,'2018-07-16 16:34:49',NULL,NULL);
-/*!40000 ALTER TABLE `yidian_notice` ENABLE KEYS */;
+LOCK TABLES `yidian`.`yidian_notice` WRITE;
+/*!40000 ALTER TABLE `yidian`.`yidian_notice` DISABLE KEYS */;
+INSERT INTO `yidian`.`yidian_notice` VALUES (1,'玛丽亚','玛丽亚马上就累了！！！',1,'2018-07-12 22:25:01','2018-07-12 22:29:59',NULL),(2,'不知打','不知道你打的啊的啊等你',1,'2018-07-12 23:07:54',NULL,NULL),(3,'水珠送的','睡不好岁啊是啊的',1,'2018-07-12 23:08:03',NULL,NULL),(4,'放假通知','明天上班',1,'2018-07-16 16:34:49',NULL,NULL);
+/*!40000 ALTER TABLE `yidian`.`yidian_notice` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `yidian_package`
+-- Table structure for table `yidian`.`yidian_package`
 --
 
-DROP TABLE IF EXISTS `yidian_package`;
+DROP TABLE IF EXISTS `yidian`.`yidian_package`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `yidian_package` (
+CREATE TABLE `yidian`.`yidian_package` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `package_name` varchar(110) COLLATE utf8_bin NOT NULL DEFAULT 'name' COMMENT '套餐名称',
   `package_present_score` int(225) NOT NULL DEFAULT '0' COMMENT '赠送积分',
@@ -96,23 +96,23 @@ CREATE TABLE `yidian_package` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `yidian_package`
+-- Dumping data for table `yidian`.`yidian_package`
 --
 
-LOCK TABLES `yidian_package` WRITE;
-/*!40000 ALTER TABLE `yidian_package` DISABLE KEYS */;
-INSERT INTO `yidian_package` VALUES (1,'1000元（赠送100元）',10000,100000,100,2000,0,1,'2018-07-14 16:52:41','2018-07-14 17:33:06'),(2,'2000元（赠送500元）',10000,200000,500,2000,0,1,'2018-07-14 17:32:53',NULL),(3,'3000元（赠送800元）',20000,300000,800,3000,0,1,'2018-07-14 17:33:40',NULL),(4,'5000元（赠送1200元）',20000,500000,1200,5000,0,1,'2018-07-14 17:34:16',NULL),(5,'10000元（赠送2000元）',20000,2000000,2000,10000,0,1,'2018-07-14 17:34:50',NULL);
-/*!40000 ALTER TABLE `yidian_package` ENABLE KEYS */;
+LOCK TABLES `yidian`.`yidian_package` WRITE;
+/*!40000 ALTER TABLE `yidian`.`yidian_package` DISABLE KEYS */;
+INSERT INTO `yidian`.`yidian_package` VALUES (1,'1000元（赠送100元）',10000,100000,100,2000,0,1,'2018-07-14 16:52:41','2018-07-14 17:33:06'),(2,'2000元（赠送500元）',10000,200000,500,2000,0,1,'2018-07-14 17:32:53',NULL),(3,'3000元（赠送800元）',20000,300000,800,3000,0,1,'2018-07-14 17:33:40',NULL),(4,'5000元（赠送1200元）',20000,500000,1200,5000,0,1,'2018-07-14 17:34:16',NULL),(5,'10000元（赠送2000元）',20000,2000000,2000,10000,0,1,'2018-07-14 17:34:50',NULL);
+/*!40000 ALTER TABLE `yidian`.`yidian_package` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `yidian_plant`
+-- Table structure for table `yidian`.`yidian_plant`
 --
 
-DROP TABLE IF EXISTS `yidian_plant`;
+DROP TABLE IF EXISTS `yidian`.`yidian_plant`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `yidian_plant` (
+CREATE TABLE `yidian`.`yidian_plant` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `plantname` varchar(45) COLLATE utf8_bin NOT NULL DEFAULT 'N/A' COMMENT '平台名称',
   `description` varchar(45) COLLATE utf8_bin NOT NULL DEFAULT 'N/A' COMMENT '平台描述',
@@ -124,23 +124,23 @@ CREATE TABLE `yidian_plant` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `yidian_plant`
+-- Dumping data for table `yidian`.`yidian_plant`
 --
 
-LOCK TABLES `yidian_plant` WRITE;
-/*!40000 ALTER TABLE `yidian_plant` DISABLE KEYS */;
-INSERT INTO `yidian_plant` VALUES (1,'京东','多快好省！！！',1,'2018-07-07 23:03:24','2018-07-08 07:49:29'),(2,'淘宝','就够了！！！',1,'2018-07-08 07:09:16','2018-07-08 07:49:41'),(3,'拼多多','买假货，就上拼多多！！！',1,'2018-07-08 07:46:20',NULL),(4,'苏宁','苏宁不是我儿子！！！',1,'2018-07-09 08:44:24',NULL);
-/*!40000 ALTER TABLE `yidian_plant` ENABLE KEYS */;
+LOCK TABLES `yidian`.`yidian_plant` WRITE;
+/*!40000 ALTER TABLE `yidian`.`yidian_plant` DISABLE KEYS */;
+INSERT INTO `yidian`.`yidian_plant` VALUES (1,'京东','多快好省！！！',1,'2018-07-07 23:03:24','2018-07-08 07:49:29'),(2,'淘宝','就够了！！！',1,'2018-07-08 07:09:16','2018-07-08 07:49:41'),(3,'拼多多','买假货，就上拼多多！！！',1,'2018-07-08 07:46:20',NULL),(4,'苏宁','苏宁不是我儿子！！！',1,'2018-07-09 08:44:24',NULL);
+/*!40000 ALTER TABLE `yidian`.`yidian_plant` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `yidian_task`
+-- Table structure for table `yidian`.`yidian_task`
 --
 
-DROP TABLE IF EXISTS `yidian_task`;
+DROP TABLE IF EXISTS `yidian`.`yidian_task`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `yidian_task` (
+CREATE TABLE `yidian`.`yidian_task` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `task_name` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT 'N/A' COMMENT '任务名称',
   `task_parent_type` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT 'TRAFFIC' COMMENT '任务类型（父级类型）\nTRAFFIC是流量任务\nCOLLECT是收藏任务\nJD_SHOP_ATTENTION是店铺关注任务\nADD_CART是加购任务\nTB_LIVE是淘宝直播',
@@ -164,23 +164,23 @@ CREATE TABLE `yidian_task` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `yidian_task`
+-- Dumping data for table `yidian`.`yidian_task`
 --
 
-LOCK TABLES `yidian_task` WRITE;
-/*!40000 ALTER TABLE `yidian_task` DISABLE KEYS */;
-INSERT INTO `yidian_task` VALUES (10,'测试数据1','TRFFIC','PC_SEARCH','2018-07-13 00:00:00','https://item.taobao.com/item.htm?spm=a211pk.steins68998.wb-qs-fp-20180312-ruiyu-video-pc6.3.129fjVNljVNl6G&id=39878007598',30,1,720,1,'2018-07-13 11:04:00',NULL,1,'小龙虾',24,NULL,'20180713110359242532','TB');
-/*!40000 ALTER TABLE `yidian_task` ENABLE KEYS */;
+LOCK TABLES `yidian`.`yidian_task` WRITE;
+/*!40000 ALTER TABLE `yidian`.`yidian_task` DISABLE KEYS */;
+INSERT INTO `yidian`.`yidian_task` VALUES (10,'测试数据1','TRFFIC','PC_SEARCH','2018-07-13 00:00:00','https://item.taobao.com/item.htm?spm=a211pk.steins68998.wb-qs-fp-20180312-ruiyu-video-pc6.3.129fjVNljVNl6G&id=39878007598',30,1,720,1,'2018-07-13 11:04:00',NULL,1,'小龙虾',24,NULL,'20180713110359242532','TB');
+/*!40000 ALTER TABLE `yidian`.`yidian_task` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `yidian_task_keyword_quantity`
+-- Table structure for table `yidian`.`yidian_task_keyword_quantity`
 --
 
-DROP TABLE IF EXISTS `yidian_task_keyword_quantity`;
+DROP TABLE IF EXISTS `yidian`.`yidian_task_keyword_quantity`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `yidian_task_keyword_quantity` (
+CREATE TABLE `yidian`.`yidian_task_keyword_quantity` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `task_keyword` varchar(1024) COLLATE utf8_bin NOT NULL COMMENT ' 关键词',
   `task_quantity` int(11) NOT NULL DEFAULT '0' COMMENT '任务数量',
@@ -194,23 +194,23 @@ CREATE TABLE `yidian_task_keyword_quantity` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `yidian_task_keyword_quantity`
+-- Dumping data for table `yidian`.`yidian_task_keyword_quantity`
 --
 
-LOCK TABLES `yidian_task_keyword_quantity` WRITE;
-/*!40000 ALTER TABLE `yidian_task_keyword_quantity` DISABLE KEYS */;
-INSERT INTO `yidian_task_keyword_quantity` VALUES (1,'女装',1000,6,0,'2018-07-09 12:21:59',NULL,1),(2,'女装',10000,7,0,'2018-07-09 14:59:24',NULL,1),(3,'女装2',101,7,0,'2018-07-09 14:59:24',NULL,1),(4,'女装',1000,8,0,'2018-07-09 15:06:08',NULL,1);
-/*!40000 ALTER TABLE `yidian_task_keyword_quantity` ENABLE KEYS */;
+LOCK TABLES `yidian`.`yidian_task_keyword_quantity` WRITE;
+/*!40000 ALTER TABLE `yidian`.`yidian_task_keyword_quantity` DISABLE KEYS */;
+INSERT INTO `yidian`.`yidian_task_keyword_quantity` VALUES (1,'女装',1000,6,0,'2018-07-09 12:21:59',NULL,1),(2,'女装',10000,7,0,'2018-07-09 14:59:24',NULL,1),(3,'女装2',101,7,0,'2018-07-09 14:59:24',NULL,1),(4,'女装',1000,8,0,'2018-07-09 15:06:08',NULL,1);
+/*!40000 ALTER TABLE `yidian`.`yidian_task_keyword_quantity` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `yidian_user`
+-- Table structure for table `yidian`.`yidian_user`
 --
 
-DROP TABLE IF EXISTS `yidian_user`;
+DROP TABLE IF EXISTS `yidian`.`yidian_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `yidian_user` (
+CREATE TABLE `yidian`.`yidian_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `username` varchar(45) COLLATE utf8_bin NOT NULL COMMENT '用户名',
   `status` int(11) NOT NULL DEFAULT '1' COMMENT '数据状态\n1是启用\n0是禁用',
@@ -229,13 +229,13 @@ CREATE TABLE `yidian_user` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `yidian_user`
+-- Dumping data for table `yidian`.`yidian_user`
 --
 
-LOCK TABLES `yidian_user` WRITE;
-/*!40000 ALTER TABLE `yidian_user` DISABLE KEYS */;
-INSERT INTO `yidian_user` VALUES (17,'surongzhizhang',1,'$2b$12$cZCOe/ZdmUynEG2fh9RJke2mfB0/lvmCG8D96odmeY/eTRgm2iZC.',2,1,'2018-07-14 12:48:10',3199000,'','','',NULL,'$2b$12$cZCOe/ZdmUynEG2fh9RJke'),(18,'surongc',1,'$2b$12$q3yql0POL/DFPLNbGHc/le53jF59nNyIhdDKnNFl84DIHIJyF496a',1,0,'2018-07-16 11:39:04',0,'keepFur@163.com','18098971690','838472035',NULL,'$2b$12$q3yql0POL/DFPLNbGHc/le'),(19,'linyuan',1,'$2b$12$LF.mEc1vVn8fdRog9iqQUeIHVhZFYQ8ZGJyQbwBEyx6EHeWYxTXuq',1,0,'2018-07-16 16:23:56',0,'keepFur@163.com','18098971690','838472035',NULL,'$2b$12$LF.mEc1vVn8fdRog9iqQUe'),(20,'linyuanz',1,'$2b$12$1xX1ew4W1/7r9u52DvgjMetzIQ8ZY/xFZHJ8XtwZZuyYril/Urb6a',1,0,'2018-07-16 16:41:31',0,'aenjoy@126.com','18098971690','2460581061',NULL,'$2b$12$1xX1ew4W1/7r9u52DvgjMe'),(21,'',0,'$2b$12$w25lf1y5K3kJpx8NCvlixu.UANqx9Nxp9OQm9JFUrzOCJzSipzW.u',1,0,'2018-07-16 18:31:12',0,'','','',NULL,'$2b$12$w25lf1y5K3kJpx8NCvlixu'),(22,'surongceshi',1,'$2b$12$3intgS7EhnaLA4vXbPPs/uB6.10KVKsYF.QCAaXls3ZT2HDy2eEAW',1,0,'2018-07-16 18:34:14',0,'keepFur@163.com','18098971690','838472035',NULL,'$2b$12$3intgS7EhnaLA4vXbPPs/u');
-/*!40000 ALTER TABLE `yidian_user` ENABLE KEYS */;
+LOCK TABLES `yidian`.`yidian_user` WRITE;
+/*!40000 ALTER TABLE `yidian`.`yidian_user` DISABLE KEYS */;
+INSERT INTO `yidian`.`yidian_user` VALUES (17,'surongzhizhang',1,'$2b$12$cZCOe/ZdmUynEG2fh9RJke2mfB0/lvmCG8D96odmeY/eTRgm2iZC.',2,1,'2018-07-14 12:48:10',3199000,'','','',NULL,'$2b$12$cZCOe/ZdmUynEG2fh9RJke'),(18,'surongc',1,'$2b$12$q3yql0POL/DFPLNbGHc/le53jF59nNyIhdDKnNFl84DIHIJyF496a',1,0,'2018-07-16 11:39:04',0,'keepFur@163.com','18098971690','838472035',NULL,'$2b$12$q3yql0POL/DFPLNbGHc/le'),(19,'linyuan',1,'$2b$12$LF.mEc1vVn8fdRog9iqQUeIHVhZFYQ8ZGJyQbwBEyx6EHeWYxTXuq',1,0,'2018-07-16 16:23:56',0,'keepFur@163.com','18098971690','838472035',NULL,'$2b$12$LF.mEc1vVn8fdRog9iqQUe'),(20,'linyuanz',1,'$2b$12$1xX1ew4W1/7r9u52DvgjMetzIQ8ZY/xFZHJ8XtwZZuyYril/Urb6a',1,0,'2018-07-16 16:41:31',0,'aenjoy@126.com','18098971690','2460581061',NULL,'$2b$12$1xX1ew4W1/7r9u52DvgjMe'),(21,'',0,'$2b$12$w25lf1y5K3kJpx8NCvlixu.UANqx9Nxp9OQm9JFUrzOCJzSipzW.u',1,0,'2018-07-16 18:31:12',0,'','','',NULL,'$2b$12$w25lf1y5K3kJpx8NCvlixu'),(22,'surongceshi',1,'$2b$12$3intgS7EhnaLA4vXbPPs/uB6.10KVKsYF.QCAaXls3ZT2HDy2eEAW',1,0,'2018-07-16 18:34:14',0,'keepFur@163.com','18098971690','838472035',NULL,'$2b$12$3intgS7EhnaLA4vXbPPs/u');
+/*!40000 ALTER TABLE `yidian`.`yidian_user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
