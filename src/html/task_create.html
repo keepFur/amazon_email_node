@@ -138,6 +138,21 @@
                             <i class="mdui-radio-icon"></i>
                             拼多多APP流量
                         </label>
+                        <label class="mdui-radio">
+                            <input type="radio" name="taskChildType" value="PDD_SHOP_COLLECT"/>
+                            <i class="mdui-radio-icon"></i>
+                            拼多多店铺收藏
+                        </label>
+                        <label class="mdui-radio">
+                            <input type="radio" name="taskChildType" value="PDD_PRODUCT_DIRECT_COLLECT"/>
+                            <i class="mdui-radio-icon"></i>
+                            拼多多商品直接收藏
+                        </label>
+                        <label class="mdui-radio">
+                            <input type="radio" name="taskChildType" value="PDD_PRODUCT_SERACH_COLLECT"/>
+                            <i class="mdui-radio-icon"></i>
+                            拼多多商品搜索收藏
+                        </label>
                     </div>
                 </div>
                 <div class="mdui-row-xs-2">
@@ -151,17 +166,17 @@
                     </div>
                 </div>
                 <div class="mdui-textfield">
-                    <label class="mdui-textfield-label">宝贝链接（商品链接/店铺链接/京东商品链接/京东店铺链接/拼多多商品链接）</label>
+                    <label class="mdui-textfield-label">访问链接地址（商品链接/店铺链接,需要和流量入口相匹配，比如说淘宝店铺的任务就必须是淘宝店铺链接，不允许是其他链接，否则下不了单！谢谢配合）</label>
                     <input class="mdui-textfield-input" type="text" name="taskBabyLinkToken" />
                 </div>
                 <div class="mdui-textfield">
                     <label class="mdui-textfield-label">宝贝停留时间（不能低于50秒）</label>
-                    <input class="mdui-textfield-input" type="text" name="taskGoodsBrowsingTime" />
+                    <input class="mdui-textfield-input" type="text" name="taskGoodsBrowsingTime" value="51" />
                 </div>
                 <div class="js-keyword-quantity-container">
                     <div class="mdui-row-xs-2 js-keyword-quantity-item">
                         <div class="mdui-textfield mdui-col">
-                            <label class="mdui-textfield-label js-task-keyword">关键词（多个关键词用空格隔开）</label>
+                            <label class="mdui-textfield-label js-task-keyword">关键词（多个关键词用空格或逗号隔开）</label>
                             <input class="mdui-textfield-input" type="text" name="taskKeyword" />
                         </div>
                         <div class="mdui-textfield mdui-col">

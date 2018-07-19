@@ -434,9 +434,30 @@ var core = {
             },
             PDD_APP_TRAFFIC: {
                 code: 90,
-                price: 20,
-                origin: 10,
+                price: 10,
+                origin: 1,
                 name: '拼多多流量APP端',
+                plant: 'PDD'
+            },
+            PDD_PRODUCT_SERACH_COLLECT: {
+                code: 91,
+                price: 70,
+                origin: 35,
+                name: '拼多多商品搜索收藏',
+                plant: 'PDD'
+            },
+            PDD_PRODUCT_DIRECT_COLLECT: {
+                code: 92,
+                price: 70,
+                origin: 35,
+                name: '拼多多商品直接收藏',
+                plant: 'PDD'
+            },
+            PDD_SHOP_COLLECT: {
+                code: 93,
+                price: 70,
+                origin: 35,
+                name: '拼多多店铺收藏',
                 plant: 'PDD'
             },
         };
@@ -526,9 +547,8 @@ var core = {
             $.writeLog('core-objectToString', '参数错误');
             return result;
         }
-        var keys = Object.keys(obj).sort(function(a, b) {
-            return a > b;
-        });
+        var keys = Object.keys(obj);
+        keys = keys.sort();
         console.log(keys);
         for (var i = 0; i < keys.length; i++) {
             result += '&' + keys[i] + '=' + obj[keys[i]];

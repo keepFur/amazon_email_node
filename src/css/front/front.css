@@ -210,7 +210,7 @@ header .main ul li.li-selected a:hover {
 
 .trans-data span.trans-money {
   font-size: 2.2rem;
-  color: #ff9900;
+  color: #e91e63;
   letter-spacing: 3px;
   margin: 0 1rem;
   padding: 0 1rem;
@@ -348,7 +348,7 @@ header .main ul li.li-selected a:hover {
   padding: 0;
   vertical-align: top;
   font-size: 3.3rem;
-  color: #ff9900; }
+  color: #e91e63; }
 
 .feature .item p {
   display: inline-block;
@@ -401,7 +401,7 @@ header .main ul li.li-selected a:hover {
 .notice a.more {
   width: auto;
   margin-right: 2rem;
-  color: #f90; }
+  color: #e91e63; }
 
 @media only screen and (max-width: 30em) {
   .notice {
@@ -421,7 +421,7 @@ header .main ul li.li-selected a:hover {
   margin: 2rem auto;
   font-size: 1.4rem;
   background-color: #f5f9fa;
-  border-top: 2px solid #f90;
+  border-top: 2px solid #e91e63;
   box-shadow: 0 0 4px #ccc; }
 
 /* 标题 */
@@ -489,7 +489,7 @@ header .main ul li.li-selected a:hover {
 .product .product-content .item .info p span {
   display: block;
   font-size: 2.4rem;
-  color: #f90; }
+  color: #e91e63; }
 
 .product .product-content .item .info p span i {
   font-size: 1.2rem;
@@ -510,7 +510,7 @@ header .main ul li.li-selected a:hover {
   text-align: center;
   text-decoration: none;
   color: #fff;
-  background-color: #f90;
+  background-color: #e91e63;
   border-radius: 5px; }
 
 .product .product-content .item .buy a.disabled {

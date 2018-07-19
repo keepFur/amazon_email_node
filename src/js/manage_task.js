@@ -41,8 +41,8 @@ flyer.define('task_manage', function(exports, module) {
         });
         // 创建任务
         $('.createTask').on('click', createTaskHandle);
-        // 修改任务信息
-        $('.updateTask').on('click', updateTaskHandle);
+        // 取消任务信息
+        $('.cancelTask').on('click', updateTaskHandle);
         // 禁用任务
         $('.disabledTask').on('click', {
             type: 0
@@ -70,61 +70,43 @@ flyer.define('task_manage', function(exports, module) {
     function updateTaskHandle(events) {
         var selectDatas = core.getTableCheckedDatas(baseDatas.$table);
         if (selectDatas.length === 1) {
-            var plantName = selectDatas[0].plantName;
-            var description = selectDatas[0].description;
-            flyer.open({
-                content: `<div class="flyer-form-item dialog-form-container">
-                            <form class="flyer-form" name="plantUpdateForm">
-                                <div class="dialog-form-item">
-                                    <label>名称</label>
-                                    <input type="text" placeholder="可以是中文、字母、数字、下划线5-20位" class="flyer-input inline" name="plantName" value="${plantName}">
-                                </div>
-                                <div class="dialog-form-item">
-                                    <label>描述</label>
-                                    <input type="text" placeholder="简单的描述任务" class="flyer-input inline" name="description" value="${description}">
-                                </div>
-                            </form>
-                          </div>`,
-                isModal: true,
-                area: [400, 200],
-                title: '任务信息修改',
+            flyer.confirm('确定取消任务吗？取消之后积分将不退回账户中', function(result) {}, {
                 btns: [{
-                    text: '确定',
-                    click: function(ele) {
-                        var that = this;
-                        var plantInfo = core.getFormValues($('form[name=plantUpdateForm]'));
-                        var validTaskInfoResult = validTaskInfo(plantInfo);
-                        plantInfo.id = selectDatas[0].id;
-                        if (validTaskInfoResult.isPass) {
-                            $.ajax({
-                                url: '/api/updateTask',
-                                type: 'POST',
-                                data: plantInfo,
-                                beforeSend: function(jqXHR, settings) {
-                                    $.lockedBtn($(ele), true, ('修改中'));
-                                },
-                                success: function(data, textStatus, jqXHR) {
-                                    flyer.msg(data.success ? ('操作成功') : ('操作失败' + data.message));
-                                    that.close();
-                                    getTableDatas(1, 20);
-                                },
-                                error: function(jqXHR, textStatus, errorThrown) {
-                                    flyer.msg(baseDatas.errorMsg);
-                                },
-                                complete: function(jqXHR, textStatus) {
-                                    $.unlockBtn($(ele), ('确定'));
+                        text: '确定',
+                        click: function(elm) {
+                            this.close();
+                            APIUtil.cancelTask(selectDatas[0].taskOrderNumber, function(res) {
+                                if (res.data.status !== 1) {
+                                    flyer.msg('操作成功!');
+                                    $.ajax({
+                                        url: '/api/toggleTask',
+                                        type: 'POST',
+                                        data: {
+                                            id: selectDatas[0].id,
+                                            status: 0
+                                        },
+                                        success: function(data, textStatus, jqXHR) {
+                                            getTableDatas(1, 20);
+                                        },
+                                        error: function(jqXHR, textStatus, errorThrown) {
+                                            flyer.msg(baseDatas.netErrMsg);
+                                        }
+                                    });
+                                } else {
+                                    flyer.msg(res.data.tips);
                                 }
                             });
-                        } else {
-                            flyer.msg(validTaskInfoResult.msg);
+                        }
+                    },
+                    {
+                        text: ("取消"),
+                        click: function(elm) {
+                            this.close();
                         }
                     }
-                }, {
-                    text: '取消',
-                    click: function() {
-                        this.close();
-                    }
-                }]
+                ],
+                title: "询问框",
+                isModal: true
             });
         } else {
             flyer.msg(baseDatas.operatorErrMsg.single);
@@ -147,19 +129,11 @@ flyer.define('task_manage', function(exports, module) {
                         text: '确定',
                         click: function(elm) {
                             this.close();
-                            $.ajax({
-                                url: '/api/toggleTask',
-                                type: 'POST',
-                                data: {
-                                    id: selectDatas[0].id,
-                                    status: type
-                                },
-                                success: function(data, textStatus, jqXHR) {
-                                    flyer.msg(data.success ? '操作成功' : ('操作失败' + data.message));
-                                    getTableDatas(1, 20);
-                                },
-                                error: function(jqXHR, textStatus, errorThrown) {
-                                    flyer.msg(baseDatas.netErrMsg);
+                            APIUtil.pauseAndResumeTask(selectDatas[0].taskOrderNumber, type, function(res) {
+                                if (res.data.status === 1) {
+                                    flyer.msg('操作成功！');
+                                } else {
+                                    flyer.msg('操作失败：' + res.data.tips);
                                 }
                             });
                         }
@@ -359,7 +333,7 @@ flyer.define('task_manage', function(exports, module) {
                                 content = res.data.tips;
                             } else if (res.data.list.l.length > 0) {
                                 var data = res.data.list.l[0];
-                                content = `任务单号：${taskOrderNumber}</br>任务状态：${data.m}</br>任务总量：${data.c}</br>剩余量：${data.e}`;
+                                content = `任务单号：${taskOrderNumber}</br>任务状态：${data.m.replace(/\(已退款\)/,'')}</br>任务总量：${data.c}</br>剩余量：${data.e}`;
                             } else {
                                 content = '查无此订单信息，请联系客服';
                             }
