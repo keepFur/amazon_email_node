@@ -104,7 +104,7 @@ $(function() {
                 if (res.success) {
                     var $noticeContainer = $('.js-notice-container');
                     $.each(res.data.rows, function(index, item) {
-                        var createdDate = $.formatDate('yyyy-mm-dd HH:MM', item.createdDate);
+                        var createdDate = formatDate('yyyy-mm-dd HH:MM', item.createdDate);
                         var $template = `<a href="#" class="pull-left text-ellipsis js-notice-item ${index===0?' js-notice-item-active':' hide'}" data-id="${item.id}">
                                         <span class="js-notice-title">${createdDate+'#' + item.noticeTitle}</span>
                                         <span class="js-notice-content">${item.noticeContent}</span>
@@ -135,13 +135,9 @@ $(function() {
             return false;
         }
         $(this).addClass('li-selected').siblings().removeClass('li-selected');
-        $('.js-content').hide();
+        $('.js-content,.front-footer').hide();
         $('.js-user-register').hide().addClass('mdui-hidden');
         $('.js-user-login').show().removeClass('mdui-hidden');
-        $('.front-footer').css({
-            position: 'fixed',
-            bottom: 0
-        });
         return false;
     }
 
@@ -192,12 +188,9 @@ $(function() {
             return false;
         }
         $(this).addClass('li-selected').siblings().removeClass('li-selected');
-        $('.js-content').hide();
+        $('.js-content,.front-footer').hide();
         $('.js-user-login').hide().addClass('mdui-hidden');
         $('.js-user-register').show().removeClass('mdui-hidden');
-        $('.front-footer').css({
-            position: 'static'
-        });
         return false;
     }
 
@@ -290,5 +283,48 @@ $(function() {
             msg: '校验通过'
         };
     }
+
+    /**
+     * 格式化日期
+     * @param {string} format 格式化日期的字符串
+     * @param {date} date 日期字符串，默认时间是当前时间
+     */
+    function formatDate(format, date) {
+        if (typeof format !== "string") {
+            format = "yyyy-mm-dd hh:MM:ss";
+        }
+        var getDate = function(date) {
+            date = isString(date) ? new Date(date) : (date || new Date());
+            return {
+                year: date.getFullYear(),
+                month: date.getMonth() + 1,
+                day: date.getDate(),
+                hours: date.getHours(),
+                minutes: date.getMinutes(),
+                seconds: date.getSeconds()
+            };
+        };
+        var isString = function(obj) {
+            return typeof obj === "string";
+        };
+        var fullTime = function(time) {
+            return time >= 10 ? time : ("0" + time);
+        };
+        date = getDate(date);
+        return format
+            .replace(/yyyy/gi, date.year)
+            .replace(/mm/, fullTime(date.month))
+            .replace(/dd/gi, fullTime(date.day))
+            .replace(/hh/gi, fullTime(date.hours))
+            .replace(/MM/, fullTime(date.minutes))
+            .replace(/ss/gi, fullTime(date.seconds));
+    }
+
+    // 去除字符串两头的空格
+    $.trim = function(str) {
+        str = str || '';
+        return str.replace(/^\s*|\s*$/g, '');
+    };
+
     init();
 });

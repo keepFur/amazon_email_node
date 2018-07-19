@@ -7,10 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>
-        <%=package.siteName%>-官网</title>
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <%=package.siteName%>-首页</title>
+    <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" href="../plugins/mdui-v0-2/css/mdui.min.css">
-    <link type="text/css" href="../dest/css/yidian.front.all.css" rel="stylesheet">
+    <link rel="stylesheet" href="../dest/css/yidian.front.all.css">
 </head>
 
 <body>
@@ -46,13 +46,8 @@
                         </li>
                         <% if(user){ %>
                             <li class="li-user-info">
-                                <a href="#">
-                                    <%= user.userName%>
-                                </a>
-                            </li>
-                            <li class="li-user-info">
                                 <a href="/api/logout">
-                                    退出<i class="mdui-icon material-icons">&#xe879;</i>
+                                    <%= user.userName%> <i class="mdui-icon material-icons">&#xe879;</i>
                                 </a>
                             </li>
                             <% } %>
@@ -65,7 +60,7 @@
         <!-- <div class="ad">
             <div class="mdui-card">
                 <div class="mdui-card-media">
-                    <img src="../imgs/worry.png" />
+                    <img src="../imgs/error.png" />
                 </div>
             </div>
         </div> -->
@@ -112,6 +107,10 @@
                         <button class="mdui-btn mdui-btn-raised mdui-btn-block mdui-color-pink" id="userLoginSubmit">
                         <i class="mdui-icon material-icons">&#xe569;</i>登录
                         </button>
+                    </div>
+                    <div class="mdui-col-xs-6 mdui-col-offset-xs-3 mdui-p-t-2 mdui-text-center">
+                        <span class="mdui-text-color-pink">
+                            <%= package.siteName %> @2016-2018</span>
                     </div>
                 </div>
             </form>
@@ -163,6 +162,10 @@
                         <button class="mdui-btn mdui-btn-raised mdui-btn-block mdui-color-pink" id="userRegisterSubmit">
                         <i class="mdui-icon material-icons">&#xe569;</i>立即注册
                         </button>
+                    </div>
+                    <div class="mdui-col-xs-6 mdui-col-offset-xs-3 mdui-p-t-2 mdui-text-center">
+                        <span class="mdui-text-color-pink">
+                            <%= package.siteName %> @2016-2018</span>
                     </div>
                 </div>
             </form>
@@ -504,8 +507,8 @@
             <%=package.siteName%> @2016-2018</p>
     </footer>
     <script src="../plugins/mdui-v0-2/js/mdui.min.js"></script>
-    <script type="text/javascript" src="../js/common/jquery.extend.js"></script>
-    <script src="../js/front.js" type="text/javascript"></script>
+    <!-- <script src="../js/front/front.js" type="text/javascript"></script> -->
+    <script src="../dest/js/yidiankeji.front.all.min.js" type="text/javascript"></script>
 </body>
 
 </html>

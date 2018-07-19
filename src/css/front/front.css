@@ -127,7 +127,7 @@ header .main ul li.li-user-info {
   border-left: 2px solid #ddd; }
 
 header .main ul li.li-selected {
-  background: #ffb300; }
+  background: #e91e63; }
 
 header .main ul li a {
   display: inline-block;
@@ -142,11 +142,12 @@ header .main ul li.li-selected a {
   color: #fff; }
 
 header .main ul li a:hover,
-header .main ul li.li-selected a:hover,
 header .main ul li a:active,
 header .main ul li a.active {
-  color: #ffb300;
-  background-color: #f8f6f1; }
+  color: #e91e63; }
+
+header .main ul li.li-selected a:hover {
+  color: #fff; }
 
 @media only screen and (max-width: 50em) {
   header .top ul li a {

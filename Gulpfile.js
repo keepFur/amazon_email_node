@@ -9,6 +9,8 @@ let gulp = require("gulp"),
     copy = require("gulp-copy"),
     rename = require("gulp-rename"),
     csscomb = require("gulp-csscomb"),
+    gutil = require('gulp-util'),
+    babel = require('gulp-babel'),
     del = require("del");
 
 gulp.task("clean", function(callback) {
@@ -47,6 +49,14 @@ gulp.task('copy', ["cssmin-console", "cssmin-front"], function() {
     return gulp.src('src/fonts/**')
         .pipe(gulp.dest('src/dest/fonts/'))
 });
+// 压缩common/js为common.min.js
+gulp.task('jsmin-commom', function() {
+    return gulp.src('src/js/common/*.js').pipe(babel()).pipe(uglify()).pipe(concat('yidiankeji.common.all.min.js')).pipe(gulp.dest('src/dest/js/'));
+});
+// 压缩src/js/front/*.js为yidiankeji.front.min.js
+gulp.task('jsmin-front', function() {
+    return gulp.src('src/js/front/*.js').pipe(babel()).pipe(uglify()).pipe(concat('yidiankeji.front.all.min.js')).pipe(gulp.dest('src/dest/js/'));
+});
 
 gulp.task('clear-flyer-min-js', function(callback) {
     del(["src/plugins/js/flyer.all.min.js"], callback);
@@ -59,5 +69,5 @@ gulp.task('flyer-min-js', function() {
 gulp.task('flyer-min-css', function() {
     return gulp.src('src/plugins/css/flyer.all.css').pipe(cssmin()).pipe(rename({ suffix: '.min' })).pipe(gulp.dest('src/plugins/css/'));
 });
-
-gulp.task("default", ["clean", "sass-console", "sass-front", "cssmin-front", "cssmin-console", "sass:watch", "copy", "clear-flyer-min-js", "flyer-min-js", 'flyer-min-css']);
+// "jsmin-commom", "jsmin-admin-all", 
+gulp.task("default", ["sass-console", "sass-front", "cssmin-front", "cssmin-console", "sass:watch", "copy", "clear-flyer-min-js", "flyer-min-js", 'flyer-min-css', "jsmin-commom", "jsmin-front"]);

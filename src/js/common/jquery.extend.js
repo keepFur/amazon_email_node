@@ -119,4 +119,9 @@
         str = str || '';
         return str.replace(/^\s*|\s*$/g, '');
     };
+
+    // 生成一个随机值
+    $.genGUID = function() {
+        return flyer.formatDate("yyyymmddhhMMss") + Math.floor(Math.random() * 10000000);
+    }
 })(window.jQuery);

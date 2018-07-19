@@ -187,7 +187,7 @@ header .main ul li.li-user-info {
 }
 
 header .main ul li.li-selected {
-    background: #ffb300;
+    background: #e91e63;
 }
 
 header .main ul li a {
@@ -205,11 +205,13 @@ header .main ul li.li-selected a {
 }
 
 header .main ul li a:hover,
-header .main ul li.li-selected a:hover,
 header .main ul li a:active,
 header .main ul li a.active {
-    color: #ffb300;
-    background-color: #f8f6f1;
+    color: #e91e63;
+}
+
+header .main ul li.li-selected a:hover {
+    color: #fff;
 }
 
 @media only screen and (max-width: 50em) {
