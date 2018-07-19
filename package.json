@@ -3,7 +3,7 @@
     "file": "yidiankeji",
     "version": "1.0.0",
     "siteName": "易店科技",
-    "description": "电商开店必备网站",
+    "description": "电商人专用网站",
     "license": "LGPL",
     "devDependencies": {
         "accepts": "^1.3.4",
