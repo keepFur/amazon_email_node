@@ -215,7 +215,7 @@ $(function() {
      */
     function getTaskInfo($form) {
         var taskInfo = {};
-        taskInfo.taskUserId = userInfo.id;
+        taskInfo.taskUserId = $('#userName').data('user-id');
         taskInfo.taskParentType = $('#taskTab li.flyer-tab-active').data('task-parent-type');
         taskInfo.taskUnitPrice = $('#taskPrice').text();
         taskInfo.taskSumMoney = taskInfo.taskUnitPrice * $('input[name=taskQuantity]').val();
