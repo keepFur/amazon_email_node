@@ -70,6 +70,7 @@ flyer.define('package_manage', function(exports, module) {
                 click: function(ele) {
                     var that = this;
                     var packgaeInfo = core.getFormValues($('form[name=packageCreateForm]'));
+                    packgaeInfo.packagePayMethod = packgaeInfo.packagePayMethod || 0;
                     var validPackgaeInfoResult = validPackageInfo(packgaeInfo);
                     if (validPackgaeInfoResult.isPass) {
                         $.ajax({

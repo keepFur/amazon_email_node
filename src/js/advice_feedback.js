@@ -17,7 +17,7 @@ $(function() {
             }, {
                 title: '我的反馈',
                 url: './html/manage_advice_feedback.html',
-                cache: true
+                cache: false
             }]
         });
     }
