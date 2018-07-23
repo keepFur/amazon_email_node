@@ -12,10 +12,11 @@
      * @param {boolean} options 可选参数，预留
      */
     $.addLoading = function($container, options) {
-        var $loadingEle = $('<div class = "loading-backgroud" style="position:fixed;top:50%;left:50%;width:80px;height:80px;z-index:1000;"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>');
+        var $loadingEle = $('<div class = "loading-backgroud" style="position:fixed;top:50%;left:50%;width:80px;height:80px;z-index:1000;"><div class="mdui-spinner mdui-spinner-colorful" style="width:50px;height:50px;"></div></div>');
         $container = $container || $('.flyer-layout-content');
         $.removeAllLoading();
         $container.append($loadingEle);
+        mdui.mutation();
     };
 
     /**

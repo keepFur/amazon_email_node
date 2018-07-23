@@ -1,5 +1,5 @@
 .dialog-form-container .inline {
-  width: calc(100% - 64px); }
+  width: calc(100% - 80px); }
 
 .dialog-form-container .flyer-form {
   margin-right: 0; }
@@ -13,7 +13,7 @@
     float: left;
     height: 38px;
     line-height: 38px;
-    width: 56px;
+    width: 72px;
     text-align: right;
     margin-right: 8px; }
 

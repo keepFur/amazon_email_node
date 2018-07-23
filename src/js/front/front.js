@@ -103,27 +103,33 @@ $(function() {
                 res = JSON.parse(res);
                 if (res.success) {
                     var $noticeContainer = $('.js-notice-container');
-                    $.each(res.data.rows, function(index, item) {
-                        var createdDate = formatDate('yyyy-mm-dd HH:MM', item.createdDate);
-                        var $template = `<a href="#" class="pull-left text-ellipsis js-notice-item ${index===0?' js-notice-item-active':' hide'}" data-id="${item.id}">
+                    if (res.data.rows.length === 0) {
+                        $noticeContainer.append(`<a href="#">暂无公告</a>`);
+                    } else {
+                        $.each(res.data.rows, function(index, item) {
+                            var createdDate = formatDate('yyyy-mm-dd HH:MM', item.createdDate);
+                            var $template = `<a href="#" class="pull-left text-ellipsis js-notice-item ${index===0?' js-notice-item-active':' hide'}" data-id="${item.id}">
                                         <span class="js-notice-title">${createdDate+'#' + item.noticeTitle}</span>
                                         <span class="js-notice-content">${item.noticeContent}</span>
                                      </a>`;
-                        $noticeContainer.append($template);
-                    });
-                    // 做一个定时器
-                    var timer = setInterval(function() {
-                        var $item = $('.js-notice-item');
-                        var length = $item.length;
-                        var $currentItem = $('.js-notice-item-active');
-                        var currentItemIndex = $item.index($currentItem[0]);
-                        // 最后一个
-                        if (currentItemIndex === length - 1) {
-                            currentItemIndex = -1;
-                        }
-                        $currentItem.removeClass('js-notice-item-active').addClass('hide');
-                        $item.eq(currentItemIndex + 1).addClass('js-notice-item-active').removeClass('hide');
-                    }, 10000);
+                            $noticeContainer.append($template);
+                        });
+                        // 做一个定时器
+                        var timer = setInterval(function() {
+                            var $item = $('.js-notice-item');
+                            var length = $item.length;
+                            var $currentItem = $('.js-notice-item-active');
+                            var currentItemIndex = $item.index($currentItem[0]);
+                            // 最后一个
+                            if (currentItemIndex === length - 1) {
+                                currentItemIndex = -1;
+                            }
+                            $currentItem.removeClass('js-notice-item-active').addClass('hide');
+                            $item.eq(currentItemIndex + 1).addClass('js-notice-item-active').removeClass('hide');
+                        }, 10000);
+                    }
+                } else {
+                    $noticeContainer.append(`<a href="#">暂无公告</a>`);
                 }
             }
         });

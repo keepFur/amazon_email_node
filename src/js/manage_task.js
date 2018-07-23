@@ -132,6 +132,7 @@ flyer.define('task_manage', function(exports, module) {
                             APIUtil.pauseAndResumeTask(selectDatas[0].taskOrderNumber, type, function(res) {
                                 if (res.data.status === '1') {
                                     flyer.msg('操作成功！');
+                                    getTableDatas(1, 20);
                                 } else {
                                     flyer.msg('操作失败：' + res.data.tips);
                                 }
