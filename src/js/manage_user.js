@@ -480,7 +480,7 @@ flyer.define('user_manage', function(exports, module) {
                 flyer.msg(baseDatas.netErrMsg);
             },
             complete: function(jqXHR, textStatus) {
-                $.removeLoading()
+                $.removeLoading();
             }
         });
     }
