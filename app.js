@@ -28,6 +28,8 @@ let PackageManage = require('./lib/manage_package_service');
 let packageManage = new PackageManage();
 let LogsScoreManage = require('./lib/manage_logs_score_service');
 let logsScoreManage = new LogsScoreManage();
+let AdviceFeedbackManage = require('./lib/manage_advice_feedback_service');
+let advicFeedbackManage = new AdviceFeedbackManage();
 let APIUtil = require('./lib/api_util');
 let APIPay = require('./lib/api_pay');
 
@@ -421,6 +423,44 @@ app.get('/api/readLogsScoreById', function(req, res) {
 app.post('/api/toggleLogsScore', function(req, res) {
     try {
         logsScoreManage.toggleLogsScore(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+
+/* *****************用户意见反馈****************** */
+// 创建反馈意见
+app.post('/api/createAdviceFeedback', function(req, res) {
+    try {
+        advicFeedbackManage.createAdviceFeedback(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 获取意见反馈列表列表，支持分页
+app.get('/api/readAdviceFeedbackPage', function(req, res) {
+    try {
+        advicFeedbackManage.readAdviceFeedbackPage(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 通过id获取反馈信息
+app.get('/api/readAdviceFeedbackById', function(req, res) {
+    try {
+        advicFeedbackManage.readAdviceFeedbackById(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 切换反馈信息状态
+app.post('/api/toggleAdviceFeedback', function(req, res) {
+    try {
+        advicFeedbackManage.toggleAdviceFeedback(req, res, req.body);
     } catch (error) {
         Core.flyer.log(error);
     }

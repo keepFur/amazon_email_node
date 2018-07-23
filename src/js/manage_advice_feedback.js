@@ -107,10 +107,10 @@ flyer.define('adviceFeedback_manage', function(exports, module) {
                     }
                 }, {
                     title: '标题',
-                    field: "adviceFeedbackTitle"
+                    field: "title"
                 }, {
                     title: '内容',
-                    field: "adviceFeedbackContent"
+                    field: "content"
                 }, {
                     title: '创建时间',
                     field: "createdDate",
