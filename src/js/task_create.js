@@ -2,13 +2,13 @@
 'use strict';
 $(function() {
     var userInfo = $('#userName').data('user');
+    var userId = $('#userName').data('user-id');
     // 页面入口
     function init() {
         initEvent();
         initComponent();
-        core.getUserInfoById(userInfo.id, function(user) {
+        core.getUserInfoById(userId, function(user) {
             userInfo = user.data.rows[0];
-            console.log(userInfo);
             $('#userName').data('user', JSON.stringify(user));
         });
     }
@@ -160,6 +160,10 @@ $(function() {
                         if (data.success) {
                             // 获取用户当前的积分余额并提示
                             flyer.msg('操作成功！！！</br>本次共消费积分：' + taskInfo.taskSumMoney + '</br>' + '积分余额：' + (userInfo.money - taskInfo.taskSumMoney));
+                            core.getUserInfoById(userId, function(user) {
+                                userInfo = user.data.rows[0];
+                                $('#userName').data('user', JSON.stringify(user));
+                            });
                             core.setWindowHash('manage_task');
                         } else {
                             // 操作失败需要取消当前任务

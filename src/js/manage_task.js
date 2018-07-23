@@ -130,7 +130,7 @@ flyer.define('task_manage', function(exports, module) {
                         click: function(elm) {
                             this.close();
                             APIUtil.pauseAndResumeTask(selectDatas[0].taskOrderNumber, type, function(res) {
-                                if (res.data.status === 1) {
+                                if (res.data.status === '1') {
                                     flyer.msg('操作成功！');
                                 } else {
                                     flyer.msg('操作失败：' + res.data.tips);
@@ -333,7 +333,7 @@ flyer.define('task_manage', function(exports, module) {
                                 content = res.data.tips;
                             } else if (res.data.list.l.length > 0) {
                                 var data = res.data.list.l[0];
-                                content = `任务单号：${taskOrderNumber}</br>任务状态：${data.m.replace(/\(已退款\)/,'')}</br>任务总量：${data.c}</br>剩余量：${data.e}`;
+                                content = `任务单号：${taskOrderNumber}</br>任务状态：${data.m.replace(/\(已退款\)|\(部分退款\)/,'')}</br>任务总量：${data.c}</br>剩余量：${data.e}`;
                             } else {
                                 content = '查无此订单信息，请联系客服';
                             }
