@@ -44,6 +44,7 @@ $(function() {
 
     // 充值点击函数
     function addMoneyHandle(event) {
+        var checkedPackage = $('input[type=radio][name=addPackageType]:checked');
         var open = flyer.open({
             pageUrl: '/html/add_money_pay.html',
             isModal: true,
@@ -55,7 +56,6 @@ $(function() {
                     $.lockedBtn($(ele), true, '支付状态检测中');
                     var count = 0;
                     clearInterval(open.timer);
-                    console.log('清空after');
                     open.timer = setInterval(function() {
                         count++;
                         if (count < 5) {
@@ -97,19 +97,21 @@ $(function() {
                 }
             },
             afterCreated: function() {
+                // 设置付款金额
+                $('#payMount').text(checkedPackage.data('purchase-money'));
                 $.ajax({
                     url: '/api/createQrCode',
                     type: 'POST',
                     data: {
                         qr_name: '积分充值',
-                        qr_price: 0.01,
+                        packageId: checkedPackage.val(),
                         qr_type: 'QR_TYPE_NOLIMIT'
                     },
                     beforeSend: function() {
                         $.addLoading($('.js-pay-container'));
                     },
                     success: function(data) {
-                        $('#jsPayCodeRefresh').toggle(data.success);
+                        $('#jsPayCodeImg').toggle(data.success);
                         $('#jsPayCodeRefresh').toggle(!data.success);
                         if (data.success) {
                             $('#jsPayCodeImg').attr('src', data.data.qr_code);
