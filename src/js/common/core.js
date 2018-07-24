@@ -462,7 +462,7 @@ var core = {
             },
         };
         if (!typeKey) {
-            return types.APP_SEARCH;
+            return types;
         }
         return types[typeKey] ? types[typeKey] : types.APP_SEARCH;
     },

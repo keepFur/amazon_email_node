@@ -39,8 +39,7 @@ $(function() {
             right: 10,
             top: 0,
             bottom: 20,
-            data: [
-                'APP流量',
+            data: ['APP流量',
                 'PC流量',
                 'APP搜索',
                 'PC搜索',
@@ -104,7 +103,7 @@ $(function() {
     };
     // 使用刚指定的配置项和数据显示图表。
     // taskCount.setOption(optionOfCount);
-    taskType.setOption(optionOfType);
+    // taskType.setOption(optionOfType);
     addScore.setOption(optionOfScore);
 
 
@@ -114,6 +113,7 @@ $(function() {
      */
     function init() {
         getTaskCount();
+        getTaskType();
         initEvent();
     }
 
@@ -162,19 +162,25 @@ $(function() {
             createdDateStart: createdDateStart,
             createdDateEnd: createdDateEnd
         }, function(res) {
-            var rowsLength = res.data.rows.length;
-            numDayDate.forEach(function(item, index) {
-                if (index >= rowsLength) {
-                    res.data.rows[index] = {
-                        createdDate: $.formatDate('yyyy/mm/dd hh:MM:ss', new Date()),
+            var rows = res.data.rows;
+            numDayDate.forEach(function(item) {
+                if (!hasContainerEle(item, rows)) {
+                    rows.push({
+                        createdDate: $.formatDate('yyyy/mm/dd', item),
                         count: 0
-                    };
+                    });
                 }
             });
-            res.data.rows.sort(function(item1, item2) {
-                return item1.createdDate > item2.createdDate;
+            rows = rows.map(function(item, index) {
+                return {
+                    createdDate: $.formatDate('yyyy/mm/dd', item.createdDate),
+                    count: item.count
+                };
             });
-            optionOfCount.series[0].data = res.data.rows.map(function(item, index) {
+            rows.sort(function(item1, item2) {
+                return new Date(item1.createdDate).getTime() - new Date(item2.createdDate).getTime();
+            });
+            optionOfCount.series[0].data = rows.map(function(item, index) {
                 return item.count;
             });
             taskCount.setOption(optionOfCount);
@@ -191,30 +197,33 @@ $(function() {
         var numDayDate = getNumDayDate(date);
         var createdDateStart = numDayDate[0];
         var createdDateEnd = numDayDate[date - 1];
-        optionOfCount.xAxis.data = numDayDate;
-        $.get('/api/readTaskCountOfInTime', {
+        $.get('/api/readTaskTypeOfInTime', {
             createdDateStart: createdDateStart,
             createdDateEnd: createdDateEnd
         }, function(res) {
-            var rowsLength = res.data.rows.length;
-            numDayDate.forEach(function(item, index) {
-                if (index >= rowsLength) {
-                    res.data.rows[index] = {
-                        createdDate: $.formatDate('yyyy/mm/dd hh:MM:ss', new Date()),
-                        count: 0
-                    };
-                }
-            });
-            res.data.rows.sort(function(item1, item2) {
-                return item1.createdDate > item2.createdDate;
-            });
-            optionOfCount.series[0].data = res.data.rows.map(function(item, index) {
-                return item.count;
-            });
-            taskCount.setOption(optionOfCount);
+            var rows = res.data.rows;
+            optionOfType.legend.data = getTypes();
+            taskType.setOption(optionOfType);
         });
     }
 
+
+    /**
+     * 获取任务类型名称数组
+     * 
+     * @returns 
+     */
+    function getTypes() {
+        var types = core.getTypeCodeByValue();
+        var typesNames = [];
+        for (var key in types) {
+            if (types.hasOwnProperty(key)) {
+                var element = types[key];
+                typesNames.push(element.name);
+            }
+        }
+        return typesNames;
+    }
 
     /**
      * 获取积分充值的数据
@@ -247,6 +256,25 @@ $(function() {
             result[i] = $.formatDate('yyyy/mm/dd', new Date(startTime + (i + 1) * oneDayTime));
         }
         return result;
+    }
+
+    /**
+     * 判断某一个元素是否在数组中
+     * 
+     * @param {any} ele 
+     * @param {any} arr 
+     */
+    function hasContainerEle(ele, arr) {
+        var has = false;
+        if (ele && arr && Array.isArray(arr)) {
+            arr.forEach(function(element) {
+                if ($.formatDate('yyyy/mm/dd', element.createdDate) === ele) {
+                    has = true;
+                    return false;
+                }
+            }, this);
+        }
+        return has;
     }
 
     init();
