@@ -97,7 +97,7 @@ $(function() {
         });
 
         // 底部立即使用
-        $('#userLoginFooter').on('click', function(event) {
+        $('#userLoginFooter,.buy').on('click', function(event) {
             $.ajax({
                 url: '/api/getUserLoginStatus',
                 success: function(data) {
@@ -105,6 +105,10 @@ $(function() {
                     if (data.status) {
                         window.location.assign('/console#task_create');
                     } else {
+                        mdui.snackbar({
+                            message: '请先登录系统',
+                            position: 'top'
+                        });
                         $('#userLogin').trigger('click');
                     }
                 }
