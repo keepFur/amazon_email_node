@@ -30,6 +30,8 @@ let LogsScoreManage = require('./lib/manage_logs_score_service');
 let logsScoreManage = new LogsScoreManage();
 let AdviceFeedbackManage = require('./lib/manage_advice_feedback_service');
 let advicFeedbackManage = new AdviceFeedbackManage();
+let HomeAccountView = require('./lib/home_account_view_service');
+let homeAccountView = new HomeAccountView();
 let APIUtil = require('./lib/api_util');
 let APIPay = require('./lib/api_pay');
 
@@ -58,6 +60,35 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'ejs');
 app.set('src', path.join('src'));
 
+
+/************* 首页账号预览模块*************/
+
+// 获取每天的创建任务数量
+app.get('/api/readTaskCountOfInTime', function(req, res) {
+    try {
+        homeAccountView.readTaskCountOfInTime(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 获取每天的创建任务类型
+app.get('/api/readTaskTypeOfInTime', function(req, res) {
+    try {
+        homeAccountView.readTaskTypeOfInTime(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 获取媒体的充值积分
+app.get('/api/readAddMoneyOfInTime', function(req, res) {
+    try {
+        homeAccountView.readAddMoneyOfInTime(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
 
 /************* 用户管理模块*************/
 

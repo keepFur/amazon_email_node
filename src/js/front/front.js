@@ -13,30 +13,37 @@ $(function() {
 
     // 事件初始化
     function inieEvent() {
+        var kefuDialog = null;
         // 首页
         $('#home').on('click', function() {
             if (!$('.js-user-login').hasClass('mdui-hidden') || !$('.js-user-register').hasClass('mdui-hidden')) {
                 window.location.reload();
             }
-
             return false;
         });
+
         // 注册get
         $('#userRegister').on('click', userRegisterHandler);
+
         // 注册跳转到登录
         $('#registerToLogin').on('click', function() {
             $('#userLogin').trigger('click');
         });
+
         // 注册post
         $('#userRegisterSubmit').on('click', userRegisterSubmitHanlder);
+
         // 登录get
         $('#userLogin').on('click', userLoginHandler);
+
         // 登录到注册
         $('#loginToRegister').on('click', function() {
             $('#userRegister').trigger('click');
         });
+
         // 登录post
         $('#userLoginSubmit').on('click', userLoginSubmitHanlder);
+
         // 控制台
         $('#console').on('click', function(event) {
             $.ajax({
@@ -56,6 +63,7 @@ $(function() {
             });
             return false;
         });
+
         // 充值
         $('#addMoney').on('click', function(event) {
             $.ajax({
@@ -74,8 +82,22 @@ $(function() {
                 }
             });
         });
+
+        // 打开立即咨询
+        $('.kefu-container').on('click', function() {
+            kefuDialog = new mdui.Dialog('.js-kefu-mdui-dialog');
+            kefuDialog.open();
+            return false;
+        });
+
+        // 关闭立即咨询
+        $('.kefu-btn-no').on('click', function() {
+            kefuDialog.close();
+            return false;
+        });
+
         // 底部立即使用
-        $('#userLoginFooter').on('click', function(event) {
+        $('#userLoginFooter,.buy').on('click', function(event) {
             $.ajax({
                 url: '/api/getUserLoginStatus',
                 success: function(data) {
@@ -83,6 +105,10 @@ $(function() {
                     if (data.status) {
                         window.location.assign('/console#task_create');
                     } else {
+                        mdui.snackbar({
+                            message: '请先登录系统',
+                            position: 'top'
+                        });
                         $('#userLogin').trigger('click');
                     }
                 }
