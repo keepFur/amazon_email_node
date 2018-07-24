@@ -5,6 +5,8 @@
     "siteName": "易店科技",
     "description": "电商人专用网站",
     "license": "LGPL",
+    "siteQQ": "838472035",
+    "siteKefuLink": "http://sighttp.qq.com/msgrd?v=1&uin=838472035",
     "devDependencies": {
         "accepts": "^1.3.4",
         "babel": "^6.23.0",

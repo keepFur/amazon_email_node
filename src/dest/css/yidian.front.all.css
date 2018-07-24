@@ -467,6 +467,27 @@ header .main ul li.li-selected a:hover {
     display: none; } }
 
 /********************** 
+   在线咨询
+ *************************/
+.kefu-container {
+  position: fixed;
+  z-index: 1009;
+  right: 100px;
+  top: 50%;
+  background: url("../../imgs/customer_service.png") no-repeat;
+  background-position: -100px 0;
+  height: 103px;
+  width: 190px;
+  margin-top: -51px;
+  margin-right: -100px;
+  cursor: pointer;
+  -webkit-animation-duration: 0.7s;
+  animation-duration: 0.7s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  overflow: hidden; }
+
+/********************** 
    产品介绍
  *************************/
 .container .product {

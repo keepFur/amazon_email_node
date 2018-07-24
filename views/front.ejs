@@ -210,6 +210,24 @@
             <div class="notice clearfix js-notice-container">
                 <a href="#" class="more pull-right js-notice-view-more">更多公告</a>
             </div>
+            <!-- 在线咨询 -->
+            <div class="kefu-container">
+            </div>
+            <div class="mdui-dialog js-kefu-mdui-dialog">
+                <div class="mdui-dialog-title">欢迎来到易店科技</div>
+                <div class="mdui-dialog-content mdui-text-center">
+                    <p>
+                        请添加QQ：<span class="mdui-text-color-pink"><%= package.siteQQ%></span>，或者打开手机QQ扫描下方的二维码直接进入<span class="mdui-text-color-pink">易店科技官方</span>客服QQ群
+                    </p>
+                    <p>
+                        <img src="../imgs/qqq.png" width="280" height="280" alt="易店官方客服QQ群">
+                    </p>
+                </div>
+                <div class="mdui-dialog-actions">
+                    <button class="mdui-btn mdui-ripple kefu-btn-no">稍后再说</button>
+                    <a class="mdui-btn mdui-ripple" href="<%= package.siteKefuLink %>" target="_blank">立即咨询</a>
+                </div>
+            </div>
             <!-- 产品 -->
             <section class="product clearfix">
                 <h2 class="pull-left text-center">淘宝任务
@@ -496,7 +514,8 @@
             </section>
             <!-- 底部导航 -->
             <nav class="footer mdui-text-center">
-                <h1><span class="mdui-text-color-pink">1,100,120</span> 家网店都在用易店科技推广，快速提升店铺流量，你，还在等什么？</h1>
+                <h1><span class="mdui-text-color-pink">1,100,120</span> 家网店都在用
+                    <%= package.siteName %> 推广，快速提升店铺流量，你，还在等什么？</h1>
                 <button class="mdui-btn mdui-btn-raised  mdui-color-pink" id="userLoginFooter">点此立即使用易店科技</button>
             </nav>
         </div>
