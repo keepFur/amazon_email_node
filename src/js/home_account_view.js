@@ -39,38 +39,14 @@ $(function() {
             right: 10,
             top: 0,
             bottom: 20,
-            data: ['APP流量',
-                'PC流量',
-                'APP搜索',
-                'PC搜索',
-                '搜索加购',
-                '直接加购'
-            ]
+            data: ['APP搜索']
         },
         series: [{
             name: '任务类型',
             type: 'pie',
             radius: '55%',
             center: ['40%', '50%'],
-            data: [{
-                name: 'APP流量',
-                value: 10
-            }, {
-                name: 'PC流量',
-                value: 20
-            }, {
-                name: 'APP搜索',
-                value: 10
-            }, {
-                name: 'PC搜索',
-                value: 20
-            }, {
-                name: '搜索加购',
-                value: 10
-            }, {
-                name: '直接加购',
-                value: 33
-            }],
+            data: [],
             itemStyle: {
                 emphasis: {
                     shadowBlur: 10,
@@ -83,29 +59,24 @@ $(function() {
 
     var optionOfScore = {
         title: {
-            text: '积分充值走势图'
+            text: '积分充值柱状图'
         },
         tooltip: {},
         legend: {
             right: 10,
             top: 0,
-            data: ['充值积分']
+            data: ['积分充值']
         },
         xAxis: {
-            data: getNumDayDate(7)
+            data: []
         },
         yAxis: {},
         series: [{
-            name: '充值积分',
+            name: '积分充值',
             type: 'bar',
-            data: [0, 20, 36, 10, 10, 20, 5]
+            data: []
         }]
     };
-    // 使用刚指定的配置项和数据显示图表。
-    // taskCount.setOption(optionOfCount);
-    // taskType.setOption(optionOfType);
-    addScore.setOption(optionOfScore);
-
 
     /**
      * 入口函数
@@ -114,6 +85,8 @@ $(function() {
     function init() {
         getTaskCount();
         getTaskType();
+        getAddMoney();
+        getScore();
         initEvent();
     }
 
@@ -143,6 +116,13 @@ $(function() {
                     break;
             }
             return false;
+        });
+    }
+
+    //  获取用户积分
+    function getScore() {
+        core.getUserInfoById($('#userName').data('user-id'), function(res) {
+            $('.js-user-score').text(res.data.rows[0].money);
         });
     }
 
@@ -202,7 +182,12 @@ $(function() {
             createdDateEnd: createdDateEnd
         }, function(res) {
             var rows = res.data.rows;
-            optionOfType.legend.data = getTypes();
+            optionOfType.series[0].data = rows.map(function(item) {
+                return {
+                    name: core.getTypeCodeByValue(item.taskChildType).name,
+                    value: item.count
+                };
+            });
             taskType.setOption(optionOfType);
         });
     }
@@ -231,7 +216,38 @@ $(function() {
      * @param {any} date 
      */
     function getAddMoney(date) {
-
+        date = date || 7;
+        var numDayDate = getNumDayDate(date);
+        var createdDateStart = numDayDate[0];
+        var createdDateEnd = numDayDate[date - 1];
+        optionOfScore.xAxis.data = numDayDate;
+        $.get('/api/readAddMoneyOfInTime', {
+            createdDateStart: createdDateStart,
+            createdDateEnd: createdDateEnd
+        }, function(res) {
+            var rows = res.data.rows;
+            numDayDate.forEach(function(item) {
+                if (!hasContainerEle(item, rows)) {
+                    rows.push({
+                        createdDate: $.formatDate('yyyy/mm/dd', item),
+                        count: 0
+                    });
+                }
+            });
+            rows = rows.map(function(item, index) {
+                return {
+                    createdDate: $.formatDate('yyyy/mm/dd', item.createdDate),
+                    count: item.count
+                };
+            });
+            rows.sort(function(item1, item2) {
+                return new Date(item1.createdDate).getTime() - new Date(item2.createdDate).getTime();
+            });
+            optionOfScore.series[0].data = rows.map(function(item, index) {
+                return item.count;
+            });
+            addScore.setOption(optionOfScore);
+        });
     }
 
     /**

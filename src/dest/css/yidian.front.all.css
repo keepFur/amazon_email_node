@@ -476,6 +476,7 @@ header .main ul li.li-selected a:hover {
   top: 50%;
   background: url("../../imgs/customer_service.png") no-repeat;
   background-position: -100px 0;
+  opacity: .8;
   height: 103px;
   width: 190px;
   margin-top: -51px;
