@@ -53,5 +53,5 @@
         "pro-kill": "pm2 kill",
         "pro-update": "pm2 update yidiankeji"
     },
-    "webPort": 80
+    "webPort": 8082
 }
