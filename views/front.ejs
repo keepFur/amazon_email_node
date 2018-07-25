@@ -11,6 +11,15 @@
     <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" href="../plugins/mdui-v0-2/css/mdui.min.css">
     <link rel="stylesheet" href="../dest/css/yidian.front.all.min.css">
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?b5a7f886836cb649fba0ea0bbdad1adf";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
 </head>
 
 <body>
@@ -47,7 +56,8 @@
                         <% if(user){ %>
                             <li class="li-user-info">
                                 <a href="/api/logout">
-                                    <%= user.userName%> <i class="mdui-icon material-icons">&#xe879;</i>
+                                    <%= user.userName%>
+                                        <i class="mdui-icon material-icons">&#xe879;</i>
                                 </a>
                             </li>
                             <% } %>
@@ -81,7 +91,8 @@
                         </div>
                         <div class="mdui-textfield">
                             <label class="mdui-textfield-label">密码</label>
-                            <input class="mdui-textfield-input" type="password" name="password" pattern="^.*(?=.{6,15})(?=.*[a-z]).*$" autocomplete="new-password" required/>
+                            <input class="mdui-textfield-input" type="password" name="password" pattern="^.*(?=.{6,15})(?=.*[a-z]).*$" autocomplete="new-password"
+                                required/>
                             <div class="mdui-textfield-error">密码是6-15位字母组成</div>
                         </div>
                         <div class="mdui-row-xs-2 js-keyword-quantity-item mdui-hidden">
@@ -105,7 +116,7 @@
                 <div class="mdui-row">
                     <div class="mdui-col-xs-6 mdui-col-offset-xs-3">
                         <button class="mdui-btn mdui-btn-raised mdui-btn-block mdui-color-pink" id="userLoginSubmit">
-                        <i class="mdui-icon material-icons">&#xe569;</i>登录
+                            <i class="mdui-icon material-icons">&#xe569;</i>登录
                         </button>
                     </div>
                     <div class="mdui-col-xs-6 mdui-col-offset-xs-3 mdui-p-t-2 mdui-text-center">
@@ -160,7 +171,7 @@
                 <div class="mdui-row">
                     <div class="mdui-col-xs-6 mdui-col-offset-xs-3">
                         <button class="mdui-btn mdui-btn-raised mdui-btn-block mdui-color-pink" id="userRegisterSubmit">
-                        <i class="mdui-icon material-icons">&#xe569;</i>立即注册
+                            <i class="mdui-icon material-icons">&#xe569;</i>立即注册
                         </button>
                     </div>
                     <div class="mdui-col-xs-6 mdui-col-offset-xs-3 mdui-p-t-2 mdui-text-center">
@@ -217,7 +228,11 @@
                 <div class="mdui-dialog-title">欢迎来到易店科技</div>
                 <div class="mdui-dialog-content mdui-text-center">
                     <p>
-                        请添加QQ：<span class="mdui-text-color-pink"><%= package.siteQQ%></span>，或者打开手机QQ扫描下方的二维码直接进入<span class="mdui-text-color-pink">易店科技官方</span>客服QQ群
+                        请添加QQ：
+                        <span class="mdui-text-color-pink">
+                            <%= package.siteQQ%>
+                        </span>，或者打开手机QQ扫描下方的二维码直接进入
+                        <span class="mdui-text-color-pink">易店科技官方</span>客服QQ群
                     </p>
                     <p>
                         <img src="../imgs/qqq.png" width="280" height="280" alt="易店官方客服QQ群">
@@ -241,23 +256,23 @@
                         <h3>
                             <em>搜索流量</em>
                             <i>
-                            APP/PC
-                        </i>
+                                APP/PC
+                            </i>
                         </h3>
                         <div class="info">
                             <p>
                                 单次消费：
                                 <span class="year-rate">
-                                10积分
-                                <i>起</i>
-                            </span>
+                                    10积分
+                                    <i>起</i>
+                                </span>
                             </p>
                             <p>
                                 总成交金额：
                                 <span class="year-rate">
-                                180
-                                <i>万积分</i>
-                            </span>
+                                    180
+                                    <i>万积分</i>
+                                </span>
                             </p>
                         </div>
                         <div class="buy">
@@ -273,16 +288,16 @@
                             <p>
                                 单次消费：
                                 <span class="year-rate">
-                                20积分
-                                <i>起</i>
-                            </span>
+                                    20积分
+                                    <i>起</i>
+                                </span>
                             </p>
                             <p>
                                 总成交金额：
                                 <span class="year-rate">
-                                100
-                                <i>万积分</i>
-                            </span>
+                                    100
+                                    <i>万积分</i>
+                                </span>
                             </p>
                         </div>
                         <div class="buy">
@@ -298,16 +313,16 @@
                             <p>
                                 单次消费：
                                 <span class="year-rate">
-                                50积分
-                                <i>起</i>
-                            </span>
+                                    50积分
+                                    <i>起</i>
+                                </span>
                             </p>
                             <p>
                                 总成交金额：
                                 <span class="year-rate">
-                                300
-                                <i>万积分</i>
-                            </span>
+                                    300
+                                    <i>万积分</i>
+                                </span>
                             </p>
                         </div>
                         <div class="buy">
@@ -323,16 +338,16 @@
                             <p>
                                 单次消费：
                                 <span class="year-rate">
-                                80积分
-                                <i>起</i>
-                            </span>
+                                    80积分
+                                    <i>起</i>
+                                </span>
                             </p>
                             <p>
                                 总成交金额：
                                 <span class="year-rate">
-                                300
-                                <i>万积分</i>
-                            </span>
+                                    300
+                                    <i>万积分</i>
+                                </span>
                             </p>
                         </div>
                         <div class="buy">
@@ -348,16 +363,16 @@
                             <p>
                                 单次消费：
                                 <span class="year-rate">
-                                10积分
-                                <i>起</i>
-                            </span>
+                                    10积分
+                                    <i>起</i>
+                                </span>
                             </p>
                             <p>
                                 总成交金额：
                                 <span class="year-rate">
-                                200
-                                <i>万积分</i>
-                            </span>
+                                    200
+                                    <i>万积分</i>
+                                </span>
                             </p>
                         </div>
                         <div class="buy">
@@ -379,23 +394,23 @@
                         <h3>
                             <em>流量</em>
                             <i>
-                            店铺/商品
-                        </i>
+                                店铺/商品
+                            </i>
                         </h3>
                         <div class="info">
                             <p>
                                 单次消费：
                                 <span class="year-rate">
-                                20积分
-                                <i>起</i>
-                            </span>
+                                    20积分
+                                    <i>起</i>
+                                </span>
                             </p>
                             <p>
                                 总成交金额：
                                 <span class="year-rate">
-                                100
-                                <i>万积分</i>
-                            </span>
+                                    100
+                                    <i>万积分</i>
+                                </span>
                             </p>
                         </div>
                         <div class="buy">
@@ -406,23 +421,23 @@
                         <h3>
                             <em>收藏</em>
                             <i>
-                            商品
-                        </i>
+                                商品
+                            </i>
                         </h3>
                         <div class="info">
                             <p>
                                 单次消费：
                                 <span class="year-rate">
-                                70积分
-                                <i>起</i>
-                            </span>
+                                    70积分
+                                    <i>起</i>
+                                </span>
                             </p>
                             <p>
                                 总成交金额：
                                 <span class="year-rate">
-                                180
-                                <i>万积分</i>
-                            </span>
+                                    180
+                                    <i>万积分</i>
+                                </span>
                             </p>
                         </div>
                         <div class="buy">
@@ -433,23 +448,23 @@
                         <h3>
                             <em>关注</em>
                             <i>
-                            店铺/达人
-                        </i>
+                                店铺/达人
+                            </i>
                         </h3>
                         <div class="info">
                             <p>
                                 单次消费：
                                 <span class="year-rate">
-                                50积分
-                                <i>起</i>
-                            </span>
+                                    50积分
+                                    <i>起</i>
+                                </span>
                             </p>
                             <p>
                                 总成交金额：
                                 <span class="year-rate">
-                                200
-                                <i>万积分</i>
-                            </span>
+                                    200
+                                    <i>万积分</i>
+                                </span>
                             </p>
                         </div>
                         <div class="buy">
@@ -460,23 +475,23 @@
                         <h3>
                             <em>加购</em>
                             <i>
-                        直接/搜索
-                        </i>
+                                直接/搜索
+                            </i>
                         </h3>
                         <div class="info">
                             <p>
                                 单次消费：
                                 <span class="year-rate">
-                                50积分
-                                <i>起</i>
-                            </span>
+                                    50积分
+                                    <i>起</i>
+                                </span>
                             </p>
                             <p>
                                 总成交金额：
                                 <span class="year-rate">
-                                100
-                                <i>万积分</i>
-                            </span>
+                                    100
+                                    <i>万积分</i>
+                                </span>
                             </p>
                         </div>
                         <div class="buy">
@@ -487,23 +502,23 @@
                         <h3>
                             <em>抢购</em>
                             <i>
-                            预约
-                        </i>
+                                预约
+                            </i>
                         </h3>
                         <div class="info">
                             <p>
                                 单次消费：
                                 <span class="year-rate">
-                                70积分
-                                <i>起</i>
-                            </span>
+                                    70积分
+                                    <i>起</i>
+                                </span>
                             </p>
                             <p>
                                 总成交金额：
                                 <span class="year-rate">
-                                160
-                                <i>万积分</i>
-                            </span>
+                                    160
+                                    <i>万积分</i>
+                                </span>
                             </p>
                         </div>
                         <div class="buy">
@@ -514,7 +529,8 @@
             </section>
             <!-- 底部导航 -->
             <nav class="footer mdui-text-center">
-                <h1><span class="mdui-text-color-pink">1,888,66</span> 家网店都在用
+                <h1>
+                    <span class="mdui-text-color-pink">1,888,66</span> 家网店都在用
                     <%= package.siteName %> 推广，快速提升店铺流量，你，还在等什么？</h1>
                 <button class="mdui-btn mdui-btn-raised  mdui-color-pink" id="userLoginFooter">点此立即使用易店科技</button>
             </nav>

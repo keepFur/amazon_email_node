@@ -12,6 +12,15 @@
     <link type="text/css" href="../plugins/css/animate.min.css" rel="stylesheet">
     <link type="text/css" href="../dest/css/yidian.console.all.css" rel="stylesheet">
     <link type="text/css" href="../plugins/mdui-v0-2/css/mdui.min.css" rel="stylesheet">
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?b5a7f886836cb649fba0ea0bbdad1adf";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
 </head>
 
 <body>
@@ -23,25 +32,37 @@
         </a>
         <!-- 登录相关 -->
         <span class='login'>
-            <span id="userName" data-user-name='<%= user.userName %>' data-user-id='<%= user.id %>' data-user='<%= JSON.stringify(user) %>'><%= user.userName %></span>
-        <a href="/api/logout">
-            <i class="mdui-icon material-icons">&#xe879;</i>
-        </a>
+            <span id="userName" data-user-name='<%= user.userName %>' data-user-id='<%= user.id %>' data-user='<%= JSON.stringify(user) %>'>
+                <%= user.userName %>
+            </span>
+            <a href="/api/logout">
+                <i class="mdui-icon material-icons">&#xe879;</i>
+            </a>
         </span>
     </header>
     <!-- 面包屑 -->
     <nav class='nav-top'>
-        <span><%=package.siteName%></span>
+        <span>
+            <%=package.siteName%>
+        </span>
         <span class="js-nav-text">首页</span>
     </nav>
     <!-- 侧边栏 -->
     <aside>
         <div class="flyer-layout-aside">
             <ul class="flyer-layout-tree">
-                <p class='tree-shrink' id="asideToggle"><i class="mdui-icon material-icons">&#xe8d4;</i></p>
+                <p class='tree-shrink' id="asideToggle">
+                    <i class="mdui-icon material-icons">&#xe8d4;</i>
+                </p>
                 <% menus.forEach(function(val,index,items){ %>
                     <li>
-                        <a data-url="<%= val.url %>" data-hash="<%= val.hash %>" data-pagename="<%=val.pageName%>" class="flyer-layout-link"><i class="mdui-icon material-icons"><%= val.icons %></i><label><%= val.pageName %></label>
+                        <a data-url="<%= val.url %>" data-hash="<%= val.hash %>" data-pagename="<%=val.pageName%>" class="flyer-layout-link">
+                            <i class="mdui-icon material-icons">
+                                <%= val.icons %>
+                            </i>
+                            <label>
+                                <%= val.pageName %>
+                            </label>
                         </a>
                     </li>
                     <% }) %>
@@ -57,16 +78,24 @@
 
     </section>
     <footer>
-        <span class="footer-brand" data-updatecontent="更新什么什么">Version: <span class = "version-icon"><span class = 'version-update'></span>
-        <%=package.version %>
+        <span class="footer-brand" data-updatecontent="更新什么什么">Version:
+            <span class="version-icon">
+                <span class='version-update'></span>
+                <%=package.version %>
             </span>
-            </span>
-            <span class="footer-brand">
-                <strong class="text-danger"><%=package.siteName%></strong>
-            </span>
-            <p class="no-margin">
-                © <span>2018</span> <strong><%=package.siteName%></strong>. ALL Rights Reserved.
-            </p>
+        </span>
+        <span class="footer-brand">
+            <strong class="text-danger">
+                <%=package.siteName%>
+            </strong>
+        </span>
+        <p class="no-margin">
+            ©
+            <span>2018</span>
+            <strong>
+                <%=package.siteName%>
+            </strong>. ALL Rights Reserved.
+        </p>
     </footer>
     <script type="text/javascript" src="../plugins/js/jquery.min.js"></script>
     <!-- <script type="text/javascript" src="../js/common/jquery.extend.js"></script> -->
