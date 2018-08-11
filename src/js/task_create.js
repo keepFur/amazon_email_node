@@ -61,10 +61,58 @@ $(function() {
                 this.value = '';
             }
         });
+        // 任务时段输入框的点击事件
+        $('input[name=taskHour]').on('click', function(events) {
+            var $this = $(this);
+            var tepl = generateSetTaskHourTemp();
+            var quantity = $this.parents('.js-keyword-quantity-item').find('input[name=taskQuantity]').val();
+            var keyword = $this.parents('.js-keyword-quantity-item').find('input[name=taskKeyword]').val();
+            if (!quantity || !keyword) {
+                flyer.msg('关键词和数量不能为空');
+                return false;
+            }
+            var hours = $this.val().split(',');
+            mdui.dialog({
+                title: `设置任务时段（${keyword}/${quantity}）`,
+                content: tepl,
+                history: false,
+                buttons: [{
+                    text: '取消',
+                }, {
+                    text: '重置',
+                    close: false,
+                    onClick: function() {
+                        setTaskHourQuantity(computeEqualPart(quantity, computeMainHourToday()));
+                        return false;
+                    }
+                }, {
+                    text: '确定',
+                    onClick: function() {
+                        var quantitys = getTaskHourQuantity();
+                        new mdui.Tooltip($this[0], {
+                            content: `关键字/数量（${keyword}/${quantity}）:</br>
+                                      00:00-07:00: ${quantitys.slice(0,8).join(',')}</br>
+                                      08:00-15:00: ${quantitys.slice(8,16).join(',')}</br>
+                                      16:00-23:00: ${quantitys.slice(16).join(',')}`
+                        });
+                        $this.val(quantitys.join(','));
+                        flyer.msg('设置成功');
+                        return false;
+                    }
+                }]
+            });
+            if (hours.length === 24) {
+                setTaskHourQuantity(hours);
+            } else {
+                setTaskHourQuantity(computeEqualPart(quantity, computeMainHourToday()));
+            }
+            setHourInputDisabled(computeMainHourToday());
+            return false;
+        });
         // 添加关键词和数量
-        // $('button.js-add-keyword-quantity').on('click', addTaskKeywordQuantityHandle);
+        $('button.js-add-keyword-quantity').on('click', addTaskKeywordQuantityHandle);
         // 删除关键词和数量
-        // $('button.js-delete-keyword-quantity').on('click', deleteTaskKeywordQuantityHandle);
+        $('button.js-delete-keyword-quantity').on('click', deleteTaskKeywordQuantityHandle);
         // 创建任务
         $('#createTask').on('click', createTaskHandle);
     }
@@ -78,14 +126,99 @@ $(function() {
     function addTaskKeywordQuantityHandle(event) {
         var $items = $('.js-keyword-quantity-container').find('.js-keyword-quantity-item');
         if ($items.length === 5) {
-            flyer.msg('主人，已经播了很多种了！');
+            flyer.msg('主人，你够了！');
             return false;
         }
         var $container = $(event.target).parents('.js-keyword-quantity-container');
         var $item = $(event.target).parents('.js-keyword-quantity-item').clone(true);
         $container.append($item);
+        $item.find('input[name=taskKeyword]').val('');
+        $item.find('input[name=taskQuantity]').val('');
+        $item.find('input[name=taskHour]').val('');
         setKeywordAndQuantityIndex();
         return false;
+    }
+
+    /**
+     * 生成设置任务时段的模版
+     * 
+     */
+    function generateSetTaskHourTemp() {
+        // 生成一行(时间)
+        function generateTrTime(start, end) {
+            var result = `<tr>`;
+            for (var i = start; i < end; i++) {
+                result += `<td class="mdui-p-l-1  mdui-p-r-1">${core.padStart(i)}:00</td>`;
+            }
+            return result + '</tr>';
+        }
+        // 生成一行输入框
+        function generateTrInput(count) {
+            var result = `<tr>`;
+            for (var i = 0; i < count; i++) {
+                result += `<td class="mdui-p-t-0 mdui-p-b-0 mdui-p-l-1  mdui-p-r-1">
+                                <div class="mdui-textfield mdui-p-t-0">
+                                    <input class="mdui-textfield-input" type="text" value="0"/>
+                                </div>
+                            </td>`;
+            }
+            return result + '</tr>';
+        }
+        var result = ``;
+        for (var i = 0; i < 6; i++) {
+            var count = 8;
+            count * (1 + i / 2)
+            if (i % 2 === 0) {
+                result += generateTrTime((i - i / 2) * count, (1 + i / 2) * count);
+            } else {
+                result += generateTrInput(count);
+            }
+        }
+        var temp = `<div class="mdui-table-fluid" id="setTaskHourContainer">
+                        <table class="mdui-table">
+                            <tbody>
+                            ${result}
+                            </tbody>
+                        </table>
+                    </div>`
+        return temp;
+    }
+
+    /**
+     * 根据当天剩余的时间设置禁用输入框
+     * 
+     * @param {any} mainHour 
+     */
+    function setHourInputDisabled(mainHour) {
+        for (var i = 0; i < 24 - mainHour; i++) {
+            $('#setTaskHourContainer input:eq(' + i + ')').attr('disabled', true);
+        }
+    }
+
+    /**
+     * 获取任务时段中的数量
+     * 
+     */
+    function getTaskHourQuantity() {
+        var quantity = [];
+        var inputs = $('#setTaskHourContainer input');
+        inputs.each(function(i, item) {
+            item = $(item);
+            quantity[i] = Number(isNaN(item.val()) ? 0 : item.val());
+        });
+        return quantity;
+    }
+
+    /**
+     * 设置任务时段中的数量
+     * 
+     */
+    function setTaskHourQuantity(hours) {
+        var inputs = $('#setTaskHourContainer input');
+        inputs.each(function(i, item) {
+            item = $(item);
+            item.val(hours[i]);
+        });
     }
 
     /**
@@ -97,7 +230,8 @@ $(function() {
         $.each($items, function(index, item) {
             var length = index + 1;
             $(item).find('.js-task-keyword').text('关键词' + length);
-            $(item).find('.js-task-quantity').text('数量' + length);
+            $(item).find('.js-task-quantity').text('数量' + length + '（主人，这个只能输入正整数）');
+            $(item).find('.js-task-hour').text('时段' + length + '(选填，默认平均分配)');
         });
         return;
     }
@@ -242,7 +376,6 @@ $(function() {
         signKeyTaskInfo.keyword = replaceSByDotted(taskInfo.taskKeyword);
         signKeyTaskInfo.sUrl = taskInfo.sUrl;
         signKeyTaskInfo.hour = computeEqualPart(taskInfo.taskQuantity, computeMainHourToday()).join(',');
-        // signKeyTaskInfo.hour = new Array(24).fill(1);
         signKeyTaskInfo.goodsBrowsingTime = taskInfo.taskGoodsBrowsingTime;
         return signKeyTaskInfo;
     }
