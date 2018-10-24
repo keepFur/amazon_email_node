@@ -1,6 +1,6 @@
 // 任务管理模块
 'use strict';
-flyer.define('task_manage', function(exports, module) {
+flyer.define('task_manage', function (exports, module) {
     var baseDatas = {
         // 表格实例
         $table: null,
@@ -35,7 +35,7 @@ flyer.define('task_manage', function(exports, module) {
      */
     function initEvent() {
         // 页签点击事件
-        core.initTabClick($('#manageTaskTab li'), function($li) {
+        core.initTabClick($('#manageTaskTab li'), function ($li) {
             baseDatas.taskPlant = $li.data('task-plant');
             getTableDatas(baseDatas.curIndex, 20);
         });
@@ -70,40 +70,40 @@ flyer.define('task_manage', function(exports, module) {
     function updateTaskHandle(events) {
         var selectDatas = core.getTableCheckedDatas(baseDatas.$table);
         if (selectDatas.length === 1) {
-            flyer.confirm('确定取消任务吗？取消之后积分将不退回账户中', function(result) {}, {
+            flyer.confirm('确定取消任务吗？取消之后积分将不退回账户中', function (result) { }, {
                 btns: [{
-                        text: '确定',
-                        click: function(elm) {
-                            this.close();
-                            APIUtil.cancelTask(selectDatas[0].taskOrderNumber, function(res) {
-                                if (res.data.status !== 1) {
-                                    flyer.msg('操作成功!');
-                                    $.ajax({
-                                        url: '/api/toggleTask',
-                                        type: 'POST',
-                                        data: {
-                                            id: selectDatas[0].id,
-                                            status: 0
-                                        },
-                                        success: function(data, textStatus, jqXHR) {
-                                            getTableDatas(1, 20);
-                                        },
-                                        error: function(jqXHR, textStatus, errorThrown) {
-                                            flyer.msg(baseDatas.netErrMsg);
-                                        }
-                                    });
-                                } else {
-                                    flyer.msg(res.data.tips);
-                                }
-                            });
-                        }
-                    },
-                    {
-                        text: ("取消"),
-                        click: function(elm) {
-                            this.close();
-                        }
+                    text: '确定',
+                    click: function (elm) {
+                        this.close();
+                        APIUtil.cancelTask(selectDatas[0].taskOrderNumber, function (res) {
+                            if (res.data.status !== 1) {
+                                flyer.msg('操作成功!');
+                                $.ajax({
+                                    url: '/api/toggleTask',
+                                    type: 'POST',
+                                    data: {
+                                        id: selectDatas[0].id,
+                                        status: 0
+                                    },
+                                    success: function (data, textStatus, jqXHR) {
+                                        getTableDatas(1, 20);
+                                    },
+                                    error: function (jqXHR, textStatus, errorThrown) {
+                                        flyer.msg(baseDatas.netErrMsg);
+                                    }
+                                });
+                            } else {
+                                flyer.msg(res.data.tips);
+                            }
+                        });
                     }
+                },
+                {
+                    text: ("取消"),
+                    click: function (elm) {
+                        this.close();
+                    }
+                }
                 ],
                 title: "询问框",
                 isModal: true
@@ -124,27 +124,27 @@ flyer.define('task_manage', function(exports, module) {
         var type = events.data.type;
         var tipMsg = type === 0 ? '确定暂停吗？' : '确定恢复吗？';
         if (selectDatas.length === 1) {
-            flyer.confirm(tipMsg, function(result) {}, {
+            flyer.confirm(tipMsg, function (result) { }, {
                 btns: [{
-                        text: '确定',
-                        click: function(elm) {
-                            this.close();
-                            APIUtil.pauseAndResumeTask(selectDatas[0].taskOrderNumber, type, function(res) {
-                                if (res.data.status === '1') {
-                                    flyer.msg('操作成功！');
-                                    getTableDatas(1, 20);
-                                } else {
-                                    flyer.msg('操作失败：' + res.data.tips);
-                                }
-                            });
-                        }
-                    },
-                    {
-                        text: ("取消"),
-                        click: function(elm) {
-                            this.close();
-                        }
+                    text: '确定',
+                    click: function (elm) {
+                        this.close();
+                        APIUtil.pauseAndResumeTask(selectDatas[0].taskOrderNumber, type, function (res) {
+                            if (res.data.status === '1') {
+                                flyer.msg('操作成功！');
+                                getTableDatas(1, 20);
+                            } else {
+                                flyer.msg('操作失败：' + res.data.tips);
+                            }
+                        });
                     }
+                },
+                {
+                    text: ("取消"),
+                    click: function (elm) {
+                        this.close();
+                    }
+                }
                 ],
                 title: "询问框",
                 isModal: true
@@ -165,91 +165,91 @@ flyer.define('task_manage', function(exports, module) {
         if ($table && $table.length && Array.isArray(datas)) {
             baseDatas.$table = flyer.table($table, {
                 columns: [{
-                        field: "",
-                        checkbox: true,
-                        styles: {
-                            width: 34
-                        }
-                    }, {
-                        title: '订单号',
-                        field: 'taskOrderNumber',
-                        formatter: function(row) {
-                            return `<span title="${row.taskOrderNumber}">${row.taskOrderNumber}</span>`;
-                        }
-                    }, {
-                        title: '数量和关键词',
-                        field: "",
-                        styles: {
-                            width: 120
-                        },
-                        formatter: function(row) {
-                            return '（' + row.taskQuantity + '）' + row.taskKeyword;
-                        }
-                    }, {
-                        title: '任务类型',
-                        field: "",
-                        formatter: function(row) {
-                            var type = core.getTypeCodeByValue(row.taskChildType);
-                            var taskPlant = type.plant === 'TB' ? '淘宝' : type.plant === 'JD' ? '京东' : '拼多多';
-                            return taskPlant + '（' + type.name + '）';
-                        }
-                    }, {
-                        title: '任务名称',
-                        field: "taskName"
-                    }, {
-                        title: '开始日期',
-                        field: "",
-                        styles: {
-                            width: 100
-                        },
-                        formatter: function(row) {
-                            return flyer.formatDate('yyyy-mm-dd', row.taskStartDate);
-                        }
-                    }, {
-                        title: '链接',
-                        field: "taskBabyLinkToken",
-                        formatter: function(row) {
-                            return `<span title="${row.taskBabyLinkToken}">${row.taskBabyLinkToken}</span>`;
-                        }
-                    }, {
-                        title: '总消费',
-                        field: "taskSumMoney",
-                        styles: {
-                            width: 70
-                        }
-                    }, {
-                        title: '创建时间',
-                        field: "createdDate",
-                        styles: {
-                            width: 130
-                        },
-                        formatter: function(row, rows) {
-                            return flyer.formatDate('yyyy-mm-dd hh:MM', row.createdDate);
-                        }
-                    },
-                    // {
-                    //     title: '修改时间',
-                    //     field: "updateDate",
-                    //     styles: {
-                    //         width: 130,
-                    //     },
-                    //     formatter: function(row, rows) {
-                    //         return row.updateDate ? flyer.formatDate('yyyy-mm-dd hh:MM', row.updateDate) : '-';
-                    //     }
-                    // },
-                    {
-                        title: '状态',
-                        field: 'status',
-                        styles: {
-                            width: 60
-                        },
-                        formatter: function(row) {
-                            return '<i class="mdui-icon material-icons mdui-text-color-pink js-view-status" data-id="' + row.id + '" data-task-order-number="' + row.taskOrderNumber + '">&#xe417;</i>';
-                        }
+                    field: "",
+                    checkbox: true,
+                    styles: {
+                        width: 34
                     }
+                }, {
+                    title: '订单号',
+                    field: 'taskOrderNumber',
+                    formatter: function (row) {
+                        return `<span title="${row.taskOrderNumber}">${row.taskOrderNumber}</span>`;
+                    }
+                }, {
+                    title: '数量和关键词',
+                    field: "",
+                    styles: {
+                        width: 120
+                    },
+                    formatter: function (row) {
+                        return '（' + row.taskQuantity + '）' + row.taskKeyword;
+                    }
+                }, {
+                    title: '任务类型',
+                    field: "",
+                    formatter: function (row) {
+                        var type = core.getTypeCodeByValue(row.taskChildType);
+                        var taskPlant = type.plant === 'TB' ? '淘宝' : type.plant === 'JD' ? '京东' : '拼多多';
+                        return taskPlant + '（' + type.name + '）';
+                    }
+                }, {
+                    title: '任务名称',
+                    field: "taskName"
+                }, {
+                    title: '开始日期',
+                    field: "",
+                    styles: {
+                        width: 100
+                    },
+                    formatter: function (row) {
+                        return flyer.formatDate('yyyy-mm-dd', row.taskStartDate);
+                    }
+                }, {
+                    title: '链接',
+                    field: "taskBabyLinkToken",
+                    formatter: function (row) {
+                        return `<a href="${row.taskBabyLinkToken}" style="color:#2cc3a9" target="_blank" title="${row.taskBabyLinkToken}">${row.taskBabyLinkToken}</a>`;
+                    }
+                }, {
+                    title: '总消费',
+                    field: "taskSumMoney",
+                    styles: {
+                        width: 70
+                    }
+                }, {
+                    title: '创建时间',
+                    field: "createdDate",
+                    styles: {
+                        width: 130
+                    },
+                    formatter: function (row, rows) {
+                        return flyer.formatDate('yyyy-mm-dd hh:MM', row.createdDate);
+                    }
+                },
+                // {
+                //     title: '修改时间',
+                //     field: "updateDate",
+                //     styles: {
+                //         width: 130,
+                //     },
+                //     formatter: function(row, rows) {
+                //         return row.updateDate ? flyer.formatDate('yyyy-mm-dd hh:MM', row.updateDate) : '-';
+                //     }
+                // },
+                {
+                    title: '状态',
+                    field: 'status',
+                    styles: {
+                        width: 60
+                    },
+                    formatter: function (row) {
+                        return '<i class="mdui-icon material-icons mdui-text-color-pink js-view-status" data-id="' + row.id + '" data-task-order-number="' + row.taskOrderNumber + '">&#xe417;</i>';
+                    }
+                }
                 ],
                 data: datas,
-                rowClick: function() {
+                rowClick: function () {
                     // core.setWindowHash('task_create', '');
                 }
             });
@@ -307,20 +307,20 @@ flyer.define('task_manage', function(exports, module) {
      */
     function getTableDatas(pageNumber, pageSize) {
         var conditions = {
-                offset: pageNumber || 1,
-                limit: pageSize || 20,
-                nocache: window.Date.now(),
-                taskPlant: baseDatas.taskPlant
-            },
+            offset: pageNumber || 1,
+            limit: pageSize || 20,
+            nocache: window.Date.now(),
+            taskPlant: baseDatas.taskPlant
+        },
             $table = $('#taskTable');
         $.ajax({
             url: '/api/readTaskPage',
             type: 'GET',
             data: conditions,
-            beforeSend: function(jqXHR, settings) {
+            beforeSend: function (jqXHR, settings) {
                 $.addLoading();
             },
-            success: function(data, jqXHR, textStatus) {
+            success: function (data, jqXHR, textStatus) {
                 if (data.success) {
                     renderTable($table, data.data.rows);
                     randerDOMPager(baseDatas.$table, data.data.rows, data.data.total, {
@@ -329,17 +329,17 @@ flyer.define('task_manage', function(exports, module) {
                     });
                     setMountValue(data.data.rows.length, data.data.total);
                     core.bindCheckboxEvent(baseDatas.$table);
-                    $('.js-view-status').off('click').on('click', function(event) {
+                    $('.js-view-status').off('click').on('click', function (event) {
                         var taskOrderNumber = $(this).data('task-order-number');
                         var content = '';
                         APIUtil.listTask({
                             id: taskOrderNumber
-                        }, function(res) {
+                        }, function (res) {
                             if (res.data.status !== '1') {
                                 content = res.data.tips;
-                            } else if (res.data.list.l.length > 0) {
+                            } else if (res.data.list && res.data.list.l.length > 0) {
                                 var data = res.data.list.l[0];
-                                content = `任务单号：${taskOrderNumber}</br>任务状态：${data.m.replace(/\(已退款\)|\(部分退款\)/,'')}</br>任务总量：${data.c}</br>剩余量：${data.e}`;
+                                content = `任务单号：${taskOrderNumber}</br>任务状态：${data.m.replace(/\(已退款\)|\(部分退款\)/, '')}</br>任务总量：${data.c}</br>剩余量：${data.e}`;
                             } else {
                                 content = '查无此订单信息，请联系客服';
                             }
@@ -355,10 +355,10 @@ flyer.define('task_manage', function(exports, module) {
                     renderTable($table, []);
                 }
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
                 flyer.msg(baseDatas.netErrMsg);
             },
-            complete: function(jqXHR, textStatus) {
+            complete: function (jqXHR, textStatus) {
                 $.removeLoading()
             }
         });
@@ -385,10 +385,10 @@ flyer.define('task_manage', function(exports, module) {
             data: {
                 id: id
             },
-            success: function(data) {
+            success: function (data) {
                 callback(data);
             },
-            error: function(error) {
+            error: function (error) {
                 callback(data);
             }
         });
