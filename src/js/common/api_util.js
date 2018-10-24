@@ -45,8 +45,7 @@ var APIUtil = {
             console.log('MD5之后：' + params.signkey);
             console.log('发送给服务器的参数：' + core.objectToString(params));
             $.ajax({
-                url: url,
-                type: 'get',
+                url: '/lieliuApi/createTask',
                 data: params,
                 success: function (res) {
                     res.orderNumber = orderNumber;
@@ -56,13 +55,21 @@ var APIUtil = {
                     callback({}, error);
                 }
             });
+            // $.ajax({
+            //     url: url,
+            //     data: params,
+            //     success: function (res) {
+            //         res.orderNumber = orderNumber;
+            //         callback(res);
+            //     },
+            //     error: function (error) {
+            //         callback({}, error);
+            //     }
+            // });
         });
     },
     // 查询任务
     listTask: function (params, callback) {
-        var url = this.domain + '/ll/task_list';
-        var orderNumber = this.generateOrderNumer();
-        var signKey = '';
         var _this = this;
         this.getServerTimestamp(function (data) {
             params = $.extend(params, {
@@ -82,22 +89,12 @@ var APIUtil = {
                     flyer.msg(error.message)
                 }
             });
-            // $.ajax({
-            //     url: 'http://api.lieliu.com:1024/ll/task_list',
-            //     data: params,
-            //     success: function(res) {
-            //         callback(res);
-            //     },
-            //     error: function(error) {
-            //         flyer.msg(error.message)
-            //     }
-            // });
         });
     },
     // 取消任务
     cancelTask: function (orderNumber, callback) {
-        var url = this.domain + '/ll/task_cancel';
-        var signKey = '';
+        // var url = this.domain + '/ll/task_cancel';
+        // var signKey = '';
         var _this = this;
         this.getServerTimestamp(function (data) {
             var params = {
@@ -109,7 +106,7 @@ var APIUtil = {
             };
             params.signkey = _this.signkey('/ll/task_cancel', core.objectToString(params));
             $.ajax({
-                url: url,
+                url: '/lieliuApi/cancelTask',
                 data: params,
                 success: function (res) {
                     callback(res);
@@ -122,8 +119,7 @@ var APIUtil = {
     },
     // 暂停或者恢复任务
     pauseAndResumeTask: function (orderNumber, status, callback) {
-        var url = this.domain + '/ll/task_pause';
-        var signKey = '';
+        // var url = this.domain + '/ll/task_pause';
         var _this = this;
         this.getServerTimestamp(function (data) {
             var params = {
@@ -136,7 +132,7 @@ var APIUtil = {
             };
             params.signkey = _this.signkey('/ll/task_pause', core.objectToString(params));
             $.ajax({
-                url: url,
+                url: '/lieliuApi/pauseAndResumeTask',
                 data: params,
                 success: function (res) {
                     callback(res);

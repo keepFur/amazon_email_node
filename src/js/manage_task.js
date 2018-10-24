@@ -76,7 +76,7 @@ flyer.define('task_manage', function (exports, module) {
                     click: function (elm) {
                         this.close();
                         APIUtil.cancelTask(selectDatas[0].taskOrderNumber, function (res) {
-                            if (res.data.status !== 1) {
+                            if (res.data.status === '1') {
                                 flyer.msg('操作成功!');
                                 $.ajax({
                                     url: '/api/toggleTask',
@@ -365,7 +365,7 @@ flyer.define('task_manage', function (exports, module) {
     }
 
     /**
-     * 根基用户的id获取用户的信息
+     * 根据用户的id获取用户的信息
      * 
      * @param {Number} id 用户id
      * @param {funciton} callback 回调函数
