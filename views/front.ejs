@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>
-        <%=package.siteName%>网店推广工具-淘宝引流——免费流量提升——手机无限APP买流量-首页</title>
+        <%=package.siteName%>网店推广工具-淘宝引流——免费流量提升——手机无限APP买流量-首页
+    </title>
     <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" href="../plugins/mdui-v0-2/css/mdui.min.css">
     <link rel="stylesheet" href="../dest/css/yidian.front.all.min.css">
@@ -15,7 +16,7 @@
     <meta name="description" content="猎流是一款用于淘宝引流的免费提升流量软件,模拟人工自然搜索、点击、停留浏览店铺和宝贝,支持PC流量、手机无线APP流量提升,可通过买流量快速提升淘宝店铺商品搜索排名、展现量、访问量和人气值！">
     <script>
         var _hmt = _hmt || [];
-        (function() {
+        (function () {
             var hm = document.createElement("script");
             hm.src = "https://hm.baidu.com/hm.js?b5a7f886836cb649fba0ea0bbdad1adf";
             var s = document.getElementsByTagName("script")[0];
@@ -68,14 +69,14 @@
     </header>
     <!-- 中间内容 根据规范，section和article都需要有标题 -->
     <div class="container">
-        <!-- 广告轮播图 -->
-        <!-- <div class="ad">
+        <!-- 首页大图 -->
+        <div class="big-img js-content">
             <div class="mdui-card">
                 <div class="mdui-card-media">
-                    <img src="../imgs/error.png" />
+                    <img src="../imgs/big.jpg" />
                 </div>
             </div>
-        </div> -->
+        </div>
         <!--用户登录模块-->
         <section class="mdui-container mdui-hidden js-user-login">
             <div class="mdui-row">
@@ -93,7 +94,8 @@
                         </div>
                         <div class="mdui-textfield">
                             <label class="mdui-textfield-label">密码</label>
-                            <input class="mdui-textfield-input" type="password" name="password" pattern="^.*(?=.{6,15})(?=.*[a-z]).*$" autocomplete="new-password" required/>
+                            <input class="mdui-textfield-input" type="password" name="password" pattern="^.*(?=.{6,15})(?=.*[a-z]).*$" autocomplete="new-password"
+                                required/>
                             <div class="mdui-textfield-error">密码是6-15位字母组成</div>
                         </div>
                         <div class="mdui-row-xs-2 js-keyword-quantity-item mdui-hidden">
@@ -182,6 +184,8 @@
                 </div>
             </form>
         </section>
+        <h1 class="text-center text-color-red js-content"><img src="../imgs/pc_101.png" alt=""> 易店为您带来 <img src="../imgs/pc_101.png"
+                alt=""></h1>
         <!-- 网站功能介绍 -->
         <div class="js-content">
             <section class="feature">
@@ -245,6 +249,8 @@
                 </div>
             </div>
             <!-- 产品 -->
+            <h1 class="text-center text-color-red"><img src="../imgs/pc_101.png" alt=""> 淘宝平台商品 <img src="../imgs/pc_101.png"
+                    alt=""></h1>
             <section class="product clearfix">
                 <h2 class="pull-left text-center">淘宝任务
                     <em>真实访问量</em>
@@ -383,6 +389,8 @@
                 </div>
             </section>
             <!-- 产品 -->
+            <h1 class="text-center text-color-red"><img src="../imgs/pc_101.png" alt=""> 京东平台商品 <img src="../imgs/pc_101.png"
+                    alt=""></h1>
             <section class="product clearfix">
                 <h2 class="pull-left text-center">京东店铺任务
                     <em>真实访问量</em>
@@ -528,11 +536,36 @@
                     </div>
                 </div>
             </section>
+            <h1 class="text-center text-color-red"><img src="../imgs/pc_101.png" alt=""> 部分商家活动效果图 <img src="../imgs/pc_101.png"
+                    alt=""></h1>
+            <div class="ad">
+                <div class="item">
+                    <img src="../imgs/ad001.png" width="100%" alt="">
+                </div>
+                <div class="item hide">
+                    <img src="../imgs/ad002.png" width="100%" alt="">
+                </div>
+                <div class="item hide">
+                    <img src="../imgs/ad003.png" width="100%" alt="">
+                </div>
+                <ul class="control text-center">
+                    <li class="active" data-index="0">
+                        <span></span>
+                    </li>
+                    <li data-index="1">
+                        <span></span>
+                    </li>
+                    <li data-index="2">
+                        <span></span>
+                    </li>
+                </ul>
+            </div>
             <!-- 底部导航 -->
             <nav class="footer mdui-text-center">
                 <h1>
                     <span class="mdui-text-color-pink">1,888,66</span> 家网店都在用
-                    <%= package.siteName %> 推广，快速提升店铺流量，你，还在等什么？</h1>
+                    <%= package.siteName %> 推广，快速提升店铺流量，你，还在等什么？
+                </h1>
                 <button class="mdui-btn mdui-btn-raised  mdui-color-pink" id="userLoginFooter">点此立即使用易店科技</button>
             </nav>
         </div>
@@ -540,7 +573,8 @@
     <!-- 底部 -->
     <footer class="front-footer">
         <p class="text-center">
-            <%=package.siteName%> @2016-2018</p>
+            <%=package.siteName%> @2016-2018
+        </p>
     </footer>
     <script src="../plugins/mdui-v0-2/js/mdui.min.js"></script>
     <!-- <script src="../js/front/front.js" type="text/javascript"></script> -->

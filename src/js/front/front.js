@@ -1,12 +1,14 @@
 'use strict';
 var $ = mdui.JQ;
-$(function() {
+$(function () {
     var userNameMinLength = 6;
     var userNameMaxLength = 15;
 
     function init() {
         // 初始化通知组件
         initNoticeComponent();
+        // 初始化轮播图
+        initScrollImgComponent();
         // 初始化事件
         inieEvent();
     }
@@ -15,18 +17,18 @@ $(function() {
     function inieEvent() {
         var kefuDialog = null;
         // 首页
-        $('#home').on('click', function() {
+        $('#home').on('click', function () {
             if (!$('.js-user-login').hasClass('mdui-hidden') || !$('.js-user-register').hasClass('mdui-hidden')) {
                 window.location.reload();
             }
             return false;
         });
 
-        // 注册get
+        // 点击大图 注册get
         $('#userRegister').on('click', userRegisterHandler);
 
         // 注册跳转到登录
-        $('#registerToLogin').on('click', function() {
+        $('#registerToLogin').on('click', function () {
             $('#userLogin').trigger('click');
         });
 
@@ -37,7 +39,7 @@ $(function() {
         $('#userLogin').on('click', userLoginHandler);
 
         // 登录到注册
-        $('#loginToRegister').on('click', function() {
+        $('#loginToRegister').on('click', function () {
             $('#userRegister').trigger('click');
         });
 
@@ -45,10 +47,10 @@ $(function() {
         $('#userLoginSubmit').on('click', userLoginSubmitHanlder);
 
         // 控制台
-        $('#console').on('click', function(event) {
+        $('#console,.big-img').on('click', function (event) {
             $.ajax({
                 url: '/api/getUserLoginStatus',
-                success: function(data) {
+                success: function (data) {
                     data = JSON.parse(data);
                     if (data.status) {
                         window.location.assign('/console');
@@ -65,10 +67,10 @@ $(function() {
         });
 
         // 充值
-        $('#addMoney').on('click', function(event) {
+        $('#addMoney').on('click', function (event) {
             $.ajax({
                 url: '/api/getUserLoginStatus',
-                success: function(data) {
+                success: function (data) {
                     data = JSON.parse(data);
                     if (data.status) {
                         window.location.assign('/console#add_money');
@@ -84,23 +86,23 @@ $(function() {
         });
 
         // 打开立即咨询
-        $('.kefu-container').on('click', function() {
+        $('.kefu-container').on('click', function () {
             kefuDialog = new mdui.Dialog('.js-kefu-mdui-dialog');
             kefuDialog.open();
             return false;
         });
 
         // 关闭立即咨询
-        $('.kefu-btn-no').on('click', function() {
+        $('.kefu-btn-no').on('click', function () {
             kefuDialog.close();
             return false;
         });
 
         // 底部立即使用
-        $('#userLoginFooter,.buy').on('click', function(event) {
+        $('#userLoginFooter,.buy').on('click', function (event) {
             $.ajax({
                 url: '/api/getUserLoginStatus',
-                success: function(data) {
+                success: function (data) {
                     data = JSON.parse(data);
                     if (data.status) {
                         window.location.assign('/console#task_create');
@@ -117,6 +119,38 @@ $(function() {
         });
     }
 
+    /**
+     *初始化轮播图
+     *
+     */
+    function initScrollImgComponent() {
+        /**
+         *为批量元素设置类名
+         *
+         * @param {any} eles 设置的元素
+         * @param {any} classNames 类名
+         */
+        function setClassName(eles, className) {
+            if (eles) {
+                eles.forEach(function (ele, index) {
+                    ele.className = className;
+                });
+            }
+        }
+        // 实现轮播图功能
+        var controlBtns = document.querySelectorAll('.ad .control>li');
+        var imgItems = document.querySelectorAll('.ad .item');
+        controlBtns.forEach(function (item) {
+            item.addEventListener('click', function () {
+                var index = parseInt(this.getAttribute('data-index'));
+                setClassName(controlBtns, '');
+                setClassName([this], 'active');
+                setClassName(imgItems, 'item hide');
+                setClassName([imgItems[index]], 'item show');
+            });
+        });
+    }
+
     // 初始化通知组件
     function initNoticeComponent() {
         $.ajax({
@@ -125,23 +159,23 @@ $(function() {
                 limit: 5,
                 offset: 1
             },
-            success: function(res) {
+            success: function (res) {
                 res = JSON.parse(res);
                 if (res.success) {
                     var $noticeContainer = $('.js-notice-container');
                     if (res.data.rows.length === 0) {
                         $noticeContainer.append(`<a href="#">暂无公告</a>`);
                     } else {
-                        $.each(res.data.rows, function(index, item) {
+                        $.each(res.data.rows, function (index, item) {
                             var createdDate = formatDate('yyyy-mm-dd HH:MM', item.createdDate);
-                            var $template = `<a href="#" class="pull-left text-ellipsis js-notice-item ${index===0?' js-notice-item-active':' hide'}" data-id="${item.id}">
-                                        <span class="js-notice-title">${createdDate+'#' + item.noticeTitle}</span>
+                            var $template = `<a href="#" class="pull-left text-ellipsis js-notice-item ${index === 0 ? ' js-notice-item-active' : ' hide'}" data-id="${item.id}">
+                                        <span class="js-notice-title">${createdDate + '#' + item.noticeTitle}</span>
                                         <span class="js-notice-content">${item.noticeContent}</span>
                                      </a>`;
                             $noticeContainer.append($template);
                         });
                         // 做一个定时器
-                        var timer = setInterval(function() {
+                        var timer = setInterval(function () {
                             var $item = $('.js-notice-item');
                             var length = $item.length;
                             var $currentItem = $('.js-notice-item-active');
@@ -183,7 +217,7 @@ $(function() {
                 url: '/api/userLogin',
                 method: 'POST',
                 data: userInfo,
-                success: function(data, textStatus, jqXHR) {
+                success: function (data, textStatus, jqXHR) {
                     data = JSON.parse(data);
                     if (data.success) {
                         mdui.snackbar({
@@ -198,7 +232,7 @@ $(function() {
                         });
                     }
                 },
-                error: function(jqXHR, textStatus, errorThrown) {
+                error: function (jqXHR, textStatus, errorThrown) {
                     mdui.snackbar({
                         message: '网络错误',
                         position: 'top'
@@ -236,7 +270,7 @@ $(function() {
                 url: '/api/createUser',
                 method: 'POST',
                 data: userInfo,
-                success: function(data, textStatus, jqXHR) {
+                success: function (data, textStatus, jqXHR) {
                     data = JSON.parse(data);
                     if (data.success) {
                         mdui.snackbar({
@@ -251,7 +285,7 @@ $(function() {
                         });
                     }
                 },
-                error: function(jqXHR, textStatus, errorThrown) {
+                error: function (jqXHR, textStatus, errorThrown) {
                     mdui.snackbar({
                         message: '网络错误，请刷新页面重试',
                         position: 'top'
@@ -276,7 +310,7 @@ $(function() {
             return {};
         }
         serializeArray = $form.serializeArray();
-        serializeArray.forEach(function(element) {
+        serializeArray.forEach(function (element) {
             userInfo[element.name] = $.trim(element.value);
         }, this);
         return userInfo;
@@ -325,7 +359,7 @@ $(function() {
         if (typeof format !== "string") {
             format = "yyyy-mm-dd hh:MM:ss";
         }
-        var getDate = function(date) {
+        var getDate = function (date) {
             date = isString(date) ? new Date(date) : (date || new Date());
             return {
                 year: date.getFullYear(),
@@ -336,10 +370,10 @@ $(function() {
                 seconds: date.getSeconds()
             };
         };
-        var isString = function(obj) {
+        var isString = function (obj) {
             return typeof obj === "string";
         };
-        var fullTime = function(time) {
+        var fullTime = function (time) {
             return time >= 10 ? time : ("0" + time);
         };
         date = getDate(date);
@@ -353,7 +387,7 @@ $(function() {
     }
 
     // 去除字符串两头的空格
-    $.trim = function(str) {
+    $.trim = function (str) {
         str = str || '';
         return str.replace(/^\s*|\s*$/g, '');
     };
