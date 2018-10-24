@@ -172,7 +172,10 @@ flyer.define('task_manage', function(exports, module) {
                         }
                     }, {
                         title: '订单号',
-                        field: 'taskOrderNumber'
+                        field: 'taskOrderNumber',
+                        formatter: function(row) {
+                            return `<span title="${row.taskOrderNumber}">${row.taskOrderNumber}</span>`;
+                        }
                     }, {
                         title: '数量和关键词',
                         field: "",
@@ -181,7 +184,6 @@ flyer.define('task_manage', function(exports, module) {
                         },
                         formatter: function(row) {
                             return '（' + row.taskQuantity + '）' + row.taskKeyword;
-                            // return '<i class="mdui-icon material-icons mdui-text-color-pink">&#xe417;</i>';
                         }
                     }, {
                         title: '任务类型',
@@ -205,7 +207,10 @@ flyer.define('task_manage', function(exports, module) {
                         }
                     }, {
                         title: '链接',
-                        field: "taskBabyLinkToken"
+                        field: "taskBabyLinkToken",
+                        formatter: function(row) {
+                            return `<span title="${row.taskBabyLinkToken}">${row.taskBabyLinkToken}</span>`;
+                        }
                     }, {
                         title: '总消费',
                         field: "taskSumMoney",

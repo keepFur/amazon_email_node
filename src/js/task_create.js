@@ -56,15 +56,67 @@ $(function() {
         $('input[name=taskQuantity]').on('keyup', function(event) {
             var value = this.value;
             if (!isNaN(value) && value > 0) {
-                $('#taskSumMoney').text(core.numberToLocalString(value * $('#taskPrice').text()));
+                var sum = getKeywordsAndQuantity().reduce(function(total, item) {
+                    return total + item.quantity;
+                }, 0);
+                $('#taskSumMoney').text(core.numberToLocalString(sum * $('#taskPrice').text()));
             } else {
                 this.value = '';
             }
         });
+        ["begin_time", "count", "format", "goodsBrowsingTime", "hour", "id", "keyword", "sUrl", "signkey", "target", "timestamp", "type", "username", "ver"]
+        // 任务时段输入框的点击事件
+        $('input[name=taskHour]').on('click', function(events) {
+            var $this = $(this);
+            var tepl = generateSetTaskHourTemp();
+            var quantity = $this.parents('.js-keyword-quantity-item').find('input[name=taskQuantity]').val();
+            var keyword = $this.parents('.js-keyword-quantity-item').find('input[name=taskKeyword]').val();
+            if (!quantity || !keyword) {
+                flyer.msg('关键词和数量不能为空');
+                return false;
+            }
+            var hours = $this.val().split(',');
+            mdui.dialog({
+                title: `设置任务时段（${keyword}/${quantity}）`,
+                content: tepl,
+                history: false,
+                buttons: [{
+                    text: '取消',
+                }, {
+                    text: '重置',
+                    close: false,
+                    onClick: function() {
+                        setTaskHourQuantity(computeEqualPart(quantity, computeMainHourToday()));
+                        return false;
+                    }
+                }, {
+                    text: '确定',
+                    onClick: function() {
+                        var quantitys = getTaskHourQuantity();
+                        new mdui.Tooltip($this[0], {
+                            content: `关键字/数量（${keyword}/${quantity}）:</br>
+                                      00:00-07:00: ${quantitys.slice(0,8).join(',')}</br>
+                                      08:00-15:00: ${quantitys.slice(8,16).join(',')}</br>
+                                      16:00-23:00: ${quantitys.slice(16).join(',')}`
+                        });
+                        $this.val(quantitys.join(','));
+                        flyer.msg('设置成功');
+                        return false;
+                    }
+                }]
+            });
+            if (hours.length === 24) {
+                setTaskHourQuantity(hours);
+            } else {
+                setTaskHourQuantity(computeEqualPart(quantity, computeMainHourToday()));
+            }
+            setHourInputDisabled(computeMainHourToday());
+            return false;
+        });
         // 添加关键词和数量
-        // $('button.js-add-keyword-quantity').on('click', addTaskKeywordQuantityHandle);
+        $('button.js-add-keyword-quantity').on('click', addTaskKeywordQuantityHandle);
         // 删除关键词和数量
-        // $('button.js-delete-keyword-quantity').on('click', deleteTaskKeywordQuantityHandle);
+        $('button.js-delete-keyword-quantity').on('click', deleteTaskKeywordQuantityHandle);
         // 创建任务
         $('#createTask').on('click', createTaskHandle);
     }
@@ -78,14 +130,99 @@ $(function() {
     function addTaskKeywordQuantityHandle(event) {
         var $items = $('.js-keyword-quantity-container').find('.js-keyword-quantity-item');
         if ($items.length === 5) {
-            flyer.msg('主人，已经播了很多种了！');
+            flyer.msg('主人，你够了！');
             return false;
         }
         var $container = $(event.target).parents('.js-keyword-quantity-container');
         var $item = $(event.target).parents('.js-keyword-quantity-item').clone(true);
         $container.append($item);
+        $item.find('input[name=taskKeyword]').val('');
+        $item.find('input[name=taskQuantity]').val('');
+        $item.find('input[name=taskHour]').val('');
         setKeywordAndQuantityIndex();
         return false;
+    }
+
+    /**
+     * 生成设置任务时段的模版
+     * 
+     */
+    function generateSetTaskHourTemp() {
+        // 生成一行(时间)
+        function generateTrTime(start, end) {
+            var result = `<tr>`;
+            for (var i = start; i < end; i++) {
+                result += `<td class="mdui-p-l-1  mdui-p-r-1">${core.padStart(i)}:00</td>`;
+            }
+            return result + '</tr>';
+        }
+        // 生成一行输入框
+        function generateTrInput(count) {
+            var result = `<tr>`;
+            for (var i = 0; i < count; i++) {
+                result += `<td class="mdui-p-t-0 mdui-p-b-0 mdui-p-l-1  mdui-p-r-1">
+                                <div class="mdui-textfield mdui-p-t-0">
+                                    <input class="mdui-textfield-input" type="text" value="0"/>
+                                </div>
+                            </td>`;
+            }
+            return result + '</tr>';
+        }
+        var result = ``;
+        for (var i = 0; i < 6; i++) {
+            var count = 8;
+            count * (1 + i / 2)
+            if (i % 2 === 0) {
+                result += generateTrTime((i - i / 2) * count, (1 + i / 2) * count);
+            } else {
+                result += generateTrInput(count);
+            }
+        }
+        var temp = `<div class="mdui-table-fluid" id="setTaskHourContainer">
+                        <table class="mdui-table">
+                            <tbody>
+                            ${result}
+                            </tbody>
+                        </table>
+                    </div>`
+        return temp;
+    }
+
+    /**
+     * 根据当天剩余的时间设置禁用输入框
+     * 
+     * @param {any} mainHour 
+     */
+    function setHourInputDisabled(mainHour) {
+        for (var i = 0; i < 24 - mainHour; i++) {
+            $('#setTaskHourContainer input:eq(' + i + ')').attr('disabled', true);
+        }
+    }
+
+    /**
+     * 获取任务时段中的数量
+     * 
+     */
+    function getTaskHourQuantity() {
+        var quantity = [];
+        var inputs = $('#setTaskHourContainer input');
+        inputs.each(function(i, item) {
+            item = $(item);
+            quantity[i] = Number(isNaN(item.val()) ? 0 : item.val());
+        });
+        return quantity;
+    }
+
+    /**
+     * 设置任务时段中的数量
+     * 
+     */
+    function setTaskHourQuantity(hours) {
+        var inputs = $('#setTaskHourContainer input');
+        inputs.each(function(i, item) {
+            item = $(item);
+            item.val(hours[i]);
+        });
     }
 
     /**
@@ -97,7 +234,8 @@ $(function() {
         $.each($items, function(index, item) {
             var length = index + 1;
             $(item).find('.js-task-keyword').text('关键词' + length);
-            $(item).find('.js-task-quantity').text('数量' + length);
+            $(item).find('.js-task-quantity').text('数量' + length + '（主人，这个只能输入正整数）');
+            $(item).find('.js-task-hour').text('时段' + length + '(选填，默认平均分配)');
         });
         return;
     }
@@ -122,6 +260,8 @@ $(function() {
 
     /**
      * 创建任务
+     * 1，获取关键词的数量。
+     * 2，多个的话，需要创建多个任务
      * 先要判断用户的积分是否足够
      * @param {any} event 
      * @returns 
@@ -132,54 +272,64 @@ $(function() {
         var taskInfo = getTaskInfo($taskForm);
         // 任务开始时间默认是今天
         taskInfo.taskStartDate = taskInfo.taskStartDate || flyer.formatDate('yyyy-mm-dd');
-        var signKeyTaskInfo = getSignKeyTaskInfo(taskInfo);
         var validTaskInfoResult = validTaskInfo(taskInfo);
         // 验证通过
         if (validTaskInfoResult.isPass) {
-            // 判断用户的积分是否充足
-            APIUtil.createTask(signKeyTaskInfo, function(res, err) {
-                if (err) {
-                    flyer.msg(err.message);
-                    return false;
-                }
-                if (res.data.status !== '1') {
-                    flyer.msg(res.data.tips);
-                    return false;
-                }
-                // 调用第三方api的时候，生成的订单号，需要传回到数据库中，不能再次生成
-                taskInfo.taskOrderNumber = res.orderNumber;
-                taskInfo.taskKeyword = replaceSByDotted(taskInfo.taskKeyword);
-                $.ajax({
-                    url: '/api/createTask',
-                    type: 'POST',
-                    data: taskInfo,
-                    beforeSend: function(jqXHR, settings) {
-                        $.lockedBtn($(ele), true, '创建中');
-                    },
-                    success: function(data, textStatus, jqXHR) {
-                        if (data.success) {
-                            // 获取用户当前的积分余额并提示
-                            flyer.msg('操作成功！！！</br>本次共消费积分：' + taskInfo.taskSumMoney + '</br>' + '积分余额：' + (userInfo.money - taskInfo.taskSumMoney));
-                            core.getUserInfoById(userId, function(user) {
-                                userInfo = user.data.rows[0];
-                                $('#userName').data('user', JSON.stringify(user));
-                            });
-                            core.setWindowHash('manage_task');
-                        } else {
-                            // 操作失败需要取消当前任务
-                            APIUtil.cancelTask(taskInfo.taskOrderNumber, function(res) {
-                                flyer.msg('操作失败：' + res.data.tips);
-                            });
+            for (var i = 0; i < taskInfo.keywordQuantity.length; i++) {
+                (function(index) {
+                    taskInfo.taskKeyword = taskInfo.keywordQuantity[index].keyword;
+                    taskInfo.taskQuantity = taskInfo.keywordQuantity[index].quantity;
+                    taskInfo.taskHour = taskInfo.keywordQuantity[index].hour;
+                    taskInfo.taskSumMoney = taskInfo.taskUnitPrice * taskInfo.taskQuantity;
+                    var signKeyTaskInfo = getSignKeyTaskInfo(taskInfo);
+                    APIUtil.createTask(signKeyTaskInfo, function(res, err) {
+                        if (err) {
+                            flyer.msg(err.message);
+                            return false;
                         }
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        flyer.msg(baseDatas.errorMsg);
-                    },
-                    complete: function(jqXHR, textStatus) {
-                        $.unlockBtn($(ele), '<i class="mdui-icon material-icons">&#xe569;</i>创建任务');
-                    }
-                });
-            });
+                        if (res.data.status !== '1') {
+                            flyer.msg(res.data.tips);
+                            return false;
+                        }
+                        // 调用第三方api的时候，生成的订单号，需要传回到数据库中，不能再次生成
+                        taskInfo.taskOrderNumber = res.orderNumber;
+                        taskInfo.taskKeyword = taskInfo.keywordQuantity[index].keyword;
+                        taskInfo.taskQuantity = taskInfo.keywordQuantity[index].quantity;
+                        taskInfo.taskHour = taskInfo.keywordQuantity[index].hour;
+                        taskInfo.taskSumMoney = taskInfo.taskUnitPrice * taskInfo.taskQuantity;
+                        $.ajax({
+                            url: '/api/createTask',
+                            type: 'POST',
+                            data: taskInfo,
+                            beforeSend: function(jqXHR, settings) {
+                                $.lockedBtn($(ele), true, '创建中');
+                            },
+                            success: function(data, textStatus, jqXHR) {
+                                if (data.success) {
+                                    // 获取用户当前的积分余额并提示
+                                    flyer.msg('操作成功！！！</br>本次共消费积分：' + taskInfo.taskSumMoney + '</br>' + '积分余额：' + (userInfo.money - taskInfo.taskSumMoney));
+                                    core.getUserInfoById(userId, function(user) {
+                                        userInfo = user.data.rows[0];
+                                        $('#userName').data('user', JSON.stringify(user));
+                                    });
+                                    core.setWindowHash('manage_task');
+                                } else {
+                                    // 操作失败需要取消当前任务
+                                    APIUtil.cancelTask(taskInfo.taskOrderNumber, function(res) {
+                                        flyer.msg('操作失败：' + res.data.tips);
+                                    });
+                                }
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                flyer.msg(baseDatas.errorMsg);
+                            },
+                            complete: function(jqXHR, textStatus) {
+                                $.unlockBtn($(ele), '<i class="mdui-icon material-icons">&#xe569;</i>创建任务');
+                            }
+                        });
+                    });
+                })(i)
+            }
         } else {
             flyer.msg(validTaskInfoResult.msg);
         }
@@ -219,14 +369,48 @@ $(function() {
      */
     function getTaskInfo($form) {
         var taskInfo = {};
+        var typeCodeByValue = core.getTypeCodeByValue($('input[name=taskChildType]:checked').val())
+        var keywordQuantity = getKeywordsAndQuantity();
+        var taskSumMoney = keywordQuantity.reduce(function(total, item) {
+            return total + item.quantity;
+        }, 0);
         taskInfo.taskUserId = $('#userName').data('user-id');
         taskInfo.taskParentType = $('#taskTab li.flyer-tab-active').data('task-parent-type');
-        taskInfo.taskUnitPrice = $('#taskPrice').text();
-        taskInfo.taskSumMoney = taskInfo.taskUnitPrice * $('input[name=taskQuantity]').val();
-        taskInfo.taskPlant = core.getTypeCodeByValue($('input[name=taskChildType]:checked').val()).plant;
+        taskInfo.taskUnitPrice = typeCodeByValue.price;
+        // 总价格的计算，需要根据关键字的个数来衡量（单价*数量） 数量 = 关键词1数量+关键词2数量+。。。
+        // taskInfo.taskSumMoney = taskInfo.taskUnitPrice * taskSumMoney;
+        taskInfo.taskPlant = typeCodeByValue.plant;
+        taskInfo.keywordQuantity = keywordQuantity;
         return $.extend(core.getFormValues($form), taskInfo);
     }
 
+    /**
+     * 获取关键字、数量、时间段的分配
+     * 返回对象数组
+     */
+    function getKeywordsAndQuantity() {
+        var keywords = [];
+        var keywordQuantityItem = $('.js-keyword-quantity-container').find('.js-keyword-quantity-item');
+        $.each(keywordQuantityItem, function(index, element) {
+            var keyword = $(element).find('input[name=taskKeyword]').val();
+            var hour = $(element).find('input[name=taskHour]').val();
+            var quantity = Number($(element).find('input[name=taskQuantity]').val());
+            // 关键词存在且数量大于0
+            if (keyword && quantity > 0) {
+                if (hour && hour.split(',').length === 24) {
+                    hour = hour.split(',');
+                } else {
+                    hour = computeEqualPart(quantity, computeMainHourToday());
+                }
+                keywords[index] = {
+                    keyword: keyword,
+                    quantity: quantity,
+                    hour: hour
+                };
+            }
+        });
+        return keywords;
+    }
 
     /**
      * 获取签名和提交到服务器用的参数
@@ -239,10 +423,9 @@ $(function() {
         signKeyTaskInfo.type = core.getTypeCodeByValue(taskInfo.taskChildType).code;
         signKeyTaskInfo.count = taskInfo.taskQuantity;
         signKeyTaskInfo.target = taskInfo.taskBabyLinkToken;
-        signKeyTaskInfo.keyword = replaceSByDotted(taskInfo.taskKeyword);
+        signKeyTaskInfo.keyword = taskInfo.taskKeyword;
         signKeyTaskInfo.sUrl = taskInfo.sUrl;
-        signKeyTaskInfo.hour = computeEqualPart(taskInfo.taskQuantity, computeMainHourToday()).join(',');
-        // signKeyTaskInfo.hour = new Array(24).fill(1);
+        signKeyTaskInfo.hour = taskInfo.taskHour.join(',');
         signKeyTaskInfo.goodsBrowsingTime = taskInfo.taskGoodsBrowsingTime;
         return signKeyTaskInfo;
     }
@@ -349,7 +532,7 @@ $(function() {
     function computeEqualPart(sum, n) {
         // 返回一个长度为24大的数组，默认是使用0进行填充
         var result = new Array(24).fill(0);
-        // sun%n的磨
+        // sun%n的模
         var mode = 0;
         // sum减去余数之后的值
         var main = sum;
