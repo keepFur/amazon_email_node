@@ -1035,6 +1035,33 @@ textarea.flyer-input {
 .task-add-container {
   padding: 24px 0; }
 
+.task-view-order {
+  padding: 16px 8px;
+  padding-top: 0; }
+
+.task-view-status {
+  margin-top: 24px;
+  background: #f9f9f9;
+  border: #ddd 1px solid;
+  padding: 4px 8px; }
+  .task-view-status i {
+    color: #32ac90;
+    cursor: pointer;
+    margin-left: 8px; }
+
+.task-view-sum {
+  margin-top: 16px;
+  background: #f4f5f9;
+  border: 1px solid #E1E6EB;
+  border-left: 3px solid #778;
+  padding: 8px; }
+
+.task-detail-table {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important; }
+  .task-detail-table td, .task-detail-table th {
+    border-right: 1px solid rgba(0, 0, 0, 0.12); }
+
 /*** Parameters ***/
 #filesTable {
   margin-top: 10px; }

@@ -1,5 +1,5 @@
 "use strict";
-$(function() {
+$(function () {
     /**
      * 首页入口函数
      */
@@ -15,7 +15,7 @@ $(function() {
      */
     function initEvent() {
         // 导航栏点击事件
-        $(".flyer-layout-tree").on("click", ".flyer-layout-link", function() {
+        $(".flyer-layout-tree").on("click", ".flyer-layout-link", function () {
             var pageUrl = $(this).data("url") || 'home.html';
             var pageHash = $(this).data('hash') || 'home';
             var $links = $(".flyer-layout-tree .flyer-layout-link");
@@ -26,26 +26,26 @@ $(function() {
         });
 
         // window hashChange事件
-        window.onhashchange = function() {
+        window.onhashchange = function () {
             var url = getPageUrlByHash();
             triggerHomeClick(window.location.hash);
             loadPageByUrl(url);
         };
 
         // window的resize事件
-        window.onresize = function() {
+        window.onresize = function () {
             $('.flyer-layout-tree').height(window.innerHeight - 164);
         };
 
         // 版本更新信息点击事件
-        $(".footer-brand").on("click", function(event) {
+        $(".footer-brand").on("click", function (event) {
             flyer.open({
                 isModal: true,
                 area: [500, 300],
                 title: '版本更新说明',
                 content: $(".footer-brand").data('updatecontent'),
                 btns: [{
-                    click: function() {
+                    click: function () {
                         this.close();
                     },
                     text: '关闭'
@@ -61,7 +61,7 @@ $(function() {
      */
     function getPageUrlByHash(hash) {
         hash = hash || window.location.hash;
-        return !hash ? 'html/home.html' : 'html/' + hash.replace('#', '') + '.html';
+        return !hash ? 'html/home.html' : 'html/' + hash.split('?')[0].replace('#', '') + '.html';
     }
 
     /**
@@ -73,10 +73,10 @@ $(function() {
         $container = $container || $('.flyer-layout-content');
         $.ajax({
             url: pageUrl,
-            success: function(res) {
+            success: function (res) {
                 $container.html(res);
             },
-            error: function(error) {
+            error: function (error) {
                 triggerHomeClick();
                 $.writeLog('index-loadPage', '没有找到[' + getPageUrlByHash() + ']页面');
             }

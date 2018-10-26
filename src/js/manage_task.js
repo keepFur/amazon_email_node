@@ -249,8 +249,9 @@ flyer.define('task_manage', function (exports, module) {
                 }
                 ],
                 data: datas,
-                rowClick: function () {
-                    // core.setWindowHash('task_create', '');
+                rowClick: function (index, row) {
+                    console.log(row);
+                    core.setWindowHash('task_view', '?taskId=' + row.id);
                 }
             });
         } else {
