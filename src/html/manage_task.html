@@ -1,42 +1,48 @@
 <div>
-    <div class="flyer-tab flyer-tab-default">
-        <div class="flyer-tab-title">
-            <ul id="manageTaskTab">
-                <li data-index="0" data-task-plant="" class="flyer-tab-active">全部任务</li>
-                <li data-index="1" data-task-plant="TB">淘宝任务</li>
-                <li data-index="2" data-task-plant="JD">京东任务</li>
-                <li data-index="3" data-task-plant="PDD">拼多多任务</li>
-            </ul>
-        </div>
-        <div class="flyer-tab-content">
-            <div class="flyer-layout-previewTitle">
-                <span class="flyer-layout-blod">任务列表</span>
-                <span>(当前显示</span>
-                <span id="currentTaskMountSpan">0</span>
-                <span>个，共</span>
-                <span class="flyer-layout-allNum" id="taskMountSpan">0</span>
-                <span>个</span>
-                <span class="flyer-search-conditions"></span>)
-            </div>
-            <!-- 按钮结构 -->
-            <div class='btn-container'>
-                <button class="flyer-btn flyer-btn-blue createTask">创建任务</button>
-                <button class="flyer-btn flyer-btn-default disabledTask">暂停</button>
-                <button class="flyer-btn flyer-btn-default enabledTask">恢复</button>
-                <button class="flyer-btn flyer-btn-default cancelTask">取消</button>
-                <!-- 分页插件 -->
-                <div class='paper-container first'></div>
-                <div class="pager-size-container" id="taskPagerSize"></div>
-            </div>
-            <!-- 表单结构 -->
-            <div class='table-container' id="taskTable"></div>
-            <div class='btn-container footer-upper'>
-                <button class="flyer-btn flyer-btn-blue createTask">创建任务</button>
-                <button class="flyer-btn flyer-btn-default disabledTask">暂停</button>
-                <button class="flyer-btn flyer-btn-default enabledTask">恢复</button>
-                <button class="flyer-btn flyer-btn-default cancelTask">取消</button>
-                <!-- 分页插件 -->
-                <div class='paper-container'></div>
+    <div class="layui-tab layui-tab-brief" lay-filter="manageTask">
+        <ul class="layui-tab-title">
+            <li class="layui-this">全部任务</li>
+            <li>淘宝任务</li>
+            <li>京东任务</li>
+            <li>拼多多任务</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <div class="flyer-layout-previewTitle">
+                    <span class="flyer-layout-blod">任务列表</span>
+                    <span>(当前显示</span>
+                    <span id="currentTaskMountSpan">0</span>
+                    <span>个，共</span>
+                    <span class="flyer-layout-allNum" id="taskMountSpan">0</span>
+                    <span>个</span>
+                    <span class="flyer-search-conditions"></span>)
+                </div>
+                <form class="layui-form clearfix" id="taskSearchForm">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input type="text" name="taskOrderNumber" placeholder="订单号，支持模糊查询" class="layui-input js-date-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input type="text" name="taskName" placeholder="任务名称，支持模糊搜索" class="layui-input js-date-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input type="text" name="taskKeyword" placeholder="关键词，支持模糊搜索" class="layui-input js-date-input">
+                            </div>
+                            <button class="layui-btn layui-btn-normal" id="searchBtn">查询</button>
+                            <button class="layui-btn layui-btn-normal" id="resetBtn">重置</button>
+                            <button class="layui-btn layui-btn-normal" id="createTaskBtn">创建任务</button>
+                            <button class="layui-btn layui-btn-normal" id="disabledTaskBtn">暂停</button>
+                            <button class="layui-btn layui-btn-normal" id="enabledTaskBtn">恢复</button>
+                            <button class="layui-btn layui-btn-normal" id="cancelTaskBtn">取消</button>
+                        </div>
+                    </div>
+                </form>
+                <div id="taskTable" lay-filter="task"></div>
             </div>
         </div>
     </div>
