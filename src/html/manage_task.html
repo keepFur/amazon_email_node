@@ -33,15 +33,17 @@
                             <div class="layui-input-inline">
                                 <input type="text" name="taskKeyword" placeholder="关键词，支持模糊搜索" class="layui-input js-date-input">
                             </div>
-                            <button class="layui-btn layui-btn-normal" id="searchBtn">查询</button>
-                            <button class="layui-btn layui-btn-normal" id="resetBtn">重置</button>
-                            <button class="layui-btn layui-btn-normal" id="createTaskBtn">创建任务</button>
-                            <button class="layui-btn layui-btn-normal" id="disabledTaskBtn">暂停</button>
-                            <button class="layui-btn layui-btn-normal" id="enabledTaskBtn">恢复</button>
-                            <button class="layui-btn layui-btn-normal" id="cancelTaskBtn">取消</button>
+                            <button class="layui-btn layui-btn-primary" id="searchBtn">查询</button>
+                            <button class="layui-btn layui-btn-primary" id="resetBtn">重置</button>
                         </div>
                     </div>
                 </form>
+                <div class="layui-form-item">
+                    <button class="layui-btn layui-btn-normal layui-btn-sm" id="createTaskBtn">创建任务</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="disabledTaskBtn">暂停</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="enabledTaskBtn">恢复</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="cancelTaskBtn">取消</button>
+                </div>
                 <div id="taskTable" lay-filter="task"></div>
             </div>
         </div>

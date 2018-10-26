@@ -253,6 +253,8 @@ section.flyer-layout-content {
   padding-bottom: 40px;
   overflow: hidden;
   min-height: 400px; }
+  section.flyer-layout-content .layui-tab {
+    margin: 0; }
   section.flyer-layout-content .btn-container {
     height: 32px;
     line-height: 32px;
@@ -1026,7 +1028,7 @@ textarea.flyer-input {
   padding-left: 10px; }
 
 .task-detail-container {
-  padding: 24px 0;
+  padding: 24px 42px;
   border: 3px #eee dotted;
   margin: 16px 0 8px;
   border-left: none;

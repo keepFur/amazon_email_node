@@ -1,17 +1,25 @@
 // 创建任务模块
 'use strict';
-$(function() {
+layui.use(['element', 'table', 'layer', 'laydate', 'form'], function () {
+    var element = layui.element;
+    var table = layui.table;
+    var layer = layui.layer;
+    var laydate = layui.laydate;
+    var form = layui.form;
     var userInfo = $('#userName').data('user');
     var userId = $('#userName').data('user-id');
+    var baseDatas = {
+        tabIndex: 0
+    };
     // 页面入口
-    function init() {
+    (function init() {
         initEvent();
         initComponent();
-        core.getUserInfoById(userId, function(user) {
+        core.getUserInfoById(userId, function (user) {
             userInfo = user.data.rows[0];
             $('#userName').data('user', JSON.stringify(user));
         });
-    }
+    })()
 
     /**
      * 初始化组件
@@ -19,9 +27,11 @@ $(function() {
      */
     function initComponent() {
         // 日期组件
-        var taskStartDate = flyer.date($('#taskStartDate'), {
-            format: 'yyyy-mm-dd'
+        laydate.render({
+            format: 'yyyy-MM-dd',
+            elem: '#taskStartDate'
         });
+        form.render('radio');
         $('#taskStartDate').val(flyer.formatDate('yyyy-mm-dd'));
         // 设置单价的值
         $('#taskPrice').text(core.getTypeCodeByValue($('input[type=radio][name=taskChildType]:checked').val()).price);
@@ -33,30 +43,28 @@ $(function() {
      */
     function initEvent() {
         // 自定义页签的点击事件
-        core.initTabClick($('#taskTab li'), toggleTaskIndex);
-        // 任务平台的点击事件
-        $('form[name=taskForm]').find('input[name=taskPlant]').on('change', function(event) {
-            if ($('#taskTab li[data-index=2]').hasClass('flyer-tab-active')) {
-                $('input[value=APPOINTMENT_SOLD]').prop('disabled', $(this).val() === '1');
-                if ($(this).val() === '1' && $('input[value=APPOINTMENT_SOLD]').is(':checked')) {
-                    $('input[value=SEARCH_ADDCART]').prop('checked', true);
-                }
+        element.on('tab(createTask)', function (data) {
+            if (data.index !== baseDatas.tabIndex) {
+                toggleTaskIndex($(this));
+                form.render('radio');
+                baseDatas.tabIndex = data.index;
             }
-            return false;
         });
         // 任务类型的点击事件，动态的更新价格
-        $('.js-task-index').on('change', 'input[type=radio][name=taskChildType]', function(event) {
-            var quantity = $('input[name=taskQuantity]').val();
-            $('#taskPrice').text(core.getTypeCodeByValue($(this).val()).price);
-            if (quantity) {
-                $('#taskSumMoney').text(core.numberToLocalString($('#taskPrice').text() * quantity));
+        form.on('radio', function (data) {
+            if (this.name === 'taskChildType') {
+                var quantity = $('input[name=taskQuantity]').val();
+                $('#taskPrice').text(core.getTypeCodeByValue(this.value).price);
+                if (quantity) {
+                    $('#taskSumMoney').text(core.numberToLocalString($('#taskPrice').text() * quantity));
+                }
             }
         });
         // 数量输入框的keyup事件
-        $('input[name=taskQuantity]').on('keyup', function(event) {
+        $('input[name=taskQuantity]').on('keyup', function (event) {
             var value = this.value;
             if (!isNaN(value) && value > 0) {
-                var sum = getKeywordsAndQuantity().reduce(function(total, item) {
+                var sum = getKeywordsAndQuantity().reduce(function (total, item) {
                     return total + item.quantity;
                 }, 0);
                 $('#taskSumMoney').text(core.numberToLocalString(sum * $('#taskPrice').text()));
@@ -66,7 +74,7 @@ $(function() {
         });
         ["begin_time", "count", "format", "goodsBrowsingTime", "hour", "id", "keyword", "sUrl", "signkey", "target", "timestamp", "type", "username", "ver"]
         // 任务时段输入框的点击事件
-        $('input[name=taskHour]').on('click', function(events) {
+        $('input[name=taskHour]').on('click', function (events) {
             var $this = $(this);
             var tepl = generateSetTaskHourTemp();
             var quantity = $this.parents('.js-keyword-quantity-item').find('input[name=taskQuantity]').val();
@@ -85,18 +93,18 @@ $(function() {
                 }, {
                     text: '重置',
                     close: false,
-                    onClick: function() {
+                    onClick: function () {
                         setTaskHourQuantity(computeEqualPart(quantity, computeMainHourToday()));
                         return false;
                     }
                 }, {
                     text: '确定',
-                    onClick: function() {
+                    onClick: function () {
                         var quantitys = getTaskHourQuantity();
                         new mdui.Tooltip($this[0], {
                             content: `关键字/数量（${keyword}/${quantity}）:</br>
-                                      00:00-07:00: ${quantitys.slice(0,8).join(',')}</br>
-                                      08:00-15:00: ${quantitys.slice(8,16).join(',')}</br>
+                                      00:00-07:00: ${quantitys.slice(0, 8).join(',')}</br>
+                                      08:00-15:00: ${quantitys.slice(8, 16).join(',')}</br>
                                       16:00-23:00: ${quantitys.slice(16).join(',')}`
                         });
                         $this.val(quantitys.join(','));
@@ -206,7 +214,7 @@ $(function() {
     function getTaskHourQuantity() {
         var quantity = [];
         var inputs = $('#setTaskHourContainer input');
-        inputs.each(function(i, item) {
+        inputs.each(function (i, item) {
             item = $(item);
             quantity[i] = Number(isNaN(item.val()) ? 0 : item.val());
         });
@@ -219,7 +227,7 @@ $(function() {
      */
     function setTaskHourQuantity(hours) {
         var inputs = $('#setTaskHourContainer input');
-        inputs.each(function(i, item) {
+        inputs.each(function (i, item) {
             item = $(item);
             item.val(hours[i]);
         });
@@ -231,11 +239,11 @@ $(function() {
      */
     function setKeywordAndQuantityIndex() {
         var $items = $('.js-keyword-quantity-container').find('.js-keyword-quantity-item');
-        $.each($items, function(index, item) {
+        $.each($items, function (index, item) {
             var length = index + 1;
             $(item).find('.js-task-keyword').text('关键词' + length);
-            $(item).find('.js-task-quantity').text('数量' + length + '（主人，这个只能输入正整数）');
-            $(item).find('.js-task-hour').text('时段' + length + '(选填，默认平均分配)');
+            $(item).find('.js-task-quantity').text('数量' + length);
+            $(item).find('.js-task-hour').text('时段' + length);
         });
         return;
     }
@@ -276,13 +284,13 @@ $(function() {
         // 验证通过
         if (validTaskInfoResult.isPass) {
             for (var i = 0; i < taskInfo.keywordQuantity.length; i++) {
-                (function(index) {
+                (function (index) {
                     taskInfo.taskKeyword = taskInfo.keywordQuantity[index].keyword;
                     taskInfo.taskQuantity = taskInfo.keywordQuantity[index].quantity;
                     taskInfo.taskHour = taskInfo.keywordQuantity[index].hour;
                     taskInfo.taskSumMoney = taskInfo.taskUnitPrice * taskInfo.taskQuantity;
                     var signKeyTaskInfo = getSignKeyTaskInfo(taskInfo);
-                    APIUtil.createTask(signKeyTaskInfo, function(res, err) {
+                    APIUtil.createTask(signKeyTaskInfo, function (res, err) {
                         if (err) {
                             flyer.msg(err.message);
                             return false;
@@ -301,29 +309,29 @@ $(function() {
                             url: '/api/createTask',
                             type: 'POST',
                             data: taskInfo,
-                            beforeSend: function(jqXHR, settings) {
+                            beforeSend: function (jqXHR, settings) {
                                 $.lockedBtn($(ele), true, '创建中');
                             },
-                            success: function(data, textStatus, jqXHR) {
+                            success: function (data, textStatus, jqXHR) {
                                 if (data.success) {
                                     // 获取用户当前的积分余额并提示
                                     flyer.msg('操作成功！！！</br>本次共消费积分：' + taskInfo.taskSumMoney + '</br>' + '积分余额：' + (userInfo.money - taskInfo.taskSumMoney));
-                                    core.getUserInfoById(userId, function(user) {
+                                    core.getUserInfoById(userId, function (user) {
                                         userInfo = user.data.rows[0];
                                         $('#userName').data('user', JSON.stringify(user));
                                     });
                                     core.setWindowHash('manage_task');
                                 } else {
                                     // 操作失败需要取消当前任务
-                                    APIUtil.cancelTask(taskInfo.taskOrderNumber, function(res) {
+                                    APIUtil.cancelTask(taskInfo.taskOrderNumber, function (res) {
                                         flyer.msg('操作失败：' + res.data.tips);
                                     });
                                 }
                             },
-                            error: function(jqXHR, textStatus, errorThrown) {
+                            error: function (jqXHR, textStatus, errorThrown) {
                                 flyer.msg(baseDatas.errorMsg);
                             },
-                            complete: function(jqXHR, textStatus) {
+                            complete: function (jqXHR, textStatus) {
                                 $.unlockBtn($(ele), '<i class="mdui-icon material-icons">&#xe569;</i>创建任务');
                             }
                         });
@@ -371,7 +379,7 @@ $(function() {
         var taskInfo = {};
         var typeCodeByValue = core.getTypeCodeByValue($('input[name=taskChildType]:checked').val())
         var keywordQuantity = getKeywordsAndQuantity();
-        var taskSumMoney = keywordQuantity.reduce(function(total, item) {
+        var taskSumMoney = keywordQuantity.reduce(function (total, item) {
             return total + item.quantity;
         }, 0);
         taskInfo.taskUserId = $('#userName').data('user-id');
@@ -391,7 +399,7 @@ $(function() {
     function getKeywordsAndQuantity() {
         var keywords = [];
         var keywordQuantityItem = $('.js-keyword-quantity-container').find('.js-keyword-quantity-item');
-        $.each(keywordQuantityItem, function(index, element) {
+        $.each(keywordQuantityItem, function (index, element) {
             var keyword = $(element).find('input[name=taskKeyword]').val();
             var hour = $(element).find('input[name=taskHour]').val();
             var quantity = Number($(element).find('input[name=taskQuantity]').val());
@@ -442,7 +450,7 @@ $(function() {
             return [];
         }
         var $items = $('.js-keyword-quantity-item');
-        $.each($items, function(index, item) {
+        $.each($items, function (index, item) {
             result.push({
                 taskKeyword: $(item).find('input[name=taskKeyword]').val(),
                 taskQuantity: $(item).find('input[name=taskQuantity]').val()
@@ -509,17 +517,12 @@ $(function() {
     function toggleTaskIndex($li) {
         var $taskIndex = $('.js-task-index');
         var $form = $('form[name=taskForm]');
-        // var $taskPlant = $form.find('input[name=taskPlant]');
         var $taskSearchIndex = $form.find('.js-task-search-index');
         var index = $li.data('index');
-        $taskIndex.addClass('mdui-hidden').find('input[type=radio]').prop('checked', false);
-        $taskIndex.eq(index).removeClass('mdui-hidden').find('input[type=radio]').first().prop('checked', true);
+        $taskIndex.addClass('layui-hide').find('input[type=radio]').prop('checked', false);
+        $taskIndex.eq(index).removeClass('layui-hide').find('input[type=radio]').first().prop('checked', true);
         // 搜索入口只有淘宝流量入口有
         $taskSearchIndex.toggle((index === 0 || index == 1));
-        // 店铺关注任务，只能是京东才有，所以需要禁用淘宝
-        // $taskPlant.first().prop('disabled', index === 4).prop('checked', index !== 4).end().last().prop('checked', index === 4);
-        // 淘宝直播任务只能是淘宝平台
-        // $taskPlant.last().prop('disabled', index === 3).prop('checked', index !== 3).end().first().prop('checked', index === 3);
     }
 
     /**
@@ -563,5 +566,4 @@ $(function() {
         }
         return $.trim(str).replace(/(\s|，)+/g, ',');
     }
-    init();
 });

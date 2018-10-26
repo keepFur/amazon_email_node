@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
     <div class="flyer-tab flyer-tab-default">
         <div class="flyer-tab-title">
             <ul id="taskTab">
@@ -209,6 +209,164 @@
             <div class="mdui-row-xs-1 task-add-container">
                 <div class="mdui-col">
                     <button class="mdui-btn mdui-btn-raised mdui-btn-block mdui-color-pink" id="createTask"><i class="mdui-icon material-icons">&#xe569;</i>创建任务</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<div>
+    <div class="layui-tab layui-tab-brief" lay-filter="createTask">
+        <ul class="layui-tab-title">
+            <li data-index="0" data-task-parent-type="TRFFIC" class="layui-this">淘宝流量任务</li>
+            <li data-index="1" data-task-parent-type="COLLECT">淘宝收藏任务</li>
+            <li data-index="2" data-task-parent-type="ADD_CART">淘宝加购任务</li>
+            <li data-index="3" data-task-parent-type="TB_LIVE">淘宝直播任务</li>
+            <li data-index="4" data-task-parent-type="JD_SHOP_ATTENTION">京东店铺任务</li>
+            <li data-index="5" data-task-parent-type="PDD_APP_TRAFFIC">拼多多流量APP</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form" name="taskForm">
+                    <div class="layui-form-item js-task-search-index">
+                        <label class="layui-form-label">搜索入口</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="sUrl" value="https://www.taobao.com" title="淘宝" checked>
+                            <input type="radio" name="sUrl" value="https://www.tmall.com" title="天猫">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">PS:天猫商品允许淘宝入口，淘宝商品不允许天猫入口</div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">流量入口</label>
+                        <div class="js-task-index" data-index='0'>
+                            <div class="layui-input-block">
+                                <input type="radio" name="taskChildType" value="APP_SEARCH" title="APP搜索流量" checked>
+                                <input type="radio" name="taskChildType" value="PC_SEARCH" title="PC搜索流量">
+                                <input type="radio" name="taskChildType" value="DIRECT_SHOP" title="直访店铺流量">
+                                <input type="radio" name="taskChildType" value="DIRECT_PRODUCT" title="直访商品流量">
+                            </div>
+                        </div>
+                        <div class="js-task-index layui-hide" data-index='1'>
+                            <div class="layui-input-block">
+                                <input type="radio" name="taskChildType" value="SEARCH_COLLECT_APP" title="搜索收藏APP端">
+                                <input type="radio" name="taskChildType" value="PRODUCT_COLLECT_APP" title="商品收藏APP端">
+                                <input type="radio" name="taskChildType" value="SHOP_COLLECT_APP" title="店铺收藏APP端">
+                            </div>
+                        </div>
+                        <div class="js-task-index layui-hide" data-index='2'>
+                            <div class="layui-input-block">
+                                <input type="radio" name="taskChildType" value="SEARCH_ADDCART" title="搜索加购">
+                                <input type="radio" name="taskChildType" value="DIRECT_ADDCART" title="直接加购">
+                            </div>
+                        </div>
+                        <div class="js-task-index layui-hide" data-index='3'>
+                            <div class="layui-input-block">
+                                <input type="radio" name="taskChildType" value="LIVE_ATTENTION" title="直播关注">
+                                <input type="radio" name="taskChildType" value="WEITAO_GOOD" title="微淘点赞">
+                                <input type="radio" name="taskChildType" value="LIVE_WATCH" title="直播观看">
+                                <input type="radio" name="taskChildType" value="START_TIP" title="开团提醒">
+                            </div>
+                        </div>
+                        <div class="js-task-index layui-hide" data-index='4'>
+                            <div class="layui-input-block">
+                                <input type="radio" name="taskChildType" value="JD_TRIFFIC" title="京东流量">
+                                <input type="radio" name="taskChildType" value="JD_PRODUCT_COLLECT" title="京东商品收藏">
+                                <input type="radio" name="taskChildType" value="JD_SHOP_ATTENTION" title="京东店铺关注">
+                                <input type="radio" name="taskChildType" value="JD_ADD_CART" title="京东加购">
+                                <input type="radio" name="taskChildType" value="JD_EXPERT_ATTENTION" title="京东达人关注">
+                                <input type="radio" name="taskChildType" value="JD_APPOINTMENT_SOLD" title="京东预约抢购">
+                            </div>
+                        </div>
+                        <div class="js-task-index layui-hide" data-index='5'>
+                            <div class="layui-input-block">
+                                <input type="radio" name="taskChildType" value="PDD_APP_TRAFFIC" title="拼多多APP流量">
+                                <input type="radio" name="taskChildType" value="PDD_SHOP_COLLECT" title="拼多多店铺收藏">
+                                <input type="radio" name="taskChildType" value="PDD_PRODUCT_DIRECT_COLLECT" title="拼多多商品直接收藏">
+                                <input type="radio" name="taskChildType" value="PDD_PRODUCT_SERACH_COLLECT" title="拼多多商品搜索收藏">
+                            </div>
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">PS:任务类型不同，流量入口也不同</div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">任务名称</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="taskName" autocomplete="off" placeholder="老板，请赐我芳名" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">开始日期</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="taskStartDate" autocomplete="off" id="taskStartDate" placeholder="可不填，默认是当天" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">可不填，默认是当天</div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">浏览时长</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="taskGoodsBrowsingTime" value="51" placeholder="不能低于50秒" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">不能低于50秒</div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">宝贝链接</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="taskBabyLinkToken" class="layui-input" placeholder="商品链接/店铺链接,需要和流量入口相匹配，比如说淘宝店铺的任务就必须是淘宝店铺链接，不允许是其他链接，否则下不了单！谢谢老板配合">
+                        </div>
+                    </div>
+                    <hr class="layui-bg-green">
+                    <div class="js-keyword-quantity-container">
+                        <div class="js-keyword-quantity-item">
+                            <div class="layui-form-item">
+                                <div class="layui-inline">
+                                    <label class="layui-form-label js-task-keyword">关键词1</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="taskKeyword" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label js-task-quantity">数量1</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="taskQuantity" autocomplete="off" placeholder="老板，这个只能输入正整数" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label js-task-hour">时段1</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="taskHour" autocomplete="off" placeholder="选填，默认平均分配" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">操作</label>
+                                    <div class="layui-input-inline">
+                                        <div class="layui-btn-group">
+                                            <button class="layui-btn layui-btn-primary layui-btn-sm js-delete-keyword-quantity"><i
+                                                    class="layui-icon layui-icon-delete"></i></button>
+                                            <button class="layui-btn layui-btn-primary layui-btn-sm js-add-keyword-quantity"><i
+                                                    class="layui-icon layui-icon-add-circle-fine"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="layui-row task-detail-container">
+                    <div class="layui-col-xs4">
+                        <span>任务耗时：<em id="taskSumTime">1</em>天</span>
+                    </div>
+                    <div class="layui-col-xs4">
+                        <span>单次消费：<em id="taskPrice">100</em>积分</span>
+                    </div>
+                    <div class="layui-col-xs4">
+                        <span>总消费：<em id="taskSumMoney">0</em>积分</span>
+                    </div>
+                </div>
+                <div class="task-add-container">
+                    <div class="layui-row">
+                        <button class="layui-btn layui-btn-normal" style="width:100%;" id="createTask"> <i class="layui-icon layui-icon-release"></i>创建任务</button>
+                    </div>
                 </div>
             </div>
         </div>

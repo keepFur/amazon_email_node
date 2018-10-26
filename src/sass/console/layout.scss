@@ -234,6 +234,9 @@ section.flyer-layout-content {
     padding-bottom: 40px;
     overflow: hidden;
     min-height: 400px;
+    .layui-tab{
+        margin: 0;
+    }
     .btn-container {
         height: 32px;
         line-height: 32px;
