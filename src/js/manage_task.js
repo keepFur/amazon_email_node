@@ -250,8 +250,7 @@ flyer.define('task_manage', function (exports, module) {
                 ],
                 data: datas,
                 rowClick: function (index, row) {
-                    console.log(row);
-                    core.setWindowHash('task_view', '?taskId=' + row.id);
+                    // core.setWindowHash('task_view', '?taskId=' + row.id);
                 }
             });
         } else {
