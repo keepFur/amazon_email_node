@@ -84,40 +84,33 @@ layui.use(['element', 'table', 'layer', 'laydate', 'form'], function () {
                 return false;
             }
             var hours = $this.val().split(',');
-            mdui.dialog({
+            var index = layer.open({
                 title: `设置任务时段（${keyword}/${quantity}）`,
                 content: tepl,
-                history: false,
-                buttons: [{
-                    text: '取消',
-                }, {
-                    text: '重置',
-                    close: false,
-                    onClick: function () {
-                        setTaskHourQuantity(computeEqualPart(quantity, computeMainHourToday()));
-                        return false;
-                    }
-                }, {
-                    text: '确定',
-                    onClick: function () {
-                        var quantitys = getTaskHourQuantity();
-                        var content = `关键词/数量（${keyword}/${quantity}）:</br>
-                                       00:00-07:00: ${quantitys.slice(0, 8).join(',')}</br>
-                                       08:00-15:00: ${quantitys.slice(8, 16).join(',')}</br>
-                                       16:00-23:00: ${quantitys.slice(16).join(',')}`;
-                        (function (msg) {
-                            var tip = undefined;
-                            $this.hover(function () {
-                                tip = layer.tips(msg, $this[0], { tips: 1, time: 0 });
-                            }, function () {
-                                layer.close(tip);
-                            });
-                        })(content)
-                        $this.val(quantitys.join(','));
-                        flyer.msg('设置成功');
-                        return false;
-                    }
-                }]
+                area: ['720px'],
+                btn: ['确定', '重置', '取消'],
+                btn1: function () {
+                    var quantitys = getTaskHourQuantity();
+                    var content = `关键词/数量（${keyword}/${quantity}）:</br>
+                                   00:00-07:00: ${quantitys.slice(0, 8).join(',')}</br>
+                                   08:00-15:00: ${quantitys.slice(8, 16).join(',')}</br>
+                                   16:00-23:00: ${quantitys.slice(16).join(',')}`;
+                    (function (msg) {
+                        var tip = undefined;
+                        $this.hover(function () {
+                            tip = layer.tips(msg, $this[0], { tips: 1, time: 0 });
+                        }, function () {
+                            layer.close(tip);
+                        });
+                    })(content)
+                    $this.val(quantitys.join(','));
+                    layer.close(index);
+                    flyer.msg('设置成功');
+                },
+                btn2: function () {
+                    setTaskHourQuantity(computeEqualPart(quantity, computeMainHourToday()));
+                    return false;
+                }
             });
             if (hours.length === 24) {
                 setTaskHourQuantity(hours);
