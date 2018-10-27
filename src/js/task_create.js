@@ -1,6 +1,6 @@
 // 创建任务模块
 'use strict';
-; !$(function () {
+layui.use(['element', 'layer', 'laydate', 'form'], function () {
     var element = layui.element;
     var layer = layui.layer;
     var laydate = layui.laydate;
