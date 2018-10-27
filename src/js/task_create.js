@@ -157,19 +157,20 @@ layui.use(['element', 'table', 'layer', 'laydate', 'form'], function () {
     function generateSetTaskHourTemp() {
         // 生成一行(时间)
         function generateTrTime(start, end) {
-            var result = `<tr>`;
+            var result = `<tr class="layui-table-nohover">`;
             for (var i = start; i < end; i++) {
-                result += `<td class="mdui-p-l-1  mdui-p-r-1">${core.padStart(i)}:00</td>`;
+                result += `<td style="padding-left:8px;padding-right:8px;">${core.padStart(i)}:00</td>`;
             }
             return result + '</tr>';
         }
         // 生成一行输入框
         function generateTrInput(count) {
-            var result = `<tr>`;
+            var result = `<tr class="layui-table-nohover">`;
             for (var i = 0; i < count; i++) {
-                result += `<td class="mdui-p-t-0 mdui-p-b-0 mdui-p-l-1  mdui-p-r-1">
-                                <div class="mdui-textfield mdui-p-t-0">
-                                    <input class="mdui-textfield-input" type="text" value="0"/>
+                result += `<td style="padding:0 8px;">
+                                <div class="layui-input-inline" style="padding-top:0;padding-bottom:8px;">
+                                    <input class="layui-input" type="text" value="0"
+                                    style="border: none;border-bottom: 1px solid rgba(0,0,0,.42);border-radius: 0;"/>
                                 </div>
                             </td>`;
             }
@@ -185,8 +186,8 @@ layui.use(['element', 'table', 'layer', 'laydate', 'form'], function () {
                 result += generateTrInput(count);
             }
         }
-        var temp = `<div class="mdui-table-fluid" id="setTaskHourContainer">
-                        <table class="mdui-table">
+        var temp = `<div id="setTaskHourContainer">
+                        <table class="layui-table">
                             <tbody>
                             ${result}
                             </tbody>

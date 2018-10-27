@@ -8,6 +8,9 @@
 .task-add-container {
   padding: 24px 0; }
 
+.layui-table-nohover:hover {
+  background-color: #fff !important; }
+
 .task-view-order {
   padding: 16px 8px;
   padding-top: 0; }

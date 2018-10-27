@@ -58,8 +58,8 @@ layui.use(['element', 'layer', 'form'], function () {
                                 <button class="layer-btn layer-btn-normal" id="jsPayCodeRefresh" style="display:none;">刷新</button>
                             </div>
                             <div>
-                                <span class="mdui-float-left">付款金额：<spam id="payMount">100</spam>元</span>
-                                <span class="mdui-float-right">收款人：易店科技</span>
+                                <span class="pull-left">付款金额：<spam id="payMount">100</spam>元</span>
+                                <span class="pull-right">收款人：易店科技</span>
                             </div>
                         </div>`,
             area: ['450px', '520px'],
@@ -233,16 +233,6 @@ layui.use(['element', 'layer', 'form'], function () {
                     data-present-money="${info.packagePresentMoney}"
                     title="${info.packageName}">
                 </input>`;
-        // return `<label class="mdui-radio">
-        //                     <input type="radio" name="addPackageType" ${isChecked ? 'checked' : ''} 
-        //                     value="${info.id}" data-purchase-score="${info.packagePurchaseScore}" 
-        //                     data-present-score="${info.packagePresentScore}"
-        //                     data-purchase-money="${info.packagePurchaseMoney}" 
-        //                     data-present-money="${info.packagePresentMoney}"
-        //                     />
-        //                     <i class="mdui-radio-icon"></i>
-        //                     ${info.packageName}
-        //         </label>`;
     }
 
     /**

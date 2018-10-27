@@ -75,6 +75,12 @@
 .layui-text-pink {
   color: #FF5722; }
 
+.pull-left {
+  float: left; }
+
+.pull-right {
+  float: right; }
+
 body {
   color: #333;
   font-family: Arial, Console, Verdana, Courier New; }
@@ -1046,6 +1052,9 @@ textarea.flyer-input {
 
 .task-add-container {
   padding: 24px 0; }
+
+.layui-table-nohover:hover {
+  background-color: #fff !important; }
 
 .task-view-order {
   padding: 16px 8px;
