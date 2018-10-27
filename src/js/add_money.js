@@ -1,19 +1,22 @@
 //  用户充值模块
 "use strict";
-$(function() {
+layui.use(['element', 'layer', 'form'], function () {
+    var element = layui.element;
+    var layer = layui.layer;
+    var form = layui.form;
     var collectPrice = 0.08; //0.05
     var trafficPrice = 0.01; //0.06
     // 入口函数
-    function init() {
+    (function init() {
         initComponment();
         initEvent();
-    }
+    })()
 
     // 初始化组件
     function initComponment() {
         // 设置账号信息以及用户剩余积分
-        $('form[name=addMoneyForm] input[name=userName]').val($('#userName').text());
-        core.getUserInfoById($('#userName').data('user-id'), function(res) {
+        $('form[name=addMoneyForm] input[name=userName]').val($('#userName').text().trim());
+        core.getUserInfoById($('#userName').data('user-id'), function (res) {
             $('#userMainMoney').text(res.data.rows[0].money);
         });
         // 获取所有的充值方式并渲染
@@ -27,8 +30,8 @@ $(function() {
     }
 
     // 充值套餐点击函数
-    function addPackageTypeHandle(event) {
-        var $this = $(this);
+    function addPackageTypeHandle(elem) {
+        var $this = $(elem);
         var purchaseScore = $this.data('purchase-score');
         var presentScore = $this.data('present-score');
         var purchaseMoney = $this.data('purchase-money');
@@ -46,58 +49,67 @@ $(function() {
     // 充值点击函数
     function addMoneyHandle(event) {
         var checkedPackage = $('input[type=radio][name=addPackageType]:checked');
-        var open = flyer.open({
-            pageUrl: '/html/add_money_pay.html',
-            isModal: true,
-            area: [450, 430],
+        var open = {};
+        layer.open({
+            content: `<div class="js-pay-container">
+                            <h3 style="text-align:center;">打开微信或者支付宝扫一扫即可付款</h3>
+                            <div>
+                                <img width="100%" height="330" alt="付款码" id="jsPayCodeImg">
+                                <button class="layer-btn layer-btn-normal" id="jsPayCodeRefresh" style="display:none;">刷新</button>
+                            </div>
+                            <div>
+                                <span class="mdui-float-left">付款金额：<spam id="payMount">100</spam>元</span>
+                                <span class="mdui-float-right">收款人：易店科技</span>
+                            </div>
+                        </div>`,
+            area: ['450px', '520px'],
             title: '积分充值付款',
-            btns: [{
-                text: '支付完成',
-                click: function(ele) {
-                    $.lockedBtn($(ele), true, '支付状态检测中');
-                    var count = 0;
-                    clearInterval(open.timer);
-                    open.timer = setInterval(function() {
-                        count++;
-                        if (count < 5) {
-                            getQrCodePayStatus(open.qr_id, open.addPackageType, function(payStatus) {
-                                flyer.closeAll('msg');
-                                if (payStatus) {
-                                    open.payStatus = true;
-                                    clearInterval(open.timer);
-                                    flyer.msg('支付成功');
-                                    $.unlockBtn($(ele), '支付完成');
-                                    open.close();
-                                    core.setWindowHash('manage_logs');
-                                    window.location.reload(true);
-                                } else {
-                                    if (count === 5) {
-                                        flyer.msg('订单未支付');
-                                    }
+            btn: '支付完成',
+            scrollbar: false,
+            yes: function (index, layero) {
+                $.lockedBtn(layero.find('.layui-layer-btn0'), true, '支付状态检测中');
+                var count = 0;
+                clearInterval(open.timer);
+                open.timer = setInterval(function () {
+                    count++;
+                    if (count < 5) {
+                        getQrCodePayStatus(open.qr_id, open.addPackageType, function (payStatus) {
+                            layer.closeAll('msg');
+                            if (payStatus) {
+                                open.payStatus = true;
+                                clearInterval(open.timer);
+                                layer.msg('支付成功');
+                                $.unlockBtn(layero.find('.layui-layer-btn0'), '支付完成');
+                                layer.close(index);
+                                core.setWindowHash('manage_logs');
+                                window.location.reload(true);
+                            } else {
+                                if (count === 5) {
+                                    layer.msg('订单未支付');
                                 }
-                            });
-                        } else {
-                            clearInterval(open.timer);
-                        }
-                    }, count === 0 ? 0 : 10000);
-                }
-            }],
-            cancel: function() {
+                            }
+                        });
+                    } else {
+                        clearInterval(open.timer);
+                    }
+                }, count === 0 ? 0 : 10000);
+            },
+            cancel: function () {
                 // 支付成功之后不需要再去检查支付状态了
                 if (!open.payStatus) {
-                    getQrCodePayStatus(open.qr_id, open.addPackageType, function(payStatus) {
-                        flyer.closeAll('msg');
+                    getQrCodePayStatus(open.qr_id, open.addPackageType, function (payStatus) {
+                        layer.closeAll('msg');
                         if (payStatus) {
-                            flyer.msg('支付成功');
+                            layer.msg('支付成功');
                             core.setWindowHash('manage_logs');
                             window.location.reload(true);
                         } else {
-                            flyer.msg('订单未支付');
+                            layer.msg('订单未支付');
                         }
                     });
                 }
             },
-            afterCreated: function() {
+            success: function (layero, index) {
                 // 设置付款金额
                 $('#payMount').text(checkedPackage.data('purchase-money'));
                 $.ajax({
@@ -108,10 +120,10 @@ $(function() {
                         packageId: checkedPackage.val(),
                         qr_type: 'QR_TYPE_NOLIMIT'
                     },
-                    beforeSend: function() {
+                    beforeSend: function () {
                         $.addLoading($('.js-pay-container'));
                     },
-                    success: function(data) {
+                    success: function (data) {
                         $('#jsPayCodeImg').toggle(data.success);
                         $('#jsPayCodeRefresh').toggle(!data.success);
                         if (data.success) {
@@ -119,24 +131,23 @@ $(function() {
                             open.qr_id = data.data.qr_id;
                             open.addPackageType = $('input[type=radio][name=addPackageType]').val();
                             var count = 0;
-                            open.timer = setInterval(function() {
-                                console.log('after');
-                                $.lockedBtn($(open.$btns[0]), true, '支付状态检测中');
+                            open.timer = setInterval(function () {
+                                $.lockedBtn(layero.find('.layui-layer-btn0'), true, '支付状态检测中');
                                 count++;
                                 if (count < 5) {
-                                    getQrCodePayStatus(open.qr_id, open.addPackageType, function(payStatus) {
-                                        flyer.closeAll('msg');
+                                    getQrCodePayStatus(open.qr_id, open.addPackageType, function (payStatus) {
+                                        layer.closeAll('msg');
                                         if (payStatus) {
                                             open.payStatus = true;
                                             clearInterval(open.timer);
-                                            flyer.msg('支付成功，正在为你跳转到首页。。。');
-                                            $.unlockBtn($(open.$btns[0]), '支付完成');
+                                            layer.msg('支付成功，正在为你跳转到首页。。。');
+                                            $.unlockBtn(layero.find('.layui-layer-btn0'), '支付完成');
                                             open.close();
                                             core.setWindowHash('manage_logs');
                                             window.location.reload(true);
                                         } else {
                                             if (count === 5) {
-                                                flyer.msg('订单未支付');
+                                                layer.msg('订单未支付');
                                             }
                                         }
                                     });
@@ -146,15 +157,123 @@ $(function() {
                             }, 10000);
                         }
                     },
-                    error: function() {
-                        flyer.msg(baseDatas.netErrMsg);
+                    error: function () {
+                        layer.msg(baseDatas.netErrMsg);
                     },
-                    complete: function() {
+                    complete: function () {
                         $.removeLoading($('.js-pay-container'));
                     }
                 });
             }
         });
+        // var open = flyer.open({
+        //     pageUrl: '/html/add_money_pay.html',
+        //     isModal: true,
+        //     area: [450, 430],
+        //     title: '积分充值付款',
+        //     btns: [{
+        //         text: '支付完成',
+        //         click: function (ele) {
+        //             $.lockedBtn($(ele), true, '支付状态检测中');
+        //             var count = 0;
+        //             clearInterval(open.timer);
+        //             open.timer = setInterval(function () {
+        //                 count++;
+        //                 if (count < 5) {
+        //                     getQrCodePayStatus(open.qr_id, open.addPackageType, function (payStatus) {
+        //                         flyer.closeAll('msg');
+        //                         if (payStatus) {
+        //                             open.payStatus = true;
+        //                             clearInterval(open.timer);
+        //                             layer.msg('支付成功');
+        //                             $.unlockBtn($(ele), '支付完成');
+        //                             open.close();
+        //                             core.setWindowHash('manage_logs');
+        //                             window.location.reload(true);
+        //                         } else {
+        //                             if (count === 5) {
+        //                                 layer.msg('订单未支付');
+        //                             }
+        //                         }
+        //                     });
+        //                 } else {
+        //                     clearInterval(open.timer);
+        //                 }
+        //             }, count === 0 ? 0 : 10000);
+        //         }
+        //     }],
+        //     cancel: function () {
+        //         // 支付成功之后不需要再去检查支付状态了
+        //         if (!open.payStatus) {
+        //             getQrCodePayStatus(open.qr_id, open.addPackageType, function (payStatus) {
+        //                 flyer.closeAll('msg');
+        //                 if (payStatus) {
+        //                     layer.msg('支付成功');
+        //                     core.setWindowHash('manage_logs');
+        //                     window.location.reload(true);
+        //                 } else {
+        //                     layer.msg('订单未支付');
+        //                 }
+        //             });
+        //         }
+        //     },
+        //     afterCreated: function () {
+        //         // 设置付款金额
+        //         $('#payMount').text(checkedPackage.data('purchase-money'));
+        //         $.ajax({
+        //             url: '/api/createQrCode',
+        //             type: 'POST',
+        //             data: {
+        //                 qr_name: '积分充值',
+        //                 packageId: checkedPackage.val(),
+        //                 qr_type: 'QR_TYPE_NOLIMIT'
+        //             },
+        //             beforeSend: function () {
+        //                 $.addLoading($('.js-pay-container'));
+        //             },
+        //             success: function (data) {
+        //                 $('#jsPayCodeImg').toggle(data.success);
+        //                 $('#jsPayCodeRefresh').toggle(!data.success);
+        //                 if (data.success) {
+        //                     $('#jsPayCodeImg').attr('src', data.data.qr_code);
+        //                     open.qr_id = data.data.qr_id;
+        //                     open.addPackageType = $('input[type=radio][name=addPackageType]').val();
+        //                     var count = 0;
+        //                     open.timer = setInterval(function () {
+        //                         $.lockedBtn($(open.$btns[0]), true, '支付状态检测中');
+        //                         count++;
+        //                         if (count < 5) {
+        //                             getQrCodePayStatus(open.qr_id, open.addPackageType, function (payStatus) {
+        //                                 flyer.closeAll('msg');
+        //                                 if (payStatus) {
+        //                                     open.payStatus = true;
+        //                                     clearInterval(open.timer);
+        //                                     layer.msg('支付成功，正在为你跳转到首页。。。');
+        //                                     $.unlockBtn($(open.$btns[0]), '支付完成');
+        //                                     open.close();
+        //                                     core.setWindowHash('manage_logs');
+        //                                     window.location.reload(true);
+        //                                 } else {
+        //                                     if (count === 5) {
+        //                                         layer.msg('订单未支付');
+        //                                     }
+        //                                 }
+        //                             });
+        //                         } else {
+        //                             clearInterval(open.timer);
+        //                         }
+        //                     }, 10000);
+        //                 }
+        //             },
+        //             error: function () {
+        //                 layer.msg(baseDatas.netErrMsg);
+        //             },
+        //             complete: function () {
+        //                 $.removeLoading($('.js-pay-container'));
+        //             }
+        //         });
+        //     }
+        // });
         return false;
     }
 
@@ -168,24 +287,28 @@ $(function() {
                 status: 1,
                 offset: 1
             },
-            beforeSend: function(jqXHR, settings) {
+            beforeSend: function (jqXHR, settings) {
                 $.addLoading();
             },
-            success: function(data, jqXHR, textStatus) {
+            success: function (data, jqXHR, textStatus) {
                 if (data.success) {
                     renderPackage(data.data.rows);
-                    // 充值套餐change事件并且触发一次change事件
-                    $('input[type=radio][name=addPackageType]').on('change', addPackageTypeHandle);
-                    $('input[type=radio][name=addPackageType]').first().change();
+                    // 充值套餐change事件并且模拟触发一次change事件
+                    form.on('radio', function (data) {
+                        if (this.name === 'addPackageType') {
+                            addPackageTypeHandle(data.elem);
+                        }
+                    });
+                    addPackageTypeHandle($('input[type=radio][name=addPackageType]').first()[0]);
                 } else {
-                    flyer.msg(data.message);
+                    layer.msg(data.message);
                     renderPackage([]);
                 }
             },
-            error: function(jqXHR, textStatus, errorThrown) {
-                flyer.msg(baseDatas.netErrMsg);
+            error: function (jqXHR, textStatus, errorThrown) {
+                layer.msg(baseDatas.netErrMsg);
             },
-            complete: function(jqXHR, textStatus) {
+            complete: function (jqXHR, textStatus) {
                 $.removeLoading()
             }
         });
@@ -193,31 +316,41 @@ $(function() {
 
     // 渲染所有的充值方式
     function renderPackage(packages) {
-        var $container = `<div class="mdui-row-xs-1"><div class="mdui-col">`;
-        $.each(packages, function(index, pack) {
+        var $container = `<div class="layui-input-block">`;
+        $.each(packages, function (index, pack) {
             if (index % 4 === 0 && index !== 0) {
-                $container += '</div></div><div class="mdui-row-xs-1"><div class="mdui-col">';
+                $container += '</div><div class="layui-input-block">';
                 $container += generateRadio(pack, index === 0);
             } else {
                 $container += generateRadio(pack, index === 0);
             }
         });
-        $container += '</div></div>';
+        $container += '</div>';
         $('.js-add-package-type-container').html($container);
+        form.render('radio');
     }
 
     // 生成一个radio,isChcked默认是false
     function generateRadio(info, isChecked) {
-        return `<label class="mdui-radio">
-                            <input type="radio" name="addPackageType" ${isChecked?'checked':''} 
-                            value="${info.id}" data-purchase-score="${info.packagePurchaseScore}" 
-                            data-present-score="${info.packagePresentScore}"
-                            data-purchase-money="${info.packagePurchaseMoney}" 
-                            data-present-money="${info.packagePresentMoney}"
-                            />
-                            <i class="mdui-radio-icon"></i>
-                            ${info.packageName}
-                </label>`;
+        return `<input type="radio" name="addPackageType"
+                    ${isChecked ? 'checked' : ''}
+                    value="${info.id}"
+                    data-purchase-score="${info.packagePurchaseScore}" 
+                    data-present-score="${info.packagePresentScore}"
+                    data-purchase-money="${info.packagePurchaseMoney}" 
+                    data-present-money="${info.packagePresentMoney}"
+                    title="${info.packageName}">
+                </input>`;
+        // return `<label class="mdui-radio">
+        //                     <input type="radio" name="addPackageType" ${isChecked ? 'checked' : ''} 
+        //                     value="${info.id}" data-purchase-score="${info.packagePurchaseScore}" 
+        //                     data-present-score="${info.packagePresentScore}"
+        //                     data-purchase-money="${info.packagePurchaseMoney}" 
+        //                     data-present-money="${info.packagePresentMoney}"
+        //                     />
+        //                     <i class="mdui-radio-icon"></i>
+        //                     ${info.packageName}
+        //         </label>`;
     }
 
     /**
@@ -235,11 +368,9 @@ $(function() {
                 qr_id: qr_id,
                 addPackageType: addPackageType
             },
-            success: function(payStatus) {
+            success: function (payStatus) {
                 callback(payStatus.data.status);
             }
         });
     }
-
-    init();
 });

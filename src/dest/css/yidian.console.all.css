@@ -65,6 +65,12 @@
   border: 1px solid #eee; }
 
 /*** Parameters ***/
+.layui-text-blue {
+  color: #0084ff; }
+
+.layui-text-pink {
+  color: #FF5722; }
+
 body {
   color: #333;
   font-family: Arial, Console, Verdana, Courier New; }

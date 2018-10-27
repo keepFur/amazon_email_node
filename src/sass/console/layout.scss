@@ -1,4 +1,14 @@
 @import "base";
+// 工具类
+// 蓝色文本
+.layui-text-blue{
+    color: $color-messenger;
+}
+// 粉色文本
+.layui-text-pink{
+    color: $color-red;
+}
+
 body {
     color: #333;
     font-family: Arial, Console, Verdana, Courier New;

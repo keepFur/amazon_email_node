@@ -1,52 +1,62 @@
 <div>
-    <div class="flyer-tab flyer-tab-default">
-        <div class="flyer-tab-title">
-            <ul id="taskTab">
-                <li data-index="0" class="flyer-tab-active">积分充值</li>
-            </ul>
-        </div>
-        <div class="flyer-tab-content">
-            <form name="addMoneyForm">
-                <div class="mdui-textfield">
-                    <label class="mdui-textfield-label">充值账号（当前剩余积分： <span id="userMainMoney" class="mdui-text-color-pink">0</span> ）</label>
-                    <input class="mdui-textfield-input" type="text" name="userName" disabled/>
-                </div>
-                <div class="mdui-textfield">
-                    <label class="mdui-textfield-label">充值套餐</label>
-                    <!--容器-->
-                    <div class="js-add-package-type-container">
+    <div class="layui-tab layui-tab-brief" lay-filter="addMoney">
+        <ul class="layui-tab-title">
+            <li data-index="0" class="layui-this">积分充值</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form" name="addMoneyForm">
+                    <div class="layui-form-item js-task-search-index">
+                        <label class="layui-form-label">充值账号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="userName" class="layui-input" disabled>
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">PS：当前剩余积分（<span id="userMainMoney" class="layui-text-pink">0</span>）</div>
+                    </div>
+                    <div class="layui-form-item js-task-search-index">
+                        <label class="layui-form-label">支付方式</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="payMethod" value="支持微信和支付宝" disabled>
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">PS：点击充值按钮会生成付款二维码，打开支付宝或微信扫码即可付款</div>
+                    </div>
+                    <div class="layui-form-item js-task-search-index">
+                        <label class="layui-form-label">充值套餐</label>
+                        <div class="js-add-package-type-container">
+                            <div class="layui-input-block">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="layui-row task-detail-container">
+                    <div class="layui-col-md12">
+                        <span>预计效果：
+                            <em id="purchaseScore" class="layui-text-pink"></em>
+                            <span>购买积分=</span>
+                            <em id="trafficCount" class="layui-text-pink"></em>
+                            <span>个标准流量（0.01元/个），</span>
+                            <em id="presentScore" class="layui-text-pink"></em>
+                            <span>赠送积分=</span>
+                            <em id="collectCount" class="layui-text-pink"></em>
+                            <span>个收藏任务（0.08元/个）</span>
+                        </span>
                     </div>
                 </div>
-                <div class="mdui-textfield">
-                    <label class="mdui-textfield-label">支付方式</label>
-                    <input class="mdui-textfield-input" type="text" name="payMethod" value="打开支付宝或微信扫一扫即可付款" disabled/>
+                <div class="layui-row task-detail-container">
+                    <div class="layui-col-md6">
+                        <span>充值积分：<em id="addScore"></em></span>
+                    </div>
+                    <div class="layui-col-md6">
+                        <span>支付金额：<em id="payMoney"></em>元</span>
+                    </div>
                 </div>
-            </form>
-            <div class="mdui-row-xs-1 task-detail-container">
-                <div class="mdui-col">
-                    <span>预计效果：
-                        <em id="purchaseScore" class="mdui-text-color-pink"></em>
-                        <span>购买积分=</span>
-                    <em id="trafficCount" class="mdui-text-color-pink"></em>
-                    <span>个标准流量（0.01元/个），</span>
-                    <em id="presentScore" class="mdui-text-color-pink"></em>
-                    <span>赠送积分=</span>
-                    <em id="collectCount" class="mdui-text-color-pink"></em>
-                    <span>个收藏任务（0.08元/个）</span>
-                    </span>
+                <div class="task-detail-container">
+                    <span style="color:#f00;font-size:16px;">PS：各位老板，如果遇到付款码加载不出来的情况，请刷新浏览器重试，再不行的话就联系客服人员，我们会第一时间为老板解决问题！！</span>
                 </div>
-            </div>
-            <div class="mdui-row-xs-2 task-detail-container">
-                <div class="mdui-col">
-                    <span>充值积分：<em id="addScore"></em></span>
-                </div>
-                <div class="mdui-col">
-                    <span>支付金额：<em id="payMoney"></em>元</span>
-                </div>
-            </div>
-            <div class="mdui-row-xs-1 task-add-container">
-                <div class="mdui-col">
-                    <button class="mdui-btn mdui-btn-raised mdui-btn-block mdui-color-pink" id="addMoney"><i class="mdui-icon material-icons">&#xe569;</i>立即充值</button>
+                <div class="task-add-container">
+                    <div class="layui-row">
+                        <button class="layui-btn layui-btn-normal" style="width:100%;" id="addMoney"> <i class="layui-icon layui-icon-release"></i>立即充值</button>
+                    </div>
                 </div>
             </div>
         </div>
