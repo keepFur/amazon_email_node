@@ -4,8 +4,8 @@ layui.use(['element', 'layer', 'form'], function () {
     var element = layui.element;
     var layer = layui.layer;
     var form = layui.form;
-    var collectPrice = 0.08; //0.05
-    var trafficPrice = 0.01; //0.06
+    var collectPrice = 0.1; // 收藏价格
+    var trafficPrice = 0.05; // 流量价格
     // 入口函数
     (function init() {
         initComponment();
@@ -34,12 +34,16 @@ layui.use(['element', 'layer', 'form'], function () {
         var $this = $(elem);
         var purchaseScore = $this.data('purchase-score');
         var presentScore = $this.data('present-score');
+        var sumScore = purchaseScore + presentScore;
         var purchaseMoney = $this.data('purchase-money');
         var presentMoney = $this.data('present-money');
-        var trafficCount = purchaseMoney / trafficPrice;
-        var collectCount = presentMoney / collectPrice;
-        $('#purchaseScore').text(core.numberToLocalString(purchaseScore));
-        $('#presentScore').text(core.numberToLocalString(presentScore));
+        var sumMoney = purchaseMoney + presentMoney;
+        var trafficCount = sumMoney / trafficPrice;
+        var collectCount = sumMoney / collectPrice;
+        // 总积分/除以单价 再取整
+        $('#purchaseMoney').text(core.numberToLocalString(sumMoney));
+        $('#purchaseScore').text(core.numberToLocalString(sumScore));// 总积分
+        // $('#presentScore').text(core.numberToLocalString(presentScore));
         $('#trafficCount').text(core.numberToLocalString(trafficCount));
         $('#collectCount').text(core.numberToLocalString(collectCount));
         $('#addScore').text(core.numberToLocalString(purchaseScore) + '购买积分+' + core.numberToLocalString(presentScore) + '赠送积分');
