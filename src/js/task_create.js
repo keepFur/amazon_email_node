@@ -1,8 +1,7 @@
 // 创建任务模块
 'use strict';
-layui.use(['element', 'table', 'layer', 'laydate', 'form'], function () {
+layui.use(['element', 'layer', 'laydate', 'form'], function () {
     var element = layui.element;
-    var table = layui.table;
     var layer = layui.layer;
     var laydate = layui.laydate;
     var form = layui.form;
