@@ -74,7 +74,6 @@ layui.use(['element', 'table', 'layer', 'laydate', 'form'], function () {
                 this.value = '';
             }
         });
-        ["begin_time", "count", "format", "goodsBrowsingTime", "hour", "id", "keyword", "sUrl", "signkey", "target", "timestamp", "type", "username", "ver"]
         // 任务时段输入框的点击事件
         $('input[name=taskHour]').on('click', function (events) {
             var $this = $(this);

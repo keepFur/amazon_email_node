@@ -12,7 +12,7 @@ var APIUtil = {
         });
     },
     generateOrderNumer: function () {
-        let random = Math.ceil(Math.random() * 1000000);
+        let random = layui.util.digit(Math.ceil(Math.random() * 1000000), 6);
         let date = new Date();
         let year = date.getFullYear();
         let month = core.padStart((date.getMonth() + 1));
@@ -20,8 +20,8 @@ var APIUtil = {
         let hours = core.padStart(date.getHours());
         let minutes = core.padStart(date.getMinutes());
         let seconds = core.padStart(date.getSeconds());
-        let mill = core.padStart(date.getMilliseconds());
-        return '' + year + month + day + hours + minutes + seconds + random;
+        let mill = layui.util.digit(date.getMilliseconds(), 4);
+        return '' + year + month + day + hours + minutes + seconds + mill + random;
     },
     signkey: function (apiName, params) {
         console.log('原串：' + params);
