@@ -8,15 +8,27 @@
             <div class="layui-tab-item layui-show">
                 <form class="layui-form layui-form-pane" name="adviceFeedbackForm">
                     <div class="layui-form-item">
-                        <label class="layui-form-label">标题</label>
+                        <div class="layui-form-mid  layui-text-pink">谢谢老板提出的宝贵意见和建议，我们会在第一时间做出处理。祝老板生意兴隆！！！</div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
                         <div class="layui-input-block">
-                            <input type="text" name="titleCre" class="layui-input">
+                            <select name="titleCre" lay-filter="title">
+                                <option value="">选择分类</option>
+                                <option value="商品缺少">商品缺少</option>
+                                <option value="功能缺少">功能缺少</option>
+                                <option value="程序有bug">程序有bug</option>
+                                <option value="程序太难用">程序太难用</option>
+                                <option value="售后不好">售后不好</option>
+                                <option value="数据有误">数据有误</option>
+                                <option value="财务问题">财务问题</option>
+                                <option value="其他">其他</option>
+                            </select>
                         </div>
                     </div>
                     <div class="layui-form-item layui-form-text">
-                        <label class="layui-form-label">内容</label>
+                        <!-- <label class="layui-form-label">内容</label> -->
                         <div class="layui-input-block">
-                            <textarea placeholder="" name="contentCre" rows="12" class="layui-textarea"></textarea>
+                            <textarea name="contentCre" rows="12" class="layui-textarea" placeholder="反馈内容，麻烦老板详细描述下问题的细节"></textarea>
                         </div>
                     </div>
                     <div class="task-add-container">
@@ -41,7 +53,7 @@
                     <div class="layui-form-item">
                         <div class="layui-inline">
                             <div class="layui-input-inline">
-                                <input type="text" name="title" placeholder="标题" class="layui-input">
+                                <input type="text" name="title" placeholder="分类" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">

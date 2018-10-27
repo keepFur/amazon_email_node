@@ -331,7 +331,7 @@ layui.use(['element', 'table', 'layer', 'laydate', 'form'], function () {
                                 flyer.msg(baseDatas.errorMsg);
                             },
                             complete: function (jqXHR, textStatus) {
-                                $.unlockBtn($(ele), '<i class="mdui-icon material-icons">&#xe569;</i>创建任务');
+                                $.unlockBtn($(ele), '<i class="layui-icon layui-icon-release"></i>创建任务');
                             }
                         });
                     });

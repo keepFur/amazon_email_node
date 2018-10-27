@@ -1,10 +1,11 @@
 // 通知管理模块
 'use strict';
-layui.use(['util', 'layer', 'element', 'table'], function () {
+layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
     var util = layui.util;
     var layer = layui.layer;
     var element = layui.element;
     var table = layui.table;
+    var form = layui.form;
     var baseDatas = {
         netErrMsg: '系统已退出登录，请登录系统重试',
         operatorErrMsg: {
@@ -58,7 +59,7 @@ layui.use(['util', 'layer', 'element', 'table'], function () {
 
     // 提交反馈
     function createAdviceFeedbackHandle() {
-        var title = $.trim($('input[name=titleCre]').val());
+        var title = $.trim($('select[name=titleCre]').val());
         var content = $.trim($('textarea[name=contentCre]').val());
         if (title && content) {
             $.ajax({
@@ -66,13 +67,14 @@ layui.use(['util', 'layer', 'element', 'table'], function () {
                 type: 'POST',
                 data: {
                     title: title,
-                    content: content
+                    content: util.escape(content)
                 },
                 success: function (data) {
                     if (data.success) {
                         layer.msg('操作成功');
-                        $('input[name=titleCre]').val('');
+                        $('select[name=titleCre]').val('');
                         $('textarea[name=contentCre]').val('');
+                        form.render('select');
                         element.tabChange('adviceFeedback', 'adviceFeedbackList');
                         baseDatas.currentTabIndex = 1;
                         reloadTable();
@@ -158,7 +160,7 @@ layui.use(['util', 'layer', 'element', 'table'], function () {
                     checkbox: true,
                 },
                 {
-                    title: '标题',
+                    title: '分类',
                     field: "title"
                 }, {
                     title: '内容',
