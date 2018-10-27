@@ -36,8 +36,8 @@ layui.use(['element', 'layer', 'form'], function () {
         var presentScore = $this.data('present-score');
         var purchaseMoney = $this.data('purchase-money');
         var presentMoney = $this.data('present-money');
-        var trafficCount = purchaseScore / trafficPrice;
-        var collectCount = presentScore / collectPrice;
+        var trafficCount = purchaseMoney / trafficPrice;
+        var collectCount = presentMoney / collectPrice;
         $('#purchaseScore').text(core.numberToLocalString(purchaseScore));
         $('#presentScore').text(core.numberToLocalString(presentScore));
         $('#trafficCount').text(core.numberToLocalString(trafficCount));
