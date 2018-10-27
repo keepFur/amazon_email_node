@@ -1,2 +1,98 @@
-<div id="homeTabContainer"></div>
+<!-- <div id="homeTabContainer"></div> -->
 <script type="text/javascript" src="../js/home.js"></script>
+
+
+<div>
+    <div class="layui-tab layui-tab-brief" lay-filter="adviceFeedback">
+        <ul class="layui-tab-title">
+            <li class="layui-this">账号概览</li>
+            <li>每日电商资讯</li>
+            <li>今日头条</li>
+            <li>内涵段子</li>
+            <li>开心一刻</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <div class="layui-fluid">
+                    <div class="layui-row" style="margin-bottom:16px;">
+                        <div class="layui-col-md4 home-account-info">
+                            <h3 class="mdui-float-left">当前可用积分：<span class="layui-text-pink js-user-score">30000</span></h3>
+                            <a href="#add_money" class="mdui-float-right layui-text-pink">立即充值</a>
+                        </div>
+                        <div class="layui-col-md4 home-account-info">
+                            <h3 class="mdui-text-truncate">网站公告：优惠！！现在充值立即送5000积分。</h3>
+                        </div>
+                        <div class="layui-col-md4 home-account-info">
+                            <h3 class="mdui-text-truncate"> 新版功能：支持多个关键词，自定义任务时间段。</h3>
+                        </div>
+                    </div>
+                    <div class="layui-card">
+                        <div class="layui-card-header home-account-info js-home-toggle-date">
+                            <div class="layui-row">
+                                <div class="layui-col-md4">
+                                    <a href="#home" data-day="7" data-type="count" class="layui-text-pink">近7天</a>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <a href="#home" data-day="15" data-type="count">近15天</a>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <a href="#home" data-day="30" data-type="count">近30天</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-card-body">
+                            <div style="width: 100%;height:400px;" id="taskCount"></div>
+                        </div>
+                    </div>
+                    <div class="layui-card">
+                        <div class="layui-card-header home-account-info js-home-toggle-date">
+                            <div class="layui-row">
+                                <div class="layui-col-md4">
+                                    <a href="#home" data-day="7" data-type="type" class="layui-text-pink">近7天</a>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <a href="#home" data-day="15" data-type="type">近15天</a>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <a href="#home" data-day="30" data-type="type">近30天</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-card-body">
+                            <div style="width: 100%;height:400px;" id="taskType"></div>
+                        </div>
+                    </div>
+                    <div class="layui-card">
+                        <div class="layui-card-header home-account-info js-home-toggle-date">
+                            <div class="layui-row">
+                                <div class="layui-col-md4">
+                                    <a href="#home" data-day="7" data-type="addmoney" class="layui-text-pink">近7天</a>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <a href="#home" data-day="15" data-type="addmoney">近15天</a>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <a href="#home" data-day="30" data-type="addmoney">近30天</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-card-body">
+                            <div style="width: 100%;height:400px;" id="addScore"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                每日电商资讯
+            </div>
+            <div class="layui-tab-item">
+                今日头条
+            </div>
+            <div class="layui-tab-item">
+                内涵段子
+            </div>
+            <div class="layui-tab-item">
+                开心一刻
+            </div>
+        </div>
+    </div>
