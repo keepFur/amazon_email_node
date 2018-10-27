@@ -91,7 +91,8 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
         reloadTable({
             where: queryParams,
             page: {
-                curr: 1
+                curr: 1,
+                limit: 10
             }
         });
         return false;

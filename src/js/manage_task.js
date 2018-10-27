@@ -72,6 +72,10 @@ layui.use(['element', 'table', 'layer', 'util'], function () {
         var queryParams = getQueryParams();
         reloadTable($.extend(queryParams, {
             taskPlant: baseDatas.taskPlants[baseDatas.tabIndex],
+            page: {
+                curr: 1,
+                limit: 10
+            }
         }));
         return false;
     }
