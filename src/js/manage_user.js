@@ -341,7 +341,6 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
                 }, {
                     title: '状态',
                     field: 'status',
-                    width: 56,
                     templet: function (d) {
                         return d.status === 1 ? '启用' : '停用';
                     }
