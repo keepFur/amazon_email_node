@@ -1,17 +1,12 @@
 // 任务管理模块
 'use strict';
-layui.use(['element', 'table', 'layer'], function () {
+layui.use(['element', 'table', 'layer', 'util'], function () {
     var element = layui.element;
     var table = layui.table;
     var layer = layui.layer;
+    var util = layui.util;
     var baseDatas = {
-        // 表格实例
-        $table: null,
-        pagerObj: null,
-        pageSizeSelectObj: null,
-        curIndex: Number(flyer.getQueryString('curIndex') || 1),
         // 错误消息
-        paramErrMsg: '参数错误，请刷新页面重试',
         netErrMsg: '系统已退出登录，请登录系统重试',
         operatorErrMsg: {
             single: '请选择一条数据操作',
@@ -231,7 +226,7 @@ layui.use(['element', 'table', 'layer'], function () {
                     title: '开始日期',
                     width: 120,
                     templet: function (d) {
-                        return flyer.formatDate('yyyy-mm-dd', d.taskStartDate);
+                        return util.toDateString(d.createdDate, 'yyyy-MM-dd');
                     }
                 },
                 {
@@ -252,7 +247,7 @@ layui.use(['element', 'table', 'layer'], function () {
                     title: '创建时间',
                     width: 200,
                     templet: function (d) {
-                        return flyer.formatDate('yyyy-mm-dd hh:MM', d.createdDate);
+                        return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
                     }
                 },
                 {
