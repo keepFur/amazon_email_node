@@ -5,10 +5,7 @@ layui.use(['util', 'layer', 'element', 'table'], function () {
     var element = layui.element;
     var table = layui.table;
     var baseDatas = {
-        // 表格实例
-        $table: null,
         // 错误消息
-        paramErrMsg: '参数错误，请刷新页面重试',
         netErrMsg: '系统已退出登录，请登录系统重试',
         operatorErrMsg: {
             single: '请选择一条数据操作',

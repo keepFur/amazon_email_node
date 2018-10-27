@@ -1,30 +1,28 @@
-<div class="flyer-layout-previewTitle">
-    <span class="flyer-layout-blod">通知列表</span>
-    <span>(当前显示</span>
-    <span id="currentNoticeMountSpan">0</span>
-    <span>个，共</span>
-    <span class="flyer-layout-allNum" id="noticeMountSpan">0</span>
-    <span>个</span>
-    <span class="flyer-search-conditions"></span>)
-</div>
-<!-- 按钮结构 -->
-<div class='btn-container'>
-    <button class="flyer-btn flyer-btn-blue createNotice">创建</button>
-    <button class="flyer-btn flyer-btn-default updateNotice">修改</button>
-    <button class="flyer-btn flyer-btn-default disabledNotice">禁用</button>
-    <button class="flyer-btn flyer-btn-default enabledNotice">启用</button>
-    <!-- 分页插件 -->
-    <div class='paper-container first'></div>
-    <div class="pager-size-container" id="noticePagerSize"></div>
-</div>
-<!-- 表单结构 -->
-<div class='table-container' id="noticeTable"></div>
-<div class='btn-container footer-upper'>
-    <button class="flyer-btn flyer-btn-blue createNotice">创建</button>
-    <button class="flyer-btn flyer-btn-default updateNotice">修改</button>
-    <button class="flyer-btn flyer-btn-default disabledNotice">禁用</button>
-    <button class="flyer-btn flyer-btn-default enabledNotice">启用</button>
-    <!-- 分页插件 -->
-    <div class='paper-container'></div>
+<div>
+    <div class="layui-tab layui-tab-brief" lay-filter="manageNotice">
+        <ul class="layui-tab-title">
+            <li class="layui-this">通知管理</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <div class="flyer-layout-previewTitle">
+                    <span class="flyer-layout-blod">通知列表</span>
+                    <span>(当前显示</span>
+                    <span id="currentNoticeMountSpan">0</span>
+                    <span>个，共</span>
+                    <span class="flyer-layout-allNum" id="noticeMountSpan">0</span>
+                    <span>个</span>
+                    <span class="flyer-search-conditions"></span>)
+                </div>
+                <div class='layui-form-item'>
+                    <button class="layui-btn layui-btn-normal layui-btn-sm" id="createNoticeBtn">创建</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="updateNoticeBtn">修改</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="disabledNoticeBtn">禁用</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="enabledNoticeBtn">启用</button>
+                </div>
+                <div lay-filter='notice' id="noticeTable"></div>
+            </div>
+        </div>
+    </div>
 </div>
 <script src='../js/manage_notice.js'></script>
