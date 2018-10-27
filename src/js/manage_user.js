@@ -348,7 +348,7 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
             ]],
             limits: [10, 20, 50, 100],
             page: {
-                theme: '#2cc3a9',
+                theme: '#1E9FFF',
                 layout: ['prev', 'page', 'next', 'skip', 'count', 'limit']
             },
             request: {

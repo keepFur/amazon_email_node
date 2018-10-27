@@ -261,13 +261,13 @@ layui.use(['element', 'table', 'layer', 'util'], function () {
                     fixed: 'right',
                     align: 'center',
                     templet: function (d) {
-                        return '<a class="layui-btn layui-btn-normal layui-btn-xs js-view-status" style="background-color: #2cc3a9;"  data-id="' + d.id + '" data-task-order-number="' + d.taskOrderNumber + '">查看</a>';
+                        return '<a class="layui-btn layui-btn-normal layui-btn-xs js-view-status" data-id="' + d.id + '" data-task-order-number="' + d.taskOrderNumber + '">查看</a>';
                     }
                 }
             ]],
             limits: [10, 20, 50, 100],
             page: {
-                theme: '#2cc3a9',
+                theme: '#1E9FFF',
                 layout: ['prev', 'page', 'next', 'skip', 'count', 'limit']
             },
             request: {
