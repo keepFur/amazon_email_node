@@ -20,6 +20,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
     * 
     */
     (function init() {
+        form.render('select');
         // 渲染表格
         renderTable();
         // 初始化事件

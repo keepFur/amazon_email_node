@@ -5,7 +5,7 @@ var APIUtil = {
     getServerTimestamp: function (callback) {
         var url = this.domain + '/api/sys_now?format=json';
         callback = callback || function (res) {
-            flyer.msg('sys_now==>' + res.data.time);
+            layer.msg('sys_now==>' + res.data.time);
         };
         $.get(url, function (data) {
             callback(data);
@@ -86,7 +86,7 @@ var APIUtil = {
                     callback(res);
                 },
                 error: function (error) {
-                    flyer.msg(error.message)
+                    layer.msg(error.message)
                 }
             });
         });
@@ -112,7 +112,7 @@ var APIUtil = {
                     callback(res);
                 },
                 error: function (error) {
-                    flyer.msg(error.message)
+                    layer.msg(error.message)
                 }
             });
         });
@@ -138,7 +138,7 @@ var APIUtil = {
                     callback(res);
                 },
                 error: function (error) {
-                    flyer.msg(error.message)
+                    layer.msg(error.message)
                 }
             });
         });

@@ -9,7 +9,8 @@ layui.use(['element', 'table', 'layer', 'laydate', 'form'], function () {
     var userInfo = $('#userName').data('user');
     var userId = $('#userName').data('user-id');
     var baseDatas = {
-        tabIndex: 0
+        tabIndex: 0,
+        tabText: 'TRFFIC'
     };
     // 页面入口
     (function init() {
@@ -32,7 +33,7 @@ layui.use(['element', 'table', 'layer', 'laydate', 'form'], function () {
             elem: '#taskStartDate'
         });
         form.render('radio');
-        $('#taskStartDate').val(flyer.formatDate('yyyy-mm-dd'));
+        $('#taskStartDate').val($.formatDate('yyyy-mm-dd'));
         // 设置单价的值
         $('#taskPrice').text(core.getTypeCodeByValue($('input[type=radio][name=taskChildType]:checked').val()).price);
     }
@@ -42,12 +43,13 @@ layui.use(['element', 'table', 'layer', 'laydate', 'form'], function () {
      * 
      */
     function initEvent() {
-        // 自定义页签的点击事件
+        // 页签的点击事件
         element.on('tab(createTask)', function (data) {
             if (data.index !== baseDatas.tabIndex) {
                 toggleTaskIndex($(this));
                 form.render('radio');
                 baseDatas.tabIndex = data.index;
+                baseDatas.tabText = $(this).data('task-parent-type');
             }
         });
         // 任务类型的点击事件，动态的更新价格
@@ -80,7 +82,7 @@ layui.use(['element', 'table', 'layer', 'laydate', 'form'], function () {
             var quantity = $this.parents('.js-keyword-quantity-item').find('input[name=taskQuantity]').val();
             var keyword = $this.parents('.js-keyword-quantity-item').find('input[name=taskKeyword]').val();
             if (!quantity || !keyword) {
-                flyer.msg('关键词和数量不能为空');
+                layer.msg('关键词和数量不能为空');
                 return false;
             }
             var hours = $this.val().split(',');
@@ -105,7 +107,7 @@ layui.use(['element', 'table', 'layer', 'laydate', 'form'], function () {
                     })(content)
                     $this.val(quantitys.join(','));
                     layer.close(index);
-                    flyer.msg('设置成功');
+                    layer.msg('设置成功');
                 },
                 btn2: function () {
                     setTaskHourQuantity(computeEqualPart(quantity, computeMainHourToday()));
@@ -137,7 +139,7 @@ layui.use(['element', 'table', 'layer', 'laydate', 'form'], function () {
     function addTaskKeywordQuantityHandle(event) {
         var $items = $('.js-keyword-quantity-container').find('.js-keyword-quantity-item');
         if ($items.length === 5) {
-            flyer.msg('主人，你够了！');
+            layer.msg('主人，你够了！');
             return false;
         }
         var $container = $(event.target).parents('.js-keyword-quantity-container');
@@ -258,7 +260,7 @@ layui.use(['element', 'table', 'layer', 'laydate', 'form'], function () {
         var $items = $('.js-keyword-quantity-container').find('.js-keyword-quantity-item');
         var $item = $(event.target).parents('.js-keyword-quantity-item');
         if ($items.length === 1) {
-            flyer.msg('主人，必须留个种啊！');
+            layer.msg('主人，必须留个种啊！');
             return false;
         }
         $item.remove();
@@ -279,7 +281,7 @@ layui.use(['element', 'table', 'layer', 'laydate', 'form'], function () {
         var $taskForm = $('form[name=taskForm]');
         var taskInfo = getTaskInfo($taskForm);
         // 任务开始时间默认是今天
-        taskInfo.taskStartDate = taskInfo.taskStartDate || flyer.formatDate('yyyy-mm-dd');
+        taskInfo.taskStartDate = taskInfo.taskStartDate || $.formatDate('yyyy-mm-dd');
         var validTaskInfoResult = validTaskInfo(taskInfo);
         // 验证通过
         if (validTaskInfoResult.isPass) {
@@ -292,11 +294,11 @@ layui.use(['element', 'table', 'layer', 'laydate', 'form'], function () {
                     var signKeyTaskInfo = getSignKeyTaskInfo(taskInfo);
                     APIUtil.createTask(signKeyTaskInfo, function (res, err) {
                         if (err) {
-                            flyer.msg(err.message);
+                            layer.msg(err.message);
                             return false;
                         }
                         if (res.data.status !== '1') {
-                            flyer.msg(res.data.tips);
+                            layer.msg(res.data.tips);
                             return false;
                         }
                         // 调用第三方api的时候，生成的订单号，需要传回到数据库中，不能再次生成
@@ -315,7 +317,7 @@ layui.use(['element', 'table', 'layer', 'laydate', 'form'], function () {
                             success: function (data, textStatus, jqXHR) {
                                 if (data.success) {
                                     // 获取用户当前的积分余额并提示
-                                    flyer.msg('操作成功！！！</br>本次共消费积分：' + taskInfo.taskSumMoney + '</br>' + '积分余额：' + (userInfo.money - taskInfo.taskSumMoney));
+                                    layer.msg('操作成功！！！</br>本次共消费积分：' + taskInfo.taskSumMoney + '</br>' + '积分余额：' + (userInfo.money - taskInfo.taskSumMoney));
                                     core.getUserInfoById(userId, function (user) {
                                         userInfo = user.data.rows[0];
                                         $('#userName').data('user', JSON.stringify(user));
@@ -324,12 +326,12 @@ layui.use(['element', 'table', 'layer', 'laydate', 'form'], function () {
                                 } else {
                                     // 操作失败需要取消当前任务
                                     APIUtil.cancelTask(taskInfo.taskOrderNumber, function (res) {
-                                        flyer.msg('操作失败：' + res.data.tips);
+                                        layer.msg('操作失败：' + res.data.tips);
                                     });
                                 }
                             },
                             error: function (jqXHR, textStatus, errorThrown) {
-                                flyer.msg(baseDatas.errorMsg);
+                                layer.msg(baseDatas.errorMsg);
                             },
                             complete: function (jqXHR, textStatus) {
                                 $.unlockBtn($(ele), '<i class="layui-icon layui-icon-release"></i>创建任务');
@@ -339,7 +341,7 @@ layui.use(['element', 'table', 'layer', 'laydate', 'form'], function () {
                 })(i)
             }
         } else {
-            flyer.msg(validTaskInfoResult.msg);
+            layer.msg(validTaskInfoResult.msg);
         }
         return false;
     }
@@ -383,7 +385,7 @@ layui.use(['element', 'table', 'layer', 'laydate', 'form'], function () {
             return total + item.quantity;
         }, 0);
         taskInfo.taskUserId = $('#userName').data('user-id');
-        taskInfo.taskParentType = $('#taskTab li.flyer-tab-active').data('task-parent-type');
+        taskInfo.taskParentType = baseDatas.tabText;
         taskInfo.taskUnitPrice = typeCodeByValue.price;
         // 总价格的计算，需要根据关键字的个数来衡量（单价*数量） 数量 = 关键词1数量+关键词2数量+。。。
         // taskInfo.taskSumMoney = taskInfo.taskUnitPrice * taskSumMoney;
@@ -427,7 +429,7 @@ layui.use(['element', 'table', 'layer', 'laydate', 'form'], function () {
      */
     function getSignKeyTaskInfo(taskInfo) {
         var signKeyTaskInfo = {};
-        signKeyTaskInfo.begin_time = taskInfo.taskStartDate || flyer.formatDate('yyyy-mm-dd');
+        signKeyTaskInfo.begin_time = taskInfo.taskStartDate || $.formatDate('yyyy-mm-dd');
         signKeyTaskInfo.type = core.getTypeCodeByValue(taskInfo.taskChildType).code;
         signKeyTaskInfo.count = taskInfo.taskQuantity;
         signKeyTaskInfo.target = taskInfo.taskBabyLinkToken;

@@ -30,7 +30,7 @@ var core = {
                     }
                 });
             } catch (error) {
-                flyer.msg(error);
+                layer.msg(error);
             }
         }
     },

@@ -1,10 +1,5 @@
 'use strict';
-layui.use(['util', 'layer', 'element'], function () {
-    var util = layui.util;
-    var layer = layui.layer;
-    var element = layui.element;
-    var table = layui.table;
-    var form = layui.form;
+layui.use([], function () {
     // 基于准备好的dom，初始化echarts实例
     var taskCount = echarts.init(document.getElementById('taskCount'));
     var taskType = echarts.init(document.getElementById('taskType'));

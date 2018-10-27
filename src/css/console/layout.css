@@ -123,6 +123,8 @@ header {
     header .logo-link img {
       position: relative;
       top: -6px; }
+    header .logo-link:hover {
+      color: #fff; }
   header .nav-link {
     display: inline-block;
     overflow: hidden;
@@ -349,7 +351,8 @@ header .login a {
   font-size: 17px;
   border-left: 1px solid #010101;
   height: 50px;
-  line-height: 50px; }
+  line-height: 50px;
+  color: #fff; }
 
 header .login a i {
   line-height: 50px;

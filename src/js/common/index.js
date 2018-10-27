@@ -1,14 +1,14 @@
 "use strict";
-$(function () {
+layui.use(['jquery'], function () {
     /**
      * 首页入口函数
      */
-    function init() {
+    (function init() {
         initEvent();
         loadPageByUrl(getPageUrlByHash());
         core.menuHeightLightByHash(window.location.hash.replace('#', '') || 'home');
         $('.flyer-layout-tree').height(window.innerHeight - 164);
-    }
+    })()
 
     /**
      * 事件初始化函数
@@ -99,6 +99,4 @@ $(function () {
         hash = hash.replace('#', '') || 'home';
         $('.flyer-layout-tree').find(`a[data-url='${hash}.html']`).click();
     }
-
-    init();
 });

@@ -1,4 +1,4 @@
-(function($) {
+(function ($) {
     // 缓存的key
     var asideStatusKey = 'asiderStatus';
     // 展开状态
@@ -14,7 +14,7 @@
 
     // 事件初始化，为按钮绑定点击事件
     function initEvent() {
-        $('#asideToggle').click(function(event) {
+        $('#asideToggle').click(function (event) {
             // 设置状态
             var status = getAsideStatus();
             setAsideStatus(status === spread ? shrink : spread);
@@ -27,6 +27,8 @@
         $('#asideToggle').toggleClass("transform-shrink", status);
         $(".flyer-layout-tree").toggleClass("small-tree", status);
         $(".flyer-layout-content").toggleClass("big-content", status);
+        $('#asideToggle>i').toggleClass('layui-icon-spread-left', status);
+        $('#asideToggle>i').toggleClass('layui-icon-shrink-right', !status);
     }
 
     // 设置侧边栏状态

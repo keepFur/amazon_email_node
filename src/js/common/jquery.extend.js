@@ -3,7 +3,7 @@
  * jquery的扩展方法，集合
  */
 (function ($) {
-    $ = window.jQuery || mdui.JQ;
+    $ = window.jQuery;
     // 定义一些常量
     var paramError = '缺少参数';
     /**
