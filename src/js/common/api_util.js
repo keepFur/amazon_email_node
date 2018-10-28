@@ -57,17 +57,6 @@ layui.use(['util'], function () {
                         callback({}, error);
                     }
                 });
-                // $.ajax({
-                //     url: url,
-                //     data: params,
-                //     success: function (res) {
-                //         res.orderNumber = orderNumber;
-                //         callback(res);
-                //     },
-                //     error: function (error) {
-                //         callback({}, error);
-                //     }
-                // });
             });
         },
         // 查询任务
@@ -95,8 +84,6 @@ layui.use(['util'], function () {
         },
         // 取消任务
         cancelTask: function (orderNumber, callback) {
-            // var url = this.domain + '/ll/task_cancel';
-            // var signKey = '';
             var _this = this;
             this.getServerTimestamp(function (data) {
                 var params = {
@@ -121,7 +108,6 @@ layui.use(['util'], function () {
         },
         // 暂停或者恢复任务
         pauseAndResumeTask: function (orderNumber, status, callback) {
-            // var url = this.domain + '/ll/task_pause';
             var _this = this;
             this.getServerTimestamp(function (data) {
                 var params = {

@@ -63,6 +63,10 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
         $('#enabledTaskBtn').on('click', {
             type: 1
         }, toggleTaskHandle);
+        // 标记为已完成
+        $('#completeTaskBtn').on('click', completeTaskHandle);
+        //  同步任务
+        $('#asyncTaskBtn').on('click', asyncTaskHandle);
     }
 
     /**
@@ -170,6 +174,111 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
         } else {
             layer.msg(baseDatas.operatorErrMsg.single);
         }
+        return false;
+    }
+
+    /**
+     *标记为已完成按钮的点击事件处理函数
+     *
+     * @param {*} e
+     */
+    function completeTaskHandle(e) {
+        var selectDatas = table.checkStatus('taskTable').data;
+        var tipMsg = '确定将任务标记为已完成吗？此操作不会影响任务的处理，只是为了方便管理！！';
+        if (selectDatas.length !== 1) {
+            layer.msg(baseDatas.operatorErrMsg.single);
+            return;
+        }
+        if (selectDatas[0].status === 1) {
+            layer.confirm(tipMsg, {
+                title: '询问框',
+                btn: ['确定', '取消']
+            }, function (index, layero) {
+                $.ajax({
+                    url: '/api/toggleTask',
+                    type: 'POST',
+                    data: {
+                        id: selectDatas[0].id,
+                        status: 4
+                    },
+                    success: function (data, textStatus, jqXHR) {
+                        if (data.success) {
+                            layer.msg('操作成功');
+                            reloadTable();
+                        } else {
+                            layer.msg('操作失败:' + data.message);
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        layer.msg(baseDatas.netErrMsg);
+                    }
+                });
+            });
+        } else {
+            layer.msg('只可以标记处理中的任务');
+        }
+        return false;
+    }
+
+
+    /**
+     *同步任务
+     *
+     * @param {*} e
+     */
+    function asyncTaskHandle(e) {
+        // 1，查找出所有的处理中任务
+        $.get('/api/readAllProcessTask', function (res) {
+            if (res.data.rows.length) {
+                layer.confirm(`当前共有 ${res.data.rows.length} 条处理中的任务,确定更新吗？<br>此操作不会产生任何不良影响，请放心操作！`, {
+                    title: '询问框',
+                    btn: ['确定', '取消']
+                }, function (index, layero) {
+                    // 2，通过列流的api查询出以上任务中已完成的任务
+                    APIUtil.listTask({
+                        id: res.data.rows.map(function (item) { return item.taskOrderNumber }).join(',')
+                    }, function (res) {
+                        if (res.data.status !== '1') {
+                            layer.msg(res.data.tips);
+                        } else if (res.data.list && res.data.list.l.length > 0) {
+                            var ids = res.data.list.l.filter(function (item) {
+                                return item.s == 1;
+                            }).map(function (t) {
+                                return t.i;
+                            });
+                            if (ids.length) {
+                                // 3，将已完成的任务标记为已完成状态
+                                $.ajax({
+                                    url: '/api/maskCompleteTask',
+                                    type: 'POST',
+                                    data: {
+                                        id: ids.join(','),
+                                        status: 4
+                                    },
+                                    success: function (data, textStatus, jqXHR) {
+                                        if (data.success) {
+                                            layer.msg('操作成功,共同步（' + ids.length + '）条任务');
+                                            reloadTable();
+                                        } else {
+                                            layer.msg('操作失败:' + data.message);
+                                        }
+                                    },
+                                    error: function (jqXHR, textStatus, errorThrown) {
+                                        layer.msg(baseDatas.netErrMsg);
+                                    }
+                                });
+                            } else {
+                                layer.msg('所有任务都已更新到最新状态');
+                            }
+                        } else {
+                            layer.msg('查无此订单信息');
+                        }
+                    });
+                });
+            } else {
+                layer.msg('暂时没有处理中的任务');
+            }
+        });
         return false;
     }
 

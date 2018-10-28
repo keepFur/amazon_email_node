@@ -340,6 +340,15 @@ app.get('/api/readTaskPage', function (req, res) {
     }
 });
 
+// 获取所有的未处理任务
+app.get('/api/readAllProcessTask', function (req, res) {
+    try {
+        tbTask.readAllProcessTask(req, res);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
 // 通过id获取任务信息
 app.get('/api/readTaskById', function (req, res) {
     try {
@@ -353,6 +362,15 @@ app.get('/api/readTaskById', function (req, res) {
 app.post('/api/toggleTask', function (req, res) {
     try {
         tbTask.toggleTask(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 根据任务订单号，奖任务标记为已完成
+app.post('/api/maskCompleteTask', function (req, res) {
+    try {
+        tbTask.maskCompleteTask(req, res, req.body);
     } catch (error) {
         Core.flyer.log(error);
     }
