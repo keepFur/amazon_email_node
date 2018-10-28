@@ -129,10 +129,10 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
                     title: '数量',
                     field: "count"
                 },
-                {
-                    title: '余额',
-                    field: "mainCount"
-                },
+                // {
+                //     title: '余额',
+                //     field: "mainCount"
+                // },
                 {
                     title: '创建时间',
                     field: "createdDate",
