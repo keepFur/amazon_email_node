@@ -1,10 +1,11 @@
 // 任务管理模块
 'use strict';
-layui.use(['element', 'table', 'layer', 'util'], function () {
+layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
     var element = layui.element;
     var table = layui.table;
     var layer = layui.layer;
     var util = layui.util;
+    var form = layui.form;
     var baseDatas = {
         // 错误消息
         netErrMsg: '系统已退出登录，请登录系统重试',
@@ -22,6 +23,7 @@ layui.use(['element', 'table', 'layer', 'util'], function () {
      * 
      */
     (function init() {
+        form.render('select');
         // 渲染数据表格
         renderTable();
         // 初始化事件
@@ -53,11 +55,11 @@ layui.use(['element', 'table', 'layer', 'util'], function () {
         $('#createTaskBtn').on('click', createTaskHandle);
         // 取消任务信息
         $('#cancelTaskBtn').on('click', updateTaskHandle);
-        // 禁用任务
+        // 暂停任务
         $('#disabledTaskBtn').on('click', {
             type: 0
         }, toggleTaskHandle);
-        // 启用任务
+        // 恢复任务
         $('#enabledTaskBtn').on('click', {
             type: 1
         }, toggleTaskHandle);
@@ -109,7 +111,7 @@ layui.use(['element', 'table', 'layer', 'util'], function () {
                             type: 'POST',
                             data: {
                                 id: selectDatas[0].id,
-                                status: 0
+                                status: 3
                             },
                             success: function (data, textStatus, jqXHR) {
                                 reloadTable();
@@ -146,7 +148,20 @@ layui.use(['element', 'table', 'layer', 'util'], function () {
                 APIUtil.pauseAndResumeTask(selectDatas[0].taskOrderNumber, type, function (res) {
                     if (res.data.status === '1') {
                         layer.msg('操作成功！');
-                        getTableDatas(1, 20);
+                        $.ajax({
+                            url: '/api/toggleTask',
+                            type: 'POST',
+                            data: {
+                                id: selectDatas[0].id,
+                                status: type ? 1 : 2
+                            },
+                            success: function (data, textStatus, jqXHR) {
+                                reloadTable();
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                layer.msg(baseDatas.netErrMsg);
+                            }
+                        });
                     } else {
                         layer.msg('操作失败：' + res.data.tips);
                     }
@@ -257,11 +272,12 @@ layui.use(['element', 'table', 'layer', 'util'], function () {
                 {
                     field: 'status',
                     title: '处理状态',
-                    width: 100,
+                    width: 150,
                     fixed: 'right',
                     align: 'center',
                     templet: function (d) {
-                        return '<a class="layui-btn layui-btn-normal layui-btn-xs js-view-status" data-id="' + d.id + '" data-task-order-number="' + d.taskOrderNumber + '">查看</a>';
+                        var statusText = ['', '处理中', '已暂停', '已取消', '已完成']; // 1:处理中 2，已暂停 3，已取消,4已完成
+                        return `<span class="layui-text-${d.status == 1 ? 'green' : 'pink'}">${statusText[d.status]}</span> <a class="layui-btn layui-btn-normal layui-btn-xs js-view-status" data-id=" ${d.id}" data-task-order-number="${d.taskOrderNumber}">查看详情</a>`;
                     }
                 }
             ]],
@@ -296,9 +312,9 @@ layui.use(['element', 'table', 'layer', 'util'], function () {
                             content = res.data.tips;
                         } else if (res.data.list && res.data.list.l.length > 0) {
                             var data = res.data.list.l[0];
-                            content = `任务单号：${taskOrderNumber}</br>任务状态：${data.m.replace(/\(已退款\)|\(部分退款\)/, '')}</br>任务总量：${data.c}</br>剩余量：${data.e}`;
+                            content = `任务单号：${taskOrderNumber}</br>任务状态：${data.m.replace(/\(已退款\)|\(部分退款\)/, '')}</br>任务总量：${data.c}</br>剩余量：${data.e}</br></br>PS：此处的状态会有稍微的延时，敬请谅解！！`;
                         } else {
-                            content = '查无此订单信息，请联系客服';
+                            content = '查无此订单信息，如有疑问，请联系客服人员解决！';
                         }
                         layer.tips(content, event.target, {
                             tips: 1

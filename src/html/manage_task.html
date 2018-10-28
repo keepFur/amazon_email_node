@@ -33,6 +33,17 @@
                             <div class="layui-input-inline">
                                 <input type="text" name="taskKeyword" placeholder="关键词，支持模糊搜索" class="layui-input js-date-input">
                             </div>
+                        </div>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <select name="status" lay-filter="status">
+                                    <option value="">全部处理状态</option>
+                                    <option value="1">处理中</option>
+                                    <option value="2">已暂停</option>
+                                    <option value="3">已取消</option>
+                                    <option value="4">已完成</option>
+                                </select>
+                            </div>
                             <button class="layui-btn layui-btn-primary" id="searchBtn">查询</button>
                             <button class="layui-btn layui-btn-primary" id="resetBtn">重置</button>
                         </div>
