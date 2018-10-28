@@ -54,7 +54,7 @@ layui.use(['element', 'layer', 'form'], function () {
     function addMoneyHandle(event) {
         var checkedPackage = $('input[type=radio][name=addPackageType]:checked');
         var open = {};
-        layer.open({
+        var index = layer.open({
             content: `<div class="js-pay-container">
                             <h3 style="text-align:center;">打开微信或者支付宝扫一扫即可付款</h3>
                             <div>
@@ -146,7 +146,7 @@ layui.use(['element', 'layer', 'form'], function () {
                                             clearInterval(open.timer);
                                             layer.msg('支付成功，正在为你跳转到首页。。。');
                                             $.unlockBtn(layero.find('.layui-layer-btn0'), '支付完成');
-                                            open.close();
+                                            layer.close(index);
                                             core.setWindowHash('manage_logs');
                                             window.location.reload(true);
                                         } else {
