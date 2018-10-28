@@ -1,5 +1,5 @@
 'use strict';
-layui.use([], function () {
+layui.use(['element'], function () {
     // 基于准备好的dom，初始化echarts实例
     var taskCount = echarts.init(document.getElementById('taskCount'));
     var taskType = echarts.init(document.getElementById('taskType'));
