@@ -97,7 +97,7 @@ layui.use(['element', 'table', 'layer', 'util'], function () {
     function updateTaskHandle(events) {
         var selectDatas = table.checkStatus('taskTable').data;
         if (selectDatas.length === 1) {
-            layer.confirm('确定取消任务吗？取消之后积分将不退回账户中', {
+            layer.confirm('确定取消任务吗？状态会稍微有点延时，谢谢谅解！！取消之后积分将不退回账户中，请谨慎操作！！', {
                 title: "询问框",
                 btn: ['确定', '取消']
             }, function (index, layero) {
@@ -137,7 +137,7 @@ layui.use(['element', 'table', 'layer', 'util'], function () {
     function toggleTaskHandle(events) {
         var selectDatas = table.checkStatus('taskTable').data;
         var type = events.data.type;
-        var tipMsg = type === 0 ? '确定暂停吗？' : '确定恢复吗？';
+        var tipMsg = type === 0 ? '确定暂停吗？状态会稍微有点延时，谢谢谅解！！' : '确定恢复吗？状态会稍微有点延时，谢谢谅解！！';
         if (selectDatas.length === 1) {
             layer.confirm(tipMsg, {
                 title: '询问框',
