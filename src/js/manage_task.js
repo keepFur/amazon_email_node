@@ -112,7 +112,7 @@ layui.use(['element', 'table', 'layer', 'util'], function () {
                                 status: 0
                             },
                             success: function (data, textStatus, jqXHR) {
-                                getTableDatas(1, 20);
+                                reloadTable();
                             },
                             error: function (jqXHR, textStatus, errorThrown) {
                                 layer.msg(baseDatas.netErrMsg);
@@ -256,8 +256,8 @@ layui.use(['element', 'table', 'layer', 'util'], function () {
                 },
                 {
                     field: 'status',
-                    title: '状态',
-                    width: 70,
+                    title: '处理状态',
+                    width: 100,
                     fixed: 'right',
                     align: 'center',
                     templet: function (d) {
