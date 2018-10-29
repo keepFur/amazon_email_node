@@ -1,5 +1,10 @@
 "use strict";
 var core = {
+    // 是否是开发环境
+    isDevEnv() {
+        return !!window.location.href.match('localhost');
+    },
+
     // 设置页面的hash
     setWindowHash: function (hash, params) {
         if (params) {

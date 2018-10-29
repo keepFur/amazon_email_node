@@ -71,10 +71,19 @@ layui.use(['jquery'], function () {
      */
     function loadPageByUrl(pageUrl, $container) {
         $container = $container || $('.flyer-layout-content');
+        var pageScriptUrl = '';
+        if (core.isDevEnv) {
+            pageScriptUrl = pageUrl.replace(/html/g, 'js');
+        } else {
+            pageScriptUrl = pageUrl.replace('html/', 'dest/js/').replace('.html', '.min.js');
+        }
         $.ajax({
             url: pageUrl,
+            dataType: 'html',
+            cache: true,
             success: function (res) {
                 $container.html(res);
+                $.getScript(pageScriptUrl);
             },
             error: function (error) {
                 triggerHomeClick();
@@ -82,6 +91,7 @@ layui.use(['jquery'], function () {
             }
         });
     }
+
 
     /**
      * 设置文档的title属性以及面包屑导航
