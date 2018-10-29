@@ -1,12 +1,31 @@
 <div>
     <div class="layui-tab layui-tab-brief" lay-filter="managePlant">
         <ul class="layui-tab-title">
-            <li class="layui-this">平台管理</li>
+            <li class="layui-this">单号列表</li>
+            <li>快递列表</li>
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
                 <div class="flyer-layout-previewTitle">
-                    <span class="flyer-layout-blod">平台列表</span>
+                    <span class="flyer-layout-blod">单号列表</span>
+                    <span>(当前显示</span>
+                    <span id="currentPlantMountSpan">0</span>
+                    <span>个，共</span>
+                    <span class="flyer-layout-allNum" id="plantMountSpan">0</span>
+                    <span>个</span>
+                    <span class="flyer-search-conditions"></span>)
+                </div>
+                <div class='layui-form-item'>
+                    <button class="layui-btn layui-btn-normal layui-btn-sm" id="createPlantBtn">导入</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="updatePlantBtn">修改</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="disabledPlantBtn">禁用</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="enabledPlantBtn">启用</button>
+                </div>
+                <div lay-filter='kbNum' id="kbNumTable"></div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="flyer-layout-previewTitle">
+                    <span class="flyer-layout-blod">快递列表</span>
                     <span>(当前显示</span>
                     <span id="currentPlantMountSpan">0</span>
                     <span>个，共</span>

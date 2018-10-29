@@ -24,6 +24,46 @@ $(function () {
             return false;
         });
 
+        // 空包下单
+        $('#kbPur').on('click', function () {
+            $.ajax({
+                url: '/api/getUserLoginStatus',
+                success: function (data) {
+                    data = JSON.parse(data);
+                    if (data.status) {
+                        window.location.assign('/console');
+                    } else {
+                        mdui.snackbar({
+                            message: '请先登录系统',
+                            position: 'top'
+                        });
+                        $('#userLogin').trigger('click');
+                    }
+                }
+            });
+            return false;
+        });
+
+        // 流量下单
+        $('#trafficPur').on('click', function () {
+            $.ajax({
+                url: '/api/getUserLoginStatus',
+                success: function (data) {
+                    data = JSON.parse(data);
+                    if (data.status) {
+                        window.location.assign('/console#task_create');
+                    } else {
+                        mdui.snackbar({
+                            message: '请先登录系统',
+                            position: 'top'
+                        });
+                        $('#userLogin').trigger('click');
+                    }
+                }
+            });
+            return false;
+        });
+
         // 点击大图 注册get
         $('#userRegister').on('click', userRegisterHandler);
 

@@ -1,0 +1,88 @@
+<div>
+    <div class="layui-tab layui-tab-brief" lay-filter="createTask">
+        <ul class="layui-tab-title">
+            <li data-index="0" data-task-parent-type="TRFFIC" class="layui-this">空包购买</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <div class="layui-row task-detail-container">
+                    <div class="layui-col-xs4">
+                        <span>当前余额：<em id="taskSumTime">1</em>天</span>
+                    </div>
+                    <div class="layui-col-xs4">
+                        <span>单价/数量：<em id="taskPrice">100</em>积分</span>
+                    </div>
+                    <div class="layui-col-xs4">
+                        <span>总价：<em id="taskSumMoney">0</em>积分</span>
+                    </div>
+                </div>
+                <form class="layui-form" name="taskForm">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">电商平台</label>
+                        <div class="js-task-index" data-index='0'>
+                            <div class="layui-input-block">
+                                <input type="radio" name="taskChildType" value="PC_SEARCH" title="淘宝网" checked>
+                                <input type="radio" name="taskChildType" value="DIRECT_SHOP" title="天猫商城">
+                                <input type="radio" name="taskChildType" value="DIRECT_PRODUCT" title="阿里巴巴">
+                                <input type="radio" name="taskChildType" value="APP_SEARCH" title="京东商城">
+                                <input type="radio" name="taskChildType" value="PC_SEARCH" title="拼多多商城">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">快递类型</label>
+                        <div class="layui-input-block">
+                            <select name="type" lay-filter="type">
+                                <option value="">请选择快递类型</option>
+                                <option value="">请选择快递类型</option>
+                                <option value="">请选择快递类型</option>
+                                <option value="">请选择快递类型</option>
+                                <option value="">请选择快递类型</option>
+                                <option value="">请选择快递类型</option>
+                                <option value="">请选择快递类型</option>
+                                <option value="">请选择快递类型</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">发货地址</label>
+                        <div class="layui-input-block">
+                            <select name="type" lay-filter="type">
+                                <option value="">请选择发货地址</option>
+                            </select>
+                        </div>
+                        <label class="layui-form-label"></label>
+                        <div class="layui-form-mid layui-word-aux">
+                            <button class="layui-btn layui-btn-primary layui-btn-sm">添加发货地址</button>
+                            PS:李四，15888888888，广东省 广州市 番禺区 岭南大道321号 ，330006
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">收货地址</label>
+                        <div class="layui-input-block">
+                            <textarea class="layui-textarea" rows="15"></textarea>
+                        </div>
+                        <label class="layui-form-label"></label>
+                        <div class="layui-form-mid layui-word-aux">PS: 格式：李四，15888888888，广东省 广州市 番禺区 岭南大道321号 ，330006 可批量下单，每行一个地址，最多1000个地址</div>
+                    </div>
+                </form>
+                <div class="layui-row task-detail-container">
+                    <div class="layui-col-xs4">
+                        <span>当前余额：<em id="taskSumTime">1</em>天</span>
+                    </div>
+                    <div class="layui-col-xs4">
+                        <span>单价/数量：<em id="taskPrice">100</em>积分</span>
+                    </div>
+                    <div class="layui-col-xs4">
+                        <span>总价：<em id="taskSumMoney">0</em>积分</span>
+                    </div>
+                </div>
+                <div class="task-add-container">
+                    <div class="layui-row">
+                        <button class="layui-btn layui-btn-normal" style="width:100%;" id="createTask"> <i class="layui-icon layui-icon-release"></i>提交订单</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
