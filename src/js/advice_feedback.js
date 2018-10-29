@@ -21,8 +21,6 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
     */
     (function init() {
         form.render('select');
-        // 渲染表格
-        renderTable();
         // 初始化事件
         initEvent();
     })()
@@ -35,7 +33,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
         // tab点击事件
         element.on('tab(adviceFeedback)', function (data) {
             if (data.index !== baseDatas.currentTabIndex && data.index === 1) {
-                reloadTable();
+                renderTable();
                 baseDatas.currentTabIndex = data.index;
             }
         });
