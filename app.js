@@ -35,7 +35,7 @@ let homeAccountView = new HomeAccountView();
 let APIUtil = require('./lib/api_util');
 let APIPay = require('./lib/api_pay');
 let LieliuApi = require('./lib/lieliu_api');
-
+let TenMessageApi = require('./lib/ten_message_api');
 app.use(session({
     secret: `${Math.random(10)}`, //secret的值建议使用随机字符串
     cookie: { maxAge: 60 * 1000 * 60 }, // 过期时间（毫秒）
@@ -193,6 +193,40 @@ app.get('/api/getUserLoginStatus', function (req, res) {
         Core.flyer.log(error);
     }
 });
+
+// 获取验证码
+app.get('/api/getVerfiyCode', function (req, res) {
+    try {
+        if (!req.query.userPhone || req.query.userPhone.length !== 11) {
+            res.send({
+                code: '',
+                success: false
+            });
+        }
+        TenMessageApi.getVerfiyCode(req, res);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 重置密码
+app.post('/api/setUserPassword', function (req, res) {
+    try {
+        userManage.setUserPassword(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 根据手机号和用户名获取用户信息
+app.get('/api/getUserInfoByPhone', function (req, res) {
+    try {
+        userManage.getUserInfoByPhone(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
 /***************平台管理模块路由*************/
 // 获取平台列表，支持分页
 app.get('/api/readPlantPage', function (req, res) {

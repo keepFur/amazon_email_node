@@ -83,6 +83,99 @@
                 </div>
             </div>
         </div>
+        <!--找回密码模块-->
+        <section class="mdui-container mdui-hidden js-user-get-password">
+            <div class="mdui-row">
+                <div class="mdui-col-xs-12 mdui-text-center">
+                    <h1 class="mdui-text-color-pink">找回密码</h1>
+                </div>
+            </div>
+            <form action="javascript:void(0);" name="userGetPasswordForm">
+                <div class="mdui-row">
+                    <div class="mdui-col-xs-6 mdui-col-offset-xs-3">
+                        <div class="mdui-textfield">
+                            <label class="mdui-textfield-label">用户名</label>
+                            <input class="mdui-textfield-input" name="userName" type="text" pattern="^.*(?=.{6,15})(?=.*[a-z]).*$" required/>
+                            <div class="mdui-textfield-error">用户名是6-15位字母组成</div>
+                        </div>
+                        <div class="mdui-row-xs-2 js-keyword-quantity-item">
+                            <div class="mdui-textfield mdui-col-xs-9">
+                                <label class="mdui-textfield-label">注册手机号</label>
+                                <input class="mdui-textfield-input" type="text" name="userPhone" pattern="^\d{11}$" required/>
+                            </div>
+                            <div class="mdui-textfield mdui-col-xs-3">
+                                <label class="mdui-textfield-label mdui-invisible">获取验证码</label>
+                                <button class="mdui-btn mdui-btn-block mdui-color-pink" id="getVerfiyCode">获取验证码
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mdui-textfield">
+                            <label class="mdui-textfield-label">验证码</label>
+                            <input class="mdui-textfield-input" type="text" name="verfiyCode" pattern="^\d{4}$" required/>
+                            <div class="mdui-textfield-error">验证码是是4位数字组成</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mdui-row mdui-m-t-2 mdui-m-b-2">
+                    <div class="mdui-col-xs-6 mdui-col-offset-xs-3">
+                        <a href="#" class="mdui-float-left mdui-text-color-pink js-to-login">返回登录</a>
+                        <a href="#" class="mdui-float-right mdui-text-color-pink js-login-to-register"> 没有账号？免费注册</a>
+                    </div>
+                </div>
+                <div class="mdui-row">
+                    <div class="mdui-col-xs-6 mdui-col-offset-xs-3">
+                        <button class="mdui-btn mdui-btn-raised mdui-btn-block mdui-color-pink" id="getUserPasswordSubmit">
+                            <i class="mdui-icon material-icons">&#xe569;</i>立即找回
+                        </button>
+                    </div>
+                    <div class="mdui-col-xs-6 mdui-col-offset-xs-3 mdui-p-t-2 mdui-text-center">
+                        <span class="mdui-text-color-pink">
+                            <%= package.siteName %> @2016-2018</span>
+                    </div>
+                </div>
+            </form>
+        </section>
+        <!--找回密码重新输入密码模块-->
+        <section class="mdui-container mdui-hidden js-user-set-password">
+            <div class="mdui-row">
+                <div class="mdui-col-xs-12 mdui-text-center">
+                    <h1 class="mdui-text-color-pink">重新设置密码</h1>
+                </div>
+            </div>
+            <form action="javascript:void(0);" name="userSetPasswordForm">
+                <div class="mdui-row">
+                    <div class="mdui-col-xs-6 mdui-col-offset-xs-3">
+                        <div class="mdui-textfield">
+                            <label class="mdui-textfield-label">用户名</label>
+                            <input class="mdui-textfield-input" name="userName" type="text" pattern="^.*(?=.{6,15})(?=.*[a-z]).*$" required readonly/>
+                            <div class="mdui-textfield-error">用户名是6-15位字母组成</div>
+                        </div>
+                        <div class="mdui-textfield">
+                            <label class="mdui-textfield-label">新密码</label>
+                            <input class="mdui-textfield-input" name="password" type="text" pattern="^.*(?=.{6,15})(?=.*[a-z]).*$" required/>
+                            <div class="mdui-textfield-error">密码是6-15位的字母组成</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mdui-row mdui-m-t-2 mdui-m-b-2">
+                    <div class="mdui-col-xs-6 mdui-col-offset-xs-3">
+                        <a href="#" class="mdui-float-left mdui-text-color-pink js-to-login">返回登录</a>
+                        <a href="#" class="mdui-float-right mdui-text-color-pink js-login-to-register"> 没有账号？免费注册</a>
+                    </div>
+                </div>
+                <div class="mdui-row">
+                    <div class="mdui-col-xs-6 mdui-col-offset-xs-3">
+                        <button class="mdui-btn mdui-btn-raised mdui-btn-block mdui-color-pink" id="setUserPasswordSubmit">
+                            <i class="mdui-icon material-icons">&#xe569;</i>立即重置
+                        </button>
+                    </div>
+                    <div class="mdui-col-xs-6 mdui-col-offset-xs-3 mdui-p-t-2 mdui-text-center">
+                        <span class="mdui-text-color-pink">
+                            <%= package.siteName %> @2016-2018</span>
+                    </div>
+                </div>
+            </form>
+        </section>
         <!--用户登录模块-->
         <section class="mdui-container mdui-hidden js-user-login">
             <div class="mdui-row">
@@ -104,22 +197,22 @@
                                 required/>
                             <div class="mdui-textfield-error">密码是6-15位字母组成</div>
                         </div>
-                        <div class="mdui-row-xs-2 js-keyword-quantity-item mdui-hidden">
+                        <div class="mdui-row-xs-2 js-keyword-quantity-item">
                             <div class="mdui-textfield mdui-col">
                                 <label class="mdui-textfield-label">计算结果</label>
-                                <input class="mdui-textfield-input" type="text" name="loginResult" placeholder="输入右侧题目答案" />
+                                <input class="mdui-textfield-input" type="text" name="computeResult" placeholder="输入右侧题目答案" />
                             </div>
                             <div class="mdui-textfield mdui-col">
                                 <label class="mdui-textfield-label">题目（点击刷新）</label>
-                                <input class="mdui-textfield-input" type="text" name="loginProblem" value='1+1=' disabled/>
+                                <input class="mdui-textfield-input" type="text" name="loginProblem" value='' id="refreshCompute" readonly/>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="mdui-row mdui-m-t-2 mdui-m-b-2">
                     <div class="mdui-col-xs-6 mdui-col-offset-xs-3">
-                        <a href="#" class="mdui-float-left mdui-text-color-pink mdui-hidden"> 忘记密码？立即找回</a>
-                        <a href="#" id="loginToRegister" class="mdui-float-right mdui-text-color-pink"> 没有账号？免费注册</a>
+                        <a href="#" class="mdui-float-left mdui-text-color-pink" id="getUserPassword"> 忘记密码？立即找回</a>
+                        <a href="#" class="mdui-float-right mdui-text-color-pink js-login-to-register"> 没有账号？免费注册</a>
                     </div>
                 </div>
                 <div class="mdui-row">
@@ -157,7 +250,7 @@
                         </div>
                         <div class="mdui-textfield">
                             <label class="mdui-textfield-label">手机</label>
-                            <input class="mdui-textfield-input" name="phone" type="text" pattern="^1[0-9]{10}$" />
+                            <input class="mdui-textfield-input" name="phone" type="text" pattern="^1[0-9]{10}$" required/>
                             <div class="mdui-textfield-error">请输入正确的手机号</div>
                         </div>
                         <div class="mdui-textfield">
@@ -174,7 +267,7 @@
                 </div>
                 <div class="mdui-row mdui-m-t-2 mdui-m-b-2">
                     <div class="mdui-col-xs-6 mdui-col-offset-xs-3">
-                        <a href="#" class="mdui-text-color-pink mdui-float-right" id="registerToLogin">已有账号？立即登录</a>
+                        <a href="#" class="mdui-text-color-pink mdui-float-right js-to-login">已有账号？立即登录</a>
                     </div>
                 </div>
                 <div class="mdui-row">

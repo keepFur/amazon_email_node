@@ -3,15 +3,17 @@ var $ = mdui.JQ;
 $(function () {
     var userNameMinLength = 6;
     var userNameMaxLength = 15;
-
-    function init() {
+    // 模块入口
+    (function init() {
         // 初始化通知组件
         initNoticeComponent();
         // 初始化轮播图
         initScrollImgComponent();
         // 初始化事件
         inieEvent();
-    }
+        // 触发一次刷新题目事件
+        $('#refreshCompute').trigger('click');
+    })()
 
     // 事件初始化
     function inieEvent() {
@@ -68,7 +70,7 @@ $(function () {
         $('#userRegister').on('click', userRegisterHandler);
 
         // 注册跳转到登录
-        $('#registerToLogin').on('click', function () {
+        $('.js-to-login').on('click', function () {
             $('#userLogin').trigger('click');
         });
 
@@ -79,12 +81,27 @@ $(function () {
         $('#userLogin').on('click', userLoginHandler);
 
         // 登录到注册
-        $('#loginToRegister').on('click', function () {
+        $('.js-login-to-register').on('click', function () {
             $('#userRegister').trigger('click');
         });
 
         // 登录post
         $('#userLoginSubmit').on('click', userLoginSubmitHanlder);
+
+        // 找回密码 get
+        $('#getUserPassword').on('click', userGetPasswordHandler);
+
+        // 找回密码 post
+        $('#getUserPasswordSubmit').on('click', userGetPasswordSubmitHandler);
+
+        // 获取验证码
+        $('#getVerfiyCode').on('click', getVerfiyCodeHandler);
+
+        // 刷新题目
+        $('#refreshCompute').on('click', refreshComputeHandler);
+
+        // 立即找回 post
+        $('#setUserPasswordSubmit').on('click', setUserPasswordSubmitHandler);
 
         // 控制台
         $('#console,.big-img').on('click', function (event) {
@@ -243,6 +260,8 @@ $(function () {
         $(this).addClass('li-selected').siblings().removeClass('li-selected');
         $('.js-content,.front-footer').hide();
         $('.js-user-register').hide().addClass('mdui-hidden');
+        $('.js-user-get-password').hide().addClass('mdui-hidden');
+        $('.js-user-set-password').hide().addClass('mdui-hidden');
         $('.js-user-login').show().removeClass('mdui-hidden');
         return false;
     }
@@ -253,6 +272,13 @@ $(function () {
         var $btn = $(this);
         var validUserInfoResult = validUserInfo(userInfo);
         if (validUserInfoResult.isPass) {
+            if (userInfo.computeResult != $('input[name=loginProblem]').data('result')) {
+                mdui.snackbar({
+                    message: '计算结果不正确',
+                    position: 'top'
+                });
+                return;
+            }
             $.ajax({
                 url: '/api/userLogin',
                 method: 'POST',
@@ -296,6 +322,7 @@ $(function () {
         $(this).addClass('li-selected').siblings().removeClass('li-selected');
         $('.js-content,.front-footer').hide();
         $('.js-user-login').hide().addClass('mdui-hidden');
+        $('.js-user-get-password').hide().addClass('mdui-hidden');
         $('.js-user-register').show().removeClass('mdui-hidden');
         return false;
     }
@@ -305,48 +332,236 @@ $(function () {
         var userInfo = getUserInfo($('form[name=userRegisterForm]'));
         var validUserInfoResult = validUserInfo(userInfo);
         var $btn = $(this);
-        if (validUserInfoResult.isPass) {
-            $.ajax({
-                url: '/api/createUser',
-                method: 'POST',
-                data: userInfo,
-                success: function (data, textStatus, jqXHR) {
-                    data = JSON.parse(data);
-                    if (data.success) {
-                        mdui.snackbar({
-                            message: '注册成功',
-                            position: 'top'
-                        });
-                        window.location.assign('/console');
-                    } else {
-                        mdui.snackbar({
-                            message: '注册失败:' + data.message,
-                            position: 'top'
-                        });
-                    }
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    mdui.snackbar({
-                        message: '网络错误，请刷新页面重试',
-                        position: 'top'
-                    });
-                }
-            });
-        } else {
+        if (!validUserInfoResult.isPass) {
             mdui.snackbar({
                 message: validUserInfoResult.msg,
                 position: 'top'
             });
+            return;
         }
+        if (!userInfo.phone) {
+            mdui.snackbar({
+                message: '手机号不能为空',
+                position: 'top'
+            });
+            return;
+        }
+        $.ajax({
+            url: '/api/createUser',
+            method: 'POST',
+            data: userInfo,
+            success: function (data, textStatus, jqXHR) {
+                data = JSON.parse(data);
+                if (data.success) {
+                    mdui.snackbar({
+                        message: '注册成功',
+                        position: 'top'
+                    });
+                    window.location.assign('/console');
+                } else {
+                    mdui.snackbar({
+                        message: '注册失败:' + data.message,
+                        position: 'top'
+                    });
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                mdui.snackbar({
+                    message: '网络错误，请刷新页面重试',
+                    position: 'top'
+                });
+            }
+        });
         return false;
     }
+
+    // 找回密码 get
+    function userGetPasswordHandler(e) {
+        if (!$('.js-user-get-password').hasClass('mdui-hidden')) {
+            return false;
+        }
+        $(this).addClass('li-selected').siblings().removeClass('li-selected');
+        $('.js-content,.front-footer').hide();
+        $('.js-user-login').hide().addClass('mdui-hidden');
+        $('.js-user-get-password').show().removeClass('mdui-hidden');
+        return false;
+    }
+
+    // 找回密码 post
+    function userGetPasswordSubmitHandler(e) {
+        var userInfo = getUserInfo($('form[name=userGetPasswordForm]'));
+        var actualCode = $('input[name=userPhone]').data('code');
+        var validate = function () {
+            // 判断用户名
+            if (!userInfo.userName ||
+                userInfo.userName.length > userNameMaxLength ||
+                userInfo.userName.length < userNameMinLength) {
+                return {
+                    isPass: false,
+                    msg: '用户名是6-15位字母组成'
+                };
+            }
+            if (userInfo.verfiyCode !== actualCode) {
+                return {
+                    isPass: false,
+                    msg: '验证码错误'
+                };
+            }
+            return {
+                isPass: true,
+                msg: '验证通过'
+            };
+        };
+        // 校验信息
+        var validateResult = validate();
+        if (!validateResult.isPass) {
+            mdui.snackbar({
+                message: validateResult.msg,
+                position: 'top'
+            });
+            return;
+        }
+        // 判断手机号和用户名是否匹配
+        $.ajax({
+            url: '/api/getUserInfoByPhone',
+            data: userInfo,
+            dataType: 'json',
+            success: function (res) {
+                if (res.success) {
+                    mdui.snackbar({
+                        message: '信息校验成功',
+                        position: 'top'
+                    });
+                    $('.js-user-set-password').show().removeClass('mdui-hidden');
+                    $('.js-user-login').hide().addClass('mdui-hidden');
+                    $('.js-user-get-password').hide().addClass('mdui-hidden');
+                    $('.js-user-register').hide().addClass('mdui-hidden');
+                    $('form[name=userSetPasswordForm] input[name=userName]').val(userInfo.userName);
+                } else {
+                    mdui.snackbar({
+                        message: res.msg,
+                        position: 'top'
+                    });
+                }
+            }
+        });
+        return false;
+    }
+
+    // 刷新题目
+    function refreshComputeHandler(e) {
+        var ret = generateCompute();
+        $('input[name=loginProblem]').val(ret.num1 + '+' + ret.num2 + '=').data('result', ret.ret);
+        return false;
+    }
+
+    // 获取验证码
+    function getVerfiyCodeHandler(e) {
+        // 存储到当前的元素data中
+        var userPhone = $('input[name=userPhone]').val().trim();
+        var $this = $(this);
+        var timer = null;
+        var totalSecond = 60;
+        if (!userPhone) {
+            mdui.snackbar({
+                message: '手机号不能为空',
+                position: 'top'
+            });
+            return;
+        }
+        $.ajax({
+            url: '/api/getVerfiyCode',
+            data: {
+                userPhone: userPhone
+            },
+            dataType: 'json',
+            beforeSend: function () {
+                $this.text('发送中...').attr('disabled', true);
+            },
+            success: function (res) {
+                if (res.success) {
+                    mdui.snackbar({
+                        message: '验证码获取成功',
+                        position: 'top'
+                    });
+                    $('input[name=userPhone]').data('code', res.code);
+                    timer = setInterval(function () {
+                        totalSecond--;
+                        if (totalSecond <= 0) {
+                            $this.text(`重新获取`).removeAttr('disabled');
+                            totalSecond = 60;
+                            clearInterval(timer);
+                        } else {
+                            $this.text(`${totalSecond}s 之后重新获取`).attr('disabled', true).css('color', '#000');
+                        }
+                    }, 1000);
+                } else {
+                    mdui.snackbar({
+                        message: '验证码获取失败:' + res.msg,
+                        position: 'top'
+                    });
+                }
+            },
+            error: function (err) {
+                mdui.snackbar({
+                    message: '网络错误，请刷新页面重试',
+                    position: 'top'
+                });
+            },
+            complete: function () {
+                console.log('已发送');
+                $this.text(`获取验证码`).removeAttr('disabled');
+            }
+        });
+        return false;
+    }
+
+    // 立即重置 post
+    function setUserPasswordSubmitHandler(e) {
+        var userInfo = getUserInfo($('form[name=userSetPasswordForm]'));
+        var validateResult = validUserInfo(userInfo);
+        if (!validateResult.isPass) {
+            mdui.snackbar({
+                message: validateResult.msg,
+                position: 'top'
+            });
+            return;
+        }
+        $.ajax({
+            url: '/api/setUserPassword',
+            method: 'POST',
+            data: userInfo,
+            dataType: 'json',
+            success: function (res) {
+                if (res.success) {
+                    mdui.snackbar({
+                        message: '密码重置成功：' + res.message,
+                        position: 'top'
+                    });
+                    $('#userLogin').trigger('click');
+                } else {
+                    mdui.snackbar({
+                        message: '密码重置失败：' + res.message,
+                        position: 'top'
+                    });
+                }
+            },
+            error: function (err) {
+                mdui.snackbar({
+                    message: '网络错误，请刷新页面重试',
+                    position: 'top'
+                });
+            }
+        });
+        return false;
+    }
+
 
     // 获取用户表单信息
     function getUserInfo($form) {
         var userInfo = {};
         var serializeArray = [];
         if (!$form || !$form.length) {
-            $.writeLog('front-getUserInfo', '参数错误');
             return {};
         }
         serializeArray = $form.serializeArray();
@@ -359,7 +574,6 @@ $(function () {
     // 校验表单信息,用户名和密码不能为空
     function validUserInfo(userInfo) {
         if (!userInfo) {
-            $.writeLog('front-validUserInfo', '参数错误');
             return {
                 isPass: false,
                 msg: '参数错误'
@@ -432,5 +646,15 @@ $(function () {
         return str.replace(/^\s*|\s*$/g, '');
     };
 
-    init();
+    // 生成一个算术题，并把结果返回
+    function generateCompute() {
+        var num1 = Math.ceil(Math.random() * 14);
+        var num2 = Math.ceil(Math.random() * 14);
+        var ret = num1 + num2;
+        return {
+            num1: num1,
+            num2: num2,
+            ret: ret,
+        };
+    }
 });
