@@ -119,20 +119,26 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
                     field: "userName"
                 },
                 {
+                    title: '订单号',
+                    field: 'orderNumber',
+                    width: 250
+                },
+                {
                     title: '类型',
                     field: "",
                     templet: function (d) {
-                        return d.type === 1 ? '充值' : '扣减';
+                        var status = ['', '充值', '订单消费', '退款', '充值赠送', '佣金'];
+                        return status[d.type];
                     }
                 },
                 {
                     title: '数量',
                     field: "count"
                 },
-                // {
-                //     title: '余额',
-                //     field: "mainCount"
-                // },
+                {
+                    title: '积分余额',
+                    field: "balance"
+                },
                 {
                     title: '创建时间',
                     field: "createdDate",
