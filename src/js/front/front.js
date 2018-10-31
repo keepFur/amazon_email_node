@@ -33,7 +33,7 @@ $(function () {
                 success: function (data) {
                     data = JSON.parse(data);
                     if (data.status) {
-                        window.location.assign('/console');
+                        window.location.assign('/console#kb_purchase');
                     } else {
                         mdui.snackbar({
                             message: '请先登录系统',

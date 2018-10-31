@@ -1,3 +1,66 @@
 <div>
-    开发中
+    <div class="layui-tab layui-tab-brief" lay-filter="addMoney">
+        <ul class="layui-tab-title">
+            <li class="layui-this">资料修改</li>
+            <li>登录密码修改</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <div class="layui-row">
+                    <div class="layui-col-md6">
+                        <form class="layui-form " name="userUpdateForm">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" style="float:none;">手机</label>
+                                <div class="layui-input-block" style="margin-left:64px;">
+                                    <input type="text" name="phone" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" style="float:none;">邮箱</label>
+                                <div class="layui-input-block" style="margin-left:64px;">
+                                    <input type="text" name="email" placeholder="非必填" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" style="float:none;">QQ</label>
+                                <div class="layui-input-block" style="margin-left:64px;">
+                                    <input type="text" name="QQ" placeholder="非必填" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-block" style="margin-left:64px;">
+                                    <button class="layui-btn layui-btn-normal" style="width:100%;" id="updateInfoBtn">修改</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="layui-row">
+                    <div class="layui-col-md6">
+                        <form class="layui-form" name="userUpdatePasswordForm">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" style="float:none;">原密码</label>
+                                <div class="layui-input-block" style="margin-left:56px;">
+                                    <input type="text" name="oldPassword" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" style="float:none;">新密码</label>
+                                <div class="layui-input-block" style="margin-left:56px;">
+                                    <input type="text" name="password" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-block" style="margin-left:56px;">
+                                    <button class="layui-btn layui-btn-normal" style="width:100%;" id="updatePasswordBtn">修改</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
