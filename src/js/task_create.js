@@ -121,6 +121,20 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
             setHourInputDisabled(computeMainHourToday());
             return false;
         });
+        // 宝贝链接的unblur事件
+        $('input[name=taskBabyLinkToken]').on('blur', function (e) {
+            var key = 'id';
+            // 京东不处理
+            if (baseDatas.tabIndex === 4) {
+                return false;
+            }
+            // 拼多多
+            if (baseDatas.tabIndex === 5) {
+                key = 'goods_id';
+            }
+            this.value = this.value.split('?')[0] + '?' + key + '=' + (core.getQueryString(key, this.value) || '');
+            return false;
+        });
         // 添加关键词和数量
         $('button.js-add-keyword-quantity').on('click', addTaskKeywordQuantityHandle);
         // 删除关键词和数量

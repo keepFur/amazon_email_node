@@ -576,5 +576,19 @@ var core = {
         $.get('/api/readUserById?id=' + id, function (userInfo) {
             callback(userInfo);
         });
+    },
+    /**
+     * 
+     * 根据参数名称获取到URL的参数值
+     * @param {any} name 
+     * @returns 
+     */
+    getQueryString: function (name, url) {
+        var reg = new RegExp(name + "=([^&|#?]+)");
+        var r = url.substring(url.indexOf("?") + 1).match(reg);
+        if (r !== null) {
+            return window.unescape(r[1])
+        }
+        return null;
     }
 };
