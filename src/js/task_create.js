@@ -29,7 +29,8 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
         // 日期组件
         laydate.render({
             format: 'yyyy-MM-dd',
-            elem: '#taskStartDate'
+            elem: '#taskStartDate',
+            min: $.formatDate('yyyy-mm-dd')
         });
         form.render('radio');
         $('#taskStartDate').val($.formatDate('yyyy-mm-dd'));

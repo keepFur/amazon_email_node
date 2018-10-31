@@ -137,7 +137,7 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
                     title: '创建时间',
                     field: "createdDate",
                     templet: function (d) {
-                        return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
+                        return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm:ss');
                     }
                 }, {
                     title: '状态',

@@ -1,9 +1,12 @@
 'use strict';
-layui.use(['element'], function () {
+layui.use(['element', 'layer'], function () {
+    var element = layui.element;
+    var layer = layui.layer;
     // 基于准备好的dom，初始化echarts实例
     var taskCount = echarts.init(document.getElementById('taskCount'));
     var taskType = echarts.init(document.getElementById('taskType'));
     var addScore = echarts.init(document.getElementById('addScore'));
+    var userId = $('#userName').data('user-id');
     // 指定图表的配置项和数据
     var optionOfCount = {
         title: {
@@ -115,6 +118,11 @@ layui.use(['element'], function () {
                     getTaskCount(day);
                     break;
             }
+            return false;
+        });
+        // 查看更多通知
+        $('#viewMoreNotice').click(function (e) {
+            tipNotice();
             return false;
         });
     }
@@ -291,5 +299,53 @@ layui.use(['element'], function () {
             }, this);
         }
         return has;
+    }
+
+    /**
+     *首页加载的时候，弹出提示通知
+     *
+     */
+    function tipNotice() {
+        layer.open({
+            content: `<div  id="noticeContainer" style="min-height:500px;overflow-y:auto;"></div>`,
+            area: ['450px'],
+            title: '公告列表',
+            btn: '关闭',
+            scrollbar: false,
+            shadeClose: true,
+            success: function (layero, index) {
+                // 加载通知列表并渲染
+                readNoticePage();
+            }
+        });
+    }
+
+    // 获取通知列表
+    function readNoticePage() {
+        $.ajax({
+            url: '/api/readNoticePage',
+            data: {
+                limit: 5,
+                offset: 1
+            },
+            dataType: 'json',
+            success: function (res) {
+                randerNoticeList(res.data.rows);
+            }
+        });
+    }
+
+    // 渲染通知
+    function randerNoticeList(notice) {
+        function generateTpl(n, index) {
+            return `<div class="layui-card">
+                        <div class="layui-card-header">标题：${n.noticeTitle}</div>
+                        <div class="layui-card-body">内容：${n.noticeContent}</div>
+                    </div>`;
+        }
+        $.each(notice, function (index, item) {
+            $('#noticeContainer').append(generateTpl(item, index));
+        });
+        element.render('collapse');
     }
 });

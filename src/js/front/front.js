@@ -13,11 +13,21 @@ $(function () {
         inieEvent();
         // 触发一次刷新题目事件
         $('#refreshCompute').trigger('click');
+        new mdui.Tooltip($('.js-notice-view-more'), {
+            position: 'auto',
+            content: '更多公告，请登录系统查看，谢谢！！！祝老板每天爆单'
+        });
     })()
 
     // 事件初始化
     function inieEvent() {
         var kefuDialog = null;
+
+        // 查看更多公告
+        $('.js-notice-view-more').on('click', function (e) {
+            return false;
+        });
+
         // 首页
         $('#home').on('click', function () {
             if (!$('.js-user-login').hasClass('mdui-hidden') || !$('.js-user-register').hasClass('mdui-hidden')) {
