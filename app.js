@@ -419,6 +419,15 @@ app.post('/api/updateTask', function (req, res) {
     }
 });
 
+// 获取淘宝详情
+app.get('/api/getTbDetail', function (req, res) {
+    try {
+        tbTask.getTbDetail(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
 /***********************充值套餐模块**********************/
 // 创建套餐
 app.post('/api/createPackage', function (req, res) {

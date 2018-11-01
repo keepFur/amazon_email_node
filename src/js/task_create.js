@@ -124,15 +124,31 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
         // 宝贝链接的unblur事件
         $('input[name=taskBabyLinkToken]').on('blur', function (e) {
             var key = 'id';
-            // 京东不处理
-            if (baseDatas.tabIndex === 4) {
+            var value = '';
+            if (!this.value.trim()) {
+                return false;
+            }
+            // 京东和平多多不支持
+            if (baseDatas.tabIndex === 4 || baseDatas.tabIndex === 5) {
                 return false;
             }
             // 拼多多
-            if (baseDatas.tabIndex === 5) {
-                key = 'goods_id';
-            }
-            this.value = this.value.split('?')[0] + '?' + key + '=' + (core.getQueryString(key, this.value) || '');
+            // if (baseDatas.tabIndex === 5) {
+            //     key = 'goods_id';
+            // }
+            value = core.getQueryString(key, this.value) || '';
+            this.value = this.value.split('?')[0] + '?' + key + '=' + value;
+            $.get('/api/getTbDetail?id=' + value, function (res) {
+                if (res.ret[0] === 'SUCCESS::调用成功') {
+                    $('#bbDetailContainer').removeClass('layui-hide');
+                    $('#bbImgContainer').html(`<img src="${res.data.item.images[0]}" width="100" height="100">`);
+                    $('#bbTitle').text('标题：' + res.data.item.title);
+                    $('#bbShop').text('店铺：' + res.data.seller.shopName);
+                    $('#bbSeller').text('卖家：' + res.data.seller.sellerNick);
+                } else {
+                    layer.msg('服务器异常');
+                }
+            }, 'json');
             return false;
         });
         // 添加关键词和数量
