@@ -38,6 +38,10 @@ let ManageKbType = require('./lib/manage_kb_type_service');
 let manageKbType = new ManageKbType();
 let ManageKbNumber = require('./lib/manage_kb_number_service');
 let manageKbNumber = new ManageKbNumber();
+let ManageKbOrder = require('./lib/manage_kb_order_service');
+let manageKbOrder = new ManageKbOrder();
+let ManageKbAddress = require('./lib/manage_kb_address_service');
+let manageKbAddress = new ManageKbAddress();
 let APIUtil = require('./lib/api_util');
 let APIPay = require('./lib/api_pay');
 let LieliuApi = require('./lib/lieliu_api');
@@ -433,6 +437,99 @@ app.get('/api/getTbDetail', function (req, res) {
         Core.flyer.log(error);
     }
 });
+
+/***********************空包模块**********************/
+// 创建空包 
+app.post('/api/createKbOrder', function (req, res) {
+    try {
+        manageKbOrder.createKbOrder(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 获取空包订单列表，支持分页
+app.get('/api/readKbOrderPage', function (req, res) {
+    try {
+        manageKbOrder.readKbOrderPage(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 通过id获取订单信息
+app.get('/api/readKbOrderById', function (req, res) {
+    try {
+        manageKbOrder.readKbOrderById(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 切换订单状态
+app.post('/api/toggleKbOrder', function (req, res) {
+    try {
+        manageKbOrder.toggleKbOrder(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 修改订单信息
+app.post('/api/updateKbOrder', function (req, res) {
+    try {
+        manageKbOrder.updateKbOrder(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+/***********************空包地址模块**********************/
+// 创建空包地址
+app.post('/api/createKbAddress', function (req, res) {
+    try {
+        manageKbAddress.createKbAddress(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 获取空包地址列表
+app.get('/api/readKbAddress', function (req, res) {
+    try {
+        manageKbAddress.readKbAddress(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 通过id获取空包地址信息
+app.get('/api/readKbAddressById', function (req, res) {
+    try {
+        manageKbAddress.readKbAddressById(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 切换空包地址状态
+app.post('/api/toggleKbAddress', function (req, res) {
+    try {
+        manageKbAddress.toggleKbAddress(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 修改空包地址信息
+app.post('/api/updateKbAddress', function (req, res) {
+    try {
+        manageKbAddress.updateKbAddress(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
 
 /***********************充值套餐模块**********************/
 // 创建套餐

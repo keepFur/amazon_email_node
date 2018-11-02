@@ -261,9 +261,9 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                                 <div class="layui-input-inline">
                                     <select name="plant">
                                         <option value="">请选择平台</option>
-                                        <option value="TB">申通</option>
-                                        <option value="JD">韵达</option>
-                                        <option value="PDD">天天</option>
+                                        <option value="TB">淘宝</option>
+                                        <option value="JD">京东</option>
+                                        <option value="PDD">拼多多</option>
                                     </select>
                                 </div>
                             </div>
@@ -336,9 +336,9 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                                     <div class="layui-input-inline">
                                         <select name="plant">
                                             <option value="">请选择平台</option>
-                                            <option value="TB">申通</option>
-                                            <option value="JD">韵达</option>
-                                            <option value="PDD">天天</option>
+                                            <option value="TB">淘宝</option>
+                                            <option value="JD">京东</option>
+                                            <option value="PDD">拼多多</option>
                                         </select>
                                     </div>
                                 </div>
