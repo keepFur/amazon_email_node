@@ -12,6 +12,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
             single: '请选择一条数据操作',
             batch: '请至少选择一条数据操作'
         }
+
     };
 
     /**

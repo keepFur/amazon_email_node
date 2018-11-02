@@ -36,8 +36,8 @@ let ManageTaskType = require('./lib/manage_task_type_service');
 let manageTaskType = new ManageTaskType();
 let ManageKbType = require('./lib/manage_kb_type_service');
 let manageKbType = new ManageKbType();
-let ManageKbOrder = require('./lib/manage_kb_order_service');
-let manageKbOrder = new ManageKbOrder();
+let ManageKbNumber = require('./lib/manage_kb_number_service');
+let manageKbNumber = new ManageKbNumber();
 let APIUtil = require('./lib/api_util');
 let APIPay = require('./lib/api_pay');
 let LieliuApi = require('./lib/lieliu_api');
@@ -679,7 +679,7 @@ app.post('/api/toggleKbType', function (req, res) {
 // 创建空包单号
 app.post('/api/createKbOrder', function (req, res) {
     try {
-        manageKbOrder.createKbOrder(req, res, req.body);
+        manageKbNumber.createKbOrder(req, res, req.body);
     } catch (error) {
         Core.flyer.log(error);
     }
@@ -688,7 +688,7 @@ app.post('/api/createKbOrder', function (req, res) {
 // 获取空包单号
 app.get('/api/readKbOrderPage', function (req, res) {
     try {
-        manageKbOrder.readKbOrderPage(req, res, req.query);
+        manageKbNumber.readKbOrderPage(req, res, req.query);
     } catch (error) {
         Core.flyer.log(error);
     }
@@ -697,7 +697,7 @@ app.get('/api/readKbOrderPage', function (req, res) {
 //修改空包单号
 app.post('/api/updateKbOrder', function (req, res) {
     try {
-        manageKbOrder.updateKbOrder(req, res, req.body);
+        manageKbNumber.updateKbOrder(req, res, req.body);
     } catch (error) {
         Core.flyer.log(error);
     }
@@ -706,7 +706,7 @@ app.post('/api/updateKbOrder', function (req, res) {
 // 切换空包单号状态
 app.post('/api/toggleKbOrder', function (req, res) {
     try {
-        manageKbOrder.toggleKbOrder(req, res, req.body);
+        manageKbNumber.toggleKbOrder(req, res, req.body);
     } catch (error) {
         Core.flyer.log(error);
     }
