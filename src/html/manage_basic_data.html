@@ -1,0 +1,65 @@
+<div>
+    <div class="layui-tab layui-tab-brief" lay-filter="managePlant">
+        <ul class="layui-tab-title">
+            <li class="layui-this">空包单号列表</li>
+            <li>空包快递类型</li>
+            <li>流量类型</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <div class="flyer-layout-previewTitle">
+                    <span class="flyer-layout-blod">空包单号列表</span>
+                    <span>(当前显示</span>
+                    <span id="currentKbOrderMountSpan">0</span>
+                    <span>个，共</span>
+                    <span class="flyer-layout-allNum" id="kbOrderMountSpan">0</span>
+                    <span>个</span>
+                    <span class="flyer-search-conditions"></span>)
+                </div>
+                <div class='layui-form-item'>
+                    <button class="layui-btn layui-btn-normal layui-btn-sm" id="createKbOrderBtn">导入</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="updateKbOrderBtn">修改</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="disabledKbOrderBtn">禁用</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="enabledKbOrderBtn">启用</button>
+                </div>
+                <div lay-filter='kbOrder' id="kbOrderTable"></div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="flyer-layout-previewTitle">
+                    <span class="flyer-layout-blod">空包快递类型</span>
+                    <span>(当前显示</span>
+                    <span id="currentKbTypeMountSpan">0</span>
+                    <span>个，共</span>
+                    <span class="flyer-layout-allNum" id="kbTypeMountSpan">0</span>
+                    <span>个</span>
+                    <span class="flyer-search-conditions"></span>)
+                </div>
+                <div class='layui-form-item'>
+                    <button class="layui-btn layui-btn-normal layui-btn-sm" id="createKbTypeBtn">创建</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="updateKbTypeBtn">修改</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="disabledKbTypeBtn">禁用</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="enabledKbTypeBtn">启用</button>
+                </div>
+                <div lay-filter='kbType' id="kbTypeTable"></div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="flyer-layout-previewTitle">
+                    <span class="flyer-layout-blod">流量类型</span>
+                    <span>(当前显示</span>
+                    <span id="currentTaskTypeMountSpan">0</span>
+                    <span>个，共</span>
+                    <span class="flyer-layout-allNum" id="taskTypeMountSpan">0</span>
+                    <span>个</span>
+                    <span class="flyer-search-conditions"></span>)
+                </div>
+                <div class='layui-form-item'>
+                    <button class="layui-btn layui-btn-normal layui-btn-sm" id="createTaskTypeBtn">创建</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="updateTaskTypeBtn">修改</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="disabledTaskTypeBtn">禁用</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="enabledTaskTypeBtn">启用</button>
+                </div>
+                <div lay-filter='taskType' id="taskTypeTable"></div>
+            </div>
+        </div>
+    </div>
+</div>

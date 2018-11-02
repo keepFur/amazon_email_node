@@ -18,7 +18,7 @@ let express = require("express"),
 // 业务逻辑模块
 let UserManage = require('./lib/manage_user_service');
 let userManage = new UserManage();
-let PlantManage = require('./lib/manage_plant_service');
+let PlantManage = require('./lib/manage_kb_type_service');
 let plantMange = new PlantManage();
 let NoticeManage = require('./lib/manage_notice_service');
 let noticeMange = new NoticeManage();
@@ -32,6 +32,12 @@ let AdviceFeedbackManage = require('./lib/manage_advice_feedback_service');
 let advicFeedbackManage = new AdviceFeedbackManage();
 let HomeAccountView = require('./lib/home_account_view_service');
 let homeAccountView = new HomeAccountView();
+let ManageTaskType = require('./lib/manage_task_type_service');
+let manageTaskType = new ManageTaskType();
+let ManageKbType = require('./lib/manage_kb_type_service');
+let manageKbType = new ManageKbType();
+let ManageKbOrder = require('./lib/manage_kb_order_service');
+let manageKbOrder = new ManageKbOrder();
 let APIUtil = require('./lib/api_util');
 let APIPay = require('./lib/api_pay');
 let LieliuApi = require('./lib/lieliu_api');
@@ -590,6 +596,117 @@ app.get('/api/readAdviceFeedbackById', function (req, res) {
 app.post('/api/toggleAdviceFeedback', function (req, res) {
     try {
         advicFeedbackManage.toggleAdviceFeedback(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+/* *****************基础数据之任务类型****************** */
+// 创建任务类型
+app.post('/api/createTaskType', function (req, res) {
+    try {
+        manageTaskType.createTaskType(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 获取任务类型（不分页）
+app.get('/api/readTaskTypePage', function (req, res) {
+    try {
+        manageTaskType.readTaskTypePage(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 通过id获取任务类型
+app.get('/api/updateTaskType', function (req, res) {
+    try {
+        manageTaskType.updateTaskType(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 切换任务类型状态
+app.post('/api/toggleTaskType', function (req, res) {
+    try {
+        manageTaskType.toggleTaskType(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+/* *****************基础数据之空包类型****************** */
+// 创建空包类型
+app.post('/api/createKbType', function (req, res) {
+    try {
+        manageKbType.createKbType(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 获取空包类型（不分页）
+app.get('/api/readKbTypePage', function (req, res) {
+    try {
+        manageKbType.readKbTypePage(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 通过id获取空包类型
+app.get('/api/updateKbType', function (req, res) {
+    try {
+        manageKbType.updateKbType(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 切换空包类型状态
+app.post('/api/toggleKbType', function (req, res) {
+    try {
+        manageKbType.toggleKbType(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+/* *****************基础数据之空包单号****************** */
+// 创建空包单号
+app.post('/api/createKbOrder', function (req, res) {
+    try {
+        manageKbOrder.createKbOrder(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 获取空包单号
+app.get('/api/readKbOrderPage', function (req, res) {
+    try {
+        manageKbOrder.readKbOrderPage(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 通过id获取空包单号
+app.get('/api/updateKbOrder', function (req, res) {
+    try {
+        manageKbOrder.updateKbOrder(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 切换空包单号状态
+app.post('/api/toggleKbOrder', function (req, res) {
+    try {
+        manageKbOrder.toggleKbOrder(req, res, req.body);
     } catch (error) {
         Core.flyer.log(error);
     }

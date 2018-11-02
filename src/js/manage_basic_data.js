@@ -18,8 +18,10 @@ layui.use(['util', 'layer', 'element', 'table'], function () {
      * 
      */
     (function init() {
-        // 获取表格数据
-        renderTable();
+        // 渲染表格数据
+        renderKbOrderTable();
+        renderKbTypeTable();
+        renderTaskTypeTable();
         // 初始化事件
         initEvent();
     })()
@@ -188,15 +190,140 @@ layui.use(['util', 'layer', 'element', 'table'], function () {
     }
 
     /**
-     * 渲染表格结构
+     * 渲染表格结构(空包单号)
      * 
-     * @param {jq} $table 表格容器
-     * @param {Array} datas 表格数据
      */
-    function renderTable($table, datas) {
+    function renderKbOrderTable() {
         table.render({
-            elem: '#plantTable',
-            url: '/api/readPlantPage',
+            elem: '#kbOrderTable',
+            url: '/api/readKbOrderPage',
+            page: true,
+            cols: [[
+                {
+                    checkbox: true,
+                },
+                {
+                    title: '平台名称',
+                    field: "plantName"
+                }, {
+                    title: '描述',
+                    field: "description"
+                }, {
+                    title: '创建时间',
+                    field: "createdDate",
+                    templet: function (d) {
+                        return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
+                    }
+                }, {
+                    title: '最后修改时间',
+                    field: "updateDate",
+                    templet: function (d) {
+                        return d.updateDate ? util.toDateString(d.updateDate, 'yyyy-MM-dd HH:mm') : '';
+                    }
+                }, {
+                    title: '状态',
+                    field: 'status',
+                    templet: function (d) {
+                        return d.status === 1 ? '启用' : '停用';
+                    }
+                }
+            ]],
+            limits: [10, 20, 50, 100],
+            page: {
+                theme: '#1E9FFF',
+                layout: ['prev', 'page', 'next', 'skip', 'count', 'limit']
+            },
+            request: {
+                pageName: 'offset'
+            },
+            response: {
+                statusCode: true
+            },
+            parseData: function (res) {
+                return {
+                    code: res.success,
+                    msg: res.msg,
+                    count: res.data.total,
+                    data: res.data.rows
+                }
+            },
+            done: function (res) {
+                setMountValue(res.data.length, res.count);
+            }
+        });
+    }
+
+    /**
+     * 渲染表格结构(空包类型)
+     */
+    function renderKbTypeTable() {
+        table.render({
+            elem: '#kbTypeTable',
+            url: '/api/readKbTypePage',
+            page: true,
+            cols: [[
+                {
+                    checkbox: true,
+                },
+                {
+                    title: '平台名称',
+                    field: "plantName"
+                }, {
+                    title: '描述',
+                    field: "description"
+                }, {
+                    title: '创建时间',
+                    field: "createdDate",
+                    templet: function (d) {
+                        return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
+                    }
+                }, {
+                    title: '最后修改时间',
+                    field: "updateDate",
+                    templet: function (d) {
+                        return d.updateDate ? util.toDateString(d.updateDate, 'yyyy-MM-dd HH:mm') : '';
+                    }
+                }, {
+                    title: '状态',
+                    field: 'status',
+                    templet: function (d) {
+                        return d.status === 1 ? '启用' : '停用';
+                    }
+                }
+            ]],
+            limits: [10, 20, 50, 100],
+            page: {
+                theme: '#1E9FFF',
+                layout: ['prev', 'page', 'next', 'skip', 'count', 'limit']
+            },
+            request: {
+                pageName: 'offset'
+            },
+            response: {
+                statusCode: true
+            },
+            parseData: function (res) {
+                return {
+                    code: res.success,
+                    msg: res.msg,
+                    count: res.data.total,
+                    data: res.data.rows
+                }
+            },
+            done: function (res) {
+                setMountValue(res.data.length, res.count);
+            }
+        });
+    }
+
+    /**
+     * 渲染表格结构(任务类型)
+     * 
+     */
+    function renderTaskTypeTable() {
+        table.render({
+            elem: '#taskTypeTable',
+            url: '/api/readTaskTypePage',
             page: true,
             cols: [[
                 {

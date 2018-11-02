@@ -78,15 +78,24 @@
                             </div>
                         </div>
                         <div class="layui-inline">
+                            <label class="layui-form-label">浏览时长</label>
+                            <div class="layui-input-inline" style="width:160px;">
+                                <input type="text" name="taskGoodsBrowsingTime" placeholder="不能低于50秒,默认51秒" value="51" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">PS:每增加10秒，价格增加5积分</div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
                             <label class="layui-form-label">开始日期</label>
                             <div class="layui-input-inline" style="width:160px;">
                                 <input type="text" name="taskStartDate" autocomplete="off" placeholder="可不填，默认是当天" id="taskStartDate" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <label class="layui-form-label">浏览时长</label>
+                            <label class="layui-form-label">结束日期</label>
                             <div class="layui-input-inline" style="width:160px;">
-                                <input type="text" name="taskGoodsBrowsingTime" placeholder="不能低于50秒,默认51秒" value="51" class="layui-input">
+                                <input type="text" name="taskEndDate" autocomplete="off" placeholder="可不填" id="taskEndDate" class="layui-input">
                             </div>
                         </div>
                     </div>
