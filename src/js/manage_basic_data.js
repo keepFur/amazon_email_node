@@ -21,7 +21,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
      */
     (function init() {
         // 渲染表格数据
-        renderKbOrderTable();
+        renderKbNumberTable();
         renderKbTypeTable();
         renderTaskTypeTable();
         // 初始化事件
@@ -36,17 +36,17 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
         // 空包单号
 
         // 创建空包单号
-        $('#createKbOrderBtn').on('click', createKbOrderHandle);
+        $('#createKbNumberBtn').on('click', createKbNumberHandle);
         // 修改空包单号信息
-        $('#updateKbOrderBtn').on('click', updateKbOrderHandle);
+        $('#updateKbNumberBtn').on('click', updateKbNumberHandle);
         // 禁用空包单号
-        $('#disabledKbOrderBtn').on('click', {
+        $('#disabledKbNumberBtn').on('click', {
             type: 0
-        }, toggleKbOrderHandle);
+        }, toggleKbNumberHandle);
         // 启用空包单号
-        $('#enabledKbOrderBtn').on('click', {
+        $('#enabledKbNumberBtn').on('click', {
             type: 1
-        }, toggleKbOrderHandle);
+        }, toggleKbNumberHandle);
 
         // 空包类型
 
@@ -86,41 +86,51 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
      * 
      * @param {any} events 
      */
-    function createKbOrderHandle(events) {
+    function createKbNumberHandle(events) {
         layer.open({
-            content: `<form class="layui-form layui-form-pane" name="kbOrderCreateForm">
+            content: `<form class="layui-form layui-form-pane" name="kbOrderCreateForm" lay-filter="kbOrderCreateForm">
                         <div class="layui-form-item">
-                            <div class="layui-inline">
-                                <label class="layui-form-label">平台</label>
-                                <div class="layui-input-inline">
+                            <div class="layui-form-item layui-form-text">
+                                <div class="layui-input-block">
                                     <select name="plant">
+                                        <option value="">选择电商平台</option>
+                                        <option value="TB">淘宝</option>
+                                        <option value="JD">京东</option>
+                                        <option value="PDD">拼多多</option>
+                                    </select> 
+                                </div>
+                            </div>
+                            <div class="layui-form-item layui-form-text">
+                                <div class="layui-input-block">
+                                    <select name="company">
                                         <option value="">选择快递平台</option>
-                                        <option value="0">申通</option>
-                                        <option value="1">中通</option>
-                                        <option value="2">韵达</option>
-                                        <option value="3">天天</option>
+                                        <option value="ST">申通</option>
+                                        <option value="ZT">中通</option>
+                                        <option value="YD">韵达</option>
+                                        <option value="TT">天天</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="layui-form-item layui-form-text">
-                                <label class="layui-form-label">单号</label>
+                                <label class="layui-form-label">快递单号</label>
                                 <div class="layui-input-block">
-                                <textarea placeholder="多个使用逗号或者空格隔开" rows="10" name="number" class="layui-textarea"></textarea>
+                                   <textarea placeholder="多个使用逗号或者空格隔开" rows="10" name="number" class="layui-textarea"></textarea>
                                 </div>
                             </div>
                         </div>
                     </form>`,
             title: '创建单号',
+            area: ['400px'],
             btn: ['创建', '取消'],
             yes: function (index) {
                 var kbOrderInfo = core.getFormValues($('form[name=kbOrderCreateForm]'));
-                var validKbOrderInfoResult = validKbOrderInfo(kbOrderInfo);
-                if (validKbOrderInfoResult.isPass) {
+                var validKbNumberInfoResult = validKbNumberInfo(kbOrderInfo);
+                if (validKbNumberInfoResult.isPass) {
                     kbOrderInfo.numbers = kbOrderInfo.number.split(/\s{1,}|,|，|\n/g).filter(function (item) {
                         return !!item;
                     });
                     $.ajax({
-                        url: '/api/createKbOrder',
+                        url: '/api/createKbNumber',
                         type: 'POST',
                         data: kbOrderInfo,
                         success: function (data, textStatus, jqXHR) {
@@ -133,11 +143,21 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                         }
                     });
                 } else {
-                    layer.msg(validKbOrderInfoResult.msg);
+                    layer.msg(validKbNumberInfoResult.msg);
                 }
             },
             success: function () {
                 form.render('select');
+                var number = function () {
+                    var ret = [];
+                    for (var i = 0; i < 100; i++) {
+                        ret[i] = APIUtil.generateOrderNumer();
+                    }
+                    return ret.join();
+                };
+                form.val('kbOrderCreateForm', {
+                    number: number()
+                });
             }
         });
         return false;
@@ -147,23 +167,33 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
      * 空包单号信息修改的点击事件处理函数
      * @param {any} events 
      */
-    function updateKbOrderHandle(events) {
+    function updateKbNumberHandle(events) {
         var selectDatas = table.checkStatus('kbOrderTable').data;
         if (selectDatas.length === 1) {
             var plant = selectDatas[0].plant;
             var number = selectDatas[0].number;
+            var company = selectDatas[0].company;
             layer.open({
-                content: `<form class="layui-form layui-form-pane" name="kbOrderUpdateForm">
+                content: `<form class="layui-form layui-form-pane" lay-filter="kbOrderUpdateForm" name="kbOrderUpdateForm">
                             <div class="layui-form-item">
-                                <div class="layui-inline">
-                                    <label class="layui-form-label">平台</label>
-                                    <div class="layui-input-inline">
+                                <div class="layui-form-item layui-form-text">
+                                    <div class="layui-input-block">
                                         <select name="plant">
-                                            <option value="">请选择平台</option>
-                                            <option value="0">申通</option>
-                                            <option value="1">中通</option>
-                                            <option value="2">韵达</option>
-                                            <option value="3">天天</option>
+                                            <option value="">选择电商平台</option>
+                                            <option value="TB">淘宝</option>
+                                            <option value="JD">京东</option>
+                                            <option value="PDD">拼多多</option>
+                                        </select> 
+                                    </div>
+                                </div>
+                                <div class="layui-form-item layui-form-text">
+                                    <div class="layui-input-block">
+                                        <select name="company">
+                                            <option value="">选择快递平台</option>
+                                            <option value="ST">申通</option>
+                                            <option value="ZT">中通</option>
+                                            <option value="YT">韵达</option>
+                                            <option value="TT">天天</option>
                                         </select>
                                     </div>
                                 </div>
@@ -180,11 +210,11 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                 area: ['360px', '360px'],
                 yes: function (index) {
                     var kbOrderInfo = core.getFormValues($('form[name=kbOrderUpdateForm]'));
-                    var validKbOrderInfoResult = validKbOrderInfo(kbOrderInfo);
+                    var validKbNumberInfoResult = validKbNumberInfo(kbOrderInfo);
                     kbOrderInfo.id = selectDatas[0].id;
-                    if (validKbOrderInfoResult.isPass) {
+                    if (validKbNumberInfoResult.isPass) {
                         $.ajax({
-                            url: '/api/updateKbOrder',
+                            url: '/api/updateKbNumber',
                             type: 'POST',
                             data: kbOrderInfo,
                             success: function (data, textStatus, jqXHR) {
@@ -197,11 +227,15 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                             }
                         });
                     } else {
-                        layer.msg(validKbOrderInfoResult.msg);
+                        layer.msg(validKbNumberInfoResult.msg);
                     }
                 },
                 success: function () {
                     form.render('select');
+                    form.val('kbOrderUpdateForm', {
+                        plant: plant,
+                        company: company
+                    });
                 }
             });
         } else {
@@ -215,7 +249,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
      * 
      * @param {any} events 
      */
-    function toggleKbOrderHandle(events) {
+    function toggleKbNumberHandle(events) {
         var selectDatas = table.checkStatus('kbOrderTable').data;
         var type = events.data.type;
         var tipMsg = type === 0 ? '确定禁用吗？' : '确定启用吗？';
@@ -225,7 +259,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                 title: "询问框",
             }, function () {
                 $.ajax({
-                    url: '/api/toggleKbOrder',
+                    url: '/api/toggleKbNumber',
                     type: 'POST',
                     data: {
                         id: selectDatas[0].id,
@@ -271,6 +305,12 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                                 <label class="layui-form-label">名称</label>
                                 <div class="layui-input-inline">
                                     <input type="text" name="name" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label">简称</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="code" class="layui-input">
                                 </div>
                             </div>
                             <div class="layui-inline">
@@ -328,8 +368,9 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
             var name = selectDatas[0].name;
             var price = selectDatas[0].price;
             var description = selectDatas[0].description;
+            var code = selectDatas[0].code;
             layer.open({
-                content: `<form class="layui-form layui-form-pane" name="kbTypeUpdateForm">
+                content: `<form class="layui-form layui-form-pane" name="kbTypeUpdateForm" lay-filter="kbTypeUpdateForm">
                             <div class="layui-form-item">
                                 <div class="layui-inline">
                                     <label class="layui-form-label">平台</label>
@@ -346,6 +387,12 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                                     <label class="layui-form-label">名称</label>
                                     <div class="layui-input-inline">
                                         <input type="text" name="name" value="${name}" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">简称</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="code" value="${code}" class="layui-input">
                                     </div>
                                 </div>
                                 <div class="layui-inline">
@@ -387,6 +434,9 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                 },
                 success: function () {
                     form.render('select');
+                    form.val('kbTypeUpdateForm', {
+                        plant: plant
+                    });
                 },
                 btn: ['确定', '取消']
             });
@@ -669,10 +719,10 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
      * 渲染表格结构(空包单号)
      * 
      */
-    function renderKbOrderTable() {
+    function renderKbNumberTable() {
         table.render({
             elem: '#kbOrderTable',
-            url: '/api/readKbOrderPage',
+            url: '/api/readKbNumberPage',
             page: true,
             cols: [[
                 {
@@ -682,8 +732,11 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                     title: '单号',
                     field: "number"
                 }, {
-                    title: '平台',
+                    title: '电商平台',
                     field: "plant"
+                }, {
+                    title: '快递平台',
+                    field: "company"
                 }, {
                     title: '创建时间',
                     field: "createdDate",
@@ -749,6 +802,9 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                 }, {
                     title: '平台',
                     field: "plant"
+                }, {
+                    title: '简称',
+                    field: "code"
                 }, {
                     title: '价格',
                     field: "price"
@@ -868,7 +924,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
      * @param {any} total 总数居
      */
     function setMountValueForOrder(currentTotal, total) {
-        $('#currentKbOrderMountSpan').text(currentTotal);
+        $('#currentKbNumberMountSpan').text(currentTotal);
         $('#kbOrderMountSpan').text(total);
     }
 
@@ -907,7 +963,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
      * 
      * @param {Object} kbOrderInfo 空包单号信息对象
      */
-    function validKbOrderInfo(kbOrderInfo) {
+    function validKbNumberInfo(kbOrderInfo) {
         if (!kbOrderInfo) {
             return {
                 isPass: false,
@@ -918,7 +974,14 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
         if (!kbOrderInfo.plant) {
             return {
                 isPass: false,
-                msg: '平台不能为空'
+                msg: '电商平台不能为空'
+            }
+        }
+
+        if (!kbOrderInfo.company) {
+            return {
+                isPass: false,
+                msg: '快递平台不能为空'
             }
         }
 
@@ -958,6 +1021,12 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
             return {
                 isPass: false,
                 msg: '平台不能为空'
+            }
+        }
+        if (!kbTypeInfo.code) {
+            return {
+                isPass: false,
+                msg: '简称不能为空'
             }
         }
 

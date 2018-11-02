@@ -26,6 +26,8 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
         form.on('radio', function (data) {
             getKbTypeServer(data.value);
         });
+        // 提交订单
+        $('#createKbOrderBtn').on('click', createKbOrderHandle);
         // 创建发货地址
         $('.js-create-bb-address').on('click', createKbAddressHandle);
         // 修改发货地址
@@ -38,6 +40,42 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
         $('#enabledKbAddressBtn').on('click', {
             type: 1
         }, toggleKbAddressHandle);
+    }
+
+
+    /**
+     *创建空包订单
+     *
+     * @param {*} e
+     * @returns
+     */
+    function createKbOrderHandle(e) {
+        var kbOrderInfo = core.getFormValues($('form[name=kbOrderForm]'));
+        var validKbOrderInfoResult = validKbOrderInfo(kbOrderInfo);
+        if (validKbOrderInfoResult.isPass) {
+            kbOrderInfo.total = 1000;
+            kbOrderInfo.number = APIUtil.generateOrderNumer();
+            kbOrderInfo.addressTo = kbOrderInfo.addressTo.split(/\n/g).filter(function (item) {
+                return !!item;
+            });
+            $.ajax({
+                url: '/api/createKbOrder',
+                type: 'POST',
+                data: kbOrderInfo,
+                success: function (data, textStatus, jqXHR) {
+                    layer.msg(data.success ? ('操作成功') : ('操作失败'));
+                    if (data.success) {
+                        core.setWindowHash('manage_kb_order');
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    layer.msg(baseDatas.errorMsg);
+                }
+            });
+        } else {
+            layer.msg(validKbOrderInfoResult.msg);
+        }
+        return false;
     }
 
     /**
@@ -83,7 +121,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
                         </form>`,
             title: '创建收货地址',
             btn: ['创建', '取消'],
-            area: ['400px'],
+            area: ['450px'],
             yes: function (index) {
                 var kbAddressInfo = core.getFormValues($('form[name=kbAddressCreateForm]'));
                 var validKbAddressInfoResult = validKbAddressInfo(kbAddressInfo);
@@ -159,7 +197,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
                         </form>`,
                 title: '收货地址信息修改',
                 btn: ['确定', '取消'],
-                area: ['400px'],
+                area: ['450px'],
                 yes: function (index) {
                     var kbAddressInfo = core.getFormValues($('form[name=kbAddressUpdateForm]'));
                     var validKbAddressInfoResult = validKbAddressInfo(kbAddressInfo);
@@ -357,6 +395,43 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
     }
 
     /**
+     * 校验空包订单信息
+     * 
+     * @param {Object} kbOrderInfo 收货地址信息对象
+     */
+    function validKbOrderInfo(kbOrderInfo) {
+        if (!kbOrderInfo) {
+            return {
+                isPass: false,
+                msg: '参数错误'
+            }
+        }
+
+        if (!kbOrderInfo.kbCompany) {
+            return {
+                isPass: false,
+                msg: '请选择快递类型'
+            }
+        }
+        if (!kbOrderInfo.addressFrom) {
+            return {
+                isPass: false,
+                msg: '请选择发货地址'
+            }
+        }
+        if (!kbOrderInfo.addressTo) {
+            return {
+                isPass: false,
+                msg: '请输入收货地址'
+            }
+        }
+        return {
+            isPass: true,
+            msg: ''
+        };
+    }
+
+    /**
      *获取快递类型列表
      *
      * @param {*}  平台
@@ -377,9 +452,9 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
     function renderKbType(kbTypes) {
         var $container = $('select[name=kbCompany]');
         $container.empty();
-        $container.append(` <option value="">请选择快递类型</option>`);
+        $container.append(`<option value="">请选择快递类型</option>`);
         $.each(kbTypes, function (index, item) {
-            $container.append(`<option value="${item.name}">${item.name}</option>`);
+            $container.append(`<option value="${item.code}">${item.name}</option>`);
         });
         form.render('select');
     }
@@ -404,7 +479,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
         $container.empty();
         $container.append(` <option value="">请选择发货地址</option>`);
         $.each(adds, function (index, item) {
-            $container.append(`<option value="${item.detail}">${item.detail}</option>`);
+            $container.append(`<option value="${item.detail}">${item.detail} ${item.contact} ${item.phone} ${item.email}</option>`);
         });
         form.render('select');
     }

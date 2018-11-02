@@ -1,11 +1,12 @@
 // 空包订单管理模块
 'use strict';
-layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
+layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () {
     var element = layui.element;
     var table = layui.table;
     var layer = layui.layer;
     var util = layui.util;
     var form = layui.form;
+    var laydate = layui.laydate;
     var baseDatas = {
         // 错误消息
         netErrMsg: '系统已退出登录，请登录系统重试',
@@ -24,11 +25,21 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
      */
     (function init() {
         form.render('select');
+        initComponent();
         // 渲染数据表格
         renderTable();
         // 初始化事件
         initEvent();
     })()
+
+    // 初始化组件
+    function initComponent() {
+        // 开始日期和结束日期
+        laydate.render({
+            elem: '#createdDateStart'
+            , range: true
+        });
+    }
 
     /**
      * 初始化DOM元素事件
@@ -75,7 +86,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
     function searchHandle(events) {
         var queryParams = getQueryParams();
         reloadTable($.extend(queryParams, {
-            taskPlant: baseDatas.taskPlants[baseDatas.tabIndex],
+            plant: baseDatas.plants[baseDatas.tabIndex],
             page: {
                 curr: 1,
                 limit: 10
@@ -336,36 +347,32 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
                     width: 220
                 },
                 {
-                    field: 'kbNumner',
+                    field: 'kbNumber',
                     title: '快递单号',
-                    width: 150, templet: function (d) {
-                        return '（' + d.taskQuantity + '）' + d.taskKeyword;
-                    }
+                    width: 220,
                 },
                 {
                     field: 'kbCompany',
                     title: '快递公司/平台',
-                    width: 150
-                },
-                {
-                    field: 'totak',
-                    title: '金额',
-                    width: 150
+                    width: 150,
+                    templet: function (d) {
+                        return d.kbCompany + '/' + d.plant;
+                    }
                 },
                 {
                     field: 'addressFrom',
                     title: '发件人信息',
-                    width: 200,
+                    width: 300,
                 },
                 {
                     field: 'addressTo',
                     title: '收件人信息',
-                    width: 200
+                    width: 300
                 },
                 {
                     field: 'remark',
                     title: '备注',
-                    width: 100
+                    width: 150
                 },
                 {
                     field: 'createdDate',

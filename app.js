@@ -774,34 +774,34 @@ app.post('/api/toggleKbType', function (req, res) {
 
 /* *****************基础数据之空包单号****************** */
 // 创建空包单号
-app.post('/api/createKbOrder', function (req, res) {
+app.post('/api/createKbNumber', function (req, res) {
     try {
-        manageKbNumber.createKbOrder(req, res, req.body);
+        manageKbNumber.createKbNumber(req, res, req.body);
     } catch (error) {
         Core.flyer.log(error);
     }
 });
 
 // 获取空包单号
-app.get('/api/readKbOrderPage', function (req, res) {
+app.get('/api/readKbNumberPage', function (req, res) {
     try {
-        manageKbNumber.readKbOrderPage(req, res, req.query);
+        manageKbNumber.readKbNumberPage(req, res, req.query);
     } catch (error) {
         Core.flyer.log(error);
     }
 });
 
 //修改空包单号
-app.post('/api/updateKbOrder', function (req, res) {
+app.post('/api/updateKbNumber', function (req, res) {
     try {
-        manageKbNumber.updateKbOrder(req, res, req.body);
+        manageKbNumber.updateKbNumber(req, res, req.body);
     } catch (error) {
         Core.flyer.log(error);
     }
 });
 
 // 切换空包单号状态
-app.post('/api/toggleKbOrder', function (req, res) {
+app.post('/api/toggleKbNumber', function (req, res) {
     try {
         manageKbNumber.toggleKbOrder(req, res, req.body);
     } catch (error) {
