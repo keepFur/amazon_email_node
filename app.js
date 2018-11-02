@@ -612,18 +612,18 @@ app.post('/api/createTaskType', function (req, res) {
 });
 
 // 获取任务类型（不分页）
-app.get('/api/readTaskTypePage', function (req, res) {
+app.get('/api/readTaskType', function (req, res) {
     try {
-        manageTaskType.readTaskTypePage(req, res, req.query);
+        manageTaskType.readTaskType(req, res, req.query);
     } catch (error) {
         Core.flyer.log(error);
     }
 });
 
-// 通过id获取任务类型
-app.get('/api/updateTaskType', function (req, res) {
+// 修改任务类型
+app.post('/api/updateTaskType', function (req, res) {
     try {
-        manageTaskType.updateTaskType(req, res, req.query);
+        manageTaskType.updateTaskType(req, res, req.body);
     } catch (error) {
         Core.flyer.log(error);
     }
@@ -649,18 +649,18 @@ app.post('/api/createKbType', function (req, res) {
 });
 
 // 获取空包类型（不分页）
-app.get('/api/readKbTypePage', function (req, res) {
+app.get('/api/readKbType', function (req, res) {
     try {
-        manageKbType.readKbTypePage(req, res, req.query);
+        manageKbType.readKbType(req, res, req.query);
     } catch (error) {
         Core.flyer.log(error);
     }
 });
 
-// 通过id获取空包类型
-app.get('/api/updateKbType', function (req, res) {
+// 修改空包类型
+app.post('/api/updateKbType', function (req, res) {
     try {
-        manageKbType.updateKbType(req, res, req.query);
+        manageKbType.updateKbType(req, res, req.body);
     } catch (error) {
         Core.flyer.log(error);
     }
@@ -694,10 +694,10 @@ app.get('/api/readKbOrderPage', function (req, res) {
     }
 });
 
-// 通过id获取空包单号
-app.get('/api/updateKbOrder', function (req, res) {
+//修改空包单号
+app.post('/api/updateKbOrder', function (req, res) {
     try {
-        manageKbOrder.updateKbOrder(req, res, req.query);
+        manageKbOrder.updateKbOrder(req, res, req.body);
     } catch (error) {
         Core.flyer.log(error);
     }
