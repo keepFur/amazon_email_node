@@ -334,7 +334,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
                     title: '关键词/数量/消费金额',
                     width: 250,
                     templet: function (d) {
-                        return '（' + d.taskKeyword + '）' + d.taskQuantity + ' / ' + d.taskSumMoney + ' 积分';
+                        return '（' + (d.taskKeyword || '无') + '）' + d.taskQuantity + '个 / ' + d.taskSumMoney + ' 积分';
                     }
                 },
                 {

@@ -514,6 +514,16 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                                 </div>
                             </div>
                             <div class="layui-inline">
+                                <label class="layui-form-label">关键词</label>
+                                <div class="layui-input-inline">
+                                    <select name="hasKeyword">
+                                        <option value="">请选择是否有关键词</option>
+                                        <option value="1">有</option>
+                                        <option value="0">无</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
                                 <label class="layui-form-label">名称</label>
                                 <div class="layui-input-inline">
                                     <input type="text" name="name" class="layui-input">
@@ -589,8 +599,9 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
             var lieliuCode = selectDatas[0].lieliuCode;
             var inPrice = selectDatas[0].inPrice;
             var outPrice = selectDatas[0].outPrice;
+            var hasKeyword = selectDatas[0].hasKeyword;
             layer.open({
-                content: `<form class="layui-form layui-form-pane" name="taskTypeUpdateForm">
+                content: `<form class="layui-form layui-form-pane" name="taskTypeUpdateForm" lay-filter="taskTypeUpdateForm">
                             <div class="layui-form-item">
                                 <div class="layui-inline">
                                     <label class="layui-form-label">平台</label>
@@ -610,6 +621,16 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                                             <option value="">请选择类型</option>
                                             <option value="1" ${isPc === '1' ? 'selected' : ''}>PC</option>
                                             <option value="0" ${isPc === '0' ? 'selected' : ''}>APP</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">关键词</label>
+                                    <div class="layui-input-inline">
+                                        <select name="hasKeyword">
+                                            <option value="">请选择是否有关键词</option>
+                                            <option value="1" ${hasKeyword === '1' ? 'selected' : ''}>有</option>
+                                            <option value="0" ${hasKeyword === '0' ? 'selected' : ''}>无</option>
                                         </select>
                                     </div>
                                 </div>
@@ -670,6 +691,9 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                 },
                 success: function () {
                     form.render('select');
+                    form.val('taskTypeUpdateForm', {
+                        plant: plant
+                    });
                 },
                 btn: ['确定', '取消']
             });
@@ -873,6 +897,12 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                     title: '售价',
                     field: "outPrice"
                 }, {
+                    title: '有无关键词',
+                    field: "hasKeyword",
+                    templet: function (d) {
+                        return d.hasKeyword === 1 ? '有' : '无';
+                    }
+                }, {
                     title: '类型',
                     field: "isPc",
                     templet: function (d) {
@@ -1066,6 +1096,12 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
             return {
                 isPass: false,
                 msg: '名称不能为空'
+            }
+        }
+        if (!taskTypeInfo.hasKeyword) {
+            return {
+                isPass: false,
+                msg: '请选择是否有关键词'
             }
         }
 

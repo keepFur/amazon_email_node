@@ -66,25 +66,32 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
                 var plant = $selected.data('plant');
                 var name = $selected.data('name');
                 var code = $selected.data('code');
+                var hask = $selected.data('hask');
                 // 将选中的任务保存到基础数据中，后期的数据源只来源于此（唯一数据源）
                 baseDatas.taskTypeInfo = {
                     price: price,
                     plant: plant,
                     name: name,
-                    code: code
+                    code: code,
+                    hask: hask
                 };
+                // 单价
                 $('#taskPrice').text(price);
                 // 总价
                 var sum = getKeywordsAndQuantity().reduce(function (total, item) {
                     return total + item.quantity;
                 }, 0);
                 $('#taskSumMoney').text(sum ? core.numberToLocalString(sum * baseDatas.taskTypeInfo.price) : 0);
+                // 关键词
+                $('.js-keyword-quantity-container').toggle(!!hask);
+                // 无关键词
+                $('.js-no-keyword-container').toggle(!hask);
             } else {
                 baseDatas.taskTypeInfo = null;
             }
         });
         // 数量输入框的keyup事件
-        $('input[name=taskQuantity]').on('keyup', function (event) {
+        $('input[name=taskQuantity],input[name=taskQuantityNoKeyword]').on('keyup', function (event) {
             var value = this.value;
             if (!baseDatas.taskTypeInfo) {
                 return false;
@@ -93,7 +100,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
                 var sum = getKeywordsAndQuantity().reduce(function (total, item) {
                     return total + item.quantity;
                 }, 0);
-                $('#taskSumMoney').text(sum ? core.numberToLocalString(sum * baseDatas.taskTypeInfo.price) : 0);
+                $('#taskSumMoney').text(sum && baseDatas.taskTypeInfo.hask ? core.numberToLocalString(sum * baseDatas.taskTypeInfo.price) : value * baseDatas.taskTypeInfo.price);
             } else {
                 this.value = '';
             }
@@ -195,6 +202,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
             var key = 'id';
             var value = '';
             if (!this.value.trim()) {
+                $('#bbDetailContainer').addClass('layui-hide');
                 return false;
             }
             // 京东和平多多不支持
@@ -387,90 +395,117 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
         var validTaskInfoResult = validTaskInfo(taskInfo);
         // 验证通过
         if (validTaskInfoResult.isPass) {
-            for (var i = 0; i < taskInfo.keywordQuantity.length; i++) {
-                (function (index) {
-                    taskInfo.taskKeyword = taskInfo.keywordQuantity[index].keyword;
-                    taskInfo.taskQuantity = taskInfo.keywordQuantity[index].quantity;
-                    taskInfo.taskHour = taskInfo.keywordQuantity[index].hour;
-                    taskInfo.taskSumMoney = taskInfo.taskUnitPrice * taskInfo.taskQuantity;
-                    var signKeyTaskInfo = getSignKeyTaskInfo(taskInfo);
-                    APIUtil.createTask(signKeyTaskInfo, function (res, err) {
-                        if (err) {
-                            layer.msg(err.message);
-                            return false;
+            // 没有关键词的任务
+            if (!baseDatas.taskTypeInfo.hask) {
+                taskInfo.taskKeyword = '';
+                taskInfo.taskQuantity = taskInfo.taskQuantityNoKeyword;
+                taskInfo.taskHour = computeEqualPart(taskInfo.taskQuantity, computeMainHourToday());
+                taskInfo.taskSumMoney = taskInfo.taskUnitPrice * taskInfo.taskQuantity;
+                var signKeyTaskInfo = getSignKeyTaskInfo(taskInfo);
+                APIUtil.createTask(signKeyTaskInfo, function (res, err) {
+                    if (err) {
+                        layer.msg(err.message);
+                        return false;
+                    }
+                    if (res.data.status !== '1') {
+                        layer.msg(res.data.tips);
+                        return false;
+                    }
+                    // 调用第三方api的时候，生成的订单号，需要传回到数据库中，不能再次生成
+                    taskInfo.taskOrderNumber = res.orderNumber;
+                    $.ajax({
+                        url: '/api/createTask',
+                        type: 'POST',
+                        data: taskInfo,
+                        beforeSend: function (jqXHR, settings) {
+                            $.lockedBtn($(ele), true, '创建中');
+                        },
+                        success: function (data, textStatus, jqXHR) {
+                            if (data.success) {
+                                // 获取用户当前的积分余额并提示
+                                layer.msg('操作成功！！！</br>本次共消费积分：' + taskInfo.taskSumMoney + '</br>' + '积分余额：' + (userInfo.money - taskInfo.taskSumMoney));
+                                core.getUserInfoById(userId, function (user) {
+                                    userInfo = user.data.rows[0];
+                                    $('#userName').data('user', JSON.stringify(user));
+                                });
+                                core.setWindowHash('manage_task');
+                            } else {
+                                // 操作失败需要取消当前任务
+                                APIUtil.cancelTask(taskInfo.taskOrderNumber, function (res) {
+                                    layer.msg('操作失败：' + res.data.tips);
+                                });
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            layer.msg(baseDatas.errorMsg);
+                        },
+                        complete: function (jqXHR, textStatus) {
+                            $.unlockBtn($(ele), '<i class="layui-icon layui-icon-release"></i>创建任务');
                         }
-                        if (res.data.status !== '1') {
-                            layer.msg(res.data.tips);
-                            return false;
-                        }
-                        // 调用第三方api的时候，生成的订单号，需要传回到数据库中，不能再次生成
-                        taskInfo.taskOrderNumber = res.orderNumber;
+                    });
+                });
+            } else {
+                for (var i = 0; i < taskInfo.keywordQuantity.length; i++) {
+                    (function (index) {
                         taskInfo.taskKeyword = taskInfo.keywordQuantity[index].keyword;
                         taskInfo.taskQuantity = taskInfo.keywordQuantity[index].quantity;
                         taskInfo.taskHour = taskInfo.keywordQuantity[index].hour;
                         taskInfo.taskSumMoney = taskInfo.taskUnitPrice * taskInfo.taskQuantity;
-                        $.ajax({
-                            url: '/api/createTask',
-                            type: 'POST',
-                            data: taskInfo,
-                            beforeSend: function (jqXHR, settings) {
-                                $.lockedBtn($(ele), true, '创建中');
-                            },
-                            success: function (data, textStatus, jqXHR) {
-                                if (data.success) {
-                                    // 获取用户当前的积分余额并提示
-                                    layer.msg('操作成功！！！</br>本次共消费积分：' + taskInfo.taskSumMoney + '</br>' + '积分余额：' + (userInfo.money - taskInfo.taskSumMoney));
-                                    core.getUserInfoById(userId, function (user) {
-                                        userInfo = user.data.rows[0];
-                                        $('#userName').data('user', JSON.stringify(user));
-                                    });
-                                    core.setWindowHash('manage_task');
-                                } else {
-                                    // 操作失败需要取消当前任务
-                                    APIUtil.cancelTask(taskInfo.taskOrderNumber, function (res) {
-                                        layer.msg('操作失败：' + res.data.tips);
-                                    });
-                                }
-                            },
-                            error: function (jqXHR, textStatus, errorThrown) {
-                                layer.msg(baseDatas.errorMsg);
-                            },
-                            complete: function (jqXHR, textStatus) {
-                                $.unlockBtn($(ele), '<i class="layui-icon layui-icon-release"></i>创建任务');
+                        var signKeyTaskInfo = getSignKeyTaskInfo(taskInfo);
+                        APIUtil.createTask(signKeyTaskInfo, function (res, err) {
+                            if (err) {
+                                layer.msg(err.message);
+                                return false;
                             }
+                            if (res.data.status !== '1') {
+                                layer.msg(res.data.tips);
+                                return false;
+                            }
+                            // 调用第三方api的时候，生成的订单号，需要传回到数据库中，不能再次生成
+                            taskInfo.taskOrderNumber = res.orderNumber;
+                            // 此处不能删除
+                            taskInfo.taskKeyword = taskInfo.keywordQuantity[index].keyword;
+                            taskInfo.taskQuantity = taskInfo.keywordQuantity[index].quantity;
+                            taskInfo.taskHour = taskInfo.keywordQuantity[index].hour;
+                            taskInfo.taskSumMoney = taskInfo.taskUnitPrice * taskInfo.taskQuantity;
+                            $.ajax({
+                                url: '/api/createTask',
+                                type: 'POST',
+                                data: taskInfo,
+                                beforeSend: function (jqXHR, settings) {
+                                    $.lockedBtn($(ele), true, '创建中');
+                                },
+                                success: function (data, textStatus, jqXHR) {
+                                    if (data.success) {
+                                        // 获取用户当前的积分余额并提示
+                                        layer.msg('操作成功！！！</br>本次共消费积分：' + taskInfo.taskSumMoney + '</br>' + '积分余额：' + (userInfo.money - taskInfo.taskSumMoney));
+                                        core.getUserInfoById(userId, function (user) {
+                                            userInfo = user.data.rows[0];
+                                            $('#userName').data('user', JSON.stringify(user));
+                                        });
+                                        core.setWindowHash('manage_task');
+                                    } else {
+                                        // 操作失败需要取消当前任务
+                                        APIUtil.cancelTask(taskInfo.taskOrderNumber, function (res) {
+                                            layer.msg('操作失败：' + res.data.tips);
+                                        });
+                                    }
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    layer.msg(baseDatas.errorMsg);
+                                },
+                                complete: function (jqXHR, textStatus) {
+                                    $.unlockBtn($(ele), '<i class="layui-icon layui-icon-release"></i>创建任务');
+                                }
+                            });
                         });
-                    });
-                })(i)
+                    })(i)
+                }
             }
         } else {
             layer.msg(validTaskInfoResult.msg);
         }
         return false;
-    }
-
-    /**
-     * 设置任务详情信息
-     * 
-     * @param {any} taskInfo 任务信息
-     */
-    function setTaskDetail(taskInfo) {
-        if (!taskInfo) {
-            $.writeLog('tb_task-setTaskDetail', '参数错误');
-            return;
-        }
-        // 任务耗时
-        if (taskInfo.taskSumTime) {
-            $('#taskSumTime').text(taskInfo.taskSumTime || 1);
-        }
-        // 任务单价
-        if (taskInfo.taskPrice) {
-            $('#taskPrice').text(taskInfo.taskPrice || 0);
-        }
-        // 任务总金额
-        if (taskInfo.taskSumMoney) {
-            $('#taskSumMoney').text(taskInfo.taskSumMoney || 0);
-        }
-        return;
     }
 
     /**
@@ -537,27 +572,6 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
     }
 
     /**
-     * 获取任务的关键词和数量
-     * 
-     * @param {any} $form 任务表单元素
-     */
-    function getKeywordQuantity($form) {
-        var result = [];
-        if (!$form) {
-            $.writeLog('tb_task-getKeywordQuantity', '参数错误');
-            return [];
-        }
-        var $items = $('.js-keyword-quantity-item');
-        $.each($items, function (index, item) {
-            result.push({
-                taskKeyword: $(item).find('input[name=taskKeyword]').val(),
-                taskQuantity: $(item).find('input[name=taskQuantity]').val()
-            });
-        });
-        return result;
-    }
-
-    /**
      * 任务表单信息校验
      * 
      * @param {any} taskInfo 
@@ -601,7 +615,8 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
                 msg: '商品浏览时间不能低于50秒'
             };
         }
-        if (!taskInfo.taskKeyword) {
+        // 有关键词的才需要验证
+        if (!taskInfo.taskKeyword && baseDatas.taskTypeInfo.hask) {
             return {
                 isPass: false,
                 msg: '关键词不能为空'
@@ -611,22 +626,6 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
             isPass: true,
             msg: ''
         };
-    }
-
-    /**
-     * 根据页签的索引值动态的显示任务的流量入口
-     * 
-     * @param {any} $li 页签元素
-     */
-    function toggleTaskIndex($li) {
-        var $taskIndex = $('.js-task-index');
-        var $form = $('form[name=taskForm]');
-        var $taskSearchIndex = $form.find('.js-task-search-index');
-        var index = $li.data('index');
-        $taskIndex.addClass('layui-hide').find('input[type=radio]').prop('checked', false);
-        $taskIndex.eq(index).removeClass('layui-hide').find('input[type=radio]').first().prop('checked', true);
-        // 搜索入口只有淘宝流量入口有
-        $taskSearchIndex.toggle((index === 0 || index == 1));
     }
 
     /**
@@ -694,7 +693,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
         $container.empty();
         $container.append(`<option value="">请选择任务类型</option>`);
         $.each(kbTypes, function (index, item) {
-            $container.append(`<option value="${item.id}" data-name="${item.name}" data-code="${item.lieliuCode}" data-price="${item.outPrice}" data-plant="${item.plant}">${item.name}</option>`);
+            $container.append(`<option value="${item.id}" data-name="${item.name}" data-hask="${item.hasKeyword}" data-code="${item.lieliuCode}" data-price="${item.outPrice}" data-plant="${item.plant}">${item.name}</option>`);
         });
         form.render('select');
     }
