@@ -11,6 +11,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
             batch: '请至少选择一条数据操作'
         }
     };
+
     (function init() {
         form.render('select');
         form.render('radio');
@@ -18,6 +19,10 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
         getAddressFromServer();
         renderTable();
         initEvents();
+        core.getUserInfoById(userId, function (user) {
+            userInfo = user.data.rows[0];
+            $('#userName').data('user', JSON.stringify(user));
+        });
     })();
 
     // 事件初始化
@@ -26,6 +31,10 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
         form.on('radio', function (data) {
             getKbTypeServer(data.value);
         });
+        // 格式化地址
+        $('#formatAddressBtn').on('click', formatAddressHandle);
+        // 过滤真实订单
+        $('#getRealOrderBtn').on('click', getRealOrderHandle);
         // 提交订单
         $('#createKbOrderBtn').on('click', createKbOrderHandle);
         // 创建发货地址
@@ -40,6 +49,62 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
         $('#enabledKbAddressBtn').on('click', {
             type: 1
         }, toggleKbAddressHandle);
+    }
+
+    /**
+     *格式化收货地址
+     *
+     * @param {*} e
+     * @returns
+     */
+    function formatAddressHandle(e) {
+        layer.msg('成功');
+        return false;
+    }
+
+    /**
+     *
+     * 过滤真实订单
+     * @param {*} e
+     * @returns
+     */
+    function getRealOrderHandle(e) {
+        var addressTo = $('textarea[name=addressTo]').val();
+        if (!addressTo) {
+            layer.msg('请先填写收货地址信息');
+            return false;
+        }
+        layer.open({
+            content: `<form class="layui-form layui-form-pane" name="getRealOrderForm">
+                            <div class="layui-form-item">
+                                <div class="layui-form-item layui-form-text">
+                                    <label class="layui-form-label">过滤条件</label>
+                                    <div class="layui-input-block">
+                                        <textarea class="layui-textarea" placeholder="输入真实订单的收件人、手机号等信息进行过滤" name="condition"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>`,
+            title: '过滤真实订单',
+            btn: ['过滤', '取消'],
+            area: ['450px'],
+            yes: function (index) {
+                var condition = $('textarea[name=condition]').val();
+                var addressTos = addressTo.split('\n');
+                var ret = [];
+                if (condition) {
+                    layer.msg('过滤成功');
+                    layer.close(index);
+                    ret = addressTos.filter(function (item) {
+                        return item.match(condition);
+                    });
+                    $('textarea[name=addressTo]').val(ret.join('\n'));
+                } else {
+                    layer.msg('过滤条件不能为空');
+                }
+            }
+        });
+        return false;
     }
 
 

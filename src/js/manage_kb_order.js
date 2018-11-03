@@ -53,6 +53,8 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
                     plant: baseDatas.plants[data.index]
                 });
                 baseDatas.tabIndex = data.index;
+                // 拼多多批量发货
+                $('#pddBatchBtn').toggleClass('layui-hide', data.index !== 3);
             }
         });
         // 查询
@@ -66,6 +68,8 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
         $('#createKbOrderBtn').on('click', createKbOrderHandle);
         // 导出表格
         $('#exportKbOrderBtn').on('click', exportKbOrderHandle);
+        // 拼多多批量发货
+        $('#pddBatchBtn').on('click', pddBatchHandle);
         // 取消空包订单信息
         $('#cancelKbOrderBtn').on('click', updateKbOrderHandle);
         // 暂停空包订单
@@ -112,6 +116,17 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
      */
     function exportKbOrderHandle() {
         layer.msg('123');
+        return false;
+    }
+
+    /**
+     *拼多多批量发货
+     *
+     * @param {*} e
+     * @returns
+     */
+    function pddBatchHandle(e) {
+        layer.msg('pdd');
         return false;
     }
 

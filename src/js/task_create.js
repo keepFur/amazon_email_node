@@ -119,7 +119,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
             }
             $time.val($time.val() - 10);
             // 改变单价
-            baseDatas.taskTypeInfo.price -= 5;
+            baseDatas.taskTypeInfo.price -= 0.1;
             $('#taskPrice').text(baseDatas.taskTypeInfo.price);
             // 总价
             var sum = getKeywordsAndQuantity().reduce(function (total, item) {
@@ -141,7 +141,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
             }
             $time.val(($time.val() | 0) + 10);
             // 改变单价
-            baseDatas.taskTypeInfo.price += 5;
+            baseDatas.taskTypeInfo.price += 0.1;
             $('#taskPrice').text(baseDatas.taskTypeInfo.price);
             // 总价
             var sum = getKeywordsAndQuantity().reduce(function (total, item) {

@@ -21,6 +21,7 @@ layui.use(['element', 'layer', 'form'], function () {
         });
         // 获取所有的充值方式并渲染
         getPackageDatas();
+        form.render('checkbox');
     }
 
     // 事件初始化

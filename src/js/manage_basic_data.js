@@ -619,8 +619,8 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                                     <div class="layui-input-inline">
                                         <select name="isPc">
                                             <option value="">请选择类型</option>
-                                            <option value="1" ${isPc === '1' ? 'selected' : ''}>PC</option>
-                                            <option value="0" ${isPc === '0' ? 'selected' : ''}>APP</option>
+                                            <option value="1">PC</option>
+                                            <option value="0">APP</option>
                                         </select>
                                     </div>
                                 </div>
@@ -629,8 +629,8 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                                     <div class="layui-input-inline">
                                         <select name="hasKeyword">
                                             <option value="">请选择是否有关键词</option>
-                                            <option value="1" ${hasKeyword === '1' ? 'selected' : ''}>有</option>
-                                            <option value="0" ${hasKeyword === '0' ? 'selected' : ''}>无</option>
+                                            <option value="1">有</option>
+                                            <option value="0">无</option>
                                         </select>
                                     </div>
                                 </div>
@@ -692,7 +692,9 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                 success: function () {
                     form.render('select');
                     form.val('taskTypeUpdateForm', {
-                        plant: plant
+                        plant: plant,
+                        isPc: isPc,
+                        hasKeyword: hasKeyword
                     });
                 },
                 btn: ['确定', '取消']
