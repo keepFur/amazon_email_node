@@ -9,11 +9,13 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
     var userId = $('#userName').data('user-id');
     var baseDatas = {
         tabIndex: 0,
-        tabText: 'TRFFIC'
+        tabText: 'TB',
+        taskTypeInfo: null
     };
     // 页面入口
     (function init() {
         initEvent();
+        getTaskTypeServer('TB');
         initComponent();
         core.getUserInfoById(userId, function (user) {
             userInfo = user.data.rows[0];
@@ -32,10 +34,14 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
             elem: '#taskStartDate',
             min: $.formatDate('yyyy-mm-dd')
         });
+        laydate.render({
+            format: 'yyyy-MM-dd',
+            elem: '#taskEndDate',
+            min: $.formatDate('yyyy-mm-dd')
+        });
         form.render('radio');
+        form.render('select');
         $('#taskStartDate').val($.formatDate('yyyy-mm-dd'));
-        // 设置单价的值
-        $('#taskPrice').text(core.getTypeCodeByValue($('input[type=radio][name=taskChildType]:checked').val()).price);
     }
 
     /**
@@ -46,33 +52,96 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
         // 页签的点击事件
         element.on('tab(createTask)', function (data) {
             if (data.index !== baseDatas.tabIndex) {
-                toggleTaskIndex($(this));
-                form.render('radio');
                 baseDatas.tabIndex = data.index;
                 baseDatas.tabText = $(this).data('task-parent-type');
+                getTaskTypeServer(baseDatas.tabText);
+                $('form[name=taskForm]').find('.js-task-search-index').toggle(data.index === 0);
             }
         });
-        // 任务类型的点击事件，动态的更新价格
-        form.on('radio', function (data) {
-            if (this.name === 'taskChildType') {
-                var quantity = $('input[name=taskQuantity]').val();
-                $('#taskPrice').text(core.getTypeCodeByValue(this.value).price);
-                if (quantity) {
-                    $('#taskSumMoney').text(core.numberToLocalString($('#taskPrice').text() * quantity));
-                }
+        // 任务类型的切换事件，动态的更新价格
+        form.on('select(taskChildType)', function (data) {
+            if (data.value) {
+                var $selected = $(data.elem).find('option[value=' + data.value + ']')
+                var price = $selected.data('price');
+                var plant = $selected.data('plant');
+                var name = $selected.data('name');
+                var code = $selected.data('code');
+                // 将选中的任务保存到基础数据中，后期的数据源只来源于此（唯一数据源）
+                baseDatas.taskTypeInfo = {
+                    price: price,
+                    plant: plant,
+                    name: name,
+                    code: code
+                };
+                $('#taskPrice').text(price);
+                // 总价
+                var sum = getKeywordsAndQuantity().reduce(function (total, item) {
+                    return total + item.quantity;
+                }, 0);
+                $('#taskSumMoney').text(sum ? core.numberToLocalString(sum * baseDatas.taskTypeInfo.price) : 0);
+            } else {
+                baseDatas.taskTypeInfo = null;
             }
         });
         // 数量输入框的keyup事件
         $('input[name=taskQuantity]').on('keyup', function (event) {
             var value = this.value;
+            if (!baseDatas.taskTypeInfo) {
+                return false;
+            }
             if (!isNaN(value) && value > 0) {
                 var sum = getKeywordsAndQuantity().reduce(function (total, item) {
                     return total + item.quantity;
                 }, 0);
-                $('#taskSumMoney').text(core.numberToLocalString(sum * $('#taskPrice').text()));
+                $('#taskSumMoney').text(sum ? core.numberToLocalString(sum * baseDatas.taskTypeInfo.price) : 0);
             } else {
                 this.value = '';
             }
+        });
+        // 减少时长
+        $('.js-delete-time').on('click', function () {
+            var $time = $('input[name=taskGoodsBrowsingTime]');
+            var quantity = $('input[name=taskQuantity]').val();
+            if (!baseDatas.taskTypeInfo) {
+                layer.msg('请先选择任务类型');
+                return false;
+            }
+            if ($time.val() <= 50) {
+                layer.msg('不能低于50秒');
+                return false;
+            }
+            $time.val($time.val() - 10);
+            // 改变单价
+            baseDatas.taskTypeInfo.price -= 5;
+            $('#taskPrice').text(baseDatas.taskTypeInfo.price);
+            // 总价
+            var sum = getKeywordsAndQuantity().reduce(function (total, item) {
+                return total + item.quantity;
+            }, 0);
+            $('#taskSumMoney').text(sum ? core.numberToLocalString(sum * baseDatas.taskTypeInfo.price) : 0);
+            return false;
+        });
+        // 增加时长
+        $('.js-add-time').on('click', function () {
+            var $time = $('input[name=taskGoodsBrowsingTime]');
+            if (!baseDatas.taskTypeInfo) {
+                layer.msg('请先选择任务类型');
+                return false;
+            }
+            if ($time.val() >= 120) {
+                layer.msg('不能高于120秒');
+                return false;
+            }
+            $time.val(($time.val() | 0) + 10);
+            // 改变单价
+            baseDatas.taskTypeInfo.price += 5;
+            $('#taskPrice').text(baseDatas.taskTypeInfo.price);
+            // 总价
+            var sum = getKeywordsAndQuantity().reduce(function (total, item) {
+                return total + item.quantity;
+            }, 0);
+            $('#taskSumMoney').text(sum ? core.numberToLocalString(sum * baseDatas.taskTypeInfo.price) : 0);
+            return false;
         });
         // 任务时段输入框的点击事件
         $('input[name=taskHour]').on('click', function (events) {
@@ -306,6 +375,10 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
      * @returns 
      */
     function createTaskHandle(event) {
+        if (!baseDatas.taskTypeInfo) {
+            layer.msg('请先选择任务类型');
+            return false;
+        }
         var ele = event.target;
         var $taskForm = $('form[name=taskForm]');
         var taskInfo = getTaskInfo($taskForm);
@@ -408,17 +481,11 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
      */
     function getTaskInfo($form) {
         var taskInfo = {};
-        var typeCodeByValue = core.getTypeCodeByValue($('input[name=taskChildType]:checked').val())
         var keywordQuantity = getKeywordsAndQuantity();
-        var taskSumMoney = keywordQuantity.reduce(function (total, item) {
-            return total + item.quantity;
-        }, 0);
         taskInfo.taskUserId = $('#userName').data('user-id');
         taskInfo.taskParentType = baseDatas.tabText;
-        taskInfo.taskUnitPrice = typeCodeByValue.price;
-        // 总价格的计算，需要根据关键字的个数来衡量（单价*数量） 数量 = 关键词1数量+关键词2数量+。。。
-        // taskInfo.taskSumMoney = taskInfo.taskUnitPrice * taskSumMoney;
-        taskInfo.taskPlant = typeCodeByValue.plant;
+        taskInfo.taskUnitPrice = baseDatas.taskTypeInfo.price;
+        taskInfo.taskPlant = baseDatas.taskTypeInfo.plant;
         taskInfo.keywordQuantity = keywordQuantity;
         return $.extend(core.getFormValues($form), taskInfo);
     }
@@ -459,7 +526,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
     function getSignKeyTaskInfo(taskInfo) {
         var signKeyTaskInfo = {};
         signKeyTaskInfo.begin_time = taskInfo.taskStartDate || $.formatDate('yyyy-mm-dd');
-        signKeyTaskInfo.type = core.getTypeCodeByValue(taskInfo.taskChildType).code;
+        signKeyTaskInfo.type = baseDatas.taskTypeInfo.code;
         signKeyTaskInfo.count = taskInfo.taskQuantity;
         signKeyTaskInfo.target = taskInfo.taskBabyLinkToken;
         signKeyTaskInfo.keyword = taskInfo.taskKeyword;
@@ -504,10 +571,16 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
             };
         }
         if (!taskInfo) {
-            $.writeLog('tb_task-setTaskDetail', '参数为空');
+            $.writeLog('tb_task-validTaskInfo', '参数为空');
             return {
                 isPass: false,
                 msg: '参数不能为空'
+            };
+        }
+        if (!baseDatas.taskTypeInfo) {
+            return {
+                isPass: false,
+                msg: '请先选择任务类型'
             };
         }
         if (!taskInfo.taskName) {
@@ -596,5 +669,33 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
             return '';
         }
         return $.trim(str).replace(/(\s|，)+/g, ',');
+    }
+
+    /**
+     *获取任务类型列表
+     *
+     * @param {*}  平台
+     */
+    function getTaskTypeServer(plant) {
+        $.get('/api/readTaskType?status=1&plant=' + plant, function (res) {
+            renderTaskType(res.data.rows);
+        }, 'json');
+    }
+
+
+
+    /**
+     *渲染任务类型列表
+     *
+     * @param {*} kbTypes
+     */
+    function renderTaskType(kbTypes) {
+        var $container = $('select[name=taskChildType]');
+        $container.empty();
+        $container.append(`<option value="">请选择任务类型</option>`);
+        $.each(kbTypes, function (index, item) {
+            $container.append(`<option value="${item.id}" data-name="${item.name}" data-code="${item.lieliuCode}" data-price="${item.outPrice}" data-plant="${item.plant}">${item.name}</option>`);
+        });
+        form.render('select');
     }
 });

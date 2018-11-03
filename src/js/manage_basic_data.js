@@ -947,7 +947,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
      */
     function setMountValueForTaskType(currentTotal, total) {
         $('#currentTaskTypeMountSpan').text(currentTotal);
-        $('#TaskTypeMountSpan').text(total);
+        $('#taskTypeMountSpan').text(total);
     }
 
     /**

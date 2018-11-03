@@ -331,50 +331,45 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
                 },
                 {
                     field: 'taskQuantity',
-                    title: '数量和关键词',
-                    width: 150, templet: function (d) {
-                        return '（' + d.taskQuantity + '）' + d.taskKeyword;
+                    title: '关键词/数量/消费金额',
+                    width: 250,
+                    templet: function (d) {
+                        return '（' + d.taskKeyword + '）' + d.taskQuantity + ' / ' + d.taskSumMoney + ' 积分';
                     }
                 },
                 {
                     field: 'plant',
-                    title: '任务类型',
-                    width: 150,
+                    title: '平台/任务类型',
+                    width: 250,
                     templet: function (d) {
-                        var type = core.getTypeCodeByValue(d.taskChildType);
-                        var taskPlant = type.plant === 'TB' ? '淘宝' : type.plant === 'JD' ? '京东' : '拼多多';
-                        return taskPlant + '（' + type.name + '）';
+                        var taskPlant = d.taskPlant === 'TB' ? '淘宝' : d.taskPlant === 'JD' ? '京东' : '拼多多';
+                        return taskPlant + '（' + d.taskTypeName + '）';
                     }
                 },
                 {
                     field: 'taskName',
                     title: '任务名称',
-                    width: 150
+                    width: 200
+                },
+                {
+                    field: 'taskBabyLinkToken',
+                    title: '宝贝链接',
+                    width: 250,
+                    templet: function (d) {
+                        return `<a href="${d.taskBabyLinkToken}" style="color:#2cc3a9" target="_blank">${d.taskBabyLinkToken}</a>`;
+                    }
                 },
                 {
                     field: 'taskStartDate',
-                    title: '开始日期',
+                    title: '任务开始日期',
                     width: 120,
                     templet: function (d) {
                         return util.toDateString(d.createdDate, 'yyyy-MM-dd');
                     }
                 },
                 {
-                    field: 'taskBabyLinkToken',
-                    title: '宝贝链接',
-                    width: 200,
-                    templet: function (d) {
-                        return `<a href="${d.taskBabyLinkToken}" style="color:#2cc3a9" target="_blank">${d.taskBabyLinkToken}</a>`;
-                    }
-                },
-                {
-                    field: 'taskSumMoney',
-                    title: '总消费',
-                    width: 80
-                },
-                {
                     field: 'createdDate',
-                    title: '创建时间',
+                    title: '订单创建时间',
                     width: 200,
                     templet: function (d) {
                         return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');

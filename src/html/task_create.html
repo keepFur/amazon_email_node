@@ -1,16 +1,26 @@
 <div>
     <div class="layui-tab layui-tab-brief" lay-filter="createTask">
         <ul class="layui-tab-title">
-            <li data-index="0" data-task-parent-type="TRFFIC" class="layui-this">淘宝流量任务</li>
+            <li data-index="0" data-task-parent-type="TB" class="layui-this">淘宝任务</li>
+            <li data-index="1" data-task-parent-type="JD">京东任务</li>
+            <li data-index="2" data-task-parent-type="PDD">拼多多任务</li>
+            <!-- <li data-index="0" data-task-parent-type="TRFFIC" class="layui-this">淘宝流量任务</li>
             <li data-index="1" data-task-parent-type="COLLECT">淘宝收藏任务</li>
             <li data-index="2" data-task-parent-type="ADD_CART">淘宝加购任务</li>
             <li data-index="3" data-task-parent-type="TB_LIVE">淘宝直播任务</li>
             <li data-index="4" data-task-parent-type="JD_SHOP_ATTENTION">京东店铺任务</li>
-            <li data-index="5" data-task-parent-type="PDD_APP_TRAFFIC">拼多多流量APP</li>
+            <li data-index="5" data-task-parent-type="PDD_APP_TRAFFIC">拼多多流量APP</li> -->
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
                 <form class="layui-form" name="taskForm">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">任务类型</label>
+                        <div class="layui-input-block">
+                            <select name="taskChildType" lay-filter="taskChildType">
+                            </select>
+                        </div>
+                    </div>
                     <div class="layui-form-item js-task-search-index">
                         <label class="layui-form-label">搜索入口</label>
                         <div class="layui-input-block">
@@ -19,7 +29,7 @@
                         </div>
                         <div class="layui-form-mid layui-word-aux">PS:天猫商品允许淘宝入口，淘宝商品不允许天猫入口</div>
                     </div>
-                    <div class="layui-form-item">
+                    <!-- <div class="layui-form-item">
                         <label class="layui-form-label">流量入口</label>
                         <div class="js-task-index" data-index='0'>
                             <div class="layui-input-block">
@@ -69,7 +79,7 @@
                             </div>
                         </div>
                         <div class="layui-form-mid layui-word-aux">PS:任务类型不同，流量入口也不同</div>
-                    </div>
+                    </div> -->
                     <div class="layui-form-item">
                         <div class="layui-inline">
                             <label class="layui-form-label">任务名称</label>
@@ -80,9 +90,17 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">浏览时长</label>
                             <div class="layui-input-inline" style="width:160px;">
-                                <input type="text" name="taskGoodsBrowsingTime" placeholder="不能低于50秒,默认51秒" value="51" class="layui-input">
+                                <input type="text" name="taskGoodsBrowsingTime" placeholder="不能低于50秒,默认50秒" value="50" class="layui-input" readonly>
                             </div>
-                            <div class="layui-form-mid layui-word-aux">PS:每增加10秒，价格增加5积分</div>
+                            <div class="layui-btn-group" style="float:left;margin-right:8px;">
+                                <button class="layui-btn layui-btn-primary js-delete-time">-10秒</button>
+                                <button class="layui-btn layui-btn-primary js-add-time">+10秒</button>
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">PS:最低50秒，最高120秒，每增加10秒，单价增加5积分</div>
+                            <!-- <div class="layui-inline">
+                                <div class="layui-input-inline">
+                                </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -170,7 +188,7 @@
                         <span>任务耗时：<em id="taskSumTime">1</em>天</span>
                     </div>
                     <div class="layui-col-xs4">
-                        <span>单次消费：<em id="taskPrice">100</em>积分</span>
+                        <span>单次消费：<em id="taskPrice">0</em>积分</span>
                     </div>
                     <div class="layui-col-xs4">
                         <span>总消费：<em id="taskSumMoney">0</em>积分</span>
