@@ -3,7 +3,7 @@ layui.use(['util'], function () {
     var util = layui.util;
     var APIUtil = {
         domain: 'http://api.lieliu.com:1024',
-        userKey: 'c1e5606f7b40e680d3b5bfc7dbb042ff',
+        userKey: 'c1e5606f7b40e680d3b5bfc7dbb042ff#asd12c1e5606f7b40e680d3b5bfc7dbb042ff',
         getServerTimestamp: function (callback) {
             var url = this.domain + '/api/sys_now?format=json';
             callback = callback || function (res) {
@@ -27,7 +27,7 @@ layui.use(['util'], function () {
         },
         signkey: function (apiName, params) {
             console.log('原串：' + params);
-            var encodeUlr = encodeURIComponent(`${apiName}?${params}&${this.userKey}`);
+            var encodeUlr = encodeURIComponent(`${apiName}?${params}&${this.userKey.split('#')[0]}`);
             console.log('encodeurl之后：' + encodeUlr);
             return $.md5(encodeUlr);
         },
