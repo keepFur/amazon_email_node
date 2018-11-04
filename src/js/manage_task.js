@@ -14,7 +14,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
             batch: '请至少选择一条数据操作'
         },
         // 任务平台
-        taskPlants: ['', 'TB', 'JD', 'PDD'],
+        taskPlants: ['TB', 'JD', 'PDD'],
         // 当前页签的索引
         tabIndex: 0
     };
@@ -285,17 +285,6 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
     }
 
     /**
-     * 设置spanner
-     * 
-     * @param {any} currentTotal 当前显示数据的总数
-     * @param {any} total 总数居
-     */
-    function setMountValue(currentTotal, total) {
-        $('#currentTaskMountSpan').text(currentTotal);
-        $('#taskMountSpan').text(total);
-    }
-
-    /**
     *获取表格的查询参数
     *
     * @returns 返回所有参数的对象
@@ -319,6 +308,9 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
             elem: '#taskTable',
             url: '/api/readTaskPage',
             page: true,
+            where: {
+                plant: 'TB'
+            },
             cols: [[
                 {
                     checkbox: true,
@@ -342,8 +334,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
                     title: '平台/任务类型',
                     width: 250,
                     templet: function (d) {
-                        var taskPlant = d.taskPlant === 'TB' ? '淘宝' : d.taskPlant === 'JD' ? '京东' : '拼多多';
-                        return taskPlant + '（' + d.taskTypeName + '）';
+                        return core.getPlantByCode(d.taskPlant) + '（' + d.taskTypeName + '）';
                     }
                 },
                 {
@@ -407,7 +398,6 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
                 }
             },
             done: function (res) {
-                setMountValue(res.data.length, res.count);
                 $('.js-view-status').off('click').on('click', function (event) {
                     var taskOrderNumber = $(this).data('task-order-number');
                     var content = '';

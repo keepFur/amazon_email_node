@@ -3,33 +3,39 @@
         <ul class="layui-tab-title">
             <li class="layui-this">资料修改</li>
             <li>登录密码修改</li>
+            <li>会员升级</li>
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
                 <div class="layui-row">
                     <div class="layui-col-md6">
-                        <form class="layui-form " name="userUpdateForm">
+                        <form class="layui-form layui-form-pane" name="userUpdateForm">
                             <div class="layui-form-item">
-                                <label class="layui-form-label" style="float:none;">手机</label>
-                                <div class="layui-input-block" style="margin-left:64px;">
-                                    <input type="text" name="phone" class="layui-input">
+                                <div class="layui-form-item layui-form-text">
+                                    <label class="layui-form-label">手机</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="phone" class="layui-input">
+                                    </div>
+                                    <div class="layui-form-mid layui-word-aux">
+                                        PS：请务必使用正确的手机号，方便后期找回密码
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" style="float:none;">邮箱</label>
-                                <div class="layui-input-block" style="margin-left:64px;">
-                                    <input type="text" name="email" placeholder="非必填" class="layui-input">
+                                <div class="layui-form-item layui-form-text">
+                                    <label class="layui-form-label">邮箱</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="email" placeholder="非必填" class="layui-input">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" style="float:none;">QQ</label>
-                                <div class="layui-input-block" style="margin-left:64px;">
-                                    <input type="text" name="QQ" placeholder="非必填" class="layui-input">
+                                <div class="layui-form-item layui-form-text">
+                                    <label class="layui-form-label">QQ</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="QQ" placeholder="非必填" class="layui-input">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <div class="layui-input-block" style="margin-left:64px;">
-                                    <button class="layui-btn layui-btn-normal" style="width:100%;" id="updateInfoBtn">修改</button>
+                                <div class="layui-form-item layui-form-text">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn layui-btn-normal" style="width:100%;" id="updateInfoBtn">修改</button>
+                                    </div>
                                 </div>
                             </div>
                         </form>
@@ -39,22 +45,65 @@
             <div class="layui-tab-item">
                 <div class="layui-row">
                     <div class="layui-col-md6">
-                        <form class="layui-form" name="userUpdatePasswordForm">
+                        <form class="layui-form layui-form-pane" name="userUpdatePasswordForm">
                             <div class="layui-form-item">
-                                <label class="layui-form-label" style="float:none;">原密码</label>
-                                <div class="layui-input-block" style="margin-left:56px;">
-                                    <input type="text" name="oldPassword" class="layui-input">
+                                <div class="layui-form-item layui-form-text">
+                                    <label class="layui-form-label">原密码</label>
+                                    <div class="layui-input-block">
+                                        <input class="layui-input" name="oldPassword" />
+                                    </div>
+                                </div>
+                                <div class="layui-form-item layui-form-text">
+                                    <label class="layui-form-label">新密码</label>
+                                    <div class="layui-input-block">
+                                        <input class="layui-input" name="password" />
+                                    </div>
+                                </div>
+                                <div class="layui-form-item layui-form-text">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn layui-btn-normal" style="width:100%;" id="updatePasswordBtn">修改</button>
+                                    </div>
                                 </div>
                             </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="layui-row">
+                    <div class="layui-col-md6">
+                        <form class="layui-form layui-form-pane" name="updateLevelForm">
                             <div class="layui-form-item">
-                                <label class="layui-form-label" style="float:none;">新密码</label>
-                                <div class="layui-input-block" style="margin-left:56px;">
-                                    <input type="text" name="password" class="layui-input">
+                                <div class="layui-form-item layui-form-text">
+                                    <label class="layui-form-label">当前等级（余额）</label>
+                                    <div class="layui-input-block">
+                                        <input class="layui-input" name="oldLevel" value="普通会员（0）" readonly/>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <div class="layui-input-block" style="margin-left:56px;">
-                                    <button class="layui-btn layui-btn-normal" style="width:100%;" id="updatePasswordBtn">修改</button>
+                                <div class="layui-form-item layui-form-text">
+                                    <label class="layui-form-label">升级至</label>
+                                    <div class="layui-input-block">
+                                        <input class="layui-input" name="level" value="金牌会员" readonly/>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item layui-form-text">
+                                    <label class="layui-form-label">金牌会员特权</label>
+                                    <div class="layui-input-block">
+                                        <textarea type="text" name="tequan" class="layui-textarea" readonly>1，全网商品9折拿货。
+2，不定期推送优惠活动。 </textarea>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item layui-form-text">
+                                    <label class="layui-form-label">升级说明</label>
+                                    <div class="layui-input-block">
+                                        <textarea type="text" name="remark" class="layui-textarea" readonly>1，升级需要从账户中扣除9.9元，升级之前请确保账户中有足够的余额。
+2，升级之后不可以降级。</textarea>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item layui-form-text">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn layui-btn-normal" style="width:100%;" id="updateLevelBtn">立马升级，享受特权</button>
+                                    </div>
                                 </div>
                             </div>
                         </form>

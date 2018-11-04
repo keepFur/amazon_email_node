@@ -1,54 +1,14 @@
 <div>
     <div class="layui-tab layui-tab-brief" lay-filter="manageKbOrder">
         <ul class="layui-tab-title">
-            <li class="layui-this">全部订单</li>
-            <li>淘宝订单</li>
+            <li class="layui-this">淘宝订单</li>
             <li>京东订单</li>
             <li>拼多多订单</li>
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
-                <div class="flyer-layout-previewTitle">
-                    <span class="flyer-layout-blod">订单列表</span>
-                    <span>(当前显示</span>
-                    <span id="currentKbOrderMountSpan">0</span>
-                    <span>个，共</span>
-                    <span class="flyer-layout-allNum" id="kbOrderMountSpan">0</span>
-                    <span>个</span>
-                    <span class="flyer-search-conditions"></span>)
-                </div>
-                <form class="layui-form clearfix" id="kbOrderSearchForm">
+                <form class="layui-form clearfix" id="kbNumberSearchForm">
                     <div class="layui-form-item">
-                        <div class="layui-inline">
-                            <label class="layui-form-label">订单号</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="number" placeholder="" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">快递单号</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="kbNumber" placeholder="" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">发件人信息</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="addressFrom" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">收件人信息</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="addressTo" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">日期范围</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="createdDateStart" id="createdDateStart" class="layui-input">
-                            </div>
-                        </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">订单状态</label>
                             <div class="layui-input-inline">
@@ -62,14 +22,41 @@
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <label class="layui-form-label"></label>
-                            <button class="layui-btn layui-btn-primary" id="searchBtn">查询</button>
-                            <button class="layui-btn layui-btn-primary" id="resetBtn">重置</button>
+                            <label class="layui-form-label">收件人信息</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="addressTo" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">快递单号</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="kbNumber" placeholder="" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">订单号</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="number" placeholder="" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">发件人信息</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="addressFrom" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">日期范围</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="createdDateStart" id="createdDateStart" class="layui-input">
+                            </div>
                         </div>
                     </div>
                 </form>
                 <div class="layui-form-item">
-                    <button class="layui-btn layui-btn-normal layui-btn-sm" id="createKbOrderBtn">空包购买</button>
+                    <button class="layui-btn layui-btn-normal layui-btn-sm" id="searchBtn">查询</button>
+                    <button class="layui-btn layui-btn-normal layui-btn-sm" id="resetBtn">重置</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="createKbOrderBtn">空包购买</button>
                     <button class="layui-btn layui-btn-primary layui-btn-sm" id="exportKbOrderBtn">导出</button>
                     <button class="layui-btn layui-btn-primary layui-btn-sm layui-hide" id="pddBatchBtn">拼多多批量发货</button>
                     <button class="layui-btn layui-btn-primary layui-btn-sm" id="disabledKbOrderBtn">停用</button>

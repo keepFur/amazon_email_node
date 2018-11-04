@@ -15,7 +15,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
             batch: '请至少选择一条数据操作'
         },
         // 空包订单平台
-        plants: ['', 'TB', 'JD', 'PDD'],
+        plants: ['TB', 'JD', 'PDD'],
         // 当前页签的索引
         tabIndex: 0
     };
@@ -317,17 +317,6 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
     }
 
     /**
-     * 设置spanner
-     * 
-     * @param {any} currentTotal 当前显示数据的总数
-     * @param {any} total 总数居
-     */
-    function setMountValue(currentTotal, total) {
-        $('#currentKbOrderMountSpan').text(currentTotal);
-        $('#kbOrderMountSpan').text(total);
-    }
-
-    /**
     *获取表格的查询参数
     *
     * @returns 返回所有参数的对象
@@ -351,6 +340,9 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
             elem: '#kbOrderTable',
             url: '/api/readKbOrderPage',
             page: true,
+            where: {
+                taskPlant: 'TB'
+            },
             cols: [[
                 {
                     checkbox: true,
@@ -371,7 +363,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
                     title: '快递公司/平台',
                     width: 150,
                     templet: function (d) {
-                        return d.kbCompany + '/' + d.plant;
+                        return core.getKbTypeByCode(d.kbCompany) + '/' + core.getPlantByCode(d.plant);
                     }
                 },
                 {
@@ -427,9 +419,6 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
                     count: res.data.total,
                     data: res.data.rows
                 }
-            },
-            done: function (res) {
-                setMountValue(res.data.length, res.count);
             }
         });
     }

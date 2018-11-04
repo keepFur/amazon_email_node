@@ -127,7 +127,7 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
                     title: '类型',
                     field: "",
                     templet: function (d) {
-                        var status = ['', '充值', '订单消费', '退款', '充值赠送', '佣金'];
+                        var status = ['', '充值', '订单消费', '退款', '充值赠送', '佣金', '账号升级消费'];
                         return status[d.type];
                     }
                 },
@@ -176,7 +176,6 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
                 }
             },
             done: function (res) {
-                setMountValue(res.data.length, res.count);
             }
         });
     }
@@ -187,17 +186,6 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
      */
     function reloadTable(options) {
         table.reload('logsScoreTable', options);
-    }
-
-    /**
-     * 设置spanner
-     * 
-     * @param {any} currentTotal 当前显示数据的总数
-     * @param {any} total 总数居
-     */
-    function setMountValue(currentTotal, total) {
-        $('#currentLogsScoreMountSpan').text(currentTotal);
-        $('#logsScoreMountSpan').text(total);
     }
 
     /**

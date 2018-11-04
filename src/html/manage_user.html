@@ -4,27 +4,8 @@
     </ul>
     <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
-            <div class="flyer-layout-previewTitle">
-                <span class="flyer-layout-blod">用户列表</span>
-                <span>(当前显示</span>
-                <span id="currentUserMountSpan">0</span>
-                <span>个，共</span>
-                <span class="flyer-layout-allNum" id="userMountSpan">0</span>
-                <span>个</span>
-                <span class="flyer-search-conditions"></span>)
-            </div>
             <form class="layui-form clearfix" id="userSearchForm">
                 <div class="layui-form-item">
-                    <div class="layui-inline">
-                        <div class="layui-input-inline">
-                            <input type="text" name="userName" placeholder="用户名" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-inline">
-                        <div class="layui-input-inline">
-                            <input type="text" name="keyword" placeholder="邮箱、电话、QQ" class="layui-input">
-                        </div>
-                    </div>
                     <div class="layui-inline">
                         <div class="layui-input-inline">
                             <select name="level" lay-filter="level">
@@ -35,20 +16,33 @@
                         </div>
                     </div>
                     <div class="layui-inline">
+                        <label class="layui-form-label">用户名</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="userName" placeholder="" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">联系方式</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="keyword" placeholder="邮箱、电话、QQ" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">状态</label>
                         <div class="layui-input-inline">
                             <select name="status" lay-filter="status">
-                                <option value="">全部状态</option>
+                                <option value="">全部</option>
                                 <option value="1">启用</option>
                                 <option value="0">停用</option>
                             </select>
                         </div>
-                        <button class="layui-btn layui-btn-primary" id="searchBtn">查询</button>
-                        <button class="layui-btn layui-btn-primary" id="resetBtn">重置</button>
                     </div>
                 </div>
             </form>
             <div class='layui-form-item'>
-                <button class="layui-btn layui-btn-normal layui-btn-sm" id="createUserBtn">注册</button>
+                <button class="layui-btn layui-btn-normal layui-btn-sm" id="searchBtn">查询</button>
+                <button class="layui-btn layui-btn-normal layui-btn-sm" id="resetBtn">重置</button>
+                <button class="layui-btn layui-btn-primary layui-btn-sm" id="createUserBtn">注册</button>
                 <button class="layui-btn layui-btn-primary layui-btn-sm" id="updateUserBtn">修改</button>
                 <button class="layui-btn layui-btn-primary layui-btn-sm" id="addMoneyUserBtn">积分充值</button>
                 <button class="layui-btn layui-btn-primary layui-btn-sm" id="updateLevelUserBtn">会员升级</button>

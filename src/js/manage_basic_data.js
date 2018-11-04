@@ -26,6 +26,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
         renderTaskTypeTable();
         // 初始化事件
         initEvent();
+        form.render('select');
     })()
 
     /**
@@ -35,6 +36,13 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
     function initEvent() {
         // 空包单号
 
+        // 查询
+        $('#searchKbNumberBtn').on('click', searchKbNumberHandle);
+        // 重置
+        $('#resetKbNumberBtn').on('click', function () {
+            $('#kbNumberSearchForm')[0].reset();
+            return false;
+        });
         // 创建空包单号
         $('#createKbNumberBtn').on('click', createKbNumberHandle);
         // 修改空包单号信息
@@ -81,6 +89,19 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
 
     /************************  空包单号 ***********************************/
 
+    function searchKbNumberHandle(e) {
+        var queryParams = getQueryParams();
+        reloadTable('kbNumberTable', {
+            where: queryParams,
+            page: {
+                curr: 1,
+                limit: 10
+            }
+        });
+        return false;
+    }
+
+
     /**
      * 创建空包单号的点击事件处理函数
      * 
@@ -88,7 +109,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
      */
     function createKbNumberHandle(events) {
         layer.open({
-            content: `<form class="layui-form layui-form-pane" name="kbOrderCreateForm" lay-filter="kbOrderCreateForm">
+            content: `<form class="layui-form layui-form-pane" name="kbNumberCreateForm" lay-filter="kbNumberCreateForm">
                         <div class="layui-form-item">
                             <div class="layui-form-item layui-form-text">
                                 <div class="layui-input-block">
@@ -123,20 +144,20 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
             area: ['400px'],
             btn: ['创建', '取消'],
             yes: function (index) {
-                var kbOrderInfo = core.getFormValues($('form[name=kbOrderCreateForm]'));
-                var validKbNumberInfoResult = validKbNumberInfo(kbOrderInfo);
+                var kbNumberInfo = core.getFormValues($('form[name=kbNumberCreateForm]'));
+                var validKbNumberInfoResult = validKbNumberInfo(kbNumberInfo);
                 if (validKbNumberInfoResult.isPass) {
-                    kbOrderInfo.numbers = kbOrderInfo.number.split(/\s{1,}|,|，|\n/g).filter(function (item) {
+                    kbNumberInfo.numbers = kbNumberInfo.number.split(/\s{1,}|,|，|\n/g).filter(function (item) {
                         return !!item;
                     });
                     $.ajax({
                         url: '/api/createKbNumber',
                         type: 'POST',
-                        data: kbOrderInfo,
+                        data: kbNumberInfo,
                         success: function (data, textStatus, jqXHR) {
                             layer.msg(data.success ? ('操作成功') : ('操作失败'));
                             layer.close(index);
-                            reloadTable('kbOrderTable');
+                            reloadTable('kbNumberTable');
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
                             layer.msg(baseDatas.errorMsg);
@@ -155,7 +176,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                     }
                     return ret.join();
                 };
-                form.val('kbOrderCreateForm', {
+                form.val('kbNumberCreateForm', {
                     number: number()
                 });
             }
@@ -168,13 +189,13 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
      * @param {any} events 
      */
     function updateKbNumberHandle(events) {
-        var selectDatas = table.checkStatus('kbOrderTable').data;
+        var selectDatas = table.checkStatus('kbNumberTable').data;
         if (selectDatas.length === 1) {
             var plant = selectDatas[0].plant;
             var number = selectDatas[0].number;
             var company = selectDatas[0].company;
             layer.open({
-                content: `<form class="layui-form layui-form-pane" lay-filter="kbOrderUpdateForm" name="kbOrderUpdateForm">
+                content: `<form class="layui-form layui-form-pane" lay-filter="kbNumberUpdateForm" name="kbNumberUpdateForm">
                             <div class="layui-form-item">
                                 <div class="layui-form-item layui-form-text">
                                     <div class="layui-input-block">
@@ -192,8 +213,11 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                                             <option value="">选择快递平台</option>
                                             <option value="ST">申通</option>
                                             <option value="ZT">中通</option>
-                                            <option value="YT">韵达</option>
-                                            <option value="TT">天天</option>
+                                            <option value="GT">国通</option>
+                                            <option value="LB">龙邦</option>
+                                            <option value="YF">亚风</option>
+                                            <option value="BS">百世</option>
+                                            <option value="YT">圆通</option>
                                         </select>
                                     </div>
                                 </div>
@@ -209,18 +233,18 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                 btn: ['确定', '取消'],
                 area: ['360px', '360px'],
                 yes: function (index) {
-                    var kbOrderInfo = core.getFormValues($('form[name=kbOrderUpdateForm]'));
-                    var validKbNumberInfoResult = validKbNumberInfo(kbOrderInfo);
-                    kbOrderInfo.id = selectDatas[0].id;
+                    var kbNumberInfo = core.getFormValues($('form[name=kbNumberUpdateForm]'));
+                    var validKbNumberInfoResult = validKbNumberInfo(kbNumberInfo);
+                    kbNumberInfo.id = selectDatas[0].id;
                     if (validKbNumberInfoResult.isPass) {
                         $.ajax({
                             url: '/api/updateKbNumber',
                             type: 'POST',
-                            data: kbOrderInfo,
+                            data: kbNumberInfo,
                             success: function (data, textStatus, jqXHR) {
                                 layer.msg(data.success ? ('操作成功') : ('操作失败' + data.message));
                                 layer.close(index);
-                                reloadTable('kbOrderTable');
+                                reloadTable('kbNumberTable');
                             },
                             error: function (jqXHR, textStatus, errorThrown) {
                                 layer.msg(baseDatas.errorMsg);
@@ -232,7 +256,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                 },
                 success: function () {
                     form.render('select');
-                    form.val('kbOrderUpdateForm', {
+                    form.val('kbNumberUpdateForm', {
                         plant: plant,
                         company: company
                     });
@@ -250,7 +274,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
      * @param {any} events 
      */
     function toggleKbNumberHandle(events) {
-        var selectDatas = table.checkStatus('kbOrderTable').data;
+        var selectDatas = table.checkStatus('kbNumberTable').data;
         var type = events.data.type;
         var tipMsg = type === 0 ? '确定禁用吗？' : '确定启用吗？';
         if (selectDatas.length === 1) {
@@ -267,7 +291,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                     },
                     success: function (data, textStatus, jqXHR) {
                         layer.msg(data.success ? '操作成功' : ('操作失败' + data.message));
-                        reloadTable('kbOrderTable');
+                        reloadTable('kbNumberTable');
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         layer.msg(baseDatas.netErrMsg);
@@ -747,7 +771,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
      */
     function renderKbNumberTable() {
         table.render({
-            elem: '#kbOrderTable',
+            elem: '#kbNumberTable',
             url: '/api/readKbNumberPage',
             page: true,
             cols: [[
@@ -759,10 +783,16 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                     field: "number"
                 }, {
                     title: '电商平台',
-                    field: "plant"
+                    field: "plant",
+                    templet: function (d) {
+                        return core.getPlantByCode(d.plant);
+                    }
                 }, {
                     title: '快递平台',
-                    field: "company"
+                    field: "company",
+                    templet: function (d) {
+                        return core.getKbTypeByCode(d.company);
+                    }
                 }, {
                     title: '创建时间',
                     field: "createdDate",
@@ -803,7 +833,6 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                 }
             },
             done: function (res) {
-                setMountValueForOrder(res.data.length, res.count);
             }
         });
     }
@@ -827,10 +856,13 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                     field: "description"
                 }, {
                     title: '平台',
-                    field: "plant"
+                    field: "plant",
+                    templet: function (d) {
+                        return core.getPlantByCode(d.plant);
+                    }
                 }, {
                     title: '简称',
-                    field: "code"
+                    field: "code",
                 }, {
                     title: '价格',
                     field: "price"
@@ -866,7 +898,6 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                 }
             },
             done: function (res) {
-                setMountValueForKbType(res.data.length, res.data.length);
             }
         });
     }
@@ -891,7 +922,10 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                     field: "description"
                 }, {
                     title: '平台',
-                    field: "plant"
+                    field: "plant",
+                    templet: function (d) {
+                        return core.getPlantByCode(d.plant);
+                    }
                 }, {
                     title: '进价',
                     field: "inPrice"
@@ -944,42 +978,8 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                 }
             },
             done: function (res) {
-                setMountValueForTaskType(res.data.length, res.data.length);
             }
         });
-    }
-
-    /**
-     * 设置空包单号的spanner
-     * 
-     * @param {any} currentTotal 当前显示数据的总数
-     * @param {any} total 总数居
-     */
-    function setMountValueForOrder(currentTotal, total) {
-        $('#currentKbNumberMountSpan').text(currentTotal);
-        $('#kbOrderMountSpan').text(total);
-    }
-
-    /**
-     * 设置空包类型的spanner
-     * 
-     * @param {any} currentTotal 当前显示数据的总数
-     * @param {any} total 总数居
-     */
-    function setMountValueForKbType(currentTotal, total) {
-        $('#currentKbTypeMountSpan').text(currentTotal);
-        $('#kbTypeMountSpan').text(total);
-    }
-
-    /**
-     * 设置 任务类型的spanner
-     * 
-     * @param {any} currentTotal 当前显示数据的总数
-     * @param {any} total 总数居
-     */
-    function setMountValueForTaskType(currentTotal, total) {
-        $('#currentTaskTypeMountSpan').text(currentTotal);
-        $('#taskTypeMountSpan').text(total);
     }
 
     /**
@@ -993,31 +993,31 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
     /**
      * 校验空包单号信息
      * 
-     * @param {Object} kbOrderInfo 空包单号信息对象
+     * @param {Object} kbNumberInfo 空包单号信息对象
      */
-    function validKbNumberInfo(kbOrderInfo) {
-        if (!kbOrderInfo) {
+    function validKbNumberInfo(kbNumberInfo) {
+        if (!kbNumberInfo) {
             return {
                 isPass: false,
                 msg: '参数错误'
             }
         }
 
-        if (!kbOrderInfo.plant) {
+        if (!kbNumberInfo.plant) {
             return {
                 isPass: false,
                 msg: '电商平台不能为空'
             }
         }
 
-        if (!kbOrderInfo.company) {
+        if (!kbNumberInfo.company) {
             return {
                 isPass: false,
                 msg: '快递平台不能为空'
             }
         }
 
-        if (!kbOrderInfo.number) {
+        if (!kbNumberInfo.number) {
             return {
                 isPass: false,
                 msg: '订单号不能为空'

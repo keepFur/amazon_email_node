@@ -6,6 +6,8 @@ layui.use(['element', 'layer', 'form'], function () {
     var form = layui.form;
     var userId = $('#userName').data('user-id');
     var userName = $('#userName').data('user-name');
+    var level = 0;
+    var minMoney = 9.9;
     // 入口函数
     (function init() {
         initComponment();
@@ -14,7 +16,7 @@ layui.use(['element', 'layer', 'form'], function () {
 
     // 初始化组件
     function initComponment() {
-        getUserInfoServer();
+        getUserInfoServer(setUserInfo);
     }
 
     // 事件初始化
@@ -23,6 +25,8 @@ layui.use(['element', 'layer', 'form'], function () {
         $('#updateInfoBtn').on('click', updateInfoHandler);
         // 重置密码
         $('#updatePasswordBtn').on('click', updatePasswordHandler);
+        // 升级
+        $('#updateLevelBtn').on('click', updateLevelHandler);
     }
 
     // 更新个人资料
@@ -38,7 +42,7 @@ layui.use(['element', 'layer', 'form'], function () {
             data: userInfo,
             success: function (data, textStatus, jqXHR) {
                 layer.msg(data.success ? ('操作成功') : ('操作失败'));
-                getUserInfoServer();
+                getUserInfoServer(setUserInfo);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 layer.msg(baseDatas.errorMsg);
@@ -104,11 +108,48 @@ layui.use(['element', 'layer', 'form'], function () {
         return false;
     }
 
+
+    /**
+     * 会员升级
+     *
+     */
+    function updateLevelHandler(e) {
+        if (level === 2) {
+            layer.msg('老板，你已经是我们的顶级会员了，已经大权在握，杠杠的！！！');
+            return false;
+        }
+        // 获取用户的积分，判断月是否大于等于1000
+        getUserInfoServer(function (data) {
+            var money = data.money;
+            if (money >= minMoney) {
+                $.ajax({
+                    url: '/api/updateLevelUser',
+                    type: 'POST',
+                    data: {
+                        id: userId,
+                        level: 2,
+                        orderNumber: APIUtil.generateOrderNumer()
+                    },
+                    success: function (data, textStatus, jqXHR) {
+                        layer.msg(data.success ? '恭喜老板，你已经成为最高等级的会员了，赶紧去下单享受特权吧！！！' : ('操作失败' + data.message));
+                        getUserInfoServer(setUserInfo);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        layer.msg(baseDatas.netErrMsg);
+                    }
+                });
+            } else {
+                layer.msg(`您的账户余额不足${minMoney}， 请充值之后再升级。当前账户余额是 ${money} 元!`);
+            }
+        });
+        return false;
+    }
+
     // 获取个人信息
-    function getUserInfoServer() {
+    function getUserInfoServer(callback) {
         $.get('/api/readUserById?id=' + userId, function (res) {
             if (res.success) {
-                setUserInfo(res.data.rows[0]);
+                callback(res.data.rows[0]);
             } else {
                 layer.msg('服务器发生异常');
             }
@@ -120,6 +161,9 @@ layui.use(['element', 'layer', 'form'], function () {
         $('form[name=userUpdateForm] input[name=email]').val(userInfo.email);
         $('form[name=userUpdateForm] input[name=QQ]').val(userInfo.QQ);
         $('form[name=userUpdateForm] input[name=phone]').val(userInfo.phone);
+        // 等级
+        $('form[name=updateLevelForm] input[name=oldLevel]').val((userInfo.level === 2 ? '金牌会员（' : '普通会员（') + userInfo.money + '）元');
+        level = userInfo.level;
     }
 
     // 获取用户表单信息

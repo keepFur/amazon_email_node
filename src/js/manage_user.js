@@ -366,20 +366,8 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
                 }
             },
             done: function (res) {
-                setMountValue(res.data.length, res.count);
             }
         });
-    }
-
-    /**
-     * 设置spanner
-     * 
-     * @param {any} currentTotal 当前显示数据的总数
-     * @param {any} total 总数居
-     */
-    function setMountValue(currentTotal, total) {
-        $('#currentUserMountSpan').text(currentTotal);
-        $('#userMountSpan').text(total);
     }
 
     /**

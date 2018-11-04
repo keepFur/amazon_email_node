@@ -253,7 +253,8 @@ layui.use(['element', 'layer', 'form'], function () {
             url: '/api/getQrCodePayStatus',
             data: {
                 qr_id: qr_id,
-                addPackageType: addPackageType
+                addPackageType: addPackageType,
+                orderNumber: APIUtil.generateOrderNumer()
             },
             success: function (payStatus) {
                 callback(payStatus.data.status);

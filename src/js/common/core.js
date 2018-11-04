@@ -472,6 +472,28 @@ var core = {
         return types[typeKey] ? types[typeKey] : types.APP_SEARCH;
     },
 
+    // 根据快递公司的代码获取快递公司的名字
+    getKbTypeByCode: function (code) {
+        var kb = {
+            ST: '申通',
+            ZT: '中通',
+            LB: '龙邦',
+            GT: '国通',
+            YF: '亚风速运',
+            BS: '百世'
+        };
+        return kb[code];
+    },
+
+    // 根据平台代码获取平台名称
+    getPlantByCode: function (code) {
+        var plant = {
+            TB: '淘宝',
+            JD: '京东',
+            PDD: '拼多多'
+        };
+        return plant[code];
+    },
     /**
      * 根据key获取任务类型value
      * 

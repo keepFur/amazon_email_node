@@ -305,7 +305,6 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
                 }
             },
             done: function (res) {
-                setMountValue(res.data.length, res.count);
             }
         });
     }
@@ -316,17 +315,6 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
      */
     function reloadTable(options) {
         table.reload('packageTable', options);
-    }
-
-    /**
-     * 设置spanner
-     * 
-     * @param {any} currentTotal 当前显示数据的总数
-     * @param {any} total 总数居
-     */
-    function setMountValue(currentTotal, total) {
-        $('#currentPackageMountSpan').text(currentTotal);
-        $('#packageMountSpan').text(total);
     }
 
     /**
