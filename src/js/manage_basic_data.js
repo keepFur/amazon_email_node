@@ -338,7 +338,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                                 </div>
                             </div>
                             <div class="layui-inline">
-                                <label class="layui-form-label">价格</label>
+                                <label class="layui-form-label">价格(分)</label>
                                 <div class="layui-input-inline">
                                     <input type="text" name="price"  class="layui-input">
                                 </div>
@@ -420,7 +420,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                                     </div>
                                 </div>
                                 <div class="layui-inline">
-                                    <label class="layui-form-label">价格</label>
+                                    <label class="layui-form-label">价格(分)</label>
                                     <div class="layui-input-inline">
                                         <input type="text" name="price" value="${price}" class="layui-input">
                                     </div>
@@ -554,13 +554,13 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                                 </div>
                             </div>
                             <div class="layui-inline">
-                                <label class="layui-form-label">进价</label>
+                                <label class="layui-form-label">进价(分)</label>
                                 <div class="layui-input-inline">
                                     <input type="text" name="inPrice" class="layui-input">
                                 </div>
                             </div>
                             <div class="layui-inline">
-                                <label class="layui-form-label">售价</label>
+                                <label class="layui-form-label">售价(分)</label>
                                 <div class="layui-input-inline">
                                     <input type="text" name="outPrice" class="layui-input">
                                 </div>
@@ -665,13 +665,13 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                                     </div>
                                 </div>
                                 <div class="layui-inline">
-                                    <label class="layui-form-label">进价</label>
+                                    <label class="layui-form-label">进价(分)</label>
                                     <div class="layui-input-inline">
                                         <input type="text" name="inPrice" value="${inPrice}" class="layui-input">
                                     </div>
                                 </div>
                                 <div class="layui-inline">
-                                    <label class="layui-form-label">售价</label>
+                                    <label class="layui-form-label">售价(分)</label>
                                     <div class="layui-input-inline">
                                         <input type="text" name="outPrice" value="${outPrice}" class="layui-input">
                                     </div>
@@ -864,8 +864,11 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                     title: '简称',
                     field: "code",
                 }, {
-                    title: '价格',
-                    field: "price"
+                    title: '价格(元)',
+                    field: "price",
+                    templet: function (d) {
+                        return core.fenToYuan(d.price);
+                    }
                 }, {
                     title: '创建时间',
                     field: "createdDate",
@@ -927,11 +930,14 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                         return core.getPlantByCode(d.plant);
                     }
                 }, {
-                    title: '进价',
+                    title: '进价（积分）',
                     field: "inPrice"
                 }, {
-                    title: '售价',
-                    field: "outPrice"
+                    title: '售价（元）',
+                    field: "outPrice",
+                    templet: function (d) {
+                        return core.fenToYuan(d.outPrice);
+                    }
                 }, {
                     title: '有无关键词',
                     field: "hasKeyword",

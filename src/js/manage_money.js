@@ -21,25 +21,13 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
                                 </div>
                             </div>
                             <div class="layui-form-item">
-                                <label class="layui-form-label">购买积分</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="packagePurchaseScore" class="layui-input">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">赠送积分</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="packagePresentScore" class="layui-input">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">购买金额</label>
+                                <label class="layui-form-label">购买金额(分)</label>
                                 <div class="layui-input-block">
                                     <input type="text" name="packagePurchaseMoney" class="layui-input">
                                 </div>
                             </div>
                             <div class="layui-form-item">
-                                <label class="layui-form-label">赠送金额</label>
+                                <label class="layui-form-label">赠送金额(分)</label>
                                 <div class="layui-input-block">
                                     <input type="text" name="packagePresentMoney" class="layui-input">
                                 </div>
@@ -115,7 +103,7 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
     function createPackageHandle(events) {
         layer.open({
             content: openContent,
-            area: ['400px', '450px'],
+            area: ['400px'],
             title: '新增支付套餐',
             btn: ['保存', '取消'],
             yes: function (index, layero) {
@@ -156,7 +144,7 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
             var description = selectDatas[0].description;
             layer.open({
                 content: openContent,
-                area: ['400px', '450px'],
+                area: ['400px'],
                 title: '充值套餐信息修改',
                 btn: ['确定', '取消'],
                 yes: function (index, layero) {
@@ -246,17 +234,10 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
                     field: 'packageName'
                 },
                 {
-                    title: '充值积分（购买/赠送）',
-                    field: "",
-                    templet: function (d) {
-                        return `${d.packagePurchaseScore}/${d.packagePresentScore}`;
-                    }
-                },
-                {
                     title: '金额（购买金额/赠送金额）',
                     field: "packageMoney",
                     templet: function (d) {
-                        return `${d.packagePurchaseMoney}/${d.packagePresentMoney}`;
+                        return `${d.packagePurchaseMoney / 100}/${d.packagePresentMoney / 100}`;
                     }
                 },
                 {
@@ -362,18 +343,6 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
             return {
                 isPass: false,
                 msg: '充值套餐赠送金额不能为空'
-            }
-        }
-        if (!packageInfo.packagePurchaseScore) {
-            return {
-                isPass: false,
-                msg: '充值套餐购买积分不能为空'
-            }
-        }
-        if (!packageInfo.packagePresentScore) {
-            return {
-                isPass: false,
-                msg: '充值套餐赠送积分不能为空'
             }
         }
         return {

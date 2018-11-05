@@ -115,7 +115,7 @@ app.get('/api/readUserPage', function (req, res) {
 // 通过id获取用户
 app.get('/api/readUserById', function (req, res) {
     try {
-        userManage.readUserById(req, res, req.query);
+        userManage.readUserById(req, res, { id: req.user.id });
     } catch (error) {
         Core.flyer.log(error);
     }
@@ -580,7 +580,6 @@ app.post('/api/updatePackage', function (req, res) {
 // 生成付款二维码
 app.post('/api/createQrCode', function (req, res) {
     try {
-        // APIPay.createQrCode(req, res, req.body);
         APIPay.checkStandCreateQr(req, res, req.body);
     } catch (error) {
         Core.flyer.log(error);

@@ -300,8 +300,11 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
                     title: '用户名',
                     field: "userName"
                 }, {
-                    title: '当前余额',
-                    field: "money"
+                    title: '当前余额（元）',
+                    field: "money",
+                    templet: function (d) {
+                        return core.fenToYuan(d.money);
+                    }
                 }, {
                     title: '等级',
                     field: "level",

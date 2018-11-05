@@ -17,9 +17,10 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
         initEvent();
         getTaskTypeServer('TB');
         initComponent();
-        core.getUserInfoById(userId, function (user) {
+        core.getUserInfoById(function (user) {
             userInfo = user.data.rows[0];
             $('#userName').data('user', JSON.stringify(user));
+            $('#userBalance').text(core.fenToYuan(userInfo.money));
         });
     })()
 
@@ -76,12 +77,12 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
                     hask: hask
                 };
                 // 单价
-                $('#taskPrice').text(price);
+                $('#taskPrice').text(core.fenToYuan(price));
                 // 总价
                 var sum = getKeywordsAndQuantity().reduce(function (total, item) {
                     return total + item.quantity;
                 }, 0);
-                $('#taskSumMoney').text(sum ? core.numberToLocalString(sum * baseDatas.taskTypeInfo.price) : 0);
+                $('#taskSumMoney').text(sum ? core.fenToYuan(sum * baseDatas.taskTypeInfo.price) : 0);
                 // 关键词
                 $('.js-keyword-quantity-container').toggle(!!hask);
                 // 无关键词
@@ -100,7 +101,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
                 var sum = getKeywordsAndQuantity().reduce(function (total, item) {
                     return total + item.quantity;
                 }, 0);
-                $('#taskSumMoney').text(sum && baseDatas.taskTypeInfo.hask ? core.numberToLocalString(sum * baseDatas.taskTypeInfo.price) : value * baseDatas.taskTypeInfo.price);
+                $('#taskSumMoney').text(sum && baseDatas.taskTypeInfo.hask ? core.fenToYuan(sum * baseDatas.taskTypeInfo.price) : core.fenToYuan(value * baseDatas.taskTypeInfo.price));
             } else {
                 this.value = '';
             }
@@ -119,13 +120,13 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
             }
             $time.val($time.val() - 10);
             // 改变单价
-            baseDatas.taskTypeInfo.price -= 0.1;
-            $('#taskPrice').text(baseDatas.taskTypeInfo.price);
+            baseDatas.taskTypeInfo.price -= 10;
+            $('#taskPrice').text(core.fenToYuan(baseDatas.taskTypeInfo.price));
             // 总价
             var sum = getKeywordsAndQuantity().reduce(function (total, item) {
                 return total + item.quantity;
             }, 0);
-            $('#taskSumMoney').text(sum ? core.numberToLocalString(sum * baseDatas.taskTypeInfo.price) : 0);
+            $('#taskSumMoney').text(sum ? core.fenToYuan(sum * baseDatas.taskTypeInfo.price) : 0);
             return false;
         });
         // 增加时长
@@ -141,13 +142,13 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
             }
             $time.val(($time.val() | 0) + 10);
             // 改变单价
-            baseDatas.taskTypeInfo.price += 0.1;
-            $('#taskPrice').text(baseDatas.taskTypeInfo.price);
+            baseDatas.taskTypeInfo.price += 10;
+            $('#taskPrice').text(core.fenToYuan(baseDatas.taskTypeInfo.price));
             // 总价
             var sum = getKeywordsAndQuantity().reduce(function (total, item) {
                 return total + item.quantity;
             }, 0);
-            $('#taskSumMoney').text(sum ? core.numberToLocalString(sum * baseDatas.taskTypeInfo.price) : 0);
+            $('#taskSumMoney').text(sum ? core.fenToYuan(sum * baseDatas.taskTypeInfo.price) : 0);
             return false;
         });
         // 任务时段输入框的点击事件
@@ -423,8 +424,8 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
                         success: function (data, textStatus, jqXHR) {
                             if (data.success) {
                                 // 获取用户当前余额并提示
-                                layer.msg('操作成功！！！</br>本次共消费：' + taskInfo.taskSumMoney + '</br>' + '余额：' + (userInfo.money - taskInfo.taskSumMoney));
-                                core.getUserInfoById(userId, function (user) {
+                                layer.msg(`操作成功！！！</br>本次共消费：${core.fenToYuan(taskInfo.taskSumMoney)}元</br> 余额：${core.fenToYuan((userInfo.money - taskInfo.taskSumMoney))}元`);
+                                core.getUserInfoById(function (user) {
                                     userInfo = user.data.rows[0];
                                     $('#userName').data('user', JSON.stringify(user));
                                 });
@@ -478,8 +479,8 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
                                 success: function (data, textStatus, jqXHR) {
                                     if (data.success) {
                                         // 获取用户当前的余额并提示
-                                        layer.msg('操作成功！！！</br>本次共消费：' + taskInfo.taskSumMoney + '</br>' + '余额：' + (userInfo.money - taskInfo.taskSumMoney));
-                                        core.getUserInfoById(userId, function (user) {
+                                        layer.msg(`操作成功！！！</br>本次共消费：${core.fenToYuan(taskInfo.taskSumMoney)}元</br> 余额：${core.fenToYuan((userInfo.money - taskInfo.taskSumMoney))}元`);
+                                        core.getUserInfoById(function (user) {
                                             userInfo = user.data.rows[0];
                                             $('#userName').data('user', JSON.stringify(user));
                                         });

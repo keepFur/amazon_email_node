@@ -127,17 +127,23 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
                     title: '类型',
                     field: "",
                     templet: function (d) {
-                        var status = ['', '充值', '订单消费', '退款', '充值赠送', '佣金', '账号升级消费'];
+                        var status = ['', '充值', '流量订单消费', '退款', '充值赠送', '佣金', '账号升级消费', '空包订单消费'];
                         return status[d.type];
                     }
                 },
                 {
-                    title: '数量',
-                    field: "count"
+                    title: '金额（元）',
+                    field: "count",
+                    templet: function (d) {
+                        return core.fenToYuan(d.count);
+                    }
                 },
                 {
-                    title: '余额',
-                    field: "balance"
+                    title: '余额（元）',
+                    field: "balance",
+                    templet: function (d) {
+                        return core.fenToYuan(d.balance);
+                    }
                 },
                 {
                     title: '创建时间',

@@ -9,8 +9,10 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
         operatorErrMsg: {
             single: '请选择一条数据操作',
             batch: '请至少选择一条数据操作'
-        }
+        },
+        kbTypeInfo: null
     };
+    var userInfo = {};
 
     (function init() {
         form.render('select');
@@ -19,9 +21,10 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
         getAddressFromServer();
         renderTable();
         initEvents();
-        core.getUserInfoById(userId, function (user) {
+        core.getUserInfoById(function (user) {
             userInfo = user.data.rows[0];
             $('#userName').data('user', JSON.stringify(user));
+            $('#userBalance').text(core.fenToYuan(userInfo.money));
         });
     })();
 
@@ -30,6 +33,38 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
         // 电商平台的切换
         form.on('radio', function (data) {
             getKbTypeServer(data.value);
+        });
+        // 快递类型的选择
+        form.on('select(kbCompany)', function (data) {
+            if (data.value) {
+                var $selected = $(data.elem).find('option[value=' + data.value + ']')
+                var price = $selected.data('price');
+                var plant = $selected.data('plant');
+                // 将选中的任务保存到基础数据中，后期的数据源只来源于此（唯一数据源）
+                baseDatas.kbTypeInfo = {
+                    price: price,
+                    plant: plant,
+                    code: data.value
+                };
+                // 单价
+                $('#kbPrice').text(core.fenToYuan(price));
+                // 数量
+                var quantity = getKbAddressTo().length;
+                $('#kbQuantity').text(quantity);
+                // 总价
+                $('#kbSumMoney').text(quantity ? core.fenToYuan(quantity * baseDatas.kbTypeInfo.price) : 0);
+            } else {
+                baseDatas.kbTypeInfo = null;
+            }
+        });
+        // 收货地址输入框的onblur事件
+        $('textarea[name=addressTo]').on('blur', function (e) {
+            // 数量
+            var quantity = getKbAddressTo().length;
+            $('#kbQuantity').text(quantity);
+            // 总价
+            $('#kbSumMoney').text(quantity ? core.fenToYuan(quantity * baseDatas.kbTypeInfo.price) : 0);
+            return false;
         });
         // 格式化地址
         $('#formatAddressBtn').on('click', formatAddressHandle);
@@ -118,11 +153,11 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
         var kbOrderInfo = core.getFormValues($('form[name=kbOrderForm]'));
         var validKbOrderInfoResult = validKbOrderInfo(kbOrderInfo);
         if (validKbOrderInfoResult.isPass) {
-            kbOrderInfo.total = 1000;
             kbOrderInfo.number = APIUtil.generateOrderNumer();
             kbOrderInfo.addressTo = kbOrderInfo.addressTo.split(/\n/g).filter(function (item) {
                 return !!item;
             });
+            kbOrderInfo.total = baseDatas.kbTypeInfo.price * kbOrderInfo.addressTo.length;
             $.ajax({
                 url: '/api/createKbOrder',
                 type: 'POST',
@@ -519,7 +554,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
         $container.empty();
         $container.append(`<option value="">请选择快递类型</option>`);
         $.each(kbTypes, function (index, item) {
-            $container.append(`<option value="${item.code}">${item.name}</option>`);
+            $container.append(`<option value="${item.code}" data-price="${item.price}" data-plant="${item.plant}">${item.name}</option>`);
         });
         form.render('select');
     }
@@ -549,4 +584,19 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
         form.render('select');
     }
 
+    /**
+     *获取收货地址的数量
+     *
+     */
+    function getKbAddressTo() {
+        var s = [];
+        try {
+            s = $('textarea[name=addressTo]').val().split('\n').filter(function (item) {
+                return !!item;
+            });
+        } catch (error) {
+            s = [];
+        }
+        return s;
+    }
 });

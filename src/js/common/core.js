@@ -593,9 +593,9 @@ var core = {
     },
 
     // 获取用户的信息，通过用户id
-    getUserInfoById: function (id, callback) {
+    getUserInfoById: function (callback) {
         callback = callback || function () { };
-        $.get('/api/readUserById?id=' + id, function (userInfo) {
+        $.get('/api/readUserById', function (userInfo) {
             callback(userInfo);
         });
     },

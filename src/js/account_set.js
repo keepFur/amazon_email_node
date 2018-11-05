@@ -7,7 +7,7 @@ layui.use(['element', 'layer', 'form'], function () {
     var userId = $('#userName').data('user-id');
     var userName = $('#userName').data('user-name');
     var level = 0;
-    var minMoney = 9.9;
+    var minMoney = 990;
     // 入口函数
     (function init() {
         initComponment();
@@ -88,7 +88,6 @@ layui.use(['element', 'layer', 'form'], function () {
                             if (data.success) {
                                 layer.msg('操作成功，请重新登录');
                                 window.location.href = '/api/logout';
-                                //  $.get('/api/logout');
                             } else {
                                 layer.msg('操作失败');
                             }
@@ -139,7 +138,7 @@ layui.use(['element', 'layer', 'form'], function () {
                     }
                 });
             } else {
-                layer.msg(`您的账户余额不足${minMoney}， 请充值之后再升级。当前账户余额是 ${money} 元!`);
+                layer.msg(`您的账户余额不足${core.fenToYuan(minMoney)}元， 请充值之后再升级。当前账户余额是 ${core.fenToYuan(money)} 元!`);
             }
         });
         return false;
@@ -162,7 +161,7 @@ layui.use(['element', 'layer', 'form'], function () {
         $('form[name=userUpdateForm] input[name=QQ]').val(userInfo.QQ);
         $('form[name=userUpdateForm] input[name=phone]').val(userInfo.phone);
         // 等级
-        $('form[name=updateLevelForm] input[name=oldLevel]').val((userInfo.level === 2 ? '金牌会员（' : '普通会员（') + userInfo.money + '）元');
+        $('form[name=updateLevelForm] input[name=oldLevel]').val((userInfo.level === 2 ? '金牌会员（' : '普通会员（') + core.fenToYuan(userInfo.money) + '）元');
         level = userInfo.level;
     }
 

@@ -16,8 +16,8 @@ layui.use(['element', 'layer', 'form'], function () {
     function initComponment() {
         // 设置账号信息以及用户余额
         $('form[name=addMoneyForm] input[name=userName]').val($('#userName').text().trim());
-        core.getUserInfoById($('#userName').data('user-id'), function (res) {
-            $('#userMainMoney').text(res.data.rows[0].money);
+        core.getUserInfoById(function (res) {
+            $('#userMainMoney').text(core.fenToYuan(res.data.rows[0].money));
         });
         // 获取所有的充值方式并渲染
         getPackageDatas();
@@ -116,7 +116,7 @@ layui.use(['element', 'layer', 'form'], function () {
             },
             success: function (layero, index) {
                 // 设置付款金额
-                $('#payMount').text(checkedPackage.data('purchase-money'));
+                $('#payMount').text(checkedPackage.data('purchase-money') / 100);
                 $.ajax({
                     url: '/api/createQrCode',
                     type: 'POST',

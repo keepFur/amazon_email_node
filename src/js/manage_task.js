@@ -323,10 +323,18 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
                 },
                 {
                     field: 'taskQuantity',
-                    title: '关键词/数量/消费金额',
-                    width: 250,
+                    title: '关键词/数量',
+                    width: 200,
                     templet: function (d) {
-                        return '（' + (d.taskKeyword || '无') + '）' + d.taskQuantity + '个 / ' + d.taskSumMoney + ' 元';
+                        return '（' + (d.taskKeyword || '-') + '）' + d.taskQuantity + '个 ';
+                    }
+                },
+                {
+                    field: 'taskSumMoney',
+                    title: '消费金额',
+                    width: 100,
+                    templet: function (d) {
+                        return core.fenToYuan(d.taskSumMoney) + ' 元';
                     }
                 },
                 {

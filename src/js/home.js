@@ -129,7 +129,7 @@ layui.use(['element', 'layer'], function () {
 
     //  获取用户余额
     function getScore() {
-        core.getUserInfoById($('#userName').data('user-id'), function (res) {
+        core.getUserInfoById(function (res) {
             $('.js-user-score').text(res.data.rows[0].money);
         });
     }
