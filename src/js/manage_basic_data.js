@@ -779,6 +779,14 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                     checkbox: true,
                 },
                 {
+                    field: '',
+                    title: '序号',
+                    width: 60,
+                    templet: function (d) {
+                        return d.LAY_INDEX;
+                    }
+                },
+                {
                     title: '单号',
                     field: "number"
                 }, {
@@ -849,6 +857,14 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                     checkbox: true,
                 },
                 {
+                    field: '',
+                    title: '序号',
+                    width: 60,
+                    templet: function (d) {
+                        return d.LAY_INDEX;
+                    }
+                },
+                {
                     title: '名称',
                     field: "name"
                 }, {
@@ -916,6 +932,14 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
             cols: [[
                 {
                     checkbox: true,
+                },
+                {
+                    field: '',
+                    title: '序号',
+                    width: 60,
+                    templet: function (d) {
+                        return d.LAY_INDEX;
+                    }
                 },
                 {
                     title: '名称',

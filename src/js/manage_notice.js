@@ -200,6 +200,14 @@ layui.use(['util', 'layer', 'element', 'table'], function () {
                     checkbox: true,
                 },
                 {
+                    field: '',
+                    title: '序号',
+                    width: 60,
+                    templet: function (d) {
+                        return d.LAY_INDEX;
+                    }
+                },
+                {
                     title: '标题',
                     field: "noticeTitle"
                 }, {

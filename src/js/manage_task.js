@@ -317,6 +317,14 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
                     fixed: 'left'
                 },
                 {
+                    field: '',
+                    title: '序号',
+                    fixed: 'left',
+                    templet: function (d) {
+                        return d.LAY_INDEX;
+                    }
+                },
+                {
                     field: 'taskOrderNumber',
                     title: '订单号',
                     width: 220

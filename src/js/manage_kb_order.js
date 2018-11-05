@@ -246,6 +246,14 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
                     fixed: 'left'
                 },
                 {
+                    field: '',
+                    title: '序号',
+                    fixed: 'left',
+                    templet: function (d) {
+                        return d.LAY_INDEX;
+                    }
+                },
+                {
                     field: 'number',
                     title: '订单号',
                     width: 220

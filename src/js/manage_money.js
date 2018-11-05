@@ -230,6 +230,14 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
                     checkbox: true,
                 },
                 {
+                    field: '',
+                    title: '序号',
+                    width: 60,
+                    templet: function (d) {
+                        return d.LAY_INDEX;
+                    }
+                },
+                {
                     title: '名称',
                     field: 'packageName'
                 },

@@ -297,6 +297,14 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
                     checkbox: true,
                 },
                 {
+                    field: '',
+                    title: '序号',
+                    width: 60,
+                    templet: function (d) {
+                        return d.LAY_INDEX;
+                    }
+                },
+                {
                     title: '用户名',
                     field: "userName"
                 }, {
