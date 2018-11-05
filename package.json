@@ -44,6 +44,7 @@
         "bcrypt": "^3.0.0",
         "express": "4.x",
         "qcloudsms_js": "^0.1.1",
+        "xlsx": "^0.14.0",
         "yz-checkstand": "^0.2.1",
         "yz-open-sdk-nodejs": "^1.0.2"
     },

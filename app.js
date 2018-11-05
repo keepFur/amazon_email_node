@@ -485,6 +485,15 @@ app.post('/api/updateKbOrder', function (req, res) {
     }
 });
 
+// 导出空包
+app.get('/api/exportKbOrderToExcel', function (req, res) {
+    try {
+        manageKbOrder.exportKbOrderToExcel(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
 /***********************空包地址模块**********************/
 // 创建空包地址
 app.post('/api/createKbAddress', function (req, res) {

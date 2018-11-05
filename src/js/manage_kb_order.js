@@ -117,7 +117,17 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
      * @param {any} events 
      */
     function exportKbOrderHandle() {
-        layer.msg('123');
+        //默认导出 csv，也可以为：xls
+        // var excelCol = ['订单号', '快递类型', '快递单号', '发货地址', '收货地址', '收货人', '下单时间'];
+        // $.get('/api/exportKbOrderToExcel', {
+        //     limit: '1000',
+        //     offset: 1
+        // }, function (res) {
+        //     layer.msg('导出成功');
+        // }, 'json');
+        var aLink = document.createElement('a');
+        aLink.href = '/api/exportKbOrderToExcel?limit=1000&offset=1';
+        aLink.click();
         return false;
     }
 
@@ -240,6 +250,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
             where: {
                 taskPlant: 'TB'
             },
+            toolbar: 'default',
             cols: [[
                 {
                     checkbox: true,
