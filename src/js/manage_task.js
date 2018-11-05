@@ -103,7 +103,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
     function updateTaskHandle(events) {
         var selectDatas = table.checkStatus('taskTable').data;
         if (selectDatas.length === 1) {
-            layer.confirm('确定取消任务吗？状态会稍微有点延时，谢谢谅解！！取消之后积分将会退回账户中，请注意查看！！', {
+            layer.confirm('确定取消任务吗？状态会稍微有点延时，谢谢谅解！！取消之后金额将会退回账户中，请注意查看！！', {
                 title: "询问框",
                 btn: ['确定', '取消']
             }, function (index, layero) {
@@ -326,7 +326,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
                     title: '关键词/数量/消费金额',
                     width: 250,
                     templet: function (d) {
-                        return '（' + (d.taskKeyword || '无') + '）' + d.taskQuantity + '个 / ' + d.taskSumMoney + ' 积分';
+                        return '（' + (d.taskKeyword || '无') + '）' + d.taskQuantity + '个 / ' + d.taskSumMoney + ' 元';
                     }
                 },
                 {

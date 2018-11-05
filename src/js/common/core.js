@@ -612,5 +612,21 @@ var core = {
             return window.unescape(r[1])
         }
         return null;
+    },
+
+    // 将分转换成元
+    fenToYuan: function (f) {
+        if (!f || isNaN(f)) {
+            return 0.00;
+        }
+        return Number(f / 100).toFixed(2);
+    },
+
+    // 将元转换成分
+    yuanToFen: function (y) {
+        if (!y || isNaN(y)) {
+            return 0;
+        }
+        return Number(y * 10).toFixed(0);
     }
 };

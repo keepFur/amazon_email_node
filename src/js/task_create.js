@@ -378,7 +378,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
      * 创建任务
      * 1，获取关键词的数量。
      * 2，多个的话，需要创建多个任务
-     * 先要判断用户的积分是否足够
+     * 先要判断用户的余额是否足够
      * @param {any} event 
      * @returns 
      */
@@ -422,8 +422,8 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
                         },
                         success: function (data, textStatus, jqXHR) {
                             if (data.success) {
-                                // 获取用户当前的积分余额并提示
-                                layer.msg('操作成功！！！</br>本次共消费积分：' + taskInfo.taskSumMoney + '</br>' + '积分余额：' + (userInfo.money - taskInfo.taskSumMoney));
+                                // 获取用户当前余额并提示
+                                layer.msg('操作成功！！！</br>本次共消费：' + taskInfo.taskSumMoney + '</br>' + '余额：' + (userInfo.money - taskInfo.taskSumMoney));
                                 core.getUserInfoById(userId, function (user) {
                                     userInfo = user.data.rows[0];
                                     $('#userName').data('user', JSON.stringify(user));
@@ -477,8 +477,8 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
                                 },
                                 success: function (data, textStatus, jqXHR) {
                                     if (data.success) {
-                                        // 获取用户当前的积分余额并提示
-                                        layer.msg('操作成功！！！</br>本次共消费积分：' + taskInfo.taskSumMoney + '</br>' + '积分余额：' + (userInfo.money - taskInfo.taskSumMoney));
+                                        // 获取用户当前的余额并提示
+                                        layer.msg('操作成功！！！</br>本次共消费：' + taskInfo.taskSumMoney + '</br>' + '余额：' + (userInfo.money - taskInfo.taskSumMoney));
                                         core.getUserInfoById(userId, function (user) {
                                             userInfo = user.data.rows[0];
                                             $('#userName').data('user', JSON.stringify(user));
@@ -577,11 +577,11 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
      * @param {any} taskInfo 
      */
     function validTaskInfo(taskInfo) {
-        // 判断用户的积分
+        // 判断用户的余额
         if (userInfo.money <= 0 || userInfo.money < taskInfo.taskSumMoney) {
             return {
                 isPass: false,
-                msg: '主人，您的积分不足，请先充值，谢谢！'
+                msg: '主人，您的余额不足，请先充值，谢谢！'
             };
         }
         if (!taskInfo) {

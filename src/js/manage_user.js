@@ -67,7 +67,7 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
         $('#createUserBtn').on('click', createUserHandle);
         // 修改用户
         $('#updateUserBtn').on('click', updateUserHandle);
-        // 积分充值
+        // 余额充值
         $('#addMoneyUserBtn').on('click', addMoneyUserHandle);
         // 会员等级修改
         $('#updateLevelUserBtn').on('click', updateLevelUserHandle);
@@ -149,7 +149,7 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
     }
 
     /**
-     *  积分充值的点击事件处理函数
+     *  余额充值的点击事件处理函数
      * 
      * @param {any} events 
      */
@@ -161,12 +161,12 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">充值金额</label>
                                     <div class="layui-input-block">
-                                        <input type="text" name="money" placeholder="只能是正整数，最少1000积分"  class="layui-input">
+                                        <input type="text" name="money" placeholder="只能是正整数，最少10元"  class="layui-input">
                                     </div>
                                 </div>
                             </form>`,
                 area: ['400px'],
-                title: '积分充值',
+                title: '余额充值',
                 btn: ['充值', '取消'],
                 yes: function (index) {
                     var money = $.trim($('input[name=money]').val());
@@ -201,15 +201,15 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
 
     /**
      * 会员等级修改的点击事件处理函数
-     * 会员升级一次 1000积分
+     * 会员升级一次 1000分
      * @param {any} events 
      */
     function updateLevelUserHandle(events) {
         var selectDatas = table.checkStatus('userTable').data;
         var minMoney = 1000;
-        var tipMsg = `<span style="color:#f00;">确定升级吗？</br>升级之后可以享受<strong>九折</strong>优惠!</br>升级会从账户中抵扣${minMoney}积分，</br>请确保账户中有足够的积分！</span>`;
+        var tipMsg = `<span style="color:#f00;">确定升级吗？</br>升级之后可以享受<strong>九折</strong>优惠!</br>升级会从账户中抵扣${minMoney}元，</br>请确保账户中有足够的余额！</span>`;
         if (selectDatas.length === 1) {
-            // 获取用户的积分，判断月是否大于等于1000
+            // 获取用户的余额，判断余额是否大于等于1000分
             readUserById(selectDatas[0].id, function (data) {
                 if (data.success) {
                     var money = data.data.rows[0].money;
@@ -235,7 +235,7 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
                             });
                         });
                     } else {
-                        layer.msg(`您的积分余额不足${minMoney}， 请充值之后再升级。当前积分余额是 ${money} 积分!`);
+                        layer.msg(`您的余额不足${minMoney}， 请充值之后再升级。当前余额是 ${money} 元!`);
                     }
                 } else {
                     layer.msg(data.message);
@@ -300,7 +300,7 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
                     title: '用户名',
                     field: "userName"
                 }, {
-                    title: '当前积分',
+                    title: '当前余额',
                     field: "money"
                 }, {
                     title: '等级',
@@ -409,9 +409,9 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
     }
 
     /**
-     * 校验积分金额，正整数，大于1000
+     * 校验余额，正整数，大于1000
      * 
-     * @param {Number} money 积分
+     * @param {Number} money 分
      */
     function validAddMoneyUser(money) {
         if (!money) {
@@ -424,7 +424,7 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
         if (money < 1000) {
             return {
                 isPass: false,
-                msg: '充值金额不能小于1000'
+                msg: '充值金额不能小于1000分'
             }
         }
         if (isNaN(money)) {

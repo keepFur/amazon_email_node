@@ -62,20 +62,20 @@ layui.use(['element', 'layer'], function () {
 
     var optionOfScore = {
         title: {
-            text: '积分充值柱状图'
+            text: '余额充值柱状图'
         },
         tooltip: {},
         legend: {
             right: 10,
             top: 0,
-            data: ['积分充值']
+            data: ['余额充值']
         },
         xAxis: {
             data: []
         },
         yAxis: {},
         series: [{
-            name: '积分充值',
+            name: '余额充值',
             type: 'bar',
             data: []
         }]
@@ -127,7 +127,7 @@ layui.use(['element', 'layer'], function () {
         });
     }
 
-    //  获取用户积分
+    //  获取用户余额
     function getScore() {
         core.getUserInfoById($('#userName').data('user-id'), function (res) {
             $('.js-user-score').text(res.data.rows[0].money);
@@ -219,7 +219,7 @@ layui.use(['element', 'layer'], function () {
     }
 
     /**
-     * 获取积分充值的数据
+     * 获取余额充值的数据
      * 
      * @param {any} date 
      */

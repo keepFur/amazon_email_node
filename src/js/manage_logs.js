@@ -38,11 +38,11 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
             $('#logsSearchForm')[0].reset();
             return false;
         });
-        // 禁用日志积分
+        // 禁用资金明细日志
         $('#disabledLogsScoreBtn').on('click', {
             type: 0
         }, toggleLogsScoreHandle);
-        // 启用日志积分
+        // 启用资金明细日志
         $('#enabledLogsScoreBtn').on('click', {
             type: 1
         }, toggleLogsScoreHandle);
@@ -66,7 +66,7 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
     }
 
     /**
-     * 切换日志积分状态按钮点击事件处理函数
+     * 切换日志状态按钮点击事件处理函数
      * 
      * @param {any} events 
      */
@@ -136,7 +136,7 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
                     field: "count"
                 },
                 {
-                    title: '积分余额',
+                    title: '余额',
                     field: "balance"
                 },
                 {

@@ -14,7 +14,7 @@ layui.use(['element', 'layer', 'form'], function () {
 
     // 初始化组件
     function initComponment() {
-        // 设置账号信息以及用户剩余积分
+        // 设置账号信息以及用户余额
         $('form[name=addMoneyForm] input[name=userName]').val($('#userName').text().trim());
         core.getUserInfoById($('#userName').data('user-id'), function (res) {
             $('#userMainMoney').text(res.data.rows[0].money);
@@ -68,7 +68,7 @@ layui.use(['element', 'layer', 'form'], function () {
                             </div>
                         </div>`,
             area: ['450px', '520px'],
-            title: '积分充值付款',
+            title: '在线充值付款',
             btn: '支付完成',
             scrollbar: false,
             yes: function (index, layero) {
@@ -121,7 +121,7 @@ layui.use(['element', 'layer', 'form'], function () {
                     url: '/api/createQrCode',
                     type: 'POST',
                     data: {
-                        qr_name: '积分充值',
+                        qr_name: '余额充值',
                         packageId: checkedPackage.val(),
                         qr_type: 'QR_TYPE_NOLIMIT'
                     },

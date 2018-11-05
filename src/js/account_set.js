@@ -118,7 +118,7 @@ layui.use(['element', 'layer', 'form'], function () {
             layer.msg('老板，你已经是我们的顶级会员了，已经大权在握，杠杠的！！！');
             return false;
         }
-        // 获取用户的积分，判断月是否大于等于1000
+        // 获取用户的余额，判断月是否大于等于1000
         getUserInfoServer(function (data) {
             var money = data.money;
             if (money >= minMoney) {

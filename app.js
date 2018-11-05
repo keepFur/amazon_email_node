@@ -92,7 +92,7 @@ app.get('/api/readTaskTypeOfInTime', function (req, res) {
     }
 });
 
-// 获取媒体的充值积分
+// 获取每天的充值金额
 app.get('/api/readAddMoneyOfInTime', function (req, res) {
     try {
         homeAccountView.readAddMoneyOfInTime(req, res, req.query);
@@ -623,8 +623,8 @@ app.post('/api/getYouzanPushMessgae', function (req, res) {
     }
 });
 
-/* *****************积分日志类****************** */
-// 创建日志积分
+/* *****************钱包日志类****************** */
+// 创建钱包日志
 app.post('/api/createLogsScore', function (req, res) {
     try {
         logsScoreManage.createLogsScore(req, res, req.body);
@@ -633,7 +633,7 @@ app.post('/api/createLogsScore', function (req, res) {
     }
 });
 
-// 获取日志积分列表，支持分页
+// 获取日志金额列表，支持分页
 app.get('/api/readLogsScorePage', function (req, res) {
     try {
         logsScoreManage.readLogsScorePage(req, res, req.query);
@@ -642,7 +642,7 @@ app.get('/api/readLogsScorePage', function (req, res) {
     }
 });
 
-// 通过id获取日志积分信息
+// 通过id获取日志金额信息
 app.get('/api/readLogsScoreById', function (req, res) {
     try {
         logsScoreManage.readLogsScoreById(req, res, req.query);
@@ -651,7 +651,7 @@ app.get('/api/readLogsScoreById', function (req, res) {
     }
 });
 
-// 切换日志积分状态
+// 切换日志金额状态
 app.post('/api/toggleLogsScore', function (req, res) {
     try {
         logsScoreManage.toggleLogsScore(req, res, req.body);
