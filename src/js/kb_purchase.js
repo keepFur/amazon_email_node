@@ -12,6 +12,14 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
         },
         kbTypeInfo: null
     };
+    var pca = {
+        p: '',
+        c: '',
+        a: '',
+        pT: '',
+        cT: '',
+        aT: ''
+    };// 省市区
     var userInfo = {};
 
     (function init() {
@@ -157,6 +165,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
             kbOrderInfo.addressTo = kbOrderInfo.addressTo.split(/\n/g).filter(function (item) {
                 return !!item;
             });
+            kbOrderInfo.addressToPca = getKbAddressToPca();
             kbOrderInfo.total = baseDatas.kbTypeInfo.price * kbOrderInfo.addressTo.length;
             $.ajax({
                 url: '/api/createKbOrder',
@@ -187,6 +196,29 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
         layer.open({
             content: `<form class="layui-form layui-form-pane" name="kbAddressCreateForm">
                             <div class="layui-form-item">
+                                <div class="layui-form-item">
+                                    <div class="layui-input-inline">
+                                        <select name="pCode" lay-filter="province">
+                                        <option value="">请选择省份</option>
+                                        </select>
+                                    </div>
+                                    <div class="layui-input-inline">
+                                        <select name="cCode" lay-filter="city">
+                                        <option value="">请选择城市</option>
+                                        </select>
+                                    </div>
+                                    <div class="layui-input-inline">
+                                        <select name="aCode" lay-filter="area">
+                                        <option value="">请选择区域</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item layui-form-text">
+                                    <label class="layui-form-label">详细地址</label>
+                                    <div class="layui-input-block">
+                                        <input class="layui-input" placeholder="此处不需要填省市区了"  name="detail"/>
+                                    </div>
+                                </div>
                                 <div class="layui-form-item layui-form-text">
                                     <label class="layui-form-label">寄件人</label>
                                     <div class="layui-input-block">
@@ -206,12 +238,6 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
                                     </div>
                                 </div>
                                 <div class="layui-form-item layui-form-text">
-                                    <label class="layui-form-label">地址</label>
-                                    <div class="layui-input-block">
-                                        <textarea class="layui-textarea"  name="detail"></textarea>
-                                    </div>
-                                </div>
-                                <div class="layui-form-item layui-form-text">
                                     <label class="layui-form-label">备注</label>
                                     <div class="layui-input-block">
                                         <input type="text" name="remark"  class="layui-input">
@@ -221,10 +247,12 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
                         </form>`,
             title: '创建收货地址',
             btn: ['创建', '取消'],
-            area: ['450px'],
+            area: ['640px'],
             yes: function (index) {
                 var kbAddressInfo = core.getFormValues($('form[name=kbAddressCreateForm]'));
                 var validKbAddressInfoResult = validKbAddressInfo(kbAddressInfo);
+                //  省市区
+                kbAddressInfo.pca = pca.pT + pca.cT + pca.aT;
                 if (validKbAddressInfoResult.isPass) {
                     $.ajax({
                         url: '/api/createKbAddress',
@@ -243,6 +271,32 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
                 } else {
                     layer.msg(validKbAddressInfoResult.msg);
                 }
+            },
+            success: function () {
+                getProvince();
+                // 监听省份下拉框的事件
+                form.on('select(province)', function (data) {
+                    getCityByCode(data.value);
+                    pca.p = data.value;
+                    pca.pT = $(data.elem).find('option[value=' + data.value + ']').data('name')
+                    pca.c = '';
+                    pca.cT = ''
+                    pca.a = '';
+                    pca.aT = ''
+                    renderPCASelect([], $('select[name=aCode]'), 'area');
+                });
+                // 监听城市下拉框的事件
+                form.on('select(city)', function (data) {
+                    getAreaByCode(pca.p, data.value);
+                    pca.c = data.value;
+                    pca.cT = $(data.elem).find('option[value=' + data.value + ']').data('name')
+                    pca.a = '';
+                });
+                // 监听区域下拉框的事件
+                form.on('select(area)', function (data) {
+                    pca.a = data.value;
+                    pca.aT = $(data.elem).find('option[value=' + data.value + ']').data('name');
+                });
             }
         });
         return false;
@@ -260,9 +314,35 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
             var detail = selectDatas[0].detail;
             var remark = selectDatas[0].remark;
             var email = selectDatas[0].email;
+            var pCode = selectDatas[0].pCode;
+            var cCode = selectDatas[0].cCode;
+            var aCode = selectDatas[0].aCode;
             layer.open({
                 content: `<form class="layui-form layui-form-pane" name="kbAddressUpdateForm" lay-filter="kbAddressUpdateForm">
                             <div class="layui-form-item">
+                                <div class="layui-form-item">
+                                    <div class="layui-input-inline">
+                                        <select name="pCode" lay-filter="province">
+                                        <option value="">请选择省份</option>
+                                        </select>
+                                    </div>
+                                    <div class="layui-input-inline">
+                                        <select name="cCode" lay-filter="city">
+                                        <option value="">请选择城市</option>
+                                        </select>
+                                    </div>
+                                    <div class="layui-input-inline">
+                                        <select name="aCode" lay-filter="area">
+                                        <option value="">请选择区域</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item layui-form-text">
+                                    <label class="layui-form-label">详细地址</label>
+                                    <div class="layui-input-block">
+                                        <input class="layui-input" placeholder="此处不需要填省市区了" value="${detail}" name="detail"/>
+                                    </div>
+                                </div>
                                 <div class="layui-form-item layui-form-text">
                                     <label class="layui-form-label">寄件人</label>
                                     <div class="layui-input-block">
@@ -282,12 +362,6 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
                                     </div>
                                 </div>
                                 <div class="layui-form-item layui-form-text">
-                                    <label class="layui-form-label">地址</label>
-                                    <div class="layui-input-block">
-                                        <textarea class="layui-textarea"  name="detail"></textarea>
-                                    </div>
-                                </div>
-                                <div class="layui-form-item layui-form-text">
                                     <label class="layui-form-label">备注</label>
                                     <div class="layui-input-block">
                                         <input type="text" name="remark" value="${remark}" class="layui-input">
@@ -297,11 +371,13 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
                         </form>`,
                 title: '收货地址信息修改',
                 btn: ['确定', '取消'],
-                area: ['450px'],
+                area: ['640px'],
                 yes: function (index) {
                     var kbAddressInfo = core.getFormValues($('form[name=kbAddressUpdateForm]'));
                     var validKbAddressInfoResult = validKbAddressInfo(kbAddressInfo);
                     kbAddressInfo.id = selectDatas[0].id;
+                    // 省市区
+                    kbAddressInfo.pca = pca.pT + pca.cT + pca.aT;
                     if (validKbAddressInfoResult.isPass) {
                         $.ajax({
                             url: '/api/updateKbAddress',
@@ -322,8 +398,43 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
                     }
                 },
                 success: function () {
-                    form.val('kbAddressUpdateForm', {
-                        "detail": detail
+                    getProvince(function () {
+                        form.val('kbAddressUpdateForm', {
+                            pCode: pCode
+                        });
+                    });
+                    getCityByCode(pCode, function () {
+                        form.val('kbAddressUpdateForm', {
+                            cCode: cCode
+                        });
+                    });
+                    getAreaByCode(pCode, cCode, function () {
+                        form.val('kbAddressUpdateForm', {
+                            aCode: aCode
+                        });
+                    });
+                    // 监听省份下拉框的事件
+                    form.on('select(province)', function (data) {
+                        getCityByCode(data.value);
+                        pca.p = data.value;
+                        pca.pT = $(data.elem).find('option[value=' + data.value + ']').data('name')
+                        pca.c = '';
+                        pca.cT = ''
+                        pca.a = '';
+                        pca.aT = ''
+                        renderPCASelect([], $('select[name=aCode]'), 'area');
+                    });
+                    // 监听城市下拉框的事件
+                    form.on('select(city)', function (data) {
+                        getAreaByCode(pca.p, data.value);
+                        pca.c = data.value;
+                        pca.cT = $(data.elem).find('option[value=' + data.value + ']').data('name')
+                        pca.a = '';
+                    });
+                    // 监听区域下拉框的事件
+                    form.on('select(area)', function (data) {
+                        pca.a = data.value;
+                        pca.aT = $(data.elem).find('option[value=' + data.value + ']').data('name')
                     });
                 }
             });
@@ -389,7 +500,10 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
                     field: "phone"
                 }, {
                     title: '地址',
-                    field: "detail"
+                    field: "detail",
+                    templet: function (d) {
+                        return d.pca + d.detail;
+                    }
                 }, {
                     title: '邮编',
                     field: "email"
@@ -461,6 +575,25 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
             return {
                 isPass: false,
                 msg: '参数错误'
+            }
+        }
+
+        if (!kbAddressInfo.pCode) {
+            return {
+                isPass: false,
+                msg: '请选择省份'
+            }
+        }
+        if (!kbAddressInfo.cCode) {
+            return {
+                isPass: false,
+                msg: '请选择城市'
+            }
+        }
+        if (!kbAddressInfo.aCode) {
+            return {
+                isPass: false,
+                msg: '请选择区域'
             }
         }
 
@@ -579,7 +712,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
         $container.empty();
         $container.append(` <option value="">请选择发货地址</option>`);
         $.each(adds, function (index, item) {
-            $container.append(`<option value="${item.detail}">${item.detail} ${item.contact} ${item.phone} ${item.email}</option>`);
+            $container.append(`<option value="${item.pca}${item.detail}">${item.pca} ${item.detail} ${item.contact} ${item.phone} ${item.email}</option>`);
         });
         form.render('select');
     }
@@ -598,5 +731,84 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
             s = [];
         }
         return s;
+    }
+
+    /**
+     * 获取收货地址中的省市区
+     *
+     */
+    function getKbAddressToPca() {
+        var s = [];
+        try {
+            s = $('textarea[name=addressTo]').val().split('\n').filter(function (item) {
+                return !!item;
+            }).map(function (m) {
+                var add = m.split(/,|，/)[2];
+                var detail = add.split(' ');
+                return detail[0] + '-' + detail[1] + '-' + detail[2];
+            });
+        } catch (error) {
+            s = [];
+        }
+        return s;
+    }
+
+    /**
+     * 渲染省下拉框
+     *
+     */
+    function renderPCASelect(data, $select, type) {
+        var typeObj = {
+            province: '省份',
+            city: '城市',
+            area: '区域'
+        };
+        $select.empty();
+        $select.append(`<option value="">请选择${typeObj[type]}</option>`);
+        $.each(data, function (index, item) {
+            $select.append(`<option value="${item.code}" data-name="${item.name}">${item.name}</option>`);
+        });
+        form.render('select');
+    }
+
+    /**
+     *获取所有的省份
+     *
+     */
+    function getProvince(callback) {
+        $.get('/api/getProvince', function (res) {
+            renderPCASelect(res.rows, $('select[name=pCode]'), 'province');
+            callback && callback();
+        }, 'json');
+    }
+
+    /**
+     * 根据省份code获取城市的数据
+     *
+     * @param {*} code
+     */
+    function getCityByCode(code, callback) {
+        $.get('/api/getCityByCode', {
+            code: code
+        }, function (res) {
+            renderPCASelect(res.rows, $('select[name=cCode]'), 'city');
+            callback && callback();
+        }, 'json');
+    }
+
+    /**
+     *根据城市的code获取市区数据
+     *
+     * @param {*} pCode 省份code
+     * @param {*} cCode 城市code
+     */
+    function getAreaByCode(pCode, cCode, callback) {
+        $.get('/api/getAreaByCode', {
+            pCode: pCode,
+            cCode: cCode
+        }, function (res) {
+            renderPCASelect(res.rows, $('select[name=aCode]'), 'area');
+            callback && callback();
+        }, 'json');
     }
 });

@@ -44,6 +44,7 @@ let ManageKbAddress = require('./lib/manage_kb_address_service');
 let manageKbAddress = new ManageKbAddress();
 let APIUtil = require('./lib/api_util');
 let APIPay = require('./lib/api_pay');
+let APIArea = require('./lib/api_area');
 let LieliuApi = require('./lib/lieliu_api');
 let TenMessageApi = require('./lib/ten_message_api');
 app.use(session({
@@ -813,6 +814,33 @@ app.post('/api/toggleKbNumber', function (req, res) {
 app.post('/api/generateSignKey', function (req, res) {
     try {
         APIUtil.generateSignkey(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 获取所有的省份
+app.get('/api/getProvince', function (req, res) {
+    try {
+        APIArea.getProvince(req, res);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 根据省份code获取城市
+app.get('/api/getCityByCode', function (req, res) {
+    try {
+        APIArea.getCityByCode(req, res);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 根据城市code获取区
+app.get('/api/getAreaByCode', function (req, res) {
+    try {
+        APIArea.getAreaByCode(req, res);
     } catch (error) {
         Core.flyer.log(error);
     }
