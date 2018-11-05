@@ -36,8 +36,8 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
     function initComponent() {
         // 开始日期和结束日期
         laydate.render({
-            elem: '#createdDateStart'
-            , range: true
+            elem: '#createdDate',
+            range: '~'
         });
     }
 
@@ -89,6 +89,8 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
     */
     function searchHandle(events) {
         var queryParams = getQueryParams();
+        queryParams.createdDateStart = queryParams.createdDate.split('~')[0];
+        queryParams.createdDateEnd = queryParams.createdDate.split('~')[1];
         reloadTable($.extend(queryParams, {
             plant: baseDatas.plants[baseDatas.tabIndex],
             page: {
@@ -208,111 +210,6 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
         } else {
             layer.msg(baseDatas.operatorErrMsg.single);
         }
-        return false;
-    }
-
-    /**
-     *标记为已完成按钮的点击事件处理函数
-     *
-     * @param {*} e
-     */
-    function completeKbOrderHandle(e) {
-        var selectDatas = table.checkStatus('taskTable').data;
-        var tipMsg = '确定将空包订单标记为已完成吗？此操作不会影响空包订单的处理，只是为了方便管理！！';
-        if (selectDatas.length !== 1) {
-            layer.msg(baseDatas.operatorErrMsg.single);
-            return;
-        }
-        if (selectDatas[0].status === 1) {
-            layer.confirm(tipMsg, {
-                title: '询问框',
-                btn: ['确定', '取消']
-            }, function (index, layero) {
-                $.ajax({
-                    url: '/api/toggleKbOrder',
-                    type: 'POST',
-                    data: {
-                        id: selectDatas[0].id,
-                        status: 4
-                    },
-                    success: function (data, textStatus, jqXHR) {
-                        if (data.success) {
-                            layer.msg('操作成功');
-                            reloadTable();
-                        } else {
-                            layer.msg('操作失败:' + data.message);
-                        }
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        layer.msg(baseDatas.netErrMsg);
-                    }
-                });
-            });
-        } else {
-            layer.msg('只可以标记处理中的空包订单');
-        }
-        return false;
-    }
-
-
-    /**
-     *同步空包订单
-     *
-     * @param {*} e
-     */
-    function asyncKbOrderHandle(e) {
-        // 1，查找出所有的处理中空包订单
-        $.get('/api/readAllProcessKbOrder', function (res) {
-            if (res.data.rows.length) {
-                layer.confirm(`当前共有 ${res.data.rows.length} 条处理中的空包订单,确定更新吗？<br>此操作不会产生任何不良影响，请放心操作！`, {
-                    title: '询问框',
-                    btn: ['确定', '取消']
-                }, function (index, layero) {
-                    // 2，通过列流的api查询出以上空包订单中已完成的空包订单
-                    APIUtil.listKbOrder({
-                        id: res.data.rows.map(function (item) { return item.taskOrderNumber }).join(',')
-                    }, function (res) {
-                        if (res.data.status !== '1') {
-                            layer.msg(res.data.tips);
-                        } else if (res.data.list && res.data.list.l.length > 0) {
-                            var ids = res.data.list.l.filter(function (item) {
-                                return item.s == 1;
-                            }).map(function (t) {
-                                return t.i;
-                            });
-                            if (ids.length) {
-                                // 3，将已完成的空包订单标记为已完成状态
-                                $.ajax({
-                                    url: '/api/maskCompleteKbOrder',
-                                    type: 'POST',
-                                    data: {
-                                        id: ids.join(','),
-                                        status: 4
-                                    },
-                                    success: function (data, textStatus, jqXHR) {
-                                        if (data.success) {
-                                            layer.msg('操作成功,共同步（' + ids.length + '）条空包订单');
-                                            reloadTable();
-                                        } else {
-                                            layer.msg('操作失败:' + data.message);
-                                        }
-                                    },
-                                    error: function (jqXHR, textStatus, errorThrown) {
-                                        layer.msg(baseDatas.netErrMsg);
-                                    }
-                                });
-                            } else {
-                                layer.msg('所有空包订单都已更新到最新状态');
-                            }
-                        } else {
-                            layer.msg('查无此订单信息');
-                        }
-                    });
-                });
-            } else {
-                layer.msg('暂时没有处理中的空包订单');
-            }
-        });
         return false;
     }
 
