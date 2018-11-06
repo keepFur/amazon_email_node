@@ -177,7 +177,9 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
                             type: 'POST',
                             data: {
                                 money: money,
-                                id: selectDatas[0].id
+                                id: selectDatas[0].id,
+                                userName: selectDatas[0].userName,
+                                balance: selectDatas[0].money
                             },
                             success: function (data, textStatus, jqXHR) {
                                 layer.msg(data.success ? ('操作成功') : ('操作失败' + data.message));
@@ -223,6 +225,8 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
                                 type: 'POST',
                                 data: {
                                     id: selectDatas[0].id,
+                                    userName: selectDatas[0].userName,
+                                    money: selectDatas[0].money,
                                     level: 2
                                 },
                                 success: function (data, textStatus, jqXHR) {
@@ -435,7 +439,7 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
         if (money < 1000) {
             return {
                 isPass: false,
-                msg: '充值金额不能小于1000分'
+                msg: '充值金额不能小于10元'
             }
         }
         if (isNaN(money)) {

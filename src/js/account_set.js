@@ -127,6 +127,8 @@ layui.use(['element', 'layer', 'form'], function () {
                     data: {
                         id: userId,
                         level: 2,
+                        money: money,
+                        userName: userName,
                         orderNumber: APIUtil.generateOrderNumer()
                     },
                     success: function (data, textStatus, jqXHR) {
