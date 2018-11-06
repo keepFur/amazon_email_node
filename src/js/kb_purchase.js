@@ -41,6 +41,9 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
         // 电商平台的切换
         form.on('radio', function (data) {
             getKbTypeServer(data.value);
+            $('input[name=plant]:checked').val() === 'PDD' && $('[name=addressTo]').attr('placeholder', `格式：姓名，手机，省（空格）市（空格）县区（空格）详细地址，订单流水号 
+例如：张三，13688888888 ，广东省 深圳市 罗湖区 深南大道102号，20150831-070478496
+严格按上面的格式来( 由于格式原因造成的失败，该站概不负责) 三个逗号，三个空格，一个都不要少，也不能多`);
         });
         // 快递类型的选择
         form.on('select(kbCompany)', function (data) {

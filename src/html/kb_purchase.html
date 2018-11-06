@@ -63,12 +63,12 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">收货地址</label>
                         <div class="layui-input-block">
-                            <textarea class="layui-textarea" name="addressTo" rows="15" placeholder="地址格式：李四，15888888888，广东省 广州市 番禺区 岭南大道321号 ，330006 可批量下单，每行一个地址，最多1000个地址"></textarea>
+                            <textarea class="layui-textarea" name="addressTo" rows="15" placeholder="格式：姓名，手机，省（空格）市（空格）县区（空格）详细地址，邮编 例如：张三，13688888888 ，广东省 深圳市 罗湖区 深南大道102号，518000 严格按上面的格式来  三个逗号，三个空格，一个都不要少，也不能多"></textarea>
                         </div>
                         <label class="layui-form-label"></label>
                         <div class="layui-form-mid layui-word-aux">
-                            <button class="layui-btn layui-btn-primary layui-btn-sm" id="formatAddressBtn">格式化地址</button>
                             <button class="layui-btn layui-btn-primary layui-btn-sm" id="getRealOrderBtn">过滤真实订单</button>
+                            <button class="layui-btn layui-btn-primary layui-btn-sm" id="formatAddressBtn">格式化地址</button>
                         </div>
                     </div>
                     <div class="layui-form-item">
