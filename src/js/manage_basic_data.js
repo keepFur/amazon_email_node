@@ -127,7 +127,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                         <div class="layui-form-item">
                             <div class="layui-form-item layui-form-text">
                                 <div class="layui-input-block">
-                                    <select name="plant">
+                                    <select name="plant" lay-filter="plant">
                                         <option value="">选择电商平台</option>
                                         <option value="TB">淘宝</option>
                                         <option value="JD">京东</option>
@@ -138,11 +138,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                             <div class="layui-form-item layui-form-text">
                                 <div class="layui-input-block">
                                     <select name="company">
-                                        <option value="">选择快递平台</option>
-                                        <option value="ST">申通</option>
-                                        <option value="ZT">中通</option>
-                                        <option value="YD">韵达</option>
-                                        <option value="TT">天天</option>
+                                       <option value="">选择快递平台</option>
                                     </select>
                                 </div>
                             </div>
@@ -182,6 +178,14 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                 }
             },
             success: function () {
+                // 电商平台的切换
+                form.on('select(plant)', function (data) {
+                    if (data.value) {
+                        getKbTypeServer(data.value);
+                    } else {
+                        getKbTypeServer('NULL');
+                    }
+                });
                 form.render('select');
                 var number = function () {
                     var ret = [];
@@ -213,7 +217,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                             <div class="layui-form-item">
                                 <div class="layui-form-item layui-form-text">
                                     <div class="layui-input-block">
-                                        <select name="plant">
+                                        <select name="plant" lay-filter="plant">
                                             <option value="">选择电商平台</option>
                                             <option value="TB">淘宝</option>
                                             <option value="JD">京东</option>
@@ -225,19 +229,12 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                                     <div class="layui-input-block">
                                         <select name="company">
                                             <option value="">选择快递平台</option>
-                                            <option value="ST">申通</option>
-                                            <option value="ZT">中通</option>
-                                            <option value="GT">国通</option>
-                                            <option value="LB">龙邦</option>
-                                            <option value="YF">亚风</option>
-                                            <option value="BS">百世</option>
-                                            <option value="YT">圆通</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="layui-inline">
+                                <div class="ayui-form-item layui-block">
                                     <label class="layui-form-label">单号</label>
-                                    <div class="layui-input-inline">
+                                    <div class="layui-input-block">
                                         <input type="text" name="number" value="${number}" class="layui-input">
                                     </div>
                                 </div>
@@ -245,7 +242,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                         </form>`,
                 title: '空包单号信息修改',
                 btn: ['确定', '取消'],
-                area: ['360px', '360px'],
+                area: ['400px', '400px'],
                 yes: function (index) {
                     var kbNumberInfo = core.getFormValues($('form[name=kbNumberUpdateForm]'));
                     var validKbNumberInfoResult = validKbNumberInfo(kbNumberInfo);
@@ -269,10 +266,21 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                     }
                 },
                 success: function () {
+                    // 电商平台的切换
+                    form.on('select(plant)', function (data) {
+                        if (data.value) {
+                            getKbTypeServer(data.value);
+                        } else {
+                            getKbTypeServer('NULL');
+                        }
+                        return false;
+                    });
                     form.render('select');
-                    form.val('kbNumberUpdateForm', {
-                        plant: plant,
-                        company: company
+                    getKbTypeServer(plant, function () {
+                        form.val('kbNumberUpdateForm', {
+                            plant: plant,
+                            company: company
+                        });
                     });
                 }
             });
@@ -1196,5 +1204,32 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
             isPass: true,
             msg: ''
         };
+    }
+
+    /**
+     *获取快递类型列表
+     *
+     * @param {*}  平台
+     */
+    function getKbTypeServer(plant, callback) {
+        $.get('/api/readKbType?status=1&plant=' + plant, function (res) {
+            renderKbType(res.data.rows);
+            callback && callback();
+        }, 'json');
+    }
+
+    /**
+     *渲染快递列表
+     *
+     * @param {*} kbTypes
+     */
+    function renderKbType(kbTypes) {
+        var $container = $('select[name=company]');
+        $container.empty();
+        $container.append(`<option value="">请选择快递类型</option>`);
+        $.each(kbTypes, function (index, item) {
+            $container.append(`<option value="${item.code}" data-price="${item.price}" data-plant="${item.plant}">${item.name}</option>`);
+        });
+        form.render('select');
     }
 });

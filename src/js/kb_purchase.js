@@ -188,7 +188,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
                 return !!item;
             });
             kbOrderInfo.addressToPca = getKbAddressToPca();
-            kbOrderInfo.addressFromPca = pca.pT + '-' + pca.cT + '-' + pca.aT;
+            kbOrderInfo.addressFromPca = kbOrderInfo.addressFrom.split(/\s/g)[0];
             kbOrderInfo.total = baseDatas.kbTypeInfo.price * kbOrderInfo.addressTo.length;
             $.ajax({
                 url: '/api/createKbOrder',
@@ -719,7 +719,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
         $container.empty();
         $container.append(` <option value="">请选择发货地址</option>`);
         $.each(adds, function (index, item) {
-            $container.append(`<option value="${item.pca}">${item.pca} ${item.detail} ${item.contact} ${item.phone} ${item.email}</option>`);
+            $container.append(`<option value="${item.pca} ${item.detail}">${item.pca} ${item.detail} ${item.contact} ${item.phone} ${item.email}</option>`);
         });
         form.render('select');
     }
