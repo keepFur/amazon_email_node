@@ -188,6 +188,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
                 return !!item;
             });
             kbOrderInfo.addressToPca = getKbAddressToPca();
+            kbOrderInfo.addressFromPca = pca.pT + '-' + pca.cT + '-' + pca.aT;
             kbOrderInfo.total = baseDatas.kbTypeInfo.price * kbOrderInfo.addressTo.length;
             $.ajax({
                 url: '/api/createKbOrder',
@@ -274,7 +275,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
                 var kbAddressInfo = core.getFormValues($('form[name=kbAddressCreateForm]'));
                 var validKbAddressInfoResult = validKbAddressInfo(kbAddressInfo);
                 //  省市区
-                kbAddressInfo.pca = pca.pT + pca.cT + pca.aT;
+                kbAddressInfo.pca = pca.pT + '-' + pca.cT + '-' + pca.aT;
                 if (validKbAddressInfoResult.isPass) {
                     $.ajax({
                         url: '/api/createKbAddress',
@@ -399,7 +400,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
                     var validKbAddressInfoResult = validKbAddressInfo(kbAddressInfo);
                     kbAddressInfo.id = selectDatas[0].id;
                     // 省市区
-                    kbAddressInfo.pca = pca.pT + pca.cT + pca.aT;
+                    kbAddressInfo.pca = pca.pT + '-' + pca.cT + '-' + pca.aT;
                     if (validKbAddressInfoResult.isPass) {
                         $.ajax({
                             url: '/api/updateKbAddress',
@@ -561,22 +562,8 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
                     msg: res.msg,
                     data: res.data.rows
                 }
-            },
-            done: function (res) {
-                setMountValue(res.data.length, res.data.length);
             }
         });
-    }
-
-    /**
-     * 设置spanner
-     * 
-     * @param {any} currentTotal 当前显示数据的总数
-     * @param {any} total 总数居
-     */
-    function setMountValue(currentTotal, total) {
-        $('#currentKbAddressMountSpan').text(currentTotal);
-        $('#kbAddressMountSpan').text(total);
     }
 
     /**
@@ -697,8 +684,6 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
         }, 'json');
     }
 
-
-
     /**
      *渲染快递列表
      *
@@ -734,7 +719,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
         $container.empty();
         $container.append(` <option value="">请选择发货地址</option>`);
         $.each(adds, function (index, item) {
-            $container.append(`<option value="${item.pca}${item.detail}">${item.pca} ${item.detail} ${item.contact} ${item.phone} ${item.email}</option>`);
+            $container.append(`<option value="${item.pca}">${item.pca} ${item.detail} ${item.contact} ${item.phone} ${item.email}</option>`);
         });
         form.render('select');
     }

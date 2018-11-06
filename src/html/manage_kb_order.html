@@ -14,10 +14,9 @@
                             <div class="layui-input-inline">
                                 <select name="status" lay-filter="status">
                                     <option value="">全部</option>
-                                    <option value="1">处理中</option>
-                                    <option value="2">已暂停</option>
+                                    <option value="1">待扫描</option>
+                                    <option value="2">已扫描</option>
                                     <option value="3">已取消</option>
-                                    <option value="4">已完成</option>
                                 </select>
                             </div>
                         </div>
@@ -51,6 +50,13 @@
                                 <input type="text" name="createdDate" id="createdDate" class="layui-input">
                             </div>
                         </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">快递平台</label>
+                            <div class="layui-input-inline">
+                                <select name="kbCompany" lay-filter="kbCompany">
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </form>
                 <div class="layui-form-item">
@@ -58,9 +64,9 @@
                     <button class="layui-btn layui-btn-normal layui-btn-sm" id="resetBtn">重置</button>
                     <button class="layui-btn layui-btn-primary layui-btn-sm" id="createKbOrderBtn">空包购买</button>
                     <button class="layui-btn layui-btn-primary layui-btn-sm" id="exportKbOrderBtn">导出订单</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="downloadKbOrderBtn">导出待扫描订单</button>
                     <button class="layui-btn layui-btn-primary layui-btn-sm layui-hide" id="pddBatchBtn">拼多多批量发货</button>
-                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="disabledKbOrderBtn">停用</button>
-                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="enabledKbOrderBtn">启用</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="markScanedKbOrderBtn">标记为已扫描</button>
                     <button class="layui-btn layui-btn-primary layui-btn-sm" id="cancelKbOrderBtn">取消</button>
                 </div>
                 <div id="kbOrderTable" lay-filter="kbOrder"></div>

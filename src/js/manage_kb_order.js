@@ -24,6 +24,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
      * 
      */
     (function init() {
+        getKbTypeServer('TB');
         form.render('select');
         initComponent();
         // 渲染数据表格
@@ -55,6 +56,8 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
                 baseDatas.tabIndex = data.index;
                 // 拼多多批量发货
                 $('#pddBatchBtn').toggleClass('layui-hide', data.index !== 2);
+                // 快递平台
+                getKbTypeServer(data.value);
             }
         });
         // 查询
@@ -66,19 +69,19 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
         });
         // 创建空包订单
         $('#createKbOrderBtn').on('click', createKbOrderHandle);
-        // 导出表格
+        // 导出订单
         $('#exportKbOrderBtn').on('click', exportKbOrderHandle);
+        // 导出待扫描订单
+        $('#downloadKbOrderBtn').on('click', downloadKbOrderHandle);
         // 拼多多批量发货
         $('#pddBatchBtn').on('click', pddBatchHandle);
         // 取消空包订单信息
-        $('#cancelKbOrderBtn').on('click', updateKbOrderHandle);
-        // 暂停空包订单
-        $('#disabledKbOrderBtn').on('click', {
-            type: 0
+        $('#cancelKbOrderBtn').on('click', {
+            type: 3
         }, toggleKbOrderHandle);
-        // 恢复空包订单
-        $('#enabledKbOrderBtn').on('click', {
-            type: 1
+        // 标记为已扫描空包订单
+        $('#markScanedKbOrderBtn').on('click', {
+            type: 2
         }, toggleKbOrderHandle);
     }
 
@@ -124,6 +127,21 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
     }
 
     /**
+     * 管理员导出订单
+     *
+     * @param {*} e
+     */
+    function downloadKbOrderHandle(e) {
+        var aLink = document.createElement('a');
+        var queryParams = getQueryParams();
+        queryParams.createdDateStart = queryParams.createdDate.split('~')[0];
+        queryParams.createdDateEnd = queryParams.createdDate.split('~')[1];
+        aLink.href = '/api/downloadKbOrderToExcel?limit=1000&offset=1&' + core.objectToString(queryParams);
+        aLink.click();
+        return false;
+    }
+
+    /**
      *拼多多批量发货
      *
      * @param {*} e
@@ -137,82 +155,39 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
     }
 
     /**
-     * 空包订单信息修改的点击事件处理函数
-     * @param {any} events 
-     */
-    function updateKbOrderHandle(events) {
-        var selectDatas = table.checkStatus('taskTable').data;
-        if (selectDatas.length === 1) {
-            layer.confirm('确定取消空包订单吗？状态会稍微有点延时，谢谢谅解！！取消之后将金额退回账户中，请谨慎操作！！', {
-                title: "询问框",
-                btn: ['确定', '取消']
-            }, function (index, layero) {
-                APIUtil.cancelKbOrder(selectDatas[0].taskOrderNumber, function (res) {
-                    if (res.data.status === '1') {
-                        layer.msg('操作成功!');
-                        $.ajax({
-                            url: '/api/toggleKbOrder',
-                            type: 'POST',
-                            data: {
-                                id: selectDatas[0].id,
-                                status: 3
-                            },
-                            success: function (data, textStatus, jqXHR) {
-                                reloadTable();
-                            },
-                            error: function (jqXHR, textStatus, errorThrown) {
-                                layer.msg(baseDatas.netErrMsg);
-                            }
-                        });
-                    } else {
-                        layer.msg(res.data.tips);
-                    }
-                });
-            });
-        } else {
-            layer.msg(baseDatas.operatorErrMsg.single);
-        }
-        return false;
-    }
-
-    /**
      * 切换空包订单状态按钮点击事件处理函数
      * 
      * @param {any} events 
      */
     function toggleKbOrderHandle(events) {
-        var selectDatas = table.checkStatus('taskTable').data;
+        var selectDatas = table.checkStatus('kbOrderTable').data;
         var type = events.data.type;
-        var tipMsg = type === 0 ? '确定暂停吗？状态会稍微有点延时，谢谢谅解！！' : '确定恢复吗？状态会稍微有点延时，谢谢谅解！！';
-        if (selectDatas.length === 1) {
+        var tipMsg = type === 2 ? '确定标记为已扫描状态吗？' : '确定标记为取消状态吗？';
+        if (selectDatas.length > 0) {
             layer.confirm(tipMsg, {
                 title: '询问框',
                 btn: ['确定', '取消']
             }, function (index, layero) {
-                APIUtil.pauseAndResumeKbOrder(selectDatas[0].taskOrderNumber, type, function (res) {
-                    if (res.data.status === '1') {
-                        layer.msg('操作成功！');
-                        $.ajax({
-                            url: '/api/toggleKbOrder',
-                            type: 'POST',
-                            data: {
-                                id: selectDatas[0].id,
-                                status: type ? 1 : 2
-                            },
-                            success: function (data, textStatus, jqXHR) {
-                                reloadTable();
-                            },
-                            error: function (jqXHR, textStatus, errorThrown) {
-                                layer.msg(baseDatas.netErrMsg);
-                            }
-                        });
-                    } else {
-                        layer.msg('操作失败：' + res.data.tips);
+                $.ajax({
+                    url: '/api/toggleKbOrder',
+                    type: 'POST',
+                    data: {
+                        id: selectDatas.map(function (item) {
+                            return item.id
+                        }),
+                        status: type
+                    },
+                    success: function (data, textStatus, jqXHR) {
+                        layer.msg(data.success ? '操作成功！' : '操作失败：' + data.message);
+                        reloadTable();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        layer.msg(baseDatas.netErrMsg);
                     }
                 });
             });
         } else {
-            layer.msg(baseDatas.operatorErrMsg.single);
+            layer.msg(baseDatas.operatorErrMsg.batch);
         }
         return false;
     }
@@ -242,7 +217,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
             url: '/api/readKbOrderPage',
             page: true,
             where: {
-                taskPlant: 'TB'
+                plant: 'TB'
             },
             cols: [[
                 {
@@ -301,11 +276,11 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
                 {
                     field: 'status',
                     title: '状态',
-                    width: 150,
+                    width: 120,
                     fixed: 'right',
                     align: 'center',
                     templet: function (d) {
-                        var statusText = ['', '处理中', '已暂停', '已取消', '已完成']; // 1:处理中 2，已暂停 3，已取消,4已完成
+                        var statusText = ['', '待扫描', '已扫描', '已取消']; // 1:待扫描 2，已扫描 3，已取消
                         return `<span class="layui-text-${d.status == 1 ? 'green' : 'pink'}">${statusText[d.status]}</span>`;
                     }
                 }
@@ -340,5 +315,31 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
         table.reload('kbOrderTable', {
             where: where
         });
+    }
+
+    /**
+     *获取快递类型列表
+     *
+     * @param {*}  平台
+     */
+    function getKbTypeServer(plant) {
+        $.get('/api/readKbType?status=1&plant=' + plant, function (res) {
+            renderKbType(res.data.rows);
+        }, 'json');
+    }
+
+    /**
+     *渲染快递列表
+     *
+     * @param {*} kbTypes
+     */
+    function renderKbType(kbTypes) {
+        var $container = $('select[name=kbCompany]');
+        $container.empty();
+        $container.append(`<option value="">请选择快递类型</option>`);
+        $.each(kbTypes, function (index, item) {
+            $container.append(`<option value="${item.code}" data-price="${item.price}" data-plant="${item.plant}">${item.name}</option>`);
+        });
+        form.render('select');
     }
 });

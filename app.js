@@ -501,6 +501,14 @@ app.get('/api/pddBatch', function (req, res) {
         Core.flyer.log(error);
     }
 });
+// 导出待扫描空包
+app.get('/api/downloadKbOrderToExcel', function (req, res) {
+    try {
+        manageKbOrder.downloadKbOrderToExcel(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
 
 /***********************空包地址模块**********************/
 // 创建空包地址
