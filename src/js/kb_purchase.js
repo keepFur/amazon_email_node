@@ -197,7 +197,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
                 type: 'POST',
                 data: kbOrderInfo,
                 success: function (data, textStatus, jqXHR) {
-                    layer.msg(data.success ? ('操作成功') : ('操作失败'));
+                    layer.msg(data.success ? ('操作成功') : ('操作失败：' + data.message));
                     if (data.success) {
                         core.setWindowHash('manage_kb_order');
                     }
