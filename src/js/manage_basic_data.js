@@ -101,6 +101,20 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
         return false;
     }
 
+    /**
+     *获取表格的查询参数
+    *
+    * @returns 返回所有参数的对象
+    */
+    function getQueryParams() {
+        var $form = $('#kbOrderSearchForm');
+        var formDatas = $form.serializeArray();
+        var ret = {};
+        $.each(formDatas, function (index, item) {
+            ret[item.name] = item.value;
+        });
+        return ret;
+    }
 
     /**
      * 创建空包单号的点击事件处理函数

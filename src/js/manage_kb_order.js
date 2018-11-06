@@ -130,7 +130,9 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
      * @returns
      */
     function pddBatchHandle(e) {
-        layer.msg('pdd');
+        var aLink = document.createElement('a');
+        aLink.href = '/api/pddBatch?limit=1000&offset=1';
+        aLink.click();
         return false;
     }
 

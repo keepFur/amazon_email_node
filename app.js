@@ -493,6 +493,14 @@ app.get('/api/exportKbOrderToExcel', function (req, res) {
         Core.flyer.log(error);
     }
 });
+// 拼多多批量发货导出空包
+app.get('/api/pddBatch', function (req, res) {
+    try {
+        manageKbOrder.pbbBtach(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
 
 /***********************空包地址模块**********************/
 // 创建空包地址
