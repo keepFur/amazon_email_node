@@ -7,11 +7,11 @@
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
-                <form class="layui-form clearfix" id="kbOrderSearchForm">
+                <form class="layui-form clearfix" id="kbNumberSearchForm">
                     <div class="layui-form-item">
                         <div class="layui-inline">
                             <div class="layui-input-inline">
-                                <select name="status" lay-filter="status">
+                                <select name="company" lay-filter="company">
                                     <option value="">全部快递公司</option>
                                     <option value="ST">申通</option>
                                     <option value="ZT">中通</option>
@@ -26,13 +26,13 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">快递单号</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="packageName" placeholder="" class="layui-input">
+                                <input type="text" name="kbNumber" placeholder="" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">电商平台</label>
                             <div class="layui-input-inline">
-                                <select name="status" lay-filter="status">
+                                <select name="plant" lay-filter="plant">
                                     <option value="">全部</option>
                                     <option value="TB">淘宝</option>
                                     <option value="JD">京东</option>
@@ -52,12 +52,12 @@
                     </div>
                 </form>
                 <div class='layui-form-item'>
-                    <button class="layui-btn layui-btn-normal layui-btn-sm" id="searchKbNumberBtn">查询</button>
-                    <button class="layui-btn layui-btn-normal layui-btn-sm" id="resetKbNumberBtn">重置</button>
                     <button class="layui-btn layui-btn-primary layui-btn-sm" id="createKbNumberBtn">创建</button>
                     <button class="layui-btn layui-btn-primary layui-btn-sm" id="updateKbNumberBtn">修改</button>
                     <button class="layui-btn layui-btn-primary layui-btn-sm" id="disabledKbNumberBtn">禁用</button>
                     <button class="layui-btn layui-btn-primary layui-btn-sm" id="enabledKbNumberBtn">启用</button>
+                    <button class="layui-btn layui-btn-normal layui-btn-sm" id="searchKbNumberBtn">查询</button>
+                    <button class="layui-btn layui-btn-normal layui-btn-sm" id="resetKbNumberBtn">重置</button>
                 </div>
                 <div lay-filter='kbNumber' id="kbNumberTable"></div>
             </div>

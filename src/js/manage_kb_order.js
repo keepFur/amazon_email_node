@@ -40,6 +40,12 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
             elem: '#createdDate',
             range: '~'
         });
+        // 删除按钮
+        core.getUserInfoById(function (user) {
+            if (!user.data.rows[0].isSuper) {
+                $('.js-super').remove();
+            }
+        });
     }
 
     /**
@@ -57,7 +63,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
                 // 拼多多批量发货
                 $('#pddBatchBtn').toggleClass('layui-hide', data.index !== 2);
                 // 快递平台
-                getKbTypeServer(data.value);
+                getKbTypeServer(baseDatas.plants[data.index]);
             }
         });
         // 查询
@@ -134,10 +140,13 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
     function downloadKbOrderHandle(e) {
         var aLink = document.createElement('a');
         var queryParams = getQueryParams();
-        queryParams.createdDateStart = queryParams.createdDate.split('~')[0];
-        queryParams.createdDateEnd = queryParams.createdDate.split('~')[1];
+        if (!queryParams.kbCompany) {
+            layer.msg('请选择导出的快递公司');
+            return false;
+        }
         aLink.href = '/api/downloadKbOrderToExcel?limit=1000&offset=1&' + core.objectToString(queryParams);
         aLink.click();
+        $('#searchBtn').trigger('click');
         return false;
     }
 
@@ -149,7 +158,8 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
      */
     function pddBatchHandle(e) {
         var aLink = document.createElement('a');
-        aLink.href = '/api/pddBatch?limit=1000&offset=1&plant=PDD';
+        var queryParams = getQueryParams();
+        aLink.href = '/api/pddBatch?limit=1000&offset=1&plant=PDD&' + core.objectToString(queryParams);
         aLink.click();
         return false;
     }
@@ -204,6 +214,8 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
         $.each(formDatas, function (index, item) {
             ret[item.name] = item.value;
         });
+        ret.createdDateStart = ret.createdDate.split('~')[0];
+        ret.createdDateEnd = ret.createdDate.split('~')[1];
         return ret;
     }
 
@@ -276,12 +288,12 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
                 {
                     field: 'status',
                     title: '状态',
-                    width: 120,
+                    width: 200,
                     fixed: 'right',
                     align: 'center',
                     templet: function (d) {
                         var statusText = ['', '待扫描', '已扫描', '已取消']; // 1:待扫描 2，已扫描 3，已取消
-                        return `<span class="layui-text-${d.status == 1 ? 'green' : 'pink'}">${statusText[d.status]}</span>`;
+                        return `<span class="layui-text-${d.status == 1 ? 'green' : 'pink'}">${statusText[d.status]}</span> ${d.status === 1 ? `<a class="layui-btn layui-btn-normal layui-btn-xs js-update-order">修改</a>` : ``}`;
                     }
                 }
             ]],
@@ -303,6 +315,12 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
                     count: res.data.total,
                     data: res.data.rows
                 }
+            },
+            done: function () {
+                $('.js-update-order').off('click').on('click', function (event) {
+                    layer.msg('修改成功');
+                    return false;
+                });
             }
         });
     }

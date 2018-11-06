@@ -186,6 +186,8 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
             kbOrderInfo.number = APIUtil.generateOrderNumer();
             kbOrderInfo.addressTo = kbOrderInfo.addressTo.split(/\n/g).filter(function (item) {
                 return !!item;
+            }).map(function (k) {
+                return $.trim(k);
             });
             kbOrderInfo.addressToPca = getKbAddressToPca();
             kbOrderInfo.addressFromPca = kbOrderInfo.addressFrom.split(/\s/g)[0];

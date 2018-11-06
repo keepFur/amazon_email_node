@@ -107,7 +107,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
     * @returns 返回所有参数的对象
     */
     function getQueryParams() {
-        var $form = $('#kbOrderSearchForm');
+        var $form = $('#kbNumberSearchForm');
         var formDatas = $form.serializeArray();
         var ret = {};
         $.each(formDatas, function (index, item) {
