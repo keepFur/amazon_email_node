@@ -130,7 +130,7 @@ layui.use(['element', 'layer'], function () {
     //  获取用户余额
     function getScore() {
         core.getUserInfoById(function (res) {
-            $('.js-user-score').text(res.data.rows[0].money);
+            $('.js-user-score').text(core.fenToYuan(res.data.rows[0].money));
         });
     }
 
@@ -252,7 +252,7 @@ layui.use(['element', 'layer'], function () {
                 return new Date(item1.createdDate).getTime() - new Date(item2.createdDate).getTime();
             });
             optionOfScore.series[0].data = rows.map(function (item, index) {
-                return item.count;
+                return core.fenToYuan(item.count);
             });
             addScore.setOption(optionOfScore);
         });

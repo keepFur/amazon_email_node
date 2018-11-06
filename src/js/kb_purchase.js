@@ -79,7 +79,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
             var quantity = getKbAddressTo().length;
             $('#kbQuantity').text(quantity);
             // 总价
-            $('#kbSumMoney').text(quantity ? core.fenToYuan(quantity * baseDatas.kbTypeInfo.price) : 0);
+            $('#kbSumMoney').text(quantity && baseDatas.kbTypeInfo ? core.fenToYuan(quantity * baseDatas.kbTypeInfo.price) : 0);
             return false;
         });
         // 格式化地址
@@ -109,7 +109,17 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
      * @returns
      */
     function formatAddressHandle(e) {
-        layer.msg('成功');
+        var addressTo = $('textarea[name=addressTo]').val();
+        if (!addressTo) {
+            layer.msg('请先填写收货地址信息');
+            return false;
+        }
+        var addressTos = addressTo.split(/\n{1,}/g);
+        var ret = addressTos.filter(function (item) {
+            return item.split(/，|,/).length === 4 && item.split(/，|,/)[2].split(/\s{1,}/g).length === 4;
+        });
+        layer.alert(`共：${addressTos.length}个收货地址 \n其中有效收货地址：${ret.length}个\n无效收货地址：${addressTos.length - ret.length}个。\nPS：无效地址已为您自动过滤了`);
+        $('textarea[name=addressTo]').val(ret.join('\n'));
         return false;
     }
 
@@ -129,27 +139,31 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
             content: `<form class="layui-form layui-form-pane" name="getRealOrderForm">
                             <div class="layui-form-item">
                                 <div class="layui-form-item layui-form-text">
-                                    <label class="layui-form-label">过滤条件</label>
+                                    <label class="layui-form-label">真实订单的收件人姓名</label>
                                     <div class="layui-input-block">
-                                        <textarea class="layui-textarea" placeholder="输入真实订单的收件人、手机号等信息进行过滤" name="condition"></textarea>
+                                        <textarea class="layui-textarea" placeholder="输入真实订单的收件人姓名,一行一个，请严格按照此格式填写" name="condition"></textarea>
                                     </div>
                                 </div>
                             </div>
                         </form>`,
             title: '过滤真实订单',
-            btn: ['过滤', '取消'],
+            btn: ['过滤真实订单', '取消'],
             area: ['450px'],
+            scrollbar: false,
             yes: function (index) {
                 var condition = $('textarea[name=condition]').val();
-                var addressTos = addressTo.split('\n');
+                var cs = condition.split(/\n{1,}/g);
+                var addressTos = addressTo.split(/\n{1,}/g);
                 var ret = [];
                 if (condition) {
                     layer.msg('过滤成功');
                     layer.close(index);
                     ret = addressTos.filter(function (item) {
-                        return item.match(condition);
+                        return cs.indexOf(item.split(/，|,/)[0]) === -1;
                     });
                     $('textarea[name=addressTo]').val(ret.join('\n'));
+                    // 过滤之后需要更新数量
+                    $('textarea[name=addressTo]').trigger('blur');
                 } else {
                     layer.msg('过滤条件不能为空');
                 }
