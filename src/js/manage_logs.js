@@ -24,6 +24,8 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
         renderTable();
         // 初始化事件
         initEvent();
+        // 将日志类型中的下拉框的最大高度设置为240
+        $('.layui-anim-upbit').css('max-height', 240);
     })();
 
     /**

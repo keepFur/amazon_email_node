@@ -90,6 +90,8 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
             } else {
                 baseDatas.taskTypeInfo = null;
             }
+            // 重置时长
+            $('input[name=taskGoodsBrowsingTime]').val(50);
         });
         // 数量输入框的keyup事件
         $('input[name=taskQuantity],input[name=taskQuantityNoKeyword]').on('keyup', function (event) {
