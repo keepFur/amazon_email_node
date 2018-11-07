@@ -4,6 +4,9 @@ layui.use(['jquery'], function () {
      * 首页入口函数
      */
     (function init() {
+        $.ajaxSetup({
+            cache: true
+        });
         initEvent();
         loadPageByUrl(getPageUrlByHash());
         core.menuHeightLightByHash(window.location.hash.replace('#', '') || 'home');
@@ -81,9 +84,12 @@ layui.use(['jquery'], function () {
             url: pageUrl,
             dataType: 'html',
             cache: true,
+            data: {
+                v: 1
+            },
             success: function (res) {
                 $container.html(res);
-                $.getScript(pageScriptUrl);
+                $.getScript(pageScriptUrl + '?v=1');
             },
             error: function (error) {
                 triggerHomeClick();

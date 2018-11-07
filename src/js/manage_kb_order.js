@@ -419,9 +419,9 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
     function renderKbType(kbTypes) {
         var $container = $('select[name=kbCompany]');
         $container.empty();
-        $container.append(`< option value = "" > 请选择快递类型</option > `);
+        $container.append(`<option value="">请选择快递类型</option>`);
         $.each(kbTypes, function (index, item) {
-            $container.append(`< option value = "${item.code}" data - price="${item.price}" data - plant="${item.plant}" > ${item.name}</option > `);
+            $container.append(`<option value="${item.code}" data-price="${item.price}" data-plant="${item.plant}">${item.name}</option>`);
         });
         form.render('select');
     }
