@@ -39,7 +39,7 @@ $(function () {
         // 空包下单
         $('#kbPur').on('click', function () {
             $.ajax({
-                url: '/api/getUserLoginStatus',
+                url: '/front/getUserLoginStatus',
                 success: function (data) {
                     data = JSON.parse(data);
                     if (data.status) {
@@ -59,7 +59,7 @@ $(function () {
         // 流量下单
         $('#trafficPur').on('click', function () {
             $.ajax({
-                url: '/api/getUserLoginStatus',
+                url: '/front/getUserLoginStatus',
                 success: function (data) {
                     data = JSON.parse(data);
                     if (data.status) {
@@ -116,7 +116,7 @@ $(function () {
         // 控制台
         $('#console,.big-img').on('click', function (event) {
             $.ajax({
-                url: '/api/getUserLoginStatus',
+                url: '/front/getUserLoginStatus',
                 success: function (data) {
                     data = JSON.parse(data);
                     if (data.status) {
@@ -136,7 +136,7 @@ $(function () {
         // 充值
         $('#addMoney').on('click', function (event) {
             $.ajax({
-                url: '/api/getUserLoginStatus',
+                url: '/front/getUserLoginStatus',
                 success: function (data) {
                     data = JSON.parse(data);
                     if (data.status) {
@@ -168,7 +168,7 @@ $(function () {
         // 底部立即使用
         $('#userLoginFooter,.buy').on('click', function (event) {
             $.ajax({
-                url: '/api/getUserLoginStatus',
+                url: '/front/getUserLoginStatus',
                 success: function (data) {
                     data = JSON.parse(data);
                     if (data.status) {
@@ -221,7 +221,7 @@ $(function () {
     // 初始化通知组件
     function initNoticeComponent() {
         $.ajax({
-            url: '/api/readNoticePage',
+            url: '/front/readNoticePage',
             data: {
                 limit: 5,
                 offset: 1
@@ -290,7 +290,7 @@ $(function () {
                 return;
             }
             $.ajax({
-                url: '/api/userLogin',
+                url: '/front/userLogin',
                 method: 'POST',
                 data: userInfo,
                 success: function (data, textStatus, jqXHR) {
@@ -357,7 +357,7 @@ $(function () {
             return;
         }
         $.ajax({
-            url: '/api/createUser',
+            url: '/front/createUser',
             method: 'POST',
             data: userInfo,
             success: function (data, textStatus, jqXHR) {
@@ -433,7 +433,7 @@ $(function () {
         }
         // 判断手机号和用户名是否匹配
         $.ajax({
-            url: '/api/getUserInfoByPhone',
+            url: '/front/getUserInfoByPhone',
             data: userInfo,
             dataType: 'json',
             success: function (res) {
@@ -480,7 +480,7 @@ $(function () {
             return;
         }
         $.ajax({
-            url: '/api/getVerfiyCode',
+            url: '/front/getVerfiyCode',
             data: {
                 userPhone: userPhone
             },
@@ -538,7 +538,7 @@ $(function () {
             return;
         }
         $.ajax({
-            url: '/api/setUserPassword',
+            url: '/front/setUserPassword',
             method: 'POST',
             data: userInfo,
             dataType: 'json',

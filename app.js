@@ -75,6 +75,18 @@ app.set('src', path.join('src'));
 
 /************* 首页账号预览模块*************/
 
+// 过滤未登录的用户
+app.all('/api/*', function (req, res, next) {
+    if (req.user) {
+        next();
+    } else {
+        res.send({
+            success: false,
+            message: '没有权限访问'
+        });
+    }
+});
+
 // 获取每天的创建任务数量
 app.get('/api/readTaskCountOfInTime', function (req, res) {
     try {
@@ -123,7 +135,7 @@ app.get('/api/readUserById', function (req, res) {
 });
 
 // 创建用户
-app.post('/api/createUser', function (req, res) {
+app.post('/front/createUser', function (req, res) {
     try {
         userManage.createUser(req, res, req.body);
     } catch (error) {
@@ -131,8 +143,17 @@ app.post('/api/createUser', function (req, res) {
     }
 });
 
-// 用户登录
+// 用户登录（后台）
 app.post('/api/userLogin', function (req, res) {
+    try {
+        userManage.userLogin(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 用户登录（前端）
+app.post('/front/userLogin', function (req, res) {
     try {
         userManage.userLogin(req, res, req.body);
     } catch (error) {
@@ -189,7 +210,7 @@ app.post('/api/updateUser', function (req, res) {
 });
 
 // 获取用户的登录状态
-app.get('/api/getUserLoginStatus', function (req, res) {
+app.get('/front/getUserLoginStatus', function (req, res) {
     try {
         if (req.user) {
             res.send({
@@ -206,7 +227,7 @@ app.get('/api/getUserLoginStatus', function (req, res) {
 });
 
 // 获取验证码
-app.get('/api/getVerfiyCode', function (req, res) {
+app.get('/front/getVerfiyCode', function (req, res) {
     try {
         if (!req.query.userPhone || req.query.userPhone.length !== 11) {
             res.send({
@@ -220,7 +241,7 @@ app.get('/api/getVerfiyCode', function (req, res) {
     }
 });
 
-// 重置密码
+// 重置密码（后台）
 app.post('/api/setUserPassword', function (req, res) {
     try {
         userManage.setUserPassword(req, res, req.body);
@@ -229,8 +250,17 @@ app.post('/api/setUserPassword', function (req, res) {
     }
 });
 
+// 重置密码（前台）
+app.post('/front/setUserPassword', function (req, res) {
+    try {
+        userManage.setUserPassword(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
 // 根据手机号和用户名获取用户信息
-app.get('/api/getUserInfoByPhone', function (req, res) {
+app.get('/front/getUserInfoByPhone', function (req, res) {
     try {
         userManage.getUserInfoByPhone(req, res, req.query);
     } catch (error) {
@@ -286,6 +316,15 @@ app.post('/api/updatePlant', function (req, res) {
 
 /***************通知管理模块路由*************/
 // 获取通知列表，支持分页
+app.get('/front/readNoticePage', function (req, res) {
+    try {
+        noticeMange.readNoticePage(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 获取通知列表，支持分页(后台使用)
 app.get('/api/readNoticePage', function (req, res) {
     try {
         noticeMange.readNoticePage(req, res, req.query);
