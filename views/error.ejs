@@ -4,10 +4,10 @@
 <head>
     <meta charset="utf-8">
     <title>
-        <%=package.siteName%>-错误页面</title>
+        <%=package.siteName%>-错误页面
+    </title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link type="text/css" href="../plugins/css/flyer.all.min.css" rel="stylesheet">
     <link type="text/css" href="../css/console/layout.css" rel="stylesheet">
     <link type="text/css" href="../css/console/access_right.css" rel="stylesheet">
 </head>
@@ -22,9 +22,9 @@
         <!-- 登录相关 -->
         <span class='login'>
             <% if(user){ %>
-            <span id="userName" data-user-name='<%= user.userName %>' data-user-id='<%= user.id %>'><%= user.userName %></span>
-        <% } %>
-            </span>
+                <span id="userName" data-user-name='<%= user.userName %>' data-user-id='<%= user.id %>'><%= user.userName %></span>
+                <% } %>
+        </span>
     </header>
     <!-- 面包屑 -->
     <nav class='nav-top'>
@@ -43,22 +43,22 @@
                 </div>
                 <div class="access-right-bottom">
                     <p>您没有访问该页面的权限！</p>
-                    <a href="/console"><button class="flyer-btn flyer-btn-blue">返回控制台</button></a>
+                    <a href="/console"><button class="flyer-btn-blue" style="cursor:pointer;padding:6px;">返回控制台</button></a>
                 </div>
             </div>
         </div>
     </section>
     <footer>
-        <span class="footer-brand">Version: <span class = "version-icon"><span class = 'version-update'></span>
-        <%=package.version %>
+        <span class="footer-brand">Version: <span class="version-icon"><span class='version-update'></span>
+                <%=package.version %>
             </span>
-            </span>
-            <span class="footer-brand">
-                <strong class="text-danger"><%=package.siteName%></strong>
-            </span>
-            <p class="no-margin">
-                © <span>2018</span> <strong><%=package.siteName%></strong>. ALL Rights Reserved.
-            </p>
+        </span>
+        <span class="footer-brand">
+            <strong class="text-danger"><%=package.siteName%></strong>
+        </span>
+        <p class="no-margin">
+            © <span>2018</span> <strong><%=package.siteName%></strong>. ALL Rights Reserved.
+        </p>
     </footer>
 </body>
 

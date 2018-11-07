@@ -72,7 +72,7 @@ layui.use(['jquery'], function () {
     function loadPageByUrl(pageUrl, $container) {
         $container = $container || $('.flyer-layout-content');
         var pageScriptUrl = '';
-        if (core.isDevEnv) {
+        if (core.isDevEnv()) {
             pageScriptUrl = pageUrl.replace(/html/g, 'js');
         } else {
             pageScriptUrl = pageUrl.replace('html/', 'dest/js/').replace('.html', '.min.js');
