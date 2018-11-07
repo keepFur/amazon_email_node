@@ -187,16 +187,16 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                     }
                 });
                 form.render('select');
-                var number = function () {
-                    var ret = [];
-                    for (var i = 0; i < 100; i++) {
-                        ret[i] = APIUtil.generateOrderNumer();
-                    }
-                    return ret.join();
-                };
-                form.val('kbNumberCreateForm', {
-                    number: number()
-                });
+                // var number = function () {
+                //     var ret = [];
+                //     for (var i = 0; i < 100; i++) {
+                //         ret[i] = APIUtil.generateOrderNumer();
+                //     }
+                //     return ret.join();
+                // };
+                // form.val('kbNumberCreateForm', {
+                //     number: number()
+                // });
             }
         });
         return false;
