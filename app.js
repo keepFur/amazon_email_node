@@ -72,7 +72,6 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'ejs');
 app.set('src', path.join('src'));
 
-
 /************* 首页账号预览模块*************/
 
 // 过滤未登录的用户
@@ -80,10 +79,7 @@ app.all('/api/*', function (req, res, next) {
     if (req.user) {
         next();
     } else {
-        res.send({
-            success: false,
-            message: '没有权限访问'
-        });
+        res.redirect('/');
     }
 });
 
@@ -971,6 +967,11 @@ app.get("/error", function (req, res, next) {
     } catch (err) {
         Core.flyer.log(err);
     }
+});
+
+// 捕获所有的异常(必须放到最后)
+app.all('*', function (req, res, next) {
+    res.redirect('/error');
 });
 
 // 启动服务

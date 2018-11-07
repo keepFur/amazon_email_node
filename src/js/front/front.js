@@ -226,8 +226,8 @@ $(function () {
                 limit: 5,
                 offset: 1
             },
+            dataType: 'json',
             success: function (res) {
-                res = JSON.parse(res);
                 if (res.success) {
                     var $noticeContainer = $('.js-notice-container');
                     if (res.data.rows.length === 0) {
