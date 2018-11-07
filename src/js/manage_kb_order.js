@@ -293,7 +293,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
                     align: 'center',
                     templet: function (d) {
                         var statusText = ['', '待扫描', '已扫描', '已取消']; // 1:待扫描 2，已扫描 3，已取消
-                        return `<span class="layui-text-${d.status == 1 ? 'green' : 'pink'}">${statusText[d.status]}</span> ${d.status === 1 ? `<a class="layui-btn layui-btn-normal layui-btn-xs js-update-order">修改</a>` : ``}`;
+                        return `<span class="layui-text-${d.status == 1 ? 'green' : 'pink'}">${statusText[d.status]}</span> ${d.status === 1 ? `<a class="layui-btn layui-btn-normal layui-btn-xs js-update-order" data-id="${d.id}" data-kb-weight="${d.kbWeight}" data-kb-from="${d.addressFrom}" data-kb-to="${d.addressTo}">修改</a>` : ``}`;
                     }
                 }
             ]],
@@ -318,7 +318,72 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
             },
             done: function () {
                 $('.js-update-order').off('click').on('click', function (event) {
-                    layer.msg('修改成功');
+                    var kbWeight = $(this).data('kb-weight');
+                    var from = $(this).data('kb-from');
+                    var to = $(this).data('kb-to');
+                    var id = $(this).data('id');
+                    layer.open({
+                        content: `<form class="layui-form" name="kbOrderUpdateForm" lay-filter="kbOrderUpdateForm">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">发货地址</label>
+                                        <div class="layui-input-block">
+                                            <select name="addressFrom">
+                                                <option value="">请选择发货地址</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">重量(千克)</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="kbWeight" id="kbWeight" value="${kbWeight}" placeholder="单位：千克" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">收货地址</label>
+                                        <div class="layui-input-block">
+                                            <input class="layui-input" name="addressTo" value="${to}" placeholder="" />
+                                        </div>
+                                    </div>
+                                </form>`,
+                        area: ['700px', '500px'],
+                        title: '空包订单信息修改',
+                        btn: ['保存', '取消'],
+                        yes: function (index) {
+                            var kbOrderInfo = core.getFormValues($('form[name=kbOrderUpdateForm]'));
+                            var validKbOrderInfoResult = validKbOrderInfo(kbOrderInfo);
+                            if (validKbOrderInfoResult.isPass) {
+                                kbOrderInfo.id = id;
+                                kbOrderInfo.addressFromPca = kbOrderInfo.addressFrom.split(/\s/g)[0];;
+                                kbOrderInfo.addressToPca = (function () {
+                                    var add = kbOrderInfo.addressTo.split(/,|，/)[2];
+                                    var detail = add.split(' ');
+                                    return detail[0] + '-' + detail[1] + '-' + detail[2];;
+                                })();
+                                $.ajax({
+                                    url: '/api/updateKbOrder',
+                                    type: 'POST',
+                                    data: kbOrderInfo,
+                                    success: function (data, textStatus, jqXHR) {
+                                        layer.msg(data.success ? ('操作成功') : ('操作失败' + data.message));
+                                        layer.close(index);
+                                        reloadTable();
+                                    },
+                                    error: function (jqXHR, textStatus, errorThrown) {
+                                        layer.msg(baseDatas.errorMsg);
+                                    }
+                                });
+                            } else {
+                                layer.msg(validKbOrderInfoResult.msg);
+                            }
+                        },
+                        success: function () {
+                            getAddressFromServer(function () {
+                                form.val('kbOrderUpdateForm', {
+                                    addressFrom: from
+                                });
+                            });
+                        }
+                    });
                     return false;
                 });
             }
@@ -354,10 +419,72 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
     function renderKbType(kbTypes) {
         var $container = $('select[name=kbCompany]');
         $container.empty();
-        $container.append(`<option value="">请选择快递类型</option>`);
+        $container.append(`< option value = "" > 请选择快递类型</option > `);
         $.each(kbTypes, function (index, item) {
-            $container.append(`<option value="${item.code}" data-price="${item.price}" data-plant="${item.plant}">${item.name}</option>`);
+            $container.append(`< option value = "${item.code}" data - price="${item.price}" data - plant="${item.plant}" > ${item.name}</option > `);
         });
         form.render('select');
+    }
+
+    /**
+     * 获取发货地址列表
+     *
+     */
+    function getAddressFromServer(callback) {
+        $.get('/api/readKbAddress?status=1', function (res) {
+            renderAddressFrom(res.data.rows);
+            callback && callback();
+        }, 'json');
+    }
+
+    /**
+     * 渲染用户发货地址列表
+     *
+     * @param {*} adds
+     */
+    function renderAddressFrom(adds) {
+        var $container = $('select[name=addressFrom]');
+        $container.empty();
+        $container.append(` <option value="">请选择发货地址</option>`);
+        $.each(adds, function (index, item) {
+            $container.append(`<option value="${item.pca} ${item.detail}">${item.pca} ${item.detail} ${item.contact} ${item.phone} ${item.email}</option>`);
+        });
+        form.render('select');
+    }
+
+    /**
+     * 校验空包订单信息
+     * 
+     * @param {Object} kbOrderInfo 收货地址信息对象
+     */
+    function validKbOrderInfo(kbOrderInfo) {
+        if (!kbOrderInfo) {
+            return {
+                isPass: false,
+                msg: '参数错误'
+            }
+        }
+        if (!kbOrderInfo.addressFrom) {
+            return {
+                isPass: false,
+                msg: '请选择发货地址'
+            }
+        }
+        if (!kbOrderInfo.addressTo) {
+            return {
+                isPass: false,
+                msg: '请输入收货地址'
+            }
+        }
+        if (!kbOrderInfo.kbWeight) {
+            return {
+                isPass: false,
+                msg: '请输入包裹重量'
+            }
+        }
+        return {
+            isPass: true,
+            msg: ''
+        };
     }
 });
