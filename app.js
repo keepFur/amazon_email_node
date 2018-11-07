@@ -83,7 +83,7 @@ app.all('/api/*', function (req, res, next) {
     }
 });
 
-// 获取每天的创建任务数量
+// 获取每天的流量购买数量
 app.get('/api/readTaskCountOfInTime', function (req, res) {
     try {
         homeAccountView.readTaskCountOfInTime(req, res, req.query);
@@ -92,10 +92,28 @@ app.get('/api/readTaskCountOfInTime', function (req, res) {
     }
 });
 
-// 获取每天的创建任务类型
+// 获取每天的空包购买数量
+app.get('/api/readKbCountOfInTime', function (req, res) {
+    try {
+        homeAccountView.readKbCountOfInTime(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 获取每天的创建流量类型
 app.get('/api/readTaskTypeOfInTime', function (req, res) {
     try {
         homeAccountView.readTaskTypeOfInTime(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 获取每天的购买空包类型
+app.get('/api/readKbTypeOfInTime', function (req, res) {
+    try {
+        homeAccountView.readKbTypeOfInTime(req, res, req.query);
     } catch (error) {
         Core.flyer.log(error);
     }

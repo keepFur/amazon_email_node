@@ -42,6 +42,24 @@
                         <div class="layui-card-header home-account-info js-home-toggle-date">
                             <div class="layui-row">
                                 <div class="layui-col-md4">
+                                    <a href="#home" data-day="7" data-type="count" class="layui-text-pink">近7天</a>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <a href="#home" data-day="15" data-type="count">近15天</a>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <a href="#home" data-day="30" data-type="count">近30天</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-card-body">
+                            <div style="width: 100%;height:400px;" id="kbCount"></div>
+                        </div>
+                    </div>
+                    <div class="layui-card">
+                        <div class="layui-card-header home-account-info js-home-toggle-date">
+                            <div class="layui-row">
+                                <div class="layui-col-md4">
                                     <a href="#home" data-day="7" data-type="type" class="layui-text-pink">近7天</a>
                                 </div>
                                 <div class="layui-col-md4">
@@ -53,7 +71,14 @@
                             </div>
                         </div>
                         <div class="layui-card-body">
-                            <div style="width: 100%;height:400px;" id="taskType"></div>
+                            <div class="layui-row layui-col-space8">
+                                <div class="layui-col-md6" style="border-right:1px solid #eee;">
+                                    <div style="width: 100%;height:400px;" id="taskType"></div>
+                                </div>
+                                <div class="layui-col-md6">
+                                    <div style="width: 100%;height:400px;" id="kbType"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="layui-card">

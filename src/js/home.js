@@ -4,48 +4,90 @@ layui.use(['element', 'layer'], function () {
     var layer = layui.layer;
     // 基于准备好的dom，初始化echarts实例
     var taskCount = echarts.init(document.getElementById('taskCount'));
+    var kbCount = echarts.init(document.getElementById('kbCount'));
     var taskType = echarts.init(document.getElementById('taskType'));
+    var kbType = echarts.init(document.getElementById('kbType'));
     var addScore = echarts.init(document.getElementById('addScore'));
-    var userId = $('#userName').data('user-id');
-    // 指定图表的配置项和数据
-    var optionOfCount = {
+    // 指定图表的配置项和数据--任务数量
+    var optionOfTaskCount = {
         title: {
-            text: '创建任务量走势图'
+            text: '流量购买量走势图'
         },
         tooltip: {},
         legend: {
             right: 10,
             top: 0,
-            data: ['任务量']
+            data: ['流量购买量']
         },
         xAxis: {
             data: []
         },
         yAxis: {},
         series: [{
-            name: '任务量',
+            name: '来了购买量',
             type: 'line',
             data: []
         }]
     };
-    var optionOfType = {
+    // 指定图表的配置项和数据-空包数量
+    var optionOfKbCount = {
         title: {
-            text: '创建任务类型分布图'
+            text: '空包购买量走势图'
+        },
+        tooltip: {},
+        legend: {
+            right: 10,
+            top: 0,
+            data: ['空包购买量']
+        },
+        xAxis: {
+            data: []
+        },
+        yAxis: {},
+        series: [{
+            name: '空包购买量',
+            type: 'line',
+            data: []
+        }]
+    };
+    // 任务类型
+    var optionOfTaskType = {
+        title: {
+            text: '流量购买类型分布图',
+
         },
         tooltip: {
             trigger: 'item',
             formatter: "{a} <br/>{b} : {c} ({d}%)"
         },
-        legend: {
-            type: 'scroll',
-            orient: 'vertical',
-            right: 10,
-            top: 0,
-            bottom: 20,
-            data: ['APP搜索']
+        series: [{
+            name: '流量类型',
+            type: 'pie',
+            radius: '55%',
+            center: ['40%', '50%'],
+            data: [],
+            itemStyle: {
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }]
+    };
+
+    // 空包类型
+    var optionOfKbType = {
+        title: {
+            text: '空包购买类型分布图',
+            x: 'right'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
         },
         series: [{
-            name: '任务类型',
+            name: '空包类型',
             type: 'pie',
             radius: '55%',
             center: ['40%', '50%'],
@@ -87,7 +129,9 @@ layui.use(['element', 'layer'], function () {
      */
     (function init() {
         getTaskCount();
+        getKbCount();
         getTaskType();
+        getKbType();
         getAddMoney();
         getScore();
         initEvent();
@@ -145,7 +189,7 @@ layui.use(['element', 'layer'], function () {
         var numDayDate = getNumDayDate(date);
         var createdDateStart = numDayDate[0];
         var createdDateEnd = numDayDate[date - 1];
-        optionOfCount.xAxis.data = numDayDate;
+        optionOfTaskCount.xAxis.data = numDayDate;
         $.get('/api/readTaskCountOfInTime', {
             createdDateStart: createdDateStart,
             createdDateEnd: createdDateEnd
@@ -168,10 +212,51 @@ layui.use(['element', 'layer'], function () {
             rows.sort(function (item1, item2) {
                 return new Date(item1.createdDate).getTime() - new Date(item2.createdDate).getTime();
             });
-            optionOfCount.series[0].data = rows.map(function (item, index) {
+            optionOfTaskCount.series[0].data = rows.map(function (item, index) {
                 return item.count;
             });
-            taskCount.setOption(optionOfCount);
+            taskCount.setOption(optionOfTaskCount);
+        });
+    }
+
+    /**
+     * 获取空包数量的数据
+     * 
+     * @param {any} date 
+     * @param {any} callback 
+     */
+    function getKbCount(date) {
+        date = date || 7;
+        var numDayDate = getNumDayDate(date);
+        var createdDateStart = numDayDate[0];
+        var createdDateEnd = numDayDate[date - 1];
+        optionOfKbCount.xAxis.data = numDayDate;
+        $.get('/api/readKbCountOfInTime', {
+            createdDateStart: createdDateStart,
+            createdDateEnd: createdDateEnd
+        }, function (res) {
+            var rows = res.data.rows;
+            numDayDate.forEach(function (item) {
+                if (!hasContainerEle(item, rows)) {
+                    rows.push({
+                        createdDate: $.formatDate('yyyy/mm/dd', item),
+                        count: 0
+                    });
+                }
+            });
+            rows = rows.map(function (item, index) {
+                return {
+                    createdDate: $.formatDate('yyyy/mm/dd', item.createdDate),
+                    count: item.count
+                };
+            });
+            rows.sort(function (item1, item2) {
+                return new Date(item1.createdDate).getTime() - new Date(item2.createdDate).getTime();
+            });
+            optionOfKbCount.series[0].data = rows.map(function (item, index) {
+                return item.count;
+            });
+            kbCount.setOption(optionOfKbCount);
         });
     }
 
@@ -190,13 +275,38 @@ layui.use(['element', 'layer'], function () {
             createdDateEnd: createdDateEnd
         }, function (res) {
             var rows = res.data.rows;
-            optionOfType.series[0].data = rows.map(function (item) {
+            optionOfTaskType.series[0].data = rows.map(function (item) {
                 return {
                     name: core.getTypeCodeByValue(item.taskChildType).name,
                     value: item.count
                 };
             });
-            taskType.setOption(optionOfType);
+            taskType.setOption(optionOfTaskType);
+        });
+    }
+
+    /**
+     * 获取购买空包类型的数据
+     * 
+     * @param {any} date 
+     */
+    function getKbType(date) {
+        date = date || 7;
+        var numDayDate = getNumDayDate(date);
+        var createdDateStart = numDayDate[0];
+        var createdDateEnd = numDayDate[date - 1];
+        $.get('/api/readKbTypeOfInTime', {
+            createdDateStart: createdDateStart,
+            createdDateEnd: createdDateEnd
+        }, function (res) {
+            var rows = res.data.rows;
+            optionOfKbType.series[0].data = rows.map(function (item) {
+                return {
+                    name: core.getPlantByCode(item.plant) + '(' + core.getKbTypeByCode(item.kbCompany) + ')',
+                    value: item.count
+                };
+            });
+            kbType.setOption(optionOfKbType);
         });
     }
 
