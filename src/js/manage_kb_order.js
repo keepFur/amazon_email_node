@@ -173,6 +173,10 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
         var selectDatas = table.checkStatus('kbOrderTable').data;
         var type = events.data.type;
         var tipMsg = type === 2 ? '确定标记为已扫描状态吗？' : '确定标记为取消状态吗？';
+        if (type === 3 && selectDatas.length !== 1) {
+            layer.msg(baseDatas.operatorErrMsg.single);
+            return false;
+        }
         if (selectDatas.length > 0) {
             layer.confirm(tipMsg, {
                 title: '询问框',
@@ -185,7 +189,11 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
                         id: selectDatas.map(function (item) {
                             return item.id
                         }),
-                        status: type
+                        status: type,
+                        count: selectDatas[0].price,
+                        orderNUmber: selectDatas[0].number,
+                        userId: selectDatas[0].userId,
+                        userName: selectDatas[0].userName
                     },
                     success: function (data, textStatus, jqXHR) {
                         layer.msg(data.success ? '操作成功！' : '操作失败：' + data.message);
@@ -243,6 +251,11 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
                     templet: function (d) {
                         return d.LAY_INDEX;
                     }
+                },
+                {
+                    field: 'userName',
+                    title: '下单用户',
+                    width: 150
                 },
                 {
                     field: 'number',

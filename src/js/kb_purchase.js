@@ -273,6 +273,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
             kbOrderInfo.addressToPca = getKbAddressToPca();
             kbOrderInfo.addressFromPca = kbOrderInfo.addressFrom.split(/\s/g)[0];
             kbOrderInfo.total = baseDatas.kbTypeInfo.price * kbOrderInfo.addressTo.length;
+            kbOrderInfo.price = baseDatas.kbTypeInfo.price;
             $.ajax({
                 url: '/api/createKbOrder',
                 type: 'POST',
