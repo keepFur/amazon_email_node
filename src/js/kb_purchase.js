@@ -1,9 +1,10 @@
 "use strict";
-layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
+layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
     var form = layui.form;
     var table = layui.table;
     var layer = layui.layer;
     var util = layui.util;
+    var upload = layui.upload;
     var baseDatas = {
         netErrMsg: '系统已退出登录，请登录系统重试',
         operatorErrMsg: {
@@ -35,7 +36,42 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
             $('#userName').data('user', JSON.stringify(user));
             $('#userBalance').text(core.fenToYuan(userInfo.money));
         });
+        initUpload();
     })();
+
+    /**
+     * 初始化文件上传组件
+     *
+     */
+    function initUpload() {
+        function format(a) {
+            return a.map(function (item) {
+                return item.name + '，' + item.phone + '，' + item.province + ' ' + item.city + ' ' + item.area + ' ' + item.detail + '，' + item.email;
+            });
+        }
+        upload.render({
+            elem: '#importAddressExcelBtn',
+            url: '/api/importAddressExcel', //上传接口
+            done: function (res) {
+                if (res.success) {
+                    layer.msg('数据解析成功！！');
+                    $('textarea[name=addressTo]').val(format(res.data).join('\n'));
+                } else {
+                    layer.msg('数据解析失败：' + res.message);
+                }
+            },
+            headers: {
+                plant: baseDatas.plant
+            },
+            size: 2048,
+            accept: 'file',
+            exts: 'xls|xlsx|csv|number',
+            error: function (err) {
+                //请求异常回调
+                layer.msg('数据解析失败:服务器异常！！！');
+            }
+        });
+    }
 
     // 事件初始化
     function initEvents() {
@@ -82,6 +118,10 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
             $('#kbSumMoney').text(quantity && baseDatas.kbTypeInfo ? core.fenToYuan(quantity * baseDatas.kbTypeInfo.price) : 0);
             return false;
         });
+        // 通过excel导入收货地址
+        $('#importAddressExcelBtn').on('click', importAddressExcelHandle);
+        // 下载收货地址模版
+        $('#downloadTemplateBtn').on('click', downloadTemplateHandle);
         // 格式化地址
         $('#formatAddressBtn').on('click', formatAddressHandle);
         // 过滤真实订单
@@ -100,6 +140,29 @@ layui.use(['form', 'element', 'table', 'layer', 'util'], function () {
         $('#enabledKbAddressBtn').on('click', {
             type: 1
         }, toggleKbAddressHandle);
+    }
+
+    /**
+     *通过excel导入收货地址
+     *
+     * @param {*} e
+     * @returns
+     */
+    function importAddressExcelHandle(e) {
+        return false;
+    }
+
+    /**
+     * 下载模版
+     *
+     * @param {*} e
+     * @returns
+     */
+    function downloadTemplateHandle(e) {
+        var aLink = document.createElement('a');
+        aLink.href = '/api/downloadTemplate?plant=' + baseDatas.plant;
+        aLink.click();
+        return false;
     }
 
     /**

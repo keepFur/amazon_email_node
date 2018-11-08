@@ -3,15 +3,13 @@ let express = require("express"),
     path = require("path"),
     app = express(),
     bodyParser = require("body-parser"),
-    url = require('url'),
-    Config = require("./lib/config"),
     session = require("express-session"),
-    md5 = require("blueimp-md5"),
     permissionData = require("./lib/permission_data"),
     Package = require("./package"),
     Core = require("./lib/core"),
     userMiddleware = require('./lib/middleware/user'),
     favicon = require('serve-favicon'),
+    upload = require('./lib/upload'),
     Cookie = require('cookie-parser');
 
 
@@ -546,6 +544,7 @@ app.get('/api/exportKbOrderToExcel', function (req, res) {
         Core.flyer.log(error);
     }
 });
+
 // 拼多多批量发货导出空包
 app.get('/api/pddBatch', function (req, res) {
     try {
@@ -554,10 +553,31 @@ app.get('/api/pddBatch', function (req, res) {
         Core.flyer.log(error);
     }
 });
+
 // 导出待扫描空包
 app.get('/api/downloadKbOrderToExcel', function (req, res) {
     try {
         manageKbOrder.downloadKbOrderToExcel(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 下载发货地址模版
+app.get('/api/downloadTemplate', function (req, res) {
+    try {
+        manageKbOrder.downloadTemplate(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 通过excel导入发货地址
+app.post('/api/importAddressExcel', function (req, res) {
+    try {
+        upload(req, res).then((file) => {
+            manageKbOrder.importAddressExcel(req, res, file);
+        });
     } catch (error) {
         Core.flyer.log(error);
     }

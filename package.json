@@ -43,6 +43,7 @@
     "dependencies": {
         "bcrypt": "^3.0.0",
         "express": "4.x",
+        "formidable": "^1.2.1",
         "qcloudsms_js": "^0.1.1",
         "xlsx": "^0.14.0",
         "yz-checkstand": "^0.2.1",
@@ -55,5 +56,5 @@
         "pro-kill": "pm2 kill",
         "pro-update": "pm2 update yidiankeji"
     },
-    "webPort": 80
+    "webPort": 8090
 }
