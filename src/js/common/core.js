@@ -628,5 +628,27 @@ var core = {
             return 0;
         }
         return Number(y * 10).toFixed(0);
+    },
+
+    // 计算会员价格
+    computeTotalPrice(level, total) {
+        level = level || 1;
+        total = total || 0;
+        if (level === 2) {
+            total = total * 0.9;
+        } else if (level === 3) {
+            total = total * 0.8;
+        }
+        return total;
+    },
+    getLevelText(level) {
+        level = level || 1;
+        var ret = `（普通会员）`;
+        if (level === 2) {
+            ret = `（金牌会员：<span class="layui-text-pink">享受9折优惠</span>）`;
+        } else if (level == 3) {
+            ret = `（内部会员：<span class="layui-text-pink">享受8折优惠</span>）`
+        }
+        return ret;
     }
 };

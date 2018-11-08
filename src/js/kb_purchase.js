@@ -11,6 +11,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
             single: '请选择一条数据操作',
             batch: '请至少选择一条数据操作'
         },
+        level: 1,
         plant: 'TB',
         kbTypeInfo: null
     };
@@ -33,8 +34,11 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
         initEvents();
         core.getUserInfoById(function (user) {
             userInfo = user.data.rows[0];
+            baseDatas.level = userInfo.level;
             $('#userName').data('user', JSON.stringify(user));
             $('#userBalance').text(core.fenToYuan(userInfo.money));
+            $('#userLevel').html(core.getLevelText(userInfo.level));
+            $('#discountKbSumMoneyText').toggle(userInfo.level !== 1);
         });
         initUpload();
     })();
@@ -106,9 +110,12 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
                 $('#kbPrice').text(core.fenToYuan(price));
                 // 数量
                 var quantity = getKbAddressTo().length;
+                var sumMoney = quantity && baseDatas.kbTypeInfo ? quantity * baseDatas.kbTypeInfo.price : 0;
                 $('#kbQuantity').text(quantity);
                 // 总价
-                $('#kbSumMoney').text(quantity ? core.fenToYuan(quantity * baseDatas.kbTypeInfo.price) : 0);
+                $('#kbSumMoney').text(core.fenToYuan(sumMoney));
+                // 折后价
+                $('#discountKbSumMoney').text(core.fenToYuan(core.computeTotalPrice(baseDatas.level, sumMoney)));
             } else {
                 baseDatas.kbTypeInfo = null;
             }
@@ -117,9 +124,12 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
         $('textarea[name=addressTo]').on('blur', function (e) {
             // 数量
             var quantity = getKbAddressTo().length;
+            var sumMoney = quantity && baseDatas.kbTypeInfo ? quantity * baseDatas.kbTypeInfo.price : 0;
             $('#kbQuantity').text(quantity);
             // 总价
-            $('#kbSumMoney').text(quantity && baseDatas.kbTypeInfo ? core.fenToYuan(quantity * baseDatas.kbTypeInfo.price) : 0);
+            $('#kbSumMoney').text(core.fenToYuan(sumMoney));
+            // 折后价
+            $('#discountKbSumMoney').text(core.fenToYuan(core.computeTotalPrice(baseDatas.level, sumMoney)));
             return false;
         });
         // 通过excel导入收货地址
