@@ -729,7 +729,13 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
                 msg: '参数错误'
             }
         }
-
+        // 判断用户的余额
+        if (userInfo.money <= 0 || userInfo.money < core.computeTotalPrice(baseDatas.level, kbOrderInfo.total)) {
+            return {
+                isPass: false,
+                msg: '主人，您的余额不足，请先充值，谢谢！！！'
+            };
+        }
         if (!kbOrderInfo.kbCompany) {
             return {
                 isPass: false,

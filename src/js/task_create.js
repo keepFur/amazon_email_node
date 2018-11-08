@@ -19,8 +19,11 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
         initComponent();
         core.getUserInfoById(function (user) {
             userInfo = user.data.rows[0];
+            baseDatas.level = userInfo.level;
             $('#userName').data('user', JSON.stringify(user));
             $('#userBalance').text(core.fenToYuan(userInfo.money));
+            $('#userLevel').html(core.getLevelText(userInfo.level));
+            $('#discountTaskSumMoneyText').toggle(userInfo.level !== 1);
         });
     })()
 
@@ -82,7 +85,10 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
                 var sum = getKeywordsAndQuantity().reduce(function (total, item) {
                     return total + item.quantity;
                 }, 0);
-                $('#taskSumMoney').text(sum ? core.fenToYuan(sum * baseDatas.taskTypeInfo.price) : 0);
+                var taskSumMoney = sum ? sum * baseDatas.taskTypeInfo.price : 0;
+                $('#taskSumMoney').text(core.fenToYuan(taskSumMoney));
+                // 折后价
+                $('#discountTaskSumMoney').text(core.fenToYuan(core.computeTotalPrice(baseDatas.level, taskSumMoney)));
                 // 关键词
                 $('.js-keyword-quantity-container').toggle(!!hask);
                 // 无关键词
@@ -103,7 +109,11 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
                 var sum = getKeywordsAndQuantity().reduce(function (total, item) {
                     return total + item.quantity;
                 }, 0);
-                $('#taskSumMoney').text(sum && baseDatas.taskTypeInfo.hask ? core.fenToYuan(sum * baseDatas.taskTypeInfo.price) : core.fenToYuan(value * baseDatas.taskTypeInfo.price));
+                var taskSumMoney = sum && baseDatas.taskTypeInfo.hask ? sum * baseDatas.taskTypeInfo.price : value * baseDatas.taskTypeInfo.price;
+                // 总价
+                $('#taskSumMoney').text(core.fenToYuan(taskSumMoney));
+                // 折后价
+                $('#discountTaskSumMoney').text(core.fenToYuan(core.computeTotalPrice(baseDatas.level, taskSumMoney)));
             } else {
                 this.value = '';
             }
@@ -128,7 +138,10 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
             var sum = getKeywordsAndQuantity().reduce(function (total, item) {
                 return total + item.quantity;
             }, 0);
-            $('#taskSumMoney').text(sum ? core.fenToYuan(sum * baseDatas.taskTypeInfo.price) : 0);
+            var taskSumMoney = sum ? sum * baseDatas.taskTypeInfo.price : 0
+            $('#taskSumMoney').text(core.fenToYuan(taskSumMoney));
+            // 折后价
+            $('#discountTaskSumMoney').text(core.fenToYuan(core.computeTotalPrice(baseDatas.level, taskSumMoney)));
             return false;
         });
         // 增加时长
@@ -150,7 +163,10 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
             var sum = getKeywordsAndQuantity().reduce(function (total, item) {
                 return total + item.quantity;
             }, 0);
-            $('#taskSumMoney').text(sum ? core.fenToYuan(sum * baseDatas.taskTypeInfo.price) : 0);
+            var taskSumMoney = sum ? sum * baseDatas.taskTypeInfo.price : 0
+            $('#taskSumMoney').text(core.fenToYuan(taskSumMoney));
+            // 折后价
+            $('#discountTaskSumMoney').text(core.fenToYuan(core.computeTotalPrice(baseDatas.level, taskSumMoney)));
             return false;
         });
         // 任务时段输入框的点击事件
@@ -426,7 +442,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
                         success: function (data, textStatus, jqXHR) {
                             if (data.success) {
                                 // 获取用户当前余额并提示
-                                layer.msg(`操作成功！！！</br>本次共消费：${core.fenToYuan(taskInfo.taskSumMoney)}元</br> 余额：${core.fenToYuan((userInfo.money - taskInfo.taskSumMoney))}元`);
+                                layer.msg(`操作成功！！！`);
                                 core.getUserInfoById(function (user) {
                                     userInfo = user.data.rows[0];
                                     $('#userName').data('user', JSON.stringify(user));
@@ -481,7 +497,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
                                 success: function (data, textStatus, jqXHR) {
                                     if (data.success) {
                                         // 获取用户当前的余额并提示
-                                        layer.msg(`操作成功！！！</br>本次共消费：${core.fenToYuan(taskInfo.taskSumMoney)}元</br> 余额：${core.fenToYuan((userInfo.money - taskInfo.taskSumMoney))}元`);
+                                        layer.msg(`操作成功！！！`);
                                         core.getUserInfoById(function (user) {
                                             userInfo = user.data.rows[0];
                                             $('#userName').data('user', JSON.stringify(user));
@@ -580,18 +596,18 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
      * @param {any} taskInfo 
      */
     function validTaskInfo(taskInfo) {
-        // 判断用户的余额
-        if (userInfo.money <= 0 || userInfo.money < taskInfo.taskSumMoney) {
-            return {
-                isPass: false,
-                msg: '主人，您的余额不足，请先充值，谢谢！'
-            };
-        }
         if (!taskInfo) {
             $.writeLog('tb_task-validTaskInfo', '参数为空');
             return {
                 isPass: false,
                 msg: '参数不能为空'
+            };
+        }
+        // 判断用户的余额
+        if (userInfo.money <= 0 || userInfo.money < core.computeTotalPrice(baseDatas.level, taskInfo.taskSumMoney)) {
+            return {
+                isPass: false,
+                msg: '主人，您的余额不足，请先充值，谢谢！！！'
             };
         }
         if (!baseDatas.taskTypeInfo) {
