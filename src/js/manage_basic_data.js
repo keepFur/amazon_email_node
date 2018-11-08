@@ -1,8 +1,9 @@
 // 平台管理模块
-layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
+layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
     var util = layui.util;
     var layer = layui.layer;
     var element = layui.element;
+    var upload = layui.upload;
     var table = layui.table;
     var form = layui.form;
     var baseDatas = {
@@ -27,7 +28,34 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
         // 初始化事件
         initEvent();
         form.render('select');
+        initUpload();
     })()
+
+    /**
+     * 初始化上传组件
+     *
+     */
+    function initUpload() {
+        upload.render({
+            elem: '#importKbNumberBtn',
+            url: '/api/importKbNumberExcel', //上传接口
+            done: function (res) {
+                if (res.success) {
+                    layer.msg('导入成功！！！');
+                    reloadTable('kbNumberTable');
+                } else {
+                    layer.msg('导入失败：' + res.message);
+                }
+            },
+            size: 4096,
+            accept: 'file',
+            exts: 'xls|xlsx|csv|number',
+            error: function (err) {
+                //请求异常回调
+                layer.msg('导入失败:服务器异常！！！');
+            }
+        });
+    }
 
     /**
      * 初始化DOM元素事件
@@ -41,6 +69,17 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
         // 重置
         $('#resetKbNumberBtn').on('click', function () {
             $('#kbNumberSearchForm')[0].reset();
+            return false;
+        });
+        // 通过excel导入
+        $('#importKbNumberBtn').on('click', function () {
+            return false;
+        });
+        // 下载excel模版
+        $('#downloadKbNumberTemplateBtn').on('click', function () {
+            var aLink = document.createElement('a');
+            aLink.href = '/api/downloadKbNumberTemplate'
+            aLink.click();
             return false;
         });
         // 创建空包单号

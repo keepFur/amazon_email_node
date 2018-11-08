@@ -583,6 +583,26 @@ app.post('/api/importAddressExcel', function (req, res) {
     }
 });
 
+// 通过excel导入空包单号
+app.post('/api/importKbNumberExcel', function (req, res) {
+    try {
+        upload(req, res).then((file) => {
+            manageKbOrder.importKbNumberExcel(req, res, file);
+        });
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 下载空包单号模版
+app.get('/api/downloadKbNumberTemplate', function (req, res) {
+    try {
+        manageKbOrder.downloadKbNumberTemplate(req, res);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
 /***********************空包地址模块**********************/
 // 创建空包地址
 app.post('/api/createKbAddress', function (req, res) {
