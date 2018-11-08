@@ -68,12 +68,14 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
             before: function (obj) {
                 layer.load();
             },
-            headers: {
-                plant: baseDatas.plant
+            data: {
+                plant: function () {
+                    return baseDatas.plant;
+                }
             },
             size: 2048,
             accept: 'file',
-            exts: 'xls|xlsx',
+            exts: 'xls|xlsx|csv',
             error: function (err) {
                 layer.closeAll('loading');
                 layer.msg('数据解析失败:服务器异常！！！');
