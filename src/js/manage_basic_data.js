@@ -38,7 +38,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
     function initUpload() {
         upload.render({
             elem: '#importKbNumberBtn',
-            url: '/api/importKbNumberExcel', //上传接口
+            url: '/api/importKbNumberExcel',
             done: function (res) {
                 if (res.success) {
                     layer.msg('导入成功！！！');
@@ -46,12 +46,16 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
                 } else {
                     layer.msg('导入失败：' + res.message);
                 }
+                layer.closeAll('loading');
+            },
+            before: function (obj) {
+                layer.load();
             },
             size: 4096,
             accept: 'file',
-            exts: 'xls|xlsx|csv|number',
+            exts: 'xls|xlsx',
             error: function (err) {
-                //请求异常回调
+                layer.closeAll('loading');
                 layer.msg('导入失败:服务器异常！！！');
             }
         });
