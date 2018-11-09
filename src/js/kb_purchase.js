@@ -204,7 +204,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
             badIndex.push('<span class="layui-text-pink">第' + (index + 1) + '行</span>(' + item + ') \n');
             return false;
         });
-        layer.alert(`总共<span class="layui-text-pink">${addressTos.length}个</span>收货地址。 \n其中有效收货地址<span class="layui-text-pink">${ret.length}个</span>\n，无效收货地址<span class="layui-text-pink">${addressTos.length - ret.length}个</span>，无效地址分别是在：${badIndex.join('，')}。烦请修改\n`);
+        layer.alert(`总共<span class="layui-text-pink">${addressTos.length}个</span>收货地址。 \n其中有效收货地址<span class="layui-text-pink">${ret.length}个</span>\n，无效收货地址<span class="layui-text-pink">${addressTos.length - ret.length}个</span>${badIndex.length ? `，无效地址分别是在：${badIndex.join('，')}。烦请修改` : '，非常好！！！'}\n`);
         return false;
     }
 
