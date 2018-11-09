@@ -127,7 +127,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
      */
     function exportKbOrderHandle() {
         var aLink = document.createElement('a');
-        aLink.href = '/api/exportKbOrderToExcel?limit=1000&offset=1';
+        aLink.href = '/api/exportKbOrderToExcel?limit=1000&offset=1&status=1&plant=' + baseDatas.plants[baseDatas.tabIndex];
         aLink.click();
         return false;
     }
@@ -146,7 +146,9 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
         }
         aLink.href = '/api/downloadKbOrderToExcel?limit=1000&offset=1&' + core.objectToString(queryParams);
         aLink.click();
-        $('#searchBtn').trigger('click');
+        setTimeout(function () {
+            reloadTable();
+        }, 2000);
         return false;
     }
 
