@@ -25,8 +25,9 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
         renderKbNumberTable();
         renderKbTypeTable();
         renderTaskTypeTable();
-        readKbNumberStock('TB', 0);
-        readKbNumberStock('TB', 1);
+        readKbNumberStock('TB', $('#tableTBUnuse'));
+        readKbNumberStock('JD', $('#tableJDUnuse'));
+        readKbNumberStock('PDD', $('#tablePDDUnuse'));
         // 初始化事件
         initEvent();
         form.render('select');
@@ -1288,28 +1289,23 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
      * @param {*} data
      * @param {*} status
      */
-    function renderKbNumberStock(data) {
-        var $container = $('#stockDetailContainer');
+    function renderKbNumberStock(data, $container) {
         var tpl = `<table class="layui-table">
-                        <colgroup>
-                        <col>
-                        <col>
-                        <col>
-                        </colgroup>
                         <thead>
                         <tr>
                             <th>快递公司</th>
+                            <th>总数</th>
                             <th>已使用</th>
-                            <th>库存</th>
+                            <th>剩余</th>
                         </tr> 
                     </thead>
                     <tbody>
                     `;
         if (!data.length) {
-            tpl += `<tr><td colspan="2">无数据</tr>`;
+            tpl += `<tr><td colspan="4">无数据</tr>`;
         }
         $.each(data, function (index, d) {
-            tpl += `<tr><td>${core.getKbTypeByCode(d.company)}</td><td>${d.total}</td><td>${d.stock}</td></tr>`;
+            tpl += `<tr><td>${core.getKbTypeByCode(d.company)}</td><td>${d.total}</td><td>${d.used}</td><td>${d.remain}</td></tr>`;
         });
         tpl += `</tbody></table>`;
         $container.html(tpl);
@@ -1321,12 +1317,11 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
      * @param {*} plant
      * @param {*} status
      */
-    function readKbNumberStock(plant, status) {
+    function readKbNumberStock(plant, $container) {
         $.get('/api/readKbNumberStock', {
-            plant: plant,
-            status: status
+            plant: plant
         }, function (res) {
-            renderKbNumberStock(res.data.rows);
+            renderKbNumberStock(res.data.rows, $container);
         }, 'json');
     }
 });
