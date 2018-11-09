@@ -25,9 +25,12 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
         renderKbNumberTable();
         renderKbTypeTable();
         renderTaskTypeTable();
+        readKbNumberStock('TB', 0);
+        readKbNumberStock('TB', 1);
         // 初始化事件
         initEvent();
         form.render('select');
+        form.render('radio');
         initUpload();
     })()
 
@@ -98,6 +101,9 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
         $('#enabledKbNumberBtn').on('click', {
             type: 1
         }, toggleKbNumberHandle);
+
+        // 空包库存
+        // 切换平台
 
         // 空包类型
 
@@ -882,7 +888,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
                     title: '状态',
                     field: 'status',
                     templet: function (d) {
-                        return d.status === 1 ? '启用' : '停用';
+                        return d.status === 1 ? '<span class="layui-text-green">未使用</span>' : '<span class="layui-text-pink">已使用</span>';
                     }
                 }
             ]],
@@ -1274,5 +1280,53 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
             $container.append(`<option value="${item.code}" data-price="${item.price}" data-plant="${item.plant}">${item.name}</option>`);
         });
         form.render('select');
+    }
+
+    /**
+     *渲染空包库存(使用)
+     *
+     * @param {*} data
+     * @param {*} status
+     */
+    function renderKbNumberStock(data) {
+        var $container = $('#stockDetailContainer');
+        var tpl = `<table class="layui-table">
+                        <colgroup>
+                        <col>
+                        <col>
+                        <col>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>快递公司</th>
+                            <th>已使用</th>
+                            <th>库存</th>
+                        </tr> 
+                    </thead>
+                    <tbody>
+                    `;
+        if (!data.length) {
+            tpl += `<tr><td colspan="2">无数据</tr>`;
+        }
+        $.each(data, function (index, d) {
+            tpl += `<tr><td>${core.getKbTypeByCode(d.company)}</td><td>${d.total}</td><td>${d.stock}</td></tr>`;
+        });
+        tpl += `</tbody></table>`;
+        $container.html(tpl);
+    }
+
+    /**
+     * 读取空包库存
+     *
+     * @param {*} plant
+     * @param {*} status
+     */
+    function readKbNumberStock(plant, status) {
+        $.get('/api/readKbNumberStock', {
+            plant: plant,
+            status: status
+        }, function (res) {
+            renderKbNumberStock(res.data.rows);
+        }, 'json');
     }
 });

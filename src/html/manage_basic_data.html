@@ -2,6 +2,7 @@
     <div class="layui-tab layui-tab-brief" lay-filter="managePlant">
         <ul class="layui-tab-title">
             <li class="layui-this">空包单号</li>
+            <li>空包单号库存总揽</li>
             <li>空包类型</li>
             <li>流量类型</li>
         </ul>
@@ -62,6 +63,57 @@
                     <button class="layui-btn layui-btn-normal layui-btn-sm" id="resetKbNumberBtn">重置</button>
                 </div>
                 <div lay-filter='kbNumber' id="kbNumberTable"></div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="layui-row layui-col-space8">
+                    <div class="layui-col-md12" style="border-right:1px solid #eee;">
+                        <div class="layui-card">
+                            <div class="layui-card-header home-account-info layui-text-green">
+                                <div class="layui-row">
+                                    <div class="layui-col-md4">
+                                        <a href="#" data-type="TB" class="layui-text-pink">淘宝</a>
+                                    </div>
+                                    <div class="layui-col-md4">
+                                        <a href="#" data-type="JD">京东</a>
+                                    </div>
+                                    <div class="layui-col-md4">
+                                        <a href="#" data-type="PDD">拼多多</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-card-body">
+                                <div id="stockDetailContainer">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="layui-col-md6">
+                        <div class="layui-card">
+                            <div class="layui-card-header home-account-info layui-text-pink">
+                                <div class="layui-row">
+                                    <div class="layui-col-md4">
+                                        <a href="#" data-type="TB" class="layui-text-pink">淘宝</a>
+                                    </div>
+                                    <div class="layui-col-md4">
+                                        <a href="#" data-type="JD">京东</a>
+                                    </div>
+                                    <div class="layui-col-md4">
+                                        <a href="#" data-type="PDD">拼多多</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-card-body">
+                                <h3 class="text-center"><span class="layui-text-pink">已使用空包详情</span></h3>
+                                <div id="used">
+                                    <p>申通：100</p>
+                                    <p>中通:100</p>
+                                    <p>百世:1200</p>
+                                    <p>韵达:120</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
             </div>
             <div class="layui-tab-item">
                 <div class='layui-form-item'>
