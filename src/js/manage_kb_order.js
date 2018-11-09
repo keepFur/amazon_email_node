@@ -179,6 +179,14 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
             layer.msg(baseDatas.operatorErrMsg.single);
             return false;
         }
+        if (type === 3 && selectDatas[0].status === 2) {
+            layer.msg('已扫描的订单不能取消！！！');
+            return false;
+        }
+        if (type === 3 && selectDatas[0].status === 3) {
+            layer.msg('已该订单已经是取消状态了！！！');
+            return false;
+        }
         if (selectDatas.length > 0) {
             layer.confirm(tipMsg, {
                 title: '询问框',
@@ -193,7 +201,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
                         }),
                         status: type,
                         count: selectDatas[0].price,
-                        orderNUmber: selectDatas[0].number,
+                        orderNumber: selectDatas[0].number,
                         userId: selectDatas[0].userId,
                         userName: selectDatas[0].userName
                     },
