@@ -56,6 +56,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
         upload.render({
             elem: '#importAddressExcelBtn',
             url: '/api/importAddressExcel',
+            // url: 'http://60.205.201.95:8111/upload',
             done: function (res) {
                 if (res.success) {
                     layer.msg('数据解析成功！！');
