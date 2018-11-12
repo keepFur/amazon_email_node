@@ -44,7 +44,6 @@
         "bcrypt": "^3.0.0",
         "express": "4.x",
         "formidable": "^1.2.1",
-        "iconv-lite": "^0.4.24",
         "qcloudsms_js": "^0.1.1",
         "xlsx": "^0.14.0",
         "yz-checkstand": "^0.2.1",
