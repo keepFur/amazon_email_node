@@ -56,7 +56,6 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
         upload.render({
             elem: '#importAddressExcelBtn',
             url: '/api/importAddressExcel',
-            // url: 'http://60.205.201.95:8111/upload',
             done: function (res) {
                 if (res.success) {
                     layer.msg('数据解析成功！！');
@@ -149,6 +148,8 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
         $('.js-create-bb-address').on('click', createKbAddressHandle);
         // 修改发货地址
         $('#updateKbAddressBtn').on('click', updateKbAddressHandle);
+        // 设置为默认地址
+        $('#setDefaultKbAddressBtn').on('click', setDefaultKbAddressHandle);
         // 禁用发货地址
         $('#disabledKbAddressBtn').on('click', {
             type: 0
@@ -557,6 +558,44 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
     }
 
     /**
+     *设置为默认地址
+     *
+     * @param {*} e
+     */
+    function setDefaultKbAddressHandle(e) {
+        var selectDatas = table.checkStatus('kbAddressTable').data;
+        if (selectDatas.length === 1) {
+            if (selectDatas[0].isDefault === 1) {
+                layer.msg('该地址已经是默认的了');
+                return false;
+            }
+            layer.confirm('确定设置为默认发货地址吗？', {
+                btn: ['确定', '取消'],
+                title: "询问框",
+            }, function () {
+                $.ajax({
+                    url: '/api/setDefaultKbAddress',
+                    type: 'POST',
+                    data: {
+                        id: selectDatas[0].id,
+                    },
+                    success: function (data, textStatus, jqXHR) {
+                        layer.msg(data.success ? '操作成功' : ('操作失败' + data.message));
+                        reloadTable();
+                        getAddressFromServer();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        layer.msg(baseDatas.netErrMsg);
+                    }
+                });
+            });
+        } else {
+            layer.msg(baseDatas.operatorErrMsg.single);
+        }
+        return false;
+    }
+
+    /**
      * 切换收货地址状态按钮点击事件处理函数
      * 
      * @param {any} events 
@@ -566,6 +605,11 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
         var type = events.data.type;
         var tipMsg = type === 0 ? '确定禁用吗？' : '确定启用吗？';
         if (selectDatas.length === 1) {
+            // 禁用状态下，如果是默认地址，不允许禁用
+            if (type === 0 && selectDatas[0].isDefault) {
+                layer.msg('当前地址是默认地址，不允许禁用，请先取消默认地址在进行操作！！！');
+                return false;
+            }
             layer.confirm(tipMsg, {
                 btn: ['确定', '取消'],
                 title: "询问框",
@@ -580,6 +624,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
                     success: function (data, textStatus, jqXHR) {
                         layer.msg(data.success ? '操作成功' : ('操作失败' + data.message));
                         reloadTable();
+                        getAddressFromServer();
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         layer.msg(baseDatas.netErrMsg);
@@ -635,10 +680,17 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
                         return d.updateDate ? util.toDateString(d.updateDate, 'yyyy-MM-dd HH:mm') : '';
                     }
                 }, {
+                    title: '是否默认',
+                    field: '',
+                    templet: function (d) {
+                        return d.isDefault === 1 ? '<span class="layui-text-pink">是</span>' : '否';
+                    }
+                },
+                {
                     title: '状态',
                     field: 'status',
                     templet: function (d) {
-                        return d.status === 1 ? '启用' : '停用';
+                        return d.status === 1 ? '启用' : '<span class="layui-text-pink">停用</span>';
                     }
                 }
             ]],
@@ -814,7 +866,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
         $container.empty();
         $container.append(` <option value="">请选择发货地址</option>`);
         $.each(adds, function (index, item) {
-            $container.append(`<option value="${item.pca} ${item.detail}">${item.pca} ${item.detail} ${item.contact} ${item.phone} ${item.email}</option>`);
+            $container.append(`<option value="${item.pca} ${item.detail}" ${item.isDefault ? 'selected' : ''}>${item.pca} ${item.detail} ${item.contact} ${item.phone} ${item.email}</option>`);
         });
         form.render('select');
     }

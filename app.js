@@ -649,6 +649,14 @@ app.post('/api/updateKbAddress', function (req, res) {
     }
 });
 
+// 设置为默认地址
+app.post('/api/setDefaultKbAddress', function (req, res) {
+    try {
+        manageKbAddress.setDefaultKbAddress(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
 
 /***********************充值套餐模块**********************/
 // 创建套餐
