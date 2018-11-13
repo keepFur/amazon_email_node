@@ -159,14 +159,14 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
             layer.open({
                 content: `<form class="layui-form layui-form-pane">
                                 <div class="layui-form-item">
-                                    <label class="layui-form-label">充值金额</label>
+                                    <label class="layui-form-label">金额（分）</label>
                                     <div class="layui-input-block">
-                                        <input type="text" name="money" placeholder="只能是正整数，最少10元"  class="layui-input">
+                                        <input type="text" name="money" placeholder="单位为分，只能是正整数，最少10元"  class="layui-input">
                                     </div>
                                 </div>
                             </form>`,
                 area: ['400px'],
-                title: '余额充值',
+                title: '余额充值（单位：分）',
                 btn: ['充值', '取消'],
                 yes: function (index) {
                     var money = $.trim($('input[name=money]').val());
