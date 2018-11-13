@@ -95,6 +95,9 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
 严格按上面的格式来  三个逗号，三个空格，一个都不要少，也不能多`;
             $('[name=addressTo]').attr('placeholder', p);
             baseDatas.plant = data.value;
+            // 将注意事项隐藏
+            $('#bbDetailContainer').addClass('layui-hide');
+            $('#description').text('');
         });
         // 快递类型的选择
         form.on('select(kbCompany)', function (data) {
@@ -102,6 +105,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
                 var $selected = $(data.elem).find('option[value=' + data.value + ']')
                 var price = $selected.data('price');
                 var plant = $selected.data('plant');
+                var desc = $selected.data('desc');
                 // 将选中的任务保存到基础数据中，后期的数据源只来源于此（唯一数据源）
                 baseDatas.kbTypeInfo = {
                     price: price,
@@ -118,8 +122,14 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
                 $('#kbSumMoney').text(core.fenToYuan(sumMoney));
                 // 折后价
                 $('#discountKbSumMoney').text(core.fenToYuan(core.computeTotalPrice(baseDatas.level, sumMoney)));
+                // 将注意事项显示出来
+                $('#bbDetailContainer').removeClass('layui-hide');
+                $('#description').text(desc);
             } else {
                 baseDatas.kbTypeInfo = null;
+                // 将注意事项隐藏
+                $('#bbDetailContainer').addClass('layui-hide');
+                $('#description').text('');
             }
         });
         // 收货地址输入框的onblur事件
@@ -841,7 +851,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
         $container.empty();
         $container.append(`<option value="">请选择快递类型</option>`);
         $.each(kbTypes, function (index, item) {
-            $container.append(`<option value="${item.code}" data-price="${item.price}" data-plant="${item.plant}">${item.name}</option>`);
+            $container.append(`<option value="${item.code}" data-price="${item.price}" data-plant="${item.plant}" data-desc="${item.description}">${item.name}</option>`);
         });
         form.render('select');
     }
