@@ -590,10 +590,10 @@ $(function () {
             };
         }
         // 判断用户名的规则
-        if (!/^[a-zA-Z]{6,15}$/g.test(userInfo.userName)) {
+        if (!/^[a-zA-Z0-9]{6,15}$/g.test(userInfo.userName)) {
             return {
                 isPass: false,
-                msg: '用户名是6-15位字母组成'
+                msg: '用户名是6-15位字母或数字组成'
             };
         }
         // 判断用户名长度
@@ -606,10 +606,10 @@ $(function () {
             };
         }
         // 判断密码的规则
-        if (!/^[a-zA-Z]{6,15}$/g.test(userInfo.password)) {
+        if (!/^[a-zA-Z0-9]{6,15}$/g.test(userInfo.password)) {
             return {
                 isPass: false,
-                msg: '密码是6-15位字母组成'
+                msg: '密码是6-15位字母或数字组成'
             };
         }
         // 判断密码长度
