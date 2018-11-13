@@ -475,12 +475,13 @@ var core = {
     // 根据快递公司的代码获取快递公司的名字
     getKbTypeByCode: function (code) {
         var kb = {
-            ST: '申通',
-            ZT: '中通',
-            LB: '龙邦',
-            GT: '国通',
+            ST: '申通快递',
+            ZT: '中通快递',
+            LB: '龙邦快递',
+            GT: '国通快递',
             YF: '亚风速运',
-            BS: '百世'
+            BS: '百世快递',
+            YT: '圆通快递',
         };
         return kb[code];
     },

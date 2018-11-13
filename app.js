@@ -927,6 +927,14 @@ app.post('/api/toggleKbNumber', function (req, res) {
     }
 });
 
+// 获取空包单号使用情况
+app.get('/api/readKbNumberStock', function (req, res) {
+    try {
+        manageKbNumber.readKbNumberStock(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
 /* *****************API工具类****************** */
 //生成signkey签名
 app.post('/api/generateSignKey', function (req, res) {

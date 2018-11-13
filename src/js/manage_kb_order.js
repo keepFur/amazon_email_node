@@ -127,7 +127,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
      */
     function exportKbOrderHandle() {
         var aLink = document.createElement('a');
-        aLink.href = '/api/exportKbOrderToExcel?limit=1000&offset=1';
+        aLink.href = '/api/exportKbOrderToExcel?limit=1000&offset=1&status=1&plant=' + baseDatas.plants[baseDatas.tabIndex];
         aLink.click();
         return false;
     }
@@ -146,7 +146,9 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
         }
         aLink.href = '/api/downloadKbOrderToExcel?limit=1000&offset=1&' + core.objectToString(queryParams);
         aLink.click();
-        $('#searchBtn').trigger('click');
+        setTimeout(function () {
+            reloadTable();
+        }, 2000);
         return false;
     }
 
@@ -173,6 +175,18 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
         var selectDatas = table.checkStatus('kbOrderTable').data;
         var type = events.data.type;
         var tipMsg = type === 2 ? '确定标记为已扫描状态吗？' : '确定标记为取消状态吗？';
+        if (type === 3 && selectDatas.length !== 1) {
+            layer.msg(baseDatas.operatorErrMsg.single);
+            return false;
+        }
+        if (type === 3 && selectDatas[0].status === 2) {
+            layer.msg('已扫描的订单不能取消！！！');
+            return false;
+        }
+        if (type === 3 && selectDatas[0].status === 3) {
+            layer.msg('已该订单已经是取消状态了！！！');
+            return false;
+        }
         if (selectDatas.length > 0) {
             layer.confirm(tipMsg, {
                 title: '询问框',
@@ -185,7 +199,11 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
                         id: selectDatas.map(function (item) {
                             return item.id
                         }),
-                        status: type
+                        status: type,
+                        count: selectDatas[0].price,
+                        orderNumber: selectDatas[0].number,
+                        userId: selectDatas[0].userId,
+                        userName: selectDatas[0].userName
                     },
                     success: function (data, textStatus, jqXHR) {
                         layer.msg(data.success ? '操作成功！' : '操作失败：' + data.message);
@@ -243,6 +261,11 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
                     templet: function (d) {
                         return d.LAY_INDEX;
                     }
+                },
+                {
+                    field: 'userName',
+                    title: '下单用户',
+                    width: 150
                 },
                 {
                     field: 'number',

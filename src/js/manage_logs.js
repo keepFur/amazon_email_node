@@ -137,7 +137,7 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
                     title: '类型',
                     field: "",
                     templet: function (d) {
-                        var status = ['', '充值', '流量订单消费', '退款', '充值赠送', '佣金', '账号升级消费', '空包订单消费'];
+                        var status = ['', '充值', '流量订单消费', '退款', '充值赠送', '佣金', '账号升级消费', '空包订单消费', '空包订单退款'];
                         return status[d.type];
                     }
                 },

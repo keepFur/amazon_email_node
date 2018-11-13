@@ -2,6 +2,7 @@
     <div class="layui-tab layui-tab-brief" lay-filter="managePlant">
         <ul class="layui-tab-title">
             <li class="layui-this">空包单号</li>
+            <li>空包单号库存详情</li>
             <li>空包类型</li>
             <li>流量类型</li>
         </ul>
@@ -62,6 +63,21 @@
                     <button class="layui-btn layui-btn-normal layui-btn-sm" id="resetKbNumberBtn">重置</button>
                 </div>
                 <div lay-filter='kbNumber' id="kbNumberTable"></div>
+            </div>
+            <div class="layui-tab-item">
+                <div class="layui-row layui-col-space8">
+                    <div class="layui-col-md6">
+                        <span>淘宝</span>
+                        <div id="tableTBUnuse">
+                        </div>
+                        <span>京东</span>
+                        <div id="tableJDUnuse">
+                        </div>
+                        <span>拼多多</span>
+                        <div id="tablePDDUnuse">
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="layui-tab-item">
                 <div class='layui-form-item'>

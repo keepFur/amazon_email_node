@@ -56,6 +56,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
         upload.render({
             elem: '#importAddressExcelBtn',
             url: '/api/importAddressExcel',
+            // url: 'http://60.205.201.95:8111/upload',
             done: function (res) {
                 if (res.success) {
                     layer.msg('数据解析成功！！');
@@ -68,12 +69,14 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
             before: function (obj) {
                 layer.load();
             },
-            headers: {
-                plant: baseDatas.plant
+            data: {
+                plant: function () {
+                    return baseDatas.plant;
+                }
             },
             size: 2048,
             accept: 'file',
-            exts: 'xls|xlsx',
+            exts: 'xls|xlsx|csv',
             error: function (err) {
                 layer.closeAll('loading');
                 layer.msg('数据解析失败:服务器异常！！！');
@@ -192,13 +195,17 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
             return false;
         }
         var addressTos = addressTo.split(/\n{1,}/g);
+        var badIndex = [];
         var ret = addressTos.map(function (item) {
             return $.trim(item);
-        }).filter(function (item) {
-            return item.split(/，|,/).length === 4 && item.split(/，|,/)[2].split(/\s{1,}/g).length === 4;
+        }).filter(function (item, index) {
+            if (item.split(/，|,/).length === 4 && item.split(/，|,/)[2].split(/\s{1,}/g).length === 4) {
+                return true;
+            }
+            badIndex.push('<span class="layui-text-pink">第' + (index + 1) + '行</span>(' + item + ') \n');
+            return false;
         });
-        layer.alert(`总共${addressTos.length}个收货地址。 \n其中有效收货地址${ret.length}个\n，无效收货地址${addressTos.length - ret.length}个。\nPS：无效地址已为您自动过滤了`);
-        $('textarea[name=addressTo]').val(ret.join('\n'));
+        layer.alert(`总共<span class="layui-text-pink">${addressTos.length}个</span>收货地址。 \n其中有效收货地址<span class="layui-text-pink">${ret.length}个</span>\n，无效收货地址<span class="layui-text-pink">${addressTos.length - ret.length}个</span>${badIndex.length ? `，无效地址分别是在：${badIndex.join('，')}。烦请修改` : '，非常好！！！'}\n`);
         return false;
     }
 
@@ -271,6 +278,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
             kbOrderInfo.addressToPca = getKbAddressToPca();
             kbOrderInfo.addressFromPca = kbOrderInfo.addressFrom.split(/\s/g)[0];
             kbOrderInfo.total = baseDatas.kbTypeInfo.price * kbOrderInfo.addressTo.length;
+            kbOrderInfo.price = baseDatas.kbTypeInfo.price;
             $.ajax({
                 url: '/api/createKbOrder',
                 type: 'POST',
