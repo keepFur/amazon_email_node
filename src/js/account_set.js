@@ -4,6 +4,8 @@ layui.use(['element', 'layer', 'form'], function () {
     var element = layui.element;
     var layer = layui.layer;
     var form = layui.form;
+    var passwordErrorMsg = '密码是由6-15位的数字或密码组成';
+    var phoneErrorMsg = '电话是由11位的数字组成';
     var userId = $('#userName').data('user-id');
     var userName = $('#userName').data('user-name');
     var level = 0;
@@ -32,12 +34,8 @@ layui.use(['element', 'layer', 'form'], function () {
     // 更新个人资料
     function updateInfoHandler(e) {
         var userInfo = getUserInfoClient();
-        if (!userInfo.phone) {
-            layer.msg('手机号不能为空');
-            return;
-        }
         if (!/^1[0-9]{10}$/.test(userInfo.phone)) {
-            layer.msg('手机号码由长度为11位的数字组成');
+            layer.msg(phoneErrorMsg);
             return;
         }
         $.ajax({
@@ -62,7 +60,7 @@ layui.use(['element', 'layer', 'form'], function () {
             new: $('form[name=userUpdatePasswordForm] input[name=password]').val(),
         };
         if (!/^[a-zA-Z0-9]{6,15}$/g.test(pass.old) || !/^[a-zA-Z0-9]{6,15}$/g.test(pass.new)) {
-            layer.msg('密码是6-15位字母或数字组成');
+            layer.msg(passwordErrorMsg);
             return false;
         }
         if (pass.new === pass.old) {

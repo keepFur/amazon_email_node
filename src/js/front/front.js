@@ -3,6 +3,10 @@ var $ = mdui.JQ;
 $(function () {
     var userNameMinLength = 6;
     var userNameMaxLength = 15;
+    var passwordErrorMsg = '密码是由6-15位的数字或密码组成';
+    var usernameErrorMsg = '用户名是由6-15位的数字或密码组成';
+    var phoneErrorMsg = '电话是由11位的数字组成';
+    var computeErrorMsg = '计算结果不正确';
     // 模块入口
     (function init() {
         // 初始化通知组件
@@ -279,12 +283,11 @@ $(function () {
     // 用户登录提交
     function userLoginSubmitHanlder(event) {
         var userInfo = getUserInfo($('form[name=userLoginForm]'));
-        var $btn = $(this);
         var validUserInfoResult = validUserInfo(userInfo);
         if (validUserInfoResult.isPass) {
             if (userInfo.computeResult != $('input[name=loginProblem]').data('result')) {
                 mdui.snackbar({
-                    message: '计算结果不正确',
+                    message: computeErrorMsg,
                     position: 'top'
                 });
                 return;
@@ -341,7 +344,6 @@ $(function () {
     function userRegisterSubmitHanlder() {
         var userInfo = getUserInfo($('form[name=userRegisterForm]'));
         var validUserInfoResult = validUserInfo(userInfo);
-        var $btn = $(this);
         if (!validUserInfoResult.isPass) {
             mdui.snackbar({
                 message: validUserInfoResult.msg,
@@ -349,9 +351,10 @@ $(function () {
             });
             return;
         }
-        if (!userInfo.phone) {
+        // 判断电话
+        if (!/^1[0-9]{10}$/.test(userInfo.phone)) {
             mdui.snackbar({
-                message: '手机号不能为空',
+                message: phoneErrorMsg,
                 position: 'top'
             });
             return;
@@ -402,13 +405,11 @@ $(function () {
         var userInfo = getUserInfo($('form[name=userGetPasswordForm]'));
         var actualCode = $('input[name=userPhone]').data('code');
         var validate = function () {
-            // 判断用户名
-            if (!userInfo.userName ||
-                userInfo.userName.length > userNameMaxLength ||
-                userInfo.userName.length < userNameMinLength) {
+            // 判断用户名的规则
+            if (!/^[a-zA-Z0-9]{6,15}$/g.test(userInfo.userName)) {
                 return {
                     isPass: false,
-                    msg: '用户名是6-15位字母组成'
+                    msg: usernameErrorMsg
                 };
             }
             if (userInfo.verfiyCode !== actualCode) {
@@ -472,13 +473,15 @@ $(function () {
         var $this = $(this);
         var timer = null;
         var totalSecond = 60;
-        if (!userPhone) {
+        // 判断电话
+        if (!/^1[0-9]{10}$/.test(userPhone)) {
             mdui.snackbar({
-                message: '手机号不能为空',
+                message: phoneErrorMsg,
                 position: 'top'
             });
-            return;
+            return false;
         }
+
         $.ajax({
             url: '/front/getVerfiyCode',
             data: {
@@ -593,39 +596,14 @@ $(function () {
         if (!/^[a-zA-Z0-9]{6,15}$/g.test(userInfo.userName)) {
             return {
                 isPass: false,
-                msg: '用户名是6-15位字母或数字组成'
-            };
-        }
-        // 判断用户名长度
-        if (!userInfo.userName ||
-            userInfo.userName.length > userNameMaxLength ||
-            userInfo.userName.length < userNameMinLength) {
-            return {
-                isPass: false,
-                msg: '用户名是6-15位字母组成'
+                msg: usernameErrorMsg
             };
         }
         // 判断密码的规则
-        if (!/^[a-zA-Z0-9]{6,15}$/g.test(userInfo.password)) {
+        if (!/^[a-zA-Z0-9@]{6,15}$/g.test(userInfo.password)) {
             return {
                 isPass: false,
-                msg: '密码是6-15位字母或数字组成'
-            };
-        }
-        // 判断密码长度
-        if (!userInfo.password ||
-            userInfo.password.length > userNameMaxLength ||
-            userInfo.password.length < userNameMinLength) {
-            return {
-                isPass: false,
-                msg: '密码是6-15位字母组成'
-            };
-        }
-        // 判断电话
-        if (!/^1[0-9]{10}$/.test(userInfo.phone)) {
-            return {
-                isPass: false,
-                msg: '手机号码由长度为11位的数字组成'
+                msg: passwordErrorMsg
             };
         }
         return {
