@@ -876,7 +876,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
         $container.empty();
         $container.append(` <option value="">请选择发货地址</option>`);
         $.each(adds, function (index, item) {
-            $container.append(`<option value="${item.pca} ${item.detail}" ${item.isDefault ? 'selected' : ''}>${item.pca} ${item.detail} ${item.contact} ${item.phone} ${item.email}</option>`);
+            $container.append(`<option value="${item.pca} ${item.detail}" ${item.isDefault ? 'selected' : ''}>${item.pca} ${item.detail} ${item.contact} ${item.phone} ${item.email}${item.isDefault ? '    【默认地址】' : ''}</option>`);
         });
         form.render('select');
     }
