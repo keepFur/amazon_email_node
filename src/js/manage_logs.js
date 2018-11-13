@@ -11,7 +11,8 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
         operatorErrMsg: {
             single: '请选择一条数据操作',
             batch: '请至少选择一条数据操作'
-        }
+        },
+        addStatus: [1, 3, 4, 5, 8]
     };
 
     /**
@@ -137,7 +138,7 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
                     title: '类型',
                     field: "",
                     templet: function (d) {
-                        var status = ['', '充值', '流量订单消费', '退款', '充值赠送', '佣金', '账号升级消费', '空包订单消费', '空包订单退款'];
+                        var status = ['', '在线充值', '流量订单消费', '流量订单退款', '充值赠送', '推广佣金', '账号升级消费', '空包订单消费', '空包订单退款'];
                         return status[d.type];
                     }
                 },
@@ -145,7 +146,8 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
                     title: '金额（元）',
                     field: "count",
                     templet: function (d) {
-                        return core.fenToYuan(d.count);
+                        // 金额需要根据类型来，如果是增加的需要用红色的加号表示，否则绿色的减号表示
+                        return (baseDatas.addStatus.indexOf(d.type) === -1 ? '<span class="layui-text-green"> - </span>' : '<span class="layui-text-pink"> + </span>') + (core.fenToYuan(d.count));
                     }
                 },
                 {
