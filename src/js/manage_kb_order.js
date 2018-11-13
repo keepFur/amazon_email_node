@@ -201,7 +201,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () 
                         }),
                         status: type,
                         count: selectDatas[0].price,
-                        orderNumber: selectDatas[0].number,
+                        number: selectDatas[0].number,
                         userId: selectDatas[0].userId,
                         userName: selectDatas[0].userName
                     },
