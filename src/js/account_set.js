@@ -61,8 +61,8 @@ layui.use(['element', 'layer', 'form'], function () {
             old: $('form[name=userUpdatePasswordForm] input[name=oldPassword]').val(),
             new: $('form[name=userUpdatePasswordForm] input[name=password]').val(),
         };
-        if (!pass.old || !pass.new) {
-            layer.msg('密码不能为空');
+        if (!/^[a-zA-Z0-9]{6,15}$/g.test(pass.old) || !/^[a-zA-Z0-9]{6,15}$/g.test(pass.new)) {
+            layer.msg('密码是6-15位字母或数字组成');
             return false;
         }
         if (pass.new === pass.old) {
