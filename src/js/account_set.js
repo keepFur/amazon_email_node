@@ -36,6 +36,10 @@ layui.use(['element', 'layer', 'form'], function () {
             layer.msg('手机号不能为空');
             return;
         }
+        if (!/^1[0-9]{10}$/.test(userInfo.phone)) {
+            layer.msg('手机号码由长度为11位的数字组成');
+            return;
+        }
         $.ajax({
             url: '/api/updateUser',
             type: 'POST',
