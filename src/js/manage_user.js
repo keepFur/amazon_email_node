@@ -299,50 +299,60 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
             cols: [[
                 {
                     checkbox: true,
+                    fixed: 'left',
                 },
                 {
                     field: '',
                     title: '序号',
                     width: 60,
+                    fixed: 'left',
                     templet: function (d) {
                         return d.LAY_INDEX;
                     }
                 },
                 {
                     title: '用户名',
-                    field: "userName"
+                    field: "userName",
+                    fixed: 'left',
+                    width: 150,
                 }, {
                     title: '当前余额（元）',
                     field: "money",
+                    width: 150,
                     templet: function (d) {
                         return core.fenToYuan(d.money);
                     }
                 }, {
                     title: '等级',
                     field: "level",
+                    width: 150,
                     templet: function (d) {
                         return d.level === 1 ? '普通' : '金牌';
                     }
                 }, {
                     title: '邮箱',
                     field: "email",
+                    width: 150,
                     templet: function (d) {
                         return d.email ? d.email : '';
                     }
                 }, {
                     title: '电话',
                     field: "phone",
+                    width: 150,
                     templet: function (d) {
                         return d.phone ? d.phone : '';
                     }
                 }, {
                     title: 'QQ',
                     field: "QQ",
+                    width: 150,
                     templet: function (d) {
                         return d.QQ ? d.QQ : '';
                     }
                 }, {
                     title: '注册时间',
+                    width: 200,
                     field: "createdDate",
                     templet: function (d) {
                         return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
@@ -350,14 +360,17 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
                 }, {
                     title: '最后修改时间',
                     field: "updateDate",
+                    width: 200,
                     templet: function (d) {
                         return d.updateDate ? util.toDateString(d.updateDate, 'yyyy-MM-dd HH:mm') : '';
                     }
                 }, {
                     title: '状态',
                     field: 'status',
+                    width: 150,
+                    fixed: 'right',
                     templet: function (d) {
-                        return d.status === 1 ? '启用' : '停用';
+                        return d.status === 1 ? '启用' : '<span class="layui-text-pink">停用</span>';
                     }
                 }
             ]],

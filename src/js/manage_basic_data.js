@@ -913,6 +913,9 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
                 }
             },
             done: function (res) {
+                if (res.data.length) {
+                    $('.layui-table-fixed-r').removeClass('layui-hide');
+                }
             }
         });
     }
@@ -927,53 +930,64 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
             cols: [[
                 {
                     checkbox: true,
+                    fixed: 'left',
                 },
                 {
                     field: '',
                     title: '序号',
                     width: 60,
+                    fixed: 'left',
                     templet: function (d) {
                         return d.LAY_INDEX;
                     }
                 },
                 {
                     title: '名称',
-                    field: "name"
+                    field: "name",
+                    width: 250
                 }, {
                     title: '描述',
-                    field: "description"
+                    field: "description",
+                    width: 350
                 }, {
                     title: '平台',
                     field: "plant",
+                    width: 150,
                     templet: function (d) {
                         return core.getPlantByCode(d.plant);
                     }
                 }, {
                     title: '简称',
                     field: "code",
+                    width: 150
                 }, {
                     title: '价格(元)',
                     field: "price",
+                    width: 150,
                     templet: function (d) {
                         return core.fenToYuan(d.price);
                     }
                 }, {
                     title: '创建时间',
                     field: "createdDate",
+                    width: 200,
                     templet: function (d) {
                         return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
                     }
                 }, {
                     title: '最后修改时间',
                     field: "updateDate",
+                    width: 200,
                     templet: function (d) {
                         return d.updateDate ? util.toDateString(d.updateDate, 'yyyy-MM-dd HH:mm') : '';
                     }
                 }, {
                     title: '状态',
                     field: 'status',
+                    width: 150,
+                    fixed: 'right',
                     templet: function (d) {
-                        return d.status === 1 ? '启用' : '停用';
+                        return d.status === 1 ? '启用' : '<span class="layui-text-pink">停用</span>';
                     }
                 }
             ]],
@@ -989,6 +1003,9 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
                 }
             },
             done: function (res) {
+                if (res.data.length) {
+                    $('.layui-table-fixed-r').removeClass('layui-hide');
+                }
             }
         });
     }
@@ -1004,68 +1021,82 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
             cols: [[
                 {
                     checkbox: true,
+                    fixed: 'left'
                 },
                 {
                     field: '',
                     title: '序号',
                     width: 60,
+                    fixed: 'left',
                     templet: function (d) {
                         return d.LAY_INDEX;
                     }
                 },
                 {
                     title: '名称',
-                    field: "name"
+                    field: "name",
+                    width: 250
                 }, {
                     title: '描述',
-                    field: "description"
+                    field: "description",
+                    width: 250
                 }, {
                     title: '平台',
                     field: "plant",
+                    width: 150,
                     templet: function (d) {
                         return core.getPlantByCode(d.plant);
                     }
                 }, {
                     title: '进价（积分）',
-                    field: "inPrice"
+                    field: "inPrice",
+                    width: 150,
                 }, {
                     title: '售价（元）',
                     field: "outPrice",
+                    width: 150,
                     templet: function (d) {
                         return core.fenToYuan(d.outPrice);
                     }
                 }, {
                     title: '有无关键词',
                     field: "hasKeyword",
+                    width: 150,
                     templet: function (d) {
                         return d.hasKeyword === 1 ? '有' : '无';
                     }
                 }, {
                     title: '类型',
                     field: "isPc",
+                    width: 150,
                     templet: function (d) {
                         return d.isPc === 1 ? 'PC' : 'APP';
                     }
                 }, {
                     title: '列流码',
+                    width: 150,
                     field: "lieliuCode"
                 }, {
                     title: '创建时间',
                     field: "createdDate",
+                    width: 200,
                     templet: function (d) {
                         return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
                     }
                 }, {
                     title: '最后修改时间',
                     field: "updateDate",
+                    width: 200,
                     templet: function (d) {
                         return d.updateDate ? util.toDateString(d.updateDate, 'yyyy-MM-dd HH:mm') : '';
                     }
                 }, {
                     title: '状态',
                     field: 'status',
+                    width: 150,
+                    fixed: 'right',
                     templet: function (d) {
-                        return d.status === 1 ? '启用' : '停用';
+                        return d.status === 1 ? '启用' : '<span class="layui-text-pink">停用</span>';
                     }
                 }
             ]],
@@ -1080,6 +1111,9 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
                 }
             },
             done: function (res) {
+                if (res.data.length) {
+                    $('.layui-table-fixed-r').removeClass('layui-hide');
+                }
             }
         });
     }
@@ -1305,7 +1339,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
             tpl += `<tr><td colspan="4">无数据</tr>`;
         }
         $.each(data, function (index, d) {
-            tpl += `<tr><td>${core.getKbTypeByCode(d.company)}</td><td>${d.total}</td><td>${d.used}</td><td>${d.remain}</td></tr>`;
+            tpl += `<tr><td>${core.getKbTypeByCode(d.company)}</td><td>${d.total}</td><td>${d.used}</td><td><span class="layui-text-pink">${d.remain}</span></td></tr>`;
         });
         tpl += `</tbody></table>`;
         $container.html(tpl);
