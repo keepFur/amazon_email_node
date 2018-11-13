@@ -929,7 +929,7 @@ app.post('/api/updateKbNumber', function (req, res) {
 // 切换空包单号状态
 app.post('/api/toggleKbNumber', function (req, res) {
     try {
-        manageKbNumber.toggleKbOrder(req, res, req.body);
+        manageKbNumber.toggleKbNumber(req, res, req.body);
     } catch (error) {
         Core.flyer.log(error);
     }

@@ -259,6 +259,10 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
     function updateKbNumberHandle(events) {
         var selectDatas = table.checkStatus('kbNumberTable').data;
         if (selectDatas.length === 1) {
+            if (selectDatas[0].status === 0) {
+                layer.msg('已经使用的单号不能进行修改');
+                return false;
+            }
             var plant = selectDatas[0].plant;
             var number = selectDatas[0].number;
             var company = selectDatas[0].company;
@@ -349,7 +353,12 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
         var selectDatas = table.checkStatus('kbNumberTable').data;
         var type = events.data.type;
         var tipMsg = type === 0 ? '确定禁用吗？' : '确定启用吗？';
-        if (selectDatas.length === 1) {
+        if (selectDatas.length > 0) {
+            var ids = selectDatas.filter(function (n) { return n.status === 1; }).map(function (item) { return item.id; })
+            if (!ids.length) {
+                layer.msg('请选择未使用的单号进行操作');
+                return false;
+            }
             layer.confirm(tipMsg, {
                 btns: ['确定', '取消'],
                 title: "询问框",
@@ -358,7 +367,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
                     url: '/api/toggleKbNumber',
                     type: 'POST',
                     data: {
-                        id: selectDatas[0].id,
+                        id: ids,
                         status: type
                     },
                     success: function (data, textStatus, jqXHR) {
@@ -371,7 +380,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
                 });
             });
         } else {
-            layer.msg(baseDatas.operatorErrMsg.single);
+            layer.msg(baseDatas.operatorErrMsg.batch);
         }
         return false;
     }
