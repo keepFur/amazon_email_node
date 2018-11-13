@@ -589,8 +589,14 @@ $(function () {
                 msg: '参数错误'
             };
         }
-
-        // 判断用户名
+        // 判断用户名的规则
+        if (!/^[a-zA-Z]{6,15}$/g.test(userInfo.userName)) {
+            return {
+                isPass: false,
+                msg: '用户名是6-15位字母组成'
+            };
+        }
+        // 判断用户名长度
         if (!userInfo.userName ||
             userInfo.userName.length > userNameMaxLength ||
             userInfo.userName.length < userNameMinLength) {
@@ -599,13 +605,27 @@ $(function () {
                 msg: '用户名是6-15位字母组成'
             };
         }
-        // 判断密码
+        // 判断密码的规则
+        if (!/^[a-zA-Z]{6,15}$/g.test(userInfo.password)) {
+            return {
+                isPass: false,
+                msg: '密码是6-15位字母组成'
+            };
+        }
+        // 判断密码长度
         if (!userInfo.password ||
             userInfo.password.length > userNameMaxLength ||
             userInfo.password.length < userNameMinLength) {
             return {
                 isPass: false,
                 msg: '密码是6-15位字母组成'
+            };
+        }
+        // 判断电话
+        if (!/^1[0-9]{10}$/.test(userInfo.phone)) {
+            return {
+                isPass: false,
+                msg: '手机号码由长度为11位的数字组成'
             };
         }
         return {
