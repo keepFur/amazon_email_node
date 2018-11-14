@@ -117,7 +117,8 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
                                 id: selectDatas[0].id,
                                 status: 3,
                                 count: selectDatas[0].taskSumMoney,
-                                taskOrderNumber: selectDatas[0].taskOrderNumber
+                                taskOrderNumber: selectDatas[0].taskOrderNumber,
+                                taskUserId: selectDatas[0].taskUserId
                             },
                             success: function (data, textStatus, jqXHR) {
                                 reloadTable();
