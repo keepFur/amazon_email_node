@@ -631,7 +631,7 @@ var core = {
         return Number(y * 10).toFixed(0);
     },
 
-    // 计算会员价格
+    // 计算会员价格（空包）
     computeTotalPrice(level, total) {
         level = level || 1;
         total = total || 0;
@@ -639,6 +639,17 @@ var core = {
             total -= 10;
         } else if (level === 3) {
             total -= 20;
+        }
+        return total > 0 ? total : 0;
+    },
+    // 计算会员价格（流量）
+    computeTotalPriceTask(level, total) {
+        level = level || 1;
+        total = total || 0;
+        if (level === 2) {
+            total = total * 0.95;
+        } else if (level === 3) {
+            total = total * 0.9;
         }
         return total > 0 ? total : 0;
     },

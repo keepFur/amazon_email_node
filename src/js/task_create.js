@@ -23,7 +23,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
             $('#userName').data('user', JSON.stringify(user));
             $('#userBalance').text(core.fenToYuan(userInfo.money));
             $('#userLevel').html(core.getLevelText(userInfo.level));
-            $('#discountTaskSumMoneyText').toggle(userInfo.level !== 1);
+            $('#discountTaskSumMoneyText,#discountTaskPriceText').toggle(userInfo.level !== 1);
         });
     })()
 
@@ -71,6 +71,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
                 var name = $selected.data('name');
                 var code = $selected.data('code');
                 var hask = $selected.data('hask');
+                var quantity = $('input[name=taskQuantityNoKeyword]').val();
                 // 将选中的任务保存到基础数据中，后期的数据源只来源于此（唯一数据源）
                 baseDatas.taskTypeInfo = {
                     price: price,
@@ -81,14 +82,16 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
                 };
                 // 单价
                 $('#taskPrice').text(core.fenToYuan(price));
+                // 优惠价
+                $('#discountTaskPrice').text(core.fenToYuan(core.computeTotalPriceTask(baseDatas.level, price)));
                 // 总价
                 var sum = getKeywordsAndQuantity().reduce(function (total, item) {
                     return total + item.quantity;
                 }, 0);
-                var taskSumMoney = sum ? sum * baseDatas.taskTypeInfo.price : 0;
+                var taskSumMoney = sum && baseDatas.taskTypeInfo.hask ? sum * baseDatas.taskTypeInfo.price : quantity * baseDatas.taskTypeInfo.price
                 $('#taskSumMoney').text(core.fenToYuan(taskSumMoney));
                 // 折后价
-                $('#discountTaskSumMoney').text(core.fenToYuan(core.computeTotalPrice(baseDatas.level, taskSumMoney)));
+                $('#discountTaskSumMoney').text(core.fenToYuan(core.computeTotalPriceTask(baseDatas.level, taskSumMoney)));
                 // 关键词
                 $('.js-keyword-quantity-container').toggle(!!hask);
                 // 无关键词
@@ -113,7 +116,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
                 // 总价
                 $('#taskSumMoney').text(core.fenToYuan(taskSumMoney));
                 // 折后价
-                $('#discountTaskSumMoney').text(core.fenToYuan(core.computeTotalPrice(baseDatas.level, taskSumMoney)));
+                $('#discountTaskSumMoney').text(core.fenToYuan(core.computeTotalPriceTask(baseDatas.level, taskSumMoney)));
             } else {
                 this.value = '';
             }
@@ -121,7 +124,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
         // 减少时长
         $('.js-delete-time').on('click', function () {
             var $time = $('input[name=taskGoodsBrowsingTime]');
-            var quantity = $('input[name=taskQuantity]').val();
+            var quantity = $('input[name=taskQuantityNoKeyword]').val();
             if (!baseDatas.taskTypeInfo) {
                 layer.msg('请先选择任务类型');
                 return false;
@@ -134,19 +137,22 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
             // 改变单价
             baseDatas.taskTypeInfo.price -= 10;
             $('#taskPrice').text(core.fenToYuan(baseDatas.taskTypeInfo.price));
+            // 优惠价
+            $('#discountTaskPrice').text(core.fenToYuan(core.computeTotalPriceTask(baseDatas.level, baseDatas.taskTypeInfo.price)));
             // 总价
             var sum = getKeywordsAndQuantity().reduce(function (total, item) {
                 return total + item.quantity;
             }, 0);
-            var taskSumMoney = sum ? sum * baseDatas.taskTypeInfo.price : 0
+            var taskSumMoney = sum && baseDatas.taskTypeInfo.hask ? sum * baseDatas.taskTypeInfo.price : quantity * baseDatas.taskTypeInfo.price;
             $('#taskSumMoney').text(core.fenToYuan(taskSumMoney));
             // 折后价
-            $('#discountTaskSumMoney').text(core.fenToYuan(core.computeTotalPrice(baseDatas.level, taskSumMoney)));
+            $('#discountTaskSumMoney').text(core.fenToYuan(core.computeTotalPriceTask(baseDatas.level, taskSumMoney)));
             return false;
         });
         // 增加时长
         $('.js-add-time').on('click', function () {
             var $time = $('input[name=taskGoodsBrowsingTime]');
+            var quantity = $('input[name=taskQuantityNoKeyword]').val();
             if (!baseDatas.taskTypeInfo) {
                 layer.msg('请先选择任务类型');
                 return false;
@@ -159,14 +165,16 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
             // 改变单价
             baseDatas.taskTypeInfo.price += 10;
             $('#taskPrice').text(core.fenToYuan(baseDatas.taskTypeInfo.price));
+            // 优惠价
+            $('#discountTaskPrice').text(core.fenToYuan(core.computeTotalPriceTask(baseDatas.level, baseDatas.taskTypeInfo.price)));
             // 总价
             var sum = getKeywordsAndQuantity().reduce(function (total, item) {
                 return total + item.quantity;
             }, 0);
-            var taskSumMoney = sum ? sum * baseDatas.taskTypeInfo.price : 0
+            var taskSumMoney = sum && baseDatas.taskTypeInfo.hask ? sum * baseDatas.taskTypeInfo.price : quantity * baseDatas.taskTypeInfo.price;
             $('#taskSumMoney').text(core.fenToYuan(taskSumMoney));
             // 折后价
-            $('#discountTaskSumMoney').text(core.fenToYuan(core.computeTotalPrice(baseDatas.level, taskSumMoney)));
+            $('#discountTaskSumMoney').text(core.fenToYuan(core.computeTotalPriceTask(baseDatas.level, taskSumMoney)));
             return false;
         });
         // 任务时段输入框的点击事件
@@ -604,7 +612,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
             };
         }
         // 判断用户的余额
-        if (userInfo.money <= 0 || userInfo.money < core.computeTotalPrice(baseDatas.level, taskInfo.taskSumMoney)) {
+        if (userInfo.money <= 0 || userInfo.money < core.computeTotalPriceTask(baseDatas.level, taskInfo.taskSumMoney)) {
             return {
                 isPass: false,
                 msg: '主人，您的余额不足，请先充值，谢谢！！！'
