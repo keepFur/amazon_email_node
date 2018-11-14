@@ -146,14 +146,18 @@ layui.use(['element', 'layer'], function () {
         $('.js-home-toggle-date').on('click', 'a', function (event) {
             var type = $(this).data('type');
             var day = $(this).data('day');
-            $(this).parents('.js-home-toggle-date').find('a').removeClass('layui-text-pink');
-            $(this).addClass('layui-text-pink');
+            $(this).parents('.js-home-toggle-date').find('a').removeClass('layui-btn-normal').addClass('layui-btn-primary');
+            $(this).addClass('layui-btn-normal').removeClass('layui-btn-primary');
             switch (type) {
                 case 'count':
                     getTaskCount(day);
                     break;
+                case 'kbCount':
+                    getKbCount(day);
+                    break;
                 case 'type':
                     getTaskType(day);
+                    getKbType(day);
                     break;
                 case 'addmoney':
                     getAddMoney(day);
