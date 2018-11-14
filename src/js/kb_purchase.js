@@ -824,6 +824,21 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
                 msg: '请输入收货地址'
             }
         }
+        var addressTos = kbOrderInfo.addressTo.split(/\n{1,}/g);
+        var ret = addressTos.map(function (item) {
+            return $.trim(item);
+        }).filter(function (item) {
+            if (item.split(/，|,/).length === 4 && item.split(/，|,/)[2].split(/\s{1,}/g).length === 4) {
+                return true;
+            }
+            return false;
+        });
+        if (!ret.length) {
+            return {
+                isPass: false,
+                msg: '请输入正确格式的收货地址'
+            }
+        }
         return {
             isPass: true,
             msg: ''
