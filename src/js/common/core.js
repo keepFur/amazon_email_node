@@ -636,9 +636,9 @@ var core = {
         level = level || 1;
         total = total || 0;
         if (level === 2) {
-            total = total * 0.9;
+            total -= 10;
         } else if (level === 3) {
-            total = total * 0.8;
+            total -= 20;
         }
         return total;
     },
@@ -646,9 +646,9 @@ var core = {
         level = level || 1;
         var ret = `（普通会员）`;
         if (level === 2) {
-            ret = `（金牌会员：<span class="layui-text-pink">享受9折优惠</span>）`;
+            ret = `（金牌会员：<span class="layui-text-pink">享受【大王】级别优惠</span>）`;
         } else if (level == 3) {
-            ret = `（内部会员：<span class="layui-text-pink">享受8折优惠</span>）`
+            ret = `（内部会员：<span class="layui-text-pink">享受【天王】级别优惠</span>）`
         }
         return ret;
     }
