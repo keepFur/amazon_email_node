@@ -640,7 +640,7 @@ var core = {
         } else if (level === 3) {
             total -= 20;
         }
-        return total;
+        return total > 0 ? total : 0;
     },
     getLevelText(level) {
         level = level || 1;
