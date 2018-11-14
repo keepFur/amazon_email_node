@@ -171,12 +171,13 @@ $(function () {
 
         // 底部立即使用
         $('#userLoginFooter,.buy').on('click', function (event) {
+            var $this = $(this);
             $.ajax({
                 url: '/front/getUserLoginStatus',
                 success: function (data) {
                     data = JSON.parse(data);
                     if (data.status) {
-                        window.location.assign('/console#task_create');
+                        window.location.assign($this.find('a').attr('href'));
                     } else {
                         mdui.snackbar({
                             message: '请先登录系统',
