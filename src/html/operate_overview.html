@@ -7,18 +7,36 @@
             <div class="layui-tab-item layui-show">
                 <div class="layui-row" style="margin-bottom:16px;">
                     <div class="layui-col-md3 home-account-info">
-                        <h3 class="pull-left"><i class="layui-icon layui-icon-dollar layui-text-green"></i> 今日充值金额：<span
-                                class="layui-text-pink js-user-score">0</span>元</h3>
+                        <h3 class="pull-left"><i class="layui-icon layui-icon-dollar layui-text-green"></i> 今日充值金额/笔数：<span
+                                class="layui-text-pink js-user-score">0</span></h3>
                     </div>
                     <div class="layui-col-md3 home-account-info">
                         <h3 class="pull-left"><i class="layui-icon layui-icon-user layui-text-green"></i> 今日注册用户数：<span class="layui-text-pink js-user-score">0</span>个</h3>
                     </div>
                     <div class="layui-col-md3 home-account-info">
-                        <h3 class="pull-left"><i class="layui-icon layui-icon-chart layui-text-green"></i> 今日空包订单量：<span
-                                class="layui-text-pink js-user-score">0</span>单</h3>
+                        <h3 class="pull-left"><i class="layui-icon layui-icon-chart layui-text-green"></i> 今日空包订单金额/笔数：<span
+                                class="layui-text-pink js-user-score">0</span></h3>
                     </div>
                     <div class="layui-col-md3 home-account-info">
-                        <h3 class="pull-left"><i class="layui-icon layui-icon-list layui-text-green"></i> 今日流量订单量：<span class="layui-text-pink js-user-score">0</span>单</h3>
+                        <h3 class="pull-left"><i class="layui-icon layui-icon-list layui-text-green"></i> 今日流量订单金额/笔数：<span
+                                class="layui-text-pink js-user-score">0</span></h3>
+                    </div>
+                </div>
+                <div class="layui-row" style="margin-bottom:16px;">
+                    <div class="layui-col-md3 home-account-info">
+                        <h3 class="pull-left"><i class="layui-icon layui-icon-dollar layui-text-green"></i> 全部充值金额/笔数：<span
+                                class="layui-text-pink js-user-score">0</span></h3>
+                    </div>
+                    <div class="layui-col-md3 home-account-info">
+                        <h3 class="pull-left"><i class="layui-icon layui-icon-user layui-text-green"></i> 全部注册用户数：<span class="layui-text-pink js-user-score">0</span>个</h3>
+                    </div>
+                    <div class="layui-col-md3 home-account-info">
+                        <h3 class="pull-left"><i class="layui-icon layui-icon-chart layui-text-green"></i> 全部空包订单金额/笔数：<span
+                                class="layui-text-pink js-user-score">0</span></h3>
+                    </div>
+                    <div class="layui-col-md3 home-account-info">
+                        <h3 class="pull-left"><i class="layui-icon layui-icon-list layui-text-green"></i> 全部流量订单金额/笔数：<span
+                                class="layui-text-pink js-user-score">0</span></h3>
                     </div>
                 </div>
                 <div class="layui-card">
@@ -26,9 +44,6 @@
                         <div class="layui-row">
                             <div class="layui-col-md4">
                                 <div class="layui-btn-group">
-                                    <a href="#operate_overview" class="layui-btn layui-btn-primary layui-btn-sm" data-day="7">
-                                        当天
-                                    </a>
                                     <a href="#operate_overview" class="layui-btn layui-btn-normal layui-btn-sm" data-day="7">
                                         近7天
                                     </a>
@@ -37,9 +52,6 @@
                                     </a>
                                     <a href="#operate_overview" class="layui-btn layui-btn-primary layui-btn-sm" data-day="30">
                                         近30天
-                                    </a>
-                                    <a href="#operate_overview" class="layui-btn layui-btn-primary layui-btn-sm" data-day="30">
-                                        全部
                                     </a>
                                 </div>
                             </div>
@@ -57,32 +69,28 @@
                         </div>
                         <h3 class="pull-left layui-text-green">订单概况</h3>
                         <div class="layui-row" style="margin-bottom:16px;">
-                            <div class="layui-col-md4 home-account-info">
-                                <h3 class="pull-left">总订单量：<span class="js-user-sum-order">0</span>单</h3>
+                            <div class="layui-col-md6 home-account-info">
+                                <h3 class="pull-left">空包订单金额/笔数：<span class="js-user-kb-order">0/0</span></h3>
                             </div>
-                            <div class="layui-col-md4 home-account-info">
-                                <h3 class="pull-left">空包订单量：<span class="js-user-kb-order">0</span>单</h3>
-                            </div>
-                            <div class="layui-col-md4 home-account-info">
-                                <h3 class="pull-left">流量订单量：<span class="js-user-task-order">0</span>单</h3>
+                            <div class="layui-col-md6 home-account-info">
+                                <h3 class="pull-left">流量订单金额/笔数：<span class="js-user-task-order">0/0</span></h3>
                             </div>
                         </div>
                         <h3 class="pull-left layui-text-green">用户概况</h3>
                         <div class="layui-row" style="margin-bottom:16px;">
                             <div class="layui-col-md3 home-account-info">
-                                <h3 class="pull-left">总用户数：<span class="js-user-sum-count">0</span>个</h3>
-                            </div>
-                            <div class="layui-col-md3 home-account-info">
                                 <h3 class="pull-left">新增用户数：<span class="js-user-add-count">0</span>个</h3>
                             </div>
                             <div class="layui-col-md3 home-account-info">
-                                <h3 class="pull-left">已消费用户数：<span class="js-user-pur-count">0</span>个</h3>
+                                <h3 class="pull-left">金牌用户数：<span class="js-user-pur-count">0</span>个</h3>
                             </div>
                             <div class="layui-col-md3 home-account-info">
-                                <h3 class="pull-left">未消费用户数：<span class="js-user-unpur-count">0</span>个</h3>
+                                <h3 class="pull-left">已下单用户数：<span class="js-user-pur-count">0</span>个</h3>
+                            </div>
+                            <div class="layui-col-md3 home-account-info">
+                                <h3 class="pull-left">未下单用户数：<span class="js-user-unpur-count">0</span>个</h3>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
