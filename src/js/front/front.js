@@ -233,8 +233,8 @@ $(function () {
             },
             dataType: 'json',
             success: function (res) {
+                var $noticeContainer = $('.js-notice-container');
                 if (res.success) {
-                    var $noticeContainer = $('.js-notice-container');
                     if (res.data.rows.length === 0) {
                         $noticeContainer.append(`<a href="#">暂无公告</a>`);
                     } else {
