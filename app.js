@@ -40,6 +40,8 @@ let ManageKbOrder = require('./lib/manage_kb_order_service');
 let manageKbOrder = new ManageKbOrder();
 let ManageKbAddress = require('./lib/manage_kb_address_service');
 let manageKbAddress = new ManageKbAddress();
+let OperateOverview = require('./lib/operate_overview_service');
+let operateOverview = new OperateOverview();
 let APIUtil = require('./lib/api_util');
 let APIPay = require('./lib/api_pay');
 let APIArea = require('./lib/api_area');
@@ -121,6 +123,52 @@ app.get('/api/readKbTypeOfInTime', function (req, res) {
 app.get('/api/readAddMoneyOfInTime', function (req, res) {
     try {
         homeAccountView.readAddMoneyOfInTime(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+/************* 经营概况模块*************/
+// 获取今天的数据
+app.get('/api/getTodayData', function (req, res) {
+    try {
+        operateOverview.getTodayData(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 获取全部数据
+app.get('/api/getAllData', function (req, res) {
+    try {
+        operateOverview.getAllData(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 获取充值数据
+app.get('/api/getAddMoney', function (req, res) {
+    try {
+        operateOverview.getAddMoney(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 获取订单数据
+app.get('/api/getOrderData', function (req, res) {
+    try {
+        operateOverview.getOrderData(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 获取用户数据
+app.get('/api/getUserData', function (req, res) {
+    try {
+        operateOverview.getUserData(req, res, req.query);
     } catch (error) {
         Core.flyer.log(error);
     }

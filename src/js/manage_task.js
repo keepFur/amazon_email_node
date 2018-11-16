@@ -331,6 +331,11 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
                     width: 220
                 },
                 {
+                    field: 'taskUserName',
+                    title: '下单用户',
+                    width: 150
+                },
+                {
                     field: 'taskQuantity',
                     title: '关键词/数量',
                     width: 200,
