@@ -233,16 +233,16 @@ layui.use(['element', 'layer', 'laydate', 'form'], function() {
                 return false;
             }
             // 京东和平多多不支持
-            if (baseDatas.tabIndex === 2) {
+            if (baseDatas.tabIndex === 1) {
                 return false;
             }
             // 拼多多
-            if (baseDatas.tabIndex === 3) {
+            if (baseDatas.tabIndex === 2) {
                 key = 'goods_id';
             }
             value = core.getQueryString(key, this.value) || '';
             this.value = this.value.split('?')[0] + '?' + key + '=' + value;
-            if (baseDatas.tabIndex === 1) {
+            if (baseDatas.tabIndex === 0) {
                 $.get('/api/getTbDetail?id=' + value, function(res) {
                     if (res.ret[0] === 'SUCCESS::调用成功') {
                         $('#bbDetailContainer').removeClass('layui-hide');
