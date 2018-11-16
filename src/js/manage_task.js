@@ -1,6 +1,6 @@
 // 任务管理模块
 'use strict';
-layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
+layui.use(['element', 'table', 'layer', 'util', 'form'], function() {
     var element = layui.element;
     var table = layui.table;
     var layer = layui.layer;
@@ -36,7 +36,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
      */
     function initEvent() {
         // 页签点击事件
-        element.on('tab(manageTask)', function (data) {
+        element.on('tab(manageTask)', function(data) {
             if (data.index !== baseDatas.tabIndex) {
                 reloadTable({
                     taskPlant: baseDatas.taskPlants[data.index]
@@ -47,7 +47,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
         // 查询
         $('#searchBtn').on('click', searchHandle);
         // 重置
-        $('#resetBtn').on('click', function () {
+        $('#resetBtn').on('click', function() {
             $('#taskSearchForm')[0].reset();
             return false;
         });
@@ -70,10 +70,10 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
     }
 
     /**
-    * 查询的点击事件处理函数
-    * 
-    * @param {any} events 
-    */
+     * 查询的点击事件处理函数
+     * 
+     * @param {any} events 
+     */
     function searchHandle(events) {
         var queryParams = getQueryParams();
         reloadTable($.extend(queryParams, {
@@ -106,8 +106,8 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
             layer.confirm('确定取消任务吗？状态会稍微有点延时，谢谢谅解！！取消之后金额将会退回账户中，请注意查看！！', {
                 title: "询问框",
                 btn: ['确定', '取消']
-            }, function (index, layero) {
-                APIUtil.cancelTask(selectDatas[0].taskOrderNumber, function (res) {
+            }, function(index, layero) {
+                APIUtil.cancelTask(selectDatas[0].taskOrderNumber, function(res) {
                     if (res.data.status === '1') {
                         layer.msg('操作成功!');
                         $.ajax({
@@ -120,10 +120,10 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
                                 taskOrderNumber: selectDatas[0].taskOrderNumber,
                                 taskUserId: selectDatas[0].taskUserId
                             },
-                            success: function (data, textStatus, jqXHR) {
+                            success: function(data, textStatus, jqXHR) {
                                 reloadTable();
                             },
-                            error: function (jqXHR, textStatus, errorThrown) {
+                            error: function(jqXHR, textStatus, errorThrown) {
                                 layer.msg(baseDatas.netErrMsg);
                             }
                         });
@@ -151,8 +151,8 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
             layer.confirm(tipMsg, {
                 title: '询问框',
                 btn: ['确定', '取消']
-            }, function (index, layero) {
-                APIUtil.pauseAndResumeTask(selectDatas[0].taskOrderNumber, type, function (res) {
+            }, function(index, layero) {
+                APIUtil.pauseAndResumeTask(selectDatas[0].taskOrderNumber, type, function(res) {
                     if (res.data.status === '1') {
                         layer.msg('操作成功！');
                         $.ajax({
@@ -162,10 +162,10 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
                                 id: selectDatas[0].id,
                                 status: type ? 1 : 2
                             },
-                            success: function (data, textStatus, jqXHR) {
+                            success: function(data, textStatus, jqXHR) {
                                 reloadTable();
                             },
-                            error: function (jqXHR, textStatus, errorThrown) {
+                            error: function(jqXHR, textStatus, errorThrown) {
                                 layer.msg(baseDatas.netErrMsg);
                             }
                         });
@@ -196,7 +196,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
             layer.confirm(tipMsg, {
                 title: '询问框',
                 btn: ['确定', '取消']
-            }, function (index, layero) {
+            }, function(index, layero) {
                 $.ajax({
                     url: '/api/toggleTask',
                     type: 'POST',
@@ -204,7 +204,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
                         id: selectDatas[0].id,
                         status: 4
                     },
-                    success: function (data, textStatus, jqXHR) {
+                    success: function(data, textStatus, jqXHR) {
                         if (data.success) {
                             layer.msg('操作成功');
                             reloadTable();
@@ -212,7 +212,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
                             layer.msg('操作失败:' + data.message);
                         }
                     },
-                    error: function (jqXHR, textStatus, errorThrown) {
+                    error: function(jqXHR, textStatus, errorThrown) {
                         layer.msg(baseDatas.netErrMsg);
                     }
                 });
@@ -231,22 +231,22 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
      */
     function asyncTaskHandle(e) {
         // 1，查找出所有的处理中任务
-        $.get('/api/readAllProcessTask', function (res) {
+        $.get('/api/readAllProcessTask', function(res) {
             if (res.data.rows.length) {
                 layer.confirm(`当前共有 ${res.data.rows.length} 条处理中的任务,确定更新吗？<br>此操作不会产生任何不良影响，请放心操作！`, {
                     title: '询问框',
                     btn: ['确定', '取消']
-                }, function (index, layero) {
+                }, function(index, layero) {
                     // 2，通过列流的api查询出以上任务中已完成的任务
                     APIUtil.listTask({
-                        id: res.data.rows.map(function (item) { return item.taskOrderNumber }).join(',')
-                    }, function (res) {
+                        id: res.data.rows.map(function(item) { return item.taskOrderNumber }).join(',')
+                    }, function(res) {
                         if (res.data.status !== '1') {
                             layer.msg(res.data.tips);
                         } else if (res.data.list && res.data.list.l.length > 0) {
-                            var ids = res.data.list.l.filter(function (item) {
+                            var ids = res.data.list.l.filter(function(item) {
                                 return item.s == 1;
-                            }).map(function (t) {
+                            }).map(function(t) {
                                 return t.i;
                             });
                             if (ids.length) {
@@ -258,7 +258,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
                                         id: ids.join(','),
                                         status: 4
                                     },
-                                    success: function (data, textStatus, jqXHR) {
+                                    success: function(data, textStatus, jqXHR) {
                                         if (data.success) {
                                             layer.msg('操作成功,共同步（' + ids.length + '）条任务');
                                             reloadTable();
@@ -266,7 +266,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
                                             layer.msg('操作失败:' + data.message);
                                         }
                                     },
-                                    error: function (jqXHR, textStatus, errorThrown) {
+                                    error: function(jqXHR, textStatus, errorThrown) {
                                         layer.msg(baseDatas.netErrMsg);
                                     }
                                 });
@@ -286,15 +286,15 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
     }
 
     /**
-    *获取表格的查询参数
-    *
-    * @returns 返回所有参数的对象
-    */
+     *获取表格的查询参数
+     *
+     * @returns 返回所有参数的对象
+     */
     function getQueryParams() {
         var $form = $('#taskSearchForm');
         var formDatas = $form.serializeArray();
         var ret = {};
-        $.each(formDatas, function (index, item) {
+        $.each(formDatas, function(index, item) {
             ret[item.name] = item.value;
         });
         return ret;
@@ -310,96 +310,97 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
             url: '/api/readTaskPage',
             page: true,
             where: {
-                plant: 'TB'
+                taskPlant: 'TB'
             },
-            cols: [[
-                {
-                    checkbox: true,
-                    fixed: 'left'
-                },
-                {
-                    field: '',
-                    title: '序号',
-                    fixed: 'left',
-                    templet: function (d) {
-                        return d.LAY_INDEX;
+            cols: [
+                [{
+                        checkbox: true,
+                        fixed: 'left'
+                    },
+                    {
+                        field: '',
+                        title: '序号',
+                        fixed: 'left',
+                        templet: function(d) {
+                            return d.LAY_INDEX;
+                        }
+                    },
+                    {
+                        field: 'taskOrderNumber',
+                        title: '订单号',
+                        width: 220
+                    },
+                    {
+                        field: 'taskUserName',
+                        title: '下单用户',
+                        width: 150
+                    },
+                    {
+                        field: 'taskQuantity',
+                        title: '关键词/数量',
+                        width: 200,
+                        templet: function(d) {
+                            return '（' + (d.taskKeyword || '-') + '）' + d.taskQuantity + '个 ';
+                        }
+                    },
+                    {
+                        field: 'taskSumMoney',
+                        title: '消费金额',
+                        width: 100,
+                        templet: function(d) {
+                            return core.fenToYuan(d.taskSumMoney) + ' 元';
+                        }
+                    },
+                    {
+                        field: 'plant',
+                        title: '平台/任务类型',
+                        width: 250,
+                        templet: function(d) {
+                            return core.getPlantByCode(d.taskPlant) + '（' + d.taskTypeName + '）';
+                        }
+                    },
+                    {
+                        field: 'taskName',
+                        title: '任务名称',
+                        width: 200
+                    },
+                    {
+                        field: 'taskBabyLinkToken',
+                        title: '宝贝链接',
+                        width: 250,
+                        templet: function(d) {
+                            return `<a href="${d.taskBabyLinkToken}" style="color:#2cc3a9" target="_blank">${d.taskBabyLinkToken}</a>`;
+                        }
+                    },
+                    {
+                        field: 'taskStartDate',
+                        title: '任务开始日期',
+                        width: 120,
+                        templet: function(d) {
+                            return util.toDateString(d.createdDate, 'yyyy-MM-dd');
+                        }
+                    },
+                    {
+                        field: 'createdDate',
+                        title: '订单创建时间',
+                        width: 200,
+                        templet: function(d) {
+                            return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
+                        }
+                    },
+                    {
+                        field: 'status',
+                        title: '处理状态',
+                        width: 150,
+                        fixed: 'right',
+                        align: 'center',
+                        templet: function(d) {
+                            var statusText = ['', '处理中', '已暂停', '已取消', '已完成']; // 1:处理中 2，已暂停 3，已取消,4已完成
+                            return `<span class="layui-text-${d.status == 1 ? 'green' : 'pink'}">${statusText[d.status]}</span> <a class="layui-btn layui-btn-normal layui-btn-xs js-view-status" data-id=" ${d.id}" data-task-order-number="${d.taskOrderNumber}">查看详情</a>`;
+                        }
                     }
-                },
-                {
-                    field: 'taskOrderNumber',
-                    title: '订单号',
-                    width: 220
-                },
-                {
-                    field: 'taskUserName',
-                    title: '下单用户',
-                    width: 150
-                },
-                {
-                    field: 'taskQuantity',
-                    title: '关键词/数量',
-                    width: 200,
-                    templet: function (d) {
-                        return '（' + (d.taskKeyword || '-') + '）' + d.taskQuantity + '个 ';
-                    }
-                },
-                {
-                    field: 'taskSumMoney',
-                    title: '消费金额',
-                    width: 100,
-                    templet: function (d) {
-                        return core.fenToYuan(d.taskSumMoney) + ' 元';
-                    }
-                },
-                {
-                    field: 'plant',
-                    title: '平台/任务类型',
-                    width: 250,
-                    templet: function (d) {
-                        return core.getPlantByCode(d.taskPlant) + '（' + d.taskTypeName + '）';
-                    }
-                },
-                {
-                    field: 'taskName',
-                    title: '任务名称',
-                    width: 200
-                },
-                {
-                    field: 'taskBabyLinkToken',
-                    title: '宝贝链接',
-                    width: 250,
-                    templet: function (d) {
-                        return `<a href="${d.taskBabyLinkToken}" style="color:#2cc3a9" target="_blank">${d.taskBabyLinkToken}</a>`;
-                    }
-                },
-                {
-                    field: 'taskStartDate',
-                    title: '任务开始日期',
-                    width: 120,
-                    templet: function (d) {
-                        return util.toDateString(d.createdDate, 'yyyy-MM-dd');
-                    }
-                },
-                {
-                    field: 'createdDate',
-                    title: '订单创建时间',
-                    width: 200,
-                    templet: function (d) {
-                        return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
-                    }
-                },
-                {
-                    field: 'status',
-                    title: '处理状态',
-                    width: 150,
-                    fixed: 'right',
-                    align: 'center',
-                    templet: function (d) {
-                        var statusText = ['', '处理中', '已暂停', '已取消', '已完成']; // 1:处理中 2，已暂停 3，已取消,4已完成
-                        return `<span class="layui-text-${d.status == 1 ? 'green' : 'pink'}">${statusText[d.status]}</span> <a class="layui-btn layui-btn-normal layui-btn-xs js-view-status" data-id=" ${d.id}" data-task-order-number="${d.taskOrderNumber}">查看详情</a>`;
-                    }
-                }
-            ]],
+                ]
+            ],
             limits: [10, 20, 50, 100],
             page: {
                 theme: '#1E9FFF',
@@ -411,7 +412,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
             response: {
                 statusCode: true
             },
-            parseData: function (res) {
+            parseData: function(res) {
                 return {
                     code: res.success,
                     msg: res.msg,
@@ -419,13 +420,13 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function () {
                     data: res.data.rows
                 }
             },
-            done: function (res) {
-                $('.js-view-status').off('click').on('click', function (event) {
+            done: function(res) {
+                $('.js-view-status').off('click').on('click', function(event) {
                     var taskOrderNumber = $(this).data('task-order-number');
                     var content = '';
                     APIUtil.listTask({
                         id: taskOrderNumber
-                    }, function (res) {
+                    }, function(res) {
                         if (res.data.status !== '1') {
                             content = res.data.tips;
                         } else if (res.data.list && res.data.list.l.length > 0) {
