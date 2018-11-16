@@ -1,6 +1,6 @@
 // 创建任务模块
 'use strict';
-layui.use(['element', 'layer', 'laydate', 'form'], function () {
+layui.use(['element', 'layer', 'laydate', 'form'], function() {
     var element = layui.element;
     var layer = layui.layer;
     var laydate = layui.laydate;
@@ -17,7 +17,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
         initEvent();
         getTaskTypeServer('TB');
         initComponent();
-        core.getUserInfoById(function (user) {
+        core.getUserInfoById(function(user) {
             userInfo = user.data.rows[0];
             baseDatas.level = userInfo.level;
             $('#userName').data('user', JSON.stringify(user));
@@ -54,7 +54,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
      */
     function initEvent() {
         // 页签的点击事件
-        element.on('tab(createTask)', function (data) {
+        element.on('tab(createTask)', function(data) {
             if (data.index !== baseDatas.tabIndex) {
                 baseDatas.tabIndex = data.index;
                 baseDatas.tabText = $(this).data('task-parent-type');
@@ -63,7 +63,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
             }
         });
         // 任务类型的切换事件，动态的更新价格
-        form.on('select(taskChildType)', function (data) {
+        form.on('select(taskChildType)', function(data) {
             if (data.value) {
                 var $selected = $(data.elem).find('option[value=' + data.value + ']')
                 var price = $selected.data('price');
@@ -85,7 +85,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
                 // 优惠价
                 $('#discountTaskPrice').text(core.fenToYuan(core.computeTotalPriceTask(baseDatas.level, price)));
                 // 总价
-                var sum = getKeywordsAndQuantity().reduce(function (total, item) {
+                var sum = getKeywordsAndQuantity().reduce(function(total, item) {
                     return total + item.quantity;
                 }, 0);
                 var taskSumMoney = sum && baseDatas.taskTypeInfo.hask ? sum * baseDatas.taskTypeInfo.price : quantity * baseDatas.taskTypeInfo.price
@@ -103,13 +103,13 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
             $('input[name=taskGoodsBrowsingTime]').val(50);
         });
         // 数量输入框的keyup事件
-        $('input[name=taskQuantity],input[name=taskQuantityNoKeyword]').on('keyup', function (event) {
+        $('input[name=taskQuantity],input[name=taskQuantityNoKeyword]').on('keyup', function(event) {
             var value = this.value;
             if (!baseDatas.taskTypeInfo) {
                 return false;
             }
             if (!isNaN(value) && value > 0) {
-                var sum = getKeywordsAndQuantity().reduce(function (total, item) {
+                var sum = getKeywordsAndQuantity().reduce(function(total, item) {
                     return total + item.quantity;
                 }, 0);
                 var taskSumMoney = sum && baseDatas.taskTypeInfo.hask ? sum * baseDatas.taskTypeInfo.price : value * baseDatas.taskTypeInfo.price;
@@ -122,7 +122,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
             }
         });
         // 减少时长
-        $('.js-delete-time').on('click', function () {
+        $('.js-delete-time').on('click', function() {
             var $time = $('input[name=taskGoodsBrowsingTime]');
             var quantity = $('input[name=taskQuantityNoKeyword]').val();
             if (!baseDatas.taskTypeInfo) {
@@ -140,7 +140,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
             // 优惠价
             $('#discountTaskPrice').text(core.fenToYuan(core.computeTotalPriceTask(baseDatas.level, baseDatas.taskTypeInfo.price)));
             // 总价
-            var sum = getKeywordsAndQuantity().reduce(function (total, item) {
+            var sum = getKeywordsAndQuantity().reduce(function(total, item) {
                 return total + item.quantity;
             }, 0);
             var taskSumMoney = sum && baseDatas.taskTypeInfo.hask ? sum * baseDatas.taskTypeInfo.price : quantity * baseDatas.taskTypeInfo.price;
@@ -150,7 +150,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
             return false;
         });
         // 增加时长
-        $('.js-add-time').on('click', function () {
+        $('.js-add-time').on('click', function() {
             var $time = $('input[name=taskGoodsBrowsingTime]');
             var quantity = $('input[name=taskQuantityNoKeyword]').val();
             if (!baseDatas.taskTypeInfo) {
@@ -168,7 +168,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
             // 优惠价
             $('#discountTaskPrice').text(core.fenToYuan(core.computeTotalPriceTask(baseDatas.level, baseDatas.taskTypeInfo.price)));
             // 总价
-            var sum = getKeywordsAndQuantity().reduce(function (total, item) {
+            var sum = getKeywordsAndQuantity().reduce(function(total, item) {
                 return total + item.quantity;
             }, 0);
             var taskSumMoney = sum && baseDatas.taskTypeInfo.hask ? sum * baseDatas.taskTypeInfo.price : quantity * baseDatas.taskTypeInfo.price;
@@ -178,7 +178,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
             return false;
         });
         // 任务时段输入框的点击事件
-        $('input[name=taskHour]').on('click', function (events) {
+        $('input[name=taskHour]').on('click', function(events) {
             var $this = $(this);
             var tepl = generateSetTaskHourTemp();
             var quantity = $this.parents('.js-keyword-quantity-item').find('input[name=taskQuantity]').val();
@@ -193,17 +193,17 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
                 content: tepl,
                 area: ['720px'],
                 btn: ['确定', '重置', '取消'],
-                btn1: function () {
+                btn1: function() {
                     var quantitys = getTaskHourQuantity();
                     var content = `关键词/数量（${keyword}/${quantity}）:</br>
                                    00:00-07:00: ${quantitys.slice(0, 8).join(',')}</br>
                                    08:00-15:00: ${quantitys.slice(8, 16).join(',')}</br>
                                    16:00-23:00: ${quantitys.slice(16).join(',')}`;
-                    (function (msg) {
+                    (function(msg) {
                         var tip = undefined;
-                        $this.hover(function () {
+                        $this.hover(function() {
                             tip = layer.tips(msg, $this[0], { tips: 1, time: 0 });
-                        }, function () {
+                        }, function() {
                             layer.close(tip);
                         });
                     })(content)
@@ -211,7 +211,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
                     layer.close(index);
                     layer.msg('设置成功');
                 },
-                btn2: function () {
+                btn2: function() {
                     setTaskHourQuantity(computeEqualPart(quantity, computeMainHourToday()));
                     return false;
                 }
@@ -225,7 +225,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
             return false;
         });
         // 宝贝链接的unblur事件
-        $('input[name=taskBabyLinkToken]').on('blur', function (e) {
+        $('input[name=taskBabyLinkToken]').on('blur', function(e) {
             var key = 'id';
             var value = '';
             if (!this.value.trim()) {
@@ -233,26 +233,28 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
                 return false;
             }
             // 京东和平多多不支持
-            if (baseDatas.tabIndex === 4 || baseDatas.tabIndex === 5) {
+            if (baseDatas.tabIndex === 2) {
                 return false;
             }
             // 拼多多
-            // if (baseDatas.tabIndex === 5) {
-            //     key = 'goods_id';
-            // }
+            if (baseDatas.tabIndex === 3) {
+                key = 'goods_id';
+            }
             value = core.getQueryString(key, this.value) || '';
             this.value = this.value.split('?')[0] + '?' + key + '=' + value;
-            $.get('/api/getTbDetail?id=' + value, function (res) {
-                if (res.ret[0] === 'SUCCESS::调用成功') {
-                    $('#bbDetailContainer').removeClass('layui-hide');
-                    $('#bbImgContainer').html(`<img src="${res.data.item.images[0]}" width="100" height="100">`);
-                    $('#bbTitle').text('标题：' + res.data.item.title);
-                    $('#bbShop').text('店铺：' + res.data.seller.shopName);
-                    $('#bbSeller').text('卖家：' + res.data.seller.sellerNick);
-                } else {
-                    layer.msg('服务器异常');
-                }
-            }, 'json');
+            if (baseDatas.tabIndex === 1) {
+                $.get('/api/getTbDetail?id=' + value, function(res) {
+                    if (res.ret[0] === 'SUCCESS::调用成功') {
+                        $('#bbDetailContainer').removeClass('layui-hide');
+                        $('#bbImgContainer').html(`<img src="${res.data.item.images[0]}" width="100" height="100">`);
+                        $('#bbTitle').text('标题：' + res.data.item.title);
+                        $('#bbShop').text('店铺：' + res.data.seller.shopName);
+                        $('#bbSeller').text('卖家：' + res.data.seller.sellerNick);
+                    } else {
+                        layer.msg('服务器异常');
+                    }
+                }, 'json');
+            }
             return false;
         });
         // 添加关键词和数量
@@ -349,7 +351,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
     function getTaskHourQuantity() {
         var quantity = [];
         var inputs = $('#setTaskHourContainer input');
-        inputs.each(function (i, item) {
+        inputs.each(function(i, item) {
             item = $(item);
             quantity[i] = Number(isNaN(item.val()) ? 0 : item.val());
         });
@@ -362,7 +364,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
      */
     function setTaskHourQuantity(hours) {
         var inputs = $('#setTaskHourContainer input');
-        inputs.each(function (i, item) {
+        inputs.each(function(i, item) {
             item = $(item);
             item.val(hours[i]);
         });
@@ -374,7 +376,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
      */
     function setKeywordAndQuantityIndex() {
         var $items = $('.js-keyword-quantity-container').find('.js-keyword-quantity-item');
-        $.each($items, function (index, item) {
+        $.each($items, function(index, item) {
             var length = index + 1;
             $(item).find('.js-task-keyword').text('关键词' + length);
             $(item).find('.js-task-quantity').text('数量' + length);
@@ -429,7 +431,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
                 taskInfo.taskHour = computeEqualPart(taskInfo.taskQuantity, computeMainHourToday());
                 taskInfo.taskSumMoney = taskInfo.taskUnitPrice * taskInfo.taskQuantity;
                 var signKeyTaskInfo = getSignKeyTaskInfo(taskInfo);
-                APIUtil.createTask(signKeyTaskInfo, function (res, err) {
+                APIUtil.createTask(signKeyTaskInfo, function(res, err) {
                     if (err) {
                         layer.msg(err.message);
                         return false;
@@ -444,42 +446,42 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
                         url: '/api/createTask',
                         type: 'POST',
                         data: taskInfo,
-                        beforeSend: function (jqXHR, settings) {
+                        beforeSend: function(jqXHR, settings) {
                             $.lockedBtn($(ele), true, '创建中');
                         },
-                        success: function (data, textStatus, jqXHR) {
+                        success: function(data, textStatus, jqXHR) {
                             if (data.success) {
                                 // 获取用户当前余额并提示
                                 layer.msg(`操作成功！！！`);
-                                core.getUserInfoById(function (user) {
+                                core.getUserInfoById(function(user) {
                                     userInfo = user.data.rows[0];
                                     $('#userName').data('user', JSON.stringify(user));
                                 });
                                 core.setWindowHash('manage_task');
                             } else {
                                 // 操作失败需要取消当前任务
-                                APIUtil.cancelTask(taskInfo.taskOrderNumber, function (res) {
+                                APIUtil.cancelTask(taskInfo.taskOrderNumber, function(res) {
                                     layer.msg('操作失败：' + res.data.tips);
                                 });
                             }
                         },
-                        error: function (jqXHR, textStatus, errorThrown) {
+                        error: function(jqXHR, textStatus, errorThrown) {
                             layer.msg(baseDatas.errorMsg);
                         },
-                        complete: function (jqXHR, textStatus) {
+                        complete: function(jqXHR, textStatus) {
                             $.unlockBtn($(ele), '<i class="layui-icon layui-icon-release"></i>创建任务');
                         }
                     });
                 });
             } else {
                 for (var i = 0; i < taskInfo.keywordQuantity.length; i++) {
-                    (function (index) {
+                    (function(index) {
                         taskInfo.taskKeyword = taskInfo.keywordQuantity[index].keyword;
                         taskInfo.taskQuantity = taskInfo.keywordQuantity[index].quantity;
                         taskInfo.taskHour = taskInfo.keywordQuantity[index].hour;
                         taskInfo.taskSumMoney = taskInfo.taskUnitPrice * taskInfo.taskQuantity;
                         var signKeyTaskInfo = getSignKeyTaskInfo(taskInfo);
-                        APIUtil.createTask(signKeyTaskInfo, function (res, err) {
+                        APIUtil.createTask(signKeyTaskInfo, function(res, err) {
                             if (err) {
                                 layer.msg(err.message);
                                 return false;
@@ -499,29 +501,29 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
                                 url: '/api/createTask',
                                 type: 'POST',
                                 data: taskInfo,
-                                beforeSend: function (jqXHR, settings) {
+                                beforeSend: function(jqXHR, settings) {
                                     $.lockedBtn($(ele), true, '创建中');
                                 },
-                                success: function (data, textStatus, jqXHR) {
+                                success: function(data, textStatus, jqXHR) {
                                     if (data.success) {
                                         // 获取用户当前的余额并提示
                                         layer.msg(`操作成功！！！`);
-                                        core.getUserInfoById(function (user) {
+                                        core.getUserInfoById(function(user) {
                                             userInfo = user.data.rows[0];
                                             $('#userName').data('user', JSON.stringify(user));
                                         });
                                         core.setWindowHash('manage_task');
                                     } else {
                                         // 操作失败需要取消当前任务
-                                        APIUtil.cancelTask(taskInfo.taskOrderNumber, function (res) {
+                                        APIUtil.cancelTask(taskInfo.taskOrderNumber, function(res) {
                                             layer.msg('操作失败：' + res.data.tips);
                                         });
                                     }
                                 },
-                                error: function (jqXHR, textStatus, errorThrown) {
+                                error: function(jqXHR, textStatus, errorThrown) {
                                     layer.msg(baseDatas.errorMsg);
                                 },
-                                complete: function (jqXHR, textStatus) {
+                                complete: function(jqXHR, textStatus) {
                                     $.unlockBtn($(ele), '<i class="layui-icon layui-icon-release"></i>创建任务');
                                 }
                             });
@@ -559,7 +561,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
     function getKeywordsAndQuantity() {
         var keywords = [];
         var keywordQuantityItem = $('.js-keyword-quantity-container').find('.js-keyword-quantity-item');
-        $.each(keywordQuantityItem, function (index, element) {
+        $.each(keywordQuantityItem, function(index, element) {
             var keyword = $(element).find('input[name=taskKeyword]').val();
             var hour = $(element).find('input[name=taskHour]').val();
             var quantity = Number($(element).find('input[name=taskQuantity]').val());
@@ -703,7 +705,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
      * @param {*}  平台
      */
     function getTaskTypeServer(plant) {
-        $.get('/api/readTaskType?status=1&plant=' + plant, function (res) {
+        $.get('/api/readTaskType?status=1&plant=' + plant, function(res) {
             renderTaskType(res.data.rows);
         }, 'json');
     }
@@ -719,7 +721,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function () {
         var $container = $('select[name=taskChildType]');
         $container.empty();
         $container.append(`<option value="">请选择任务类型</option>`);
-        $.each(kbTypes, function (index, item) {
+        $.each(kbTypes, function(index, item) {
             $container.append(`<option value="${item.id}" data-name="${item.name}" data-hask="${item.hasKeyword}" data-code="${item.lieliuCode}" data-price="${item.outPrice}" data-plant="${item.plant}">${item.name}</option>`);
         });
         form.render('select');
