@@ -1,6 +1,6 @@
 //  用户充值模块
 "use strict";
-layui.use(['element', 'layer', 'form'], function () {
+layui.use(['element', 'layer', 'form'], function() {
     var element = layui.element;
     var layer = layui.layer;
     var form = layui.form;
@@ -34,6 +34,7 @@ layui.use(['element', 'layer', 'form'], function () {
     // 更新个人资料
     function updateInfoHandler(e) {
         var userInfo = getUserInfoClient();
+        var $ele = $(e.target);
         if (!/^1[0-9]{10}$/.test(userInfo.phone)) {
             layer.msg(phoneErrorMsg);
             return;
@@ -42,12 +43,18 @@ layui.use(['element', 'layer', 'form'], function () {
             url: '/api/updateUser',
             type: 'POST',
             data: userInfo,
-            success: function (data, textStatus, jqXHR) {
+            beforeSend: function() {
+                $.lockedBtn($ele, true, '修改中');
+            },
+            success: function(data, textStatus, jqXHR) {
                 layer.msg(data.success ? ('操作成功') : ('操作失败'));
                 getUserInfoServer(setUserInfo);
             },
-            error: function (jqXHR, textStatus, errorThrown) {
+            error: function(jqXHR, textStatus, errorThrown) {
                 layer.msg(baseDatas.errorMsg);
+            },
+            complete: function() {
+                $.unlockBtn($ele, '修改');
             }
         });
         return false;
@@ -59,6 +66,7 @@ layui.use(['element', 'layer', 'form'], function () {
             old: $('form[name=userUpdatePasswordForm] input[name=oldPassword]').val(),
             new: $('form[name=userUpdatePasswordForm] input[name=password]').val(),
         };
+        var $ele = $(e.target);
         if (!/^[a-zA-Z0-9]{6,15}$/g.test(pass.old) || !/^[a-zA-Z0-9]{6,15}$/g.test(pass.new)) {
             layer.msg(passwordErrorMsg);
             return false;
@@ -76,7 +84,7 @@ layui.use(['element', 'layer', 'form'], function () {
                 userName: userName
             },
             dataType: 'json',
-            success: function (data, textStatus, jqXHR) {
+            success: function(data, textStatus, jqXHR) {
                 if (data.success) {
                     $.ajax({
                         url: '/api/setUserPassword',
@@ -86,20 +94,26 @@ layui.use(['element', 'layer', 'form'], function () {
                             userName: userName,
                             password: pass.new
                         },
-                        success: function (data, textStatus, jqXHR) {
+                        beforeSend: function() {
+                            $.lockedBtn($ele, true, '修改中');
+                        },
+                        success: function(data, textStatus, jqXHR) {
                             if (data.success) {
                                 layer.msg('操作成功，请重新登录');
                                 window.location.href = '/api/logout';
                             } else {
                                 layer.msg('操作失败');
                             }
+                        },
+                        complete: function() {
+                            $.unlockBtn($ele, '修改');
                         }
                     });
                 } else {
                     layer.msg('原密码不正确');
                 }
             },
-            error: function (jqXHR, textStatus, errorThrown) {
+            error: function(jqXHR, textStatus, errorThrown) {
                 mdui.snackbar({
                     message: '网络错误',
                     position: 'top'
@@ -119,8 +133,9 @@ layui.use(['element', 'layer', 'form'], function () {
             layer.msg('老板，你已经是我们的顶级会员了，已经大权在握，杠杠的！！！');
             return false;
         }
+        var $ele = $(e.target);
         // 获取用户的余额，判断月是否大于等于1000
-        getUserInfoServer(function (data) {
+        getUserInfoServer(function(data) {
             var money = data.money;
             if (money >= minMoney) {
                 $.ajax({
@@ -133,12 +148,18 @@ layui.use(['element', 'layer', 'form'], function () {
                         userName: userName,
                         orderNumber: APIUtil.generateOrderNumer()
                     },
-                    success: function (data, textStatus, jqXHR) {
+                    beforeSend: function() {
+                        $.lockedBtn($ele, true, '升级中');
+                    },
+                    success: function(data, textStatus, jqXHR) {
                         layer.msg(data.success ? '恭喜老板，你已经成为最高等级的会员了，赶紧去下单享受特权吧！！！' : ('操作失败' + data.message));
                         getUserInfoServer(setUserInfo);
                     },
-                    error: function (jqXHR, textStatus, errorThrown) {
+                    error: function(jqXHR, textStatus, errorThrown) {
                         layer.msg(baseDatas.netErrMsg);
+                    },
+                    complete: function() {
+                        $.unlockBtn($ele, '立马升级，享受特权');
                     }
                 });
             } else {
@@ -150,7 +171,7 @@ layui.use(['element', 'layer', 'form'], function () {
 
     // 获取个人信息
     function getUserInfoServer(callback) {
-        $.get('/api/readUserById?id=' + userId, function (res) {
+        $.get('/api/readUserById?id=' + userId, function(res) {
             if (res.success) {
                 callback(res.data.rows[0]);
             } else {

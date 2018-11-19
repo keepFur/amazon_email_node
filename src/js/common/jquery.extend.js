@@ -2,7 +2,7 @@
 /**
  * jquery的扩展方法，集合
  */
-(function ($) {
+(function($) {
     $ = window.jQuery;
     // 定义一些常量
     var paramError = '缺少参数';
@@ -11,7 +11,7 @@
      * @param {jqobj} $container 生成loading的容器，默认是内容区域
      * @param {boolean} options 可选参数，预留
      */
-    $.addLoading = function ($container, options) {
+    $.addLoading = function($container, options) {
         var $loadingEle = $('<div class= "loading-backgroud" style="position:fixed;top:50%;left:50%;width:80px;height:80px;z-index:1000;"><i class="layui-icon layui-icon-loading"></i></div>');
         $container = $container || $('.flyer-layout-content');
         $.removeAllLoading();
@@ -22,7 +22,7 @@
      * 移除一个loading
      * @param {jqobj} $container 生成loading的容器，默认是内容区域
      */
-    $.removeLoading = function ($container) {
+    $.removeLoading = function($container) {
         $container = $container || $('.flyer-layout-content');
         $container.find('.loading-backgroud').remove();
     };
@@ -30,7 +30,7 @@
     /**
      * 移除所有的loading
      */
-    $.removeAllLoading = function () {
+    $.removeAllLoading = function() {
         $('.loading-backgroud').remove();
     };
 
@@ -39,7 +39,7 @@
      * @param {jqobj} $btn 用户点击的按钮对象
      * @param {boolean} isLoading 是否要添加正在提交的图标 默认是true
      */
-    $.lockedBtn = function ($btn, isLoading, btnText) {
+    $.lockedBtn = function($btn, isLoading, btnText) {
         var _isLoading = true;
         if (!$btn.length) {
             $.writeLog('lockedBtn', paramError);
@@ -49,7 +49,7 @@
             _isLoading = isLoading;
         }
         if (_isLoading) {
-            $btn.html(btnText + '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>').attr('disabled', true);
+            $btn.html(btnText + '<i class="layui-icon layui-icon-loading"></i>').attr('disabled', true);
         } else {
             $btn.attr('disabled', true);
         }
@@ -60,7 +60,7 @@
      * @param {jqobj} $btn 用户点击的按钮对象
      * @param {string} btnText 用户点击的按钮的文本，默认为保存
      */
-    $.unlockBtn = function ($btn, btnText) {
+    $.unlockBtn = function($btn, btnText) {
         if (!$btn.length) {
             $.writeLog('unlockBtn', paramError);
             return;
@@ -73,11 +73,11 @@
      * @param {string} format 格式化日期的字符串
      * @param {date} date 日期字符串，默认时间是当前时间
      */
-    $.formatDate = function (format, date) {
+    $.formatDate = function(format, date) {
         if (typeof format !== "string") {
             format = "yyyy-mm-dd hh:MM:ss";
         }
-        var getDate = function (date) {
+        var getDate = function(date) {
             date = isString(date) ? new Date(date) : (date || new Date());
             return {
                 year: date.getFullYear(),
@@ -88,10 +88,10 @@
                 seconds: date.getSeconds()
             };
         };
-        var isString = function (obj) {
+        var isString = function(obj) {
             return typeof obj === "string";
         };
-        var fullTime = function (time) {
+        var fullTime = function(time) {
             return time >= 10 ? time : ("0" + time);
         };
         date = getDate(date);
@@ -110,18 +110,18 @@
      * @param {string} msg 日志内容
      * @param {object} options 可选参数，保留
      */
-    $.writeLog = function (fn, msg, options) {
+    $.writeLog = function(fn, msg, options) {
         console.error('错误时间：' + new Date() + '\n错误来源：' + fn + '\n错误消息：' + msg);
     };
 
     // 去除字符串两头的空格
-    $.trim = function (str) {
+    $.trim = function(str) {
         str = str || '';
         return str.replace(/^\s*|\s*$/g, '');
     };
 
     // 生成一个随机值
-    $.genGUID = function () {
+    $.genGUID = function() {
         return flyer.formatDate("yyyymmddhhMMss") + Math.floor(Math.random() * 10000000);
     }
 })(window.jQuery);
