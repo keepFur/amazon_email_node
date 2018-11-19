@@ -1,6 +1,6 @@
 // 通知管理模块
 'use strict';
-layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
+layui.use(['util', 'layer', 'element', 'table', 'form'], function() {
     var util = layui.util;
     var layer = layui.layer;
     var element = layui.element;
@@ -17,8 +17,8 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
 
     /**
      *页面入口函数 
-    * 
-    */
+     * 
+     */
     (function init() {
         form.render('select');
         // 初始化事件
@@ -31,7 +31,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
      */
     function initEvent() {
         // tab点击事件
-        element.on('tab(adviceFeedback)', function (data) {
+        element.on('tab(adviceFeedback)', function(data) {
             if (data.index !== baseDatas.currentTabIndex && data.index === 1) {
                 renderTable();
                 baseDatas.currentTabIndex = data.index;
@@ -42,7 +42,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
         // 查询
         $('#searchBtn').on('click', searchHandle);
         // 重置
-        $('#resetBtn').on('click', function () {
+        $('#resetBtn').on('click', function() {
             $('#feedbackSearchForm')[0].reset();
             return false;
         });
@@ -57,9 +57,10 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
     }
 
     // 提交反馈
-    function createAdviceFeedbackHandle() {
+    function createAdviceFeedbackHandle(e) {
         var title = $.trim($('select[name=titleCre]').val());
         var content = $.trim($('textarea[name=contentCre]').val());
+        var $ele = $(e.target);
         if (title && content) {
             $.ajax({
                 url: '/api/createAdviceFeedback',
@@ -68,7 +69,10 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                     title: title,
                     content: util.escape(content)
                 },
-                success: function (data) {
+                beforeSend: function() {
+                    $.lockedBtn($ele, true, '提交中');
+                },
+                success: function(data) {
                     if (data.success) {
                         layer.msg('操作成功');
                         $('select[name=titleCre]').val('');
@@ -81,8 +85,11 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                         layer.msg('操作失败：' + data.message);
                     }
                 },
-                error: function () {
+                error: function() {
                     layer.msg(baseDatas.netErrMsg);
+                },
+                complete: function() {
+                    $.unlockBtn($ele, '<i class="layui-icon layui-icon-release"></i>提交反馈');
                 }
             });
         } else {
@@ -93,10 +100,10 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
     }
 
     /**
-    * 查询的点击事件处理函数
-    * 
-    * @param {any} events 
-    */
+     * 查询的点击事件处理函数
+     * 
+     * @param {any} events 
+     */
     function searchHandle(events) {
         var queryParams = getQueryParams();
         reloadTable({
@@ -122,7 +129,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
             layer.confirm(tipMsg, {
                 btn: ['确定', '取消'],
                 title: "询问框",
-            }, function () {
+            }, function() {
                 $.ajax({
                     url: '/api/toggleAdviceFeedback',
                     type: 'POST',
@@ -130,11 +137,11 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                         id: selectDatas[0].id,
                         status: type
                     },
-                    success: function (data, textStatus, jqXHR) {
+                    success: function(data, textStatus, jqXHR) {
                         layer.msg(data.success ? '操作成功' : ('操作失败' + data.message));
                         reloadTable();
                     },
-                    error: function (jqXHR, textStatus, errorThrown) {
+                    error: function(jqXHR, textStatus, errorThrown) {
                         layer.msg(baseDatas.netErrMsg);
                     }
                 });
@@ -154,38 +161,39 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
             elem: '#adviceFeedbackTable',
             url: '/api/readAdviceFeedbackPage',
             page: true,
-            cols: [[
-                {
-                    checkbox: true,
-                },
-                {
-                    field: '',
-                    title: '序号',
-                    width: 60,
-                    templet: function (d) {
-                        return d.LAY_INDEX;
+            cols: [
+                [{
+                        checkbox: true,
+                    },
+                    {
+                        field: '',
+                        title: '序号',
+                        width: 60,
+                        templet: function(d) {
+                            return d.LAY_INDEX;
+                        }
+                    },
+                    {
+                        title: '分类',
+                        field: "title"
+                    }, {
+                        title: '内容',
+                        field: "content"
+                    }, {
+                        title: '创建时间',
+                        field: "createdDate",
+                        templet: function(d) {
+                            return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
+                        }
+                    }, {
+                        title: '状态',
+                        field: 'status',
+                        templet: function(d) {
+                            return d.status === 1 ? '启用' : '停用';
+                        }
                     }
-                },
-                {
-                    title: '分类',
-                    field: "title"
-                }, {
-                    title: '内容',
-                    field: "content"
-                }, {
-                    title: '创建时间',
-                    field: "createdDate",
-                    templet: function (d) {
-                        return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
-                    }
-                }, {
-                    title: '状态',
-                    field: 'status',
-                    templet: function (d) {
-                        return d.status === 1 ? '启用' : '停用';
-                    }
-                }
-            ]],
+                ]
+            ],
             limits: [10, 20, 50, 100],
             page: {
                 theme: '#1E9FFF',
@@ -197,7 +205,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
             response: {
                 statusCode: true
             },
-            parseData: function (res) {
+            parseData: function(res) {
                 return {
                     code: res.success,
                     msg: res.msg,
@@ -205,7 +213,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
                     data: res.data.rows
                 }
             },
-            done: function (res) {
+            done: function(res) {
                 setMountValue(res.data.length, res.count);
             }
         });
@@ -231,15 +239,15 @@ layui.use(['util', 'layer', 'element', 'table', 'form'], function () {
     }
 
     /**
-    *获取表格的查询参数
-    *
-    * @returns 返回所有参数的对象
-    */
+     *获取表格的查询参数
+     *
+     * @returns 返回所有参数的对象
+     */
     function getQueryParams() {
         var $form = $('#feedbackSearchForm');
         var formDatas = $form.serializeArray();
         var ret = {};
-        $.each(formDatas, function (index, item) {
+        $.each(formDatas, function(index, item) {
             ret[item.name] = item.value;
         });
         return ret;
