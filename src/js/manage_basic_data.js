@@ -1,5 +1,5 @@
 // 平台管理模块
-layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
+layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function() {
     var util = layui.util;
     var layer = layui.layer;
     var element = layui.element;
@@ -13,7 +13,6 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
             single: '请选择一条数据操作',
             batch: '请至少选择一条数据操作'
         }
-
     };
 
     /**
@@ -43,7 +42,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
         upload.render({
             elem: '#importKbNumberBtn',
             url: '/api/importKbNumberExcel',
-            done: function (res) {
+            done: function(res) {
                 if (res.success) {
                     layer.msg('导入成功！！！');
                     reloadTable('kbNumberTable');
@@ -52,13 +51,13 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
                 }
                 layer.closeAll('loading');
             },
-            before: function (obj) {
+            before: function(obj) {
                 layer.load();
             },
             size: 4096,
             accept: 'file',
             exts: 'xls|xlsx',
-            error: function (err) {
+            error: function(err) {
                 layer.closeAll('loading');
                 layer.msg('导入失败:服务器异常！！！');
             }
@@ -75,16 +74,16 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
         // 查询
         $('#searchKbNumberBtn').on('click', searchKbNumberHandle);
         // 重置
-        $('#resetKbNumberBtn').on('click', function () {
+        $('#resetKbNumberBtn').on('click', function() {
             $('#kbNumberSearchForm')[0].reset();
             return false;
         });
         // 通过excel导入
-        $('#importKbNumberBtn').on('click', function () {
+        $('#importKbNumberBtn').on('click', function() {
             return false;
         });
         // 下载excel模版
-        $('#downloadKbNumberTemplateBtn').on('click', function () {
+        $('#downloadKbNumberTemplateBtn').on('click', function() {
             var aLink = document.createElement('a');
             aLink.href = '/api/downloadKbNumberTemplate'
             aLink.click();
@@ -153,14 +152,14 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
 
     /**
      *获取表格的查询参数
-    *
-    * @returns 返回所有参数的对象
-    */
+     *
+     * @returns 返回所有参数的对象
+     */
     function getQueryParams() {
         var $form = $('#kbNumberSearchForm');
         var formDatas = $form.serializeArray();
         var ret = {};
-        $.each(formDatas, function (index, item) {
+        $.each(formDatas, function(index, item) {
             ret[item.name] = item.value;
         });
         return ret;
@@ -203,33 +202,40 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
             title: '创建单号',
             area: ['400px'],
             btn: ['创建', '取消'],
-            yes: function (index) {
+            yes: function(index, layero) {
                 var kbNumberInfo = core.getFormValues($('form[name=kbNumberCreateForm]'));
                 var validKbNumberInfoResult = validKbNumberInfo(kbNumberInfo);
+                var $ele = layero.find('.layui-layer-btn0');
                 if (validKbNumberInfoResult.isPass) {
-                    kbNumberInfo.numbers = kbNumberInfo.number.split(/\s{1,}|,|，|\n/g).filter(function (item) {
+                    kbNumberInfo.numbers = kbNumberInfo.number.split(/\s{1,}|,|，|\n/g).filter(function(item) {
                         return !!item;
                     });
                     $.ajax({
                         url: '/api/createKbNumber',
                         type: 'POST',
                         data: kbNumberInfo,
-                        success: function (data, textStatus, jqXHR) {
+                        beforeSend: function() {
+                            $.lockedBtn($ele, true, '创建中');
+                        },
+                        success: function(data, textStatus, jqXHR) {
                             layer.msg(data.success ? ('操作成功') : ('操作失败'));
                             layer.close(index);
                             reloadTable('kbNumberTable');
                         },
-                        error: function (jqXHR, textStatus, errorThrown) {
+                        error: function(jqXHR, textStatus, errorThrown) {
                             layer.msg(baseDatas.errorMsg);
+                        },
+                        complete: function() {
+                            $.unlockBtn($ele, '创建');
                         }
                     });
                 } else {
                     layer.msg(validKbNumberInfoResult.msg);
                 }
             },
-            success: function () {
+            success: function() {
                 // 电商平台的切换
-                form.on('select(plant)', function (data) {
+                form.on('select(plant)', function(data) {
                     if (data.value) {
                         getKbTypeServer(data.value);
                     } else {
@@ -297,31 +303,38 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
                 title: '空包单号信息修改',
                 btn: ['确定', '取消'],
                 area: ['400px', '400px'],
-                yes: function (index) {
+                yes: function(index, layero) {
                     var kbNumberInfo = core.getFormValues($('form[name=kbNumberUpdateForm]'));
                     var validKbNumberInfoResult = validKbNumberInfo(kbNumberInfo);
+                    var $ele = layero.find('.layui-layer-btn0');
                     kbNumberInfo.id = selectDatas[0].id;
                     if (validKbNumberInfoResult.isPass) {
                         $.ajax({
                             url: '/api/updateKbNumber',
                             type: 'POST',
                             data: kbNumberInfo,
-                            success: function (data, textStatus, jqXHR) {
+                            beforeSend: function() {
+                                $.lockedBtn($ele, true, '修改中');
+                            },
+                            success: function(data, textStatus, jqXHR) {
                                 layer.msg(data.success ? ('操作成功') : ('操作失败' + data.message));
                                 layer.close(index);
                                 reloadTable('kbNumberTable');
                             },
-                            error: function (jqXHR, textStatus, errorThrown) {
+                            error: function(jqXHR, textStatus, errorThrown) {
                                 layer.msg(baseDatas.errorMsg);
+                            },
+                            complete: function() {
+                                $.unlockBtn($ele, '确定');
                             }
                         });
                     } else {
                         layer.msg(validKbNumberInfoResult.msg);
                     }
                 },
-                success: function () {
+                success: function() {
                     // 电商平台的切换
-                    form.on('select(plant)', function (data) {
+                    form.on('select(plant)', function(data) {
                         if (data.value) {
                             getKbTypeServer(data.value);
                         } else {
@@ -330,7 +343,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
                         return false;
                     });
                     form.render('select');
-                    getKbTypeServer(plant, function () {
+                    getKbTypeServer(plant, function() {
                         form.val('kbNumberUpdateForm', {
                             plant: plant,
                             company: company
@@ -354,7 +367,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
         var type = events.data.type;
         var tipMsg = type === 0 ? '确定禁用吗？' : '确定启用吗？';
         if (selectDatas.length > 0) {
-            var ids = selectDatas.filter(function (n) { return n.status === 1; }).map(function (item) { return item.id; })
+            var ids = selectDatas.filter(function(n) { return n.status === 1; }).map(function(item) { return item.id; })
             if (!ids.length) {
                 layer.msg('请选择未使用的单号进行操作');
                 return false;
@@ -362,7 +375,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
             layer.confirm(tipMsg, {
                 btns: ['确定', '取消'],
                 title: "询问框",
-            }, function () {
+            }, function() {
                 $.ajax({
                     url: '/api/toggleKbNumber',
                     type: 'POST',
@@ -370,11 +383,11 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
                         id: ids,
                         status: type
                     },
-                    success: function (data, textStatus, jqXHR) {
+                    success: function(data, textStatus, jqXHR) {
                         layer.msg(data.success ? '操作成功' : ('操作失败' + data.message));
                         reloadTable('kbNumberTable');
                     },
-                    error: function (jqXHR, textStatus, errorThrown) {
+                    error: function(jqXHR, textStatus, errorThrown) {
                         layer.msg(baseDatas.netErrMsg);
                     }
                 });
@@ -434,28 +447,35 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
                     </form>`,
             title: '创建空包类型',
             btn: ['创建', '取消'],
-            yes: function (index) {
+            yes: function(index, layero) {
                 var kbTypeInfo = core.getFormValues($('form[name=kbTypeCreateForm]'));
                 var validKbTypeInfoResult = validKbTypeInfo(kbTypeInfo);
+                var $ele = layero.find('.layui-layer-btn0');
                 if (validKbTypeInfoResult.isPass) {
                     $.ajax({
                         url: '/api/createKbType',
                         type: 'POST',
                         data: kbTypeInfo,
-                        success: function (data, textStatus, jqXHR) {
+                        beforeSend: function() {
+                            $.lockedBtn($ele, true, '创建中');
+                        },
+                        success: function(data, textStatus, jqXHR) {
                             layer.msg(data.success ? ('操作成功') : ('操作失败'));
                             layer.close(index);
                             reloadTable('kbTypeTable');
                         },
-                        error: function (jqXHR, textStatus, errorThrown) {
+                        error: function(jqXHR, textStatus, errorThrown) {
                             layer.msg(baseDatas.errorMsg);
+                        },
+                        complete: function() {
+                            $.unlockBtn($ele, '创建');
                         }
                     });
                 } else {
                     layer.msg(validKbTypeInfoResult.msg);
                 }
             },
-            success: function () {
+            success: function() {
                 form.render('select');
             }
         });
@@ -515,29 +535,36 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
                             </div>
                         </form>`,
                 title: '空包类型信息修改',
-                yes: function (index) {
+                yes: function(index, layero) {
                     var kbTypeInfo = core.getFormValues($('form[name=kbTypeUpdateForm]'));
                     var validKbTypeInfoResult = validKbTypeInfo(kbTypeInfo);
+                    var $ele = layero.find('.layui-layer-btn0');
                     kbTypeInfo.id = selectDatas[0].id;
                     if (validKbTypeInfoResult.isPass) {
                         $.ajax({
                             url: '/api/updateKbType',
                             type: 'POST',
                             data: kbTypeInfo,
-                            success: function (data, textStatus, jqXHR) {
+                            beforeSend: function() {
+                                $.lockedBtn($ele, true, '提交中');
+                            },
+                            success: function(data, textStatus, jqXHR) {
                                 layer.msg(data.success ? ('操作成功') : ('操作失败' + data.message));
                                 layer.close(index);
                                 reloadTable('kbTypeTable');
                             },
-                            error: function (jqXHR, textStatus, errorThrown) {
+                            error: function(jqXHR, textStatus, errorThrown) {
                                 layer.msg(baseDatas.errorMsg);
+                            },
+                            complete: function() {
+                                $.unlockBtn($ele, '确定');
                             }
                         });
                     } else {
                         layer.msg(validKbTypeInfoResult.msg);
                     }
                 },
-                success: function () {
+                success: function() {
                     form.render('select');
                     form.val('kbTypeUpdateForm', {
                         plant: plant
@@ -564,7 +591,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
             layer.confirm(tipMsg, {
                 btns: ['确定', '取消'],
                 title: "询问框",
-            }, function () {
+            }, function() {
                 $.ajax({
                     url: '/api/toggleKbType',
                     type: 'POST',
@@ -572,11 +599,11 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
                         id: selectDatas[0].id,
                         status: type
                     },
-                    success: function (data, textStatus, jqXHR) {
+                    success: function(data, textStatus, jqXHR) {
                         layer.msg(data.success ? '操作成功' : ('操作失败' + data.message));
                         reloadTable('kbTypeTable');
                     },
-                    error: function (jqXHR, textStatus, errorThrown) {
+                    error: function(jqXHR, textStatus, errorThrown) {
                         layer.msg(baseDatas.netErrMsg);
                     }
                 });
@@ -662,28 +689,35 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
                     </form>`,
             title: '创建任务类型',
             btn: ['创建', '取消'],
-            yes: function (index) {
+            yes: function(index) {
                 var taskTypeInfo = core.getFormValues($('form[name=taskTypeCreateForm]'));
                 var validTaskTypeInfoResult = validTaskTypeInfo(taskTypeInfo);
+                var $ele = layero.find('.layui-layer-btn0');
                 if (validTaskTypeInfoResult.isPass) {
                     $.ajax({
                         url: '/api/createTaskType',
                         type: 'POST',
                         data: taskTypeInfo,
-                        success: function (data, textStatus, jqXHR) {
+                        beforeSend: function() {
+                            $.lockedBtn($ele, true, '创建中');
+                        },
+                        success: function(data, textStatus, jqXHR) {
                             layer.msg(data.success ? ('操作成功') : ('操作失败'));
                             layer.close(index);
                             reloadTable('taskTypeTable');
                         },
-                        error: function (jqXHR, textStatus, errorThrown) {
+                        error: function(jqXHR, textStatus, errorThrown) {
                             layer.msg(baseDatas.errorMsg);
+                        },
+                        complete: function() {
+                            $.unlockBtn($ele, '换行');
                         }
                     });
                 } else {
                     layer.msg(validTaskTypeInfoResult.msg);
                 }
             },
-            success: function () {
+            success: function() {
                 form.render('select');
             }
         });
@@ -772,29 +806,36 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
                             </div>
                         </form>`,
                 title: '任务类型信息修改',
-                yes: function (index) {
+                yes: function(index, layero) {
                     var taskTypeInfo = core.getFormValues($('form[name=taskTypeUpdateForm]'));
                     var validTaskTypeInfoResult = validTaskTypeInfo(taskTypeInfo);
+                    var $ele = layero.find('.layui-layer-btn0');
                     taskTypeInfo.id = selectDatas[0].id;
                     if (validTaskTypeInfoResult.isPass) {
                         $.ajax({
                             url: '/api/updateTaskType',
                             type: 'POST',
                             data: taskTypeInfo,
-                            success: function (data, textStatus, jqXHR) {
+                            beforeSend: function() {
+                                $.lockedBtn($ele, true, '创建中');
+                            },
+                            success: function(data, textStatus, jqXHR) {
                                 layer.msg(data.success ? ('操作成功') : ('操作失败' + data.message));
                                 layer.close(index);
                                 reloadTable('taskTypeTable');
                             },
-                            error: function (jqXHR, textStatus, errorThrown) {
+                            error: function(jqXHR, textStatus, errorThrown) {
                                 layer.msg(baseDatas.errorMsg);
+                            },
+                            complete: function() {
+                                $.unlockBtn($ele, '确定');
                             }
                         });
                     } else {
                         layer.msg(validTaskTypeInfoResult.msg);
                     }
                 },
-                success: function () {
+                success: function() {
                     form.render('select');
                     form.val('taskTypeUpdateForm', {
                         plant: plant,
@@ -823,7 +864,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
             layer.confirm(tipMsg, {
                 btns: ['确定', '取消'],
                 title: "询问框",
-            }, function () {
+            }, function() {
                 $.ajax({
                     url: '/api/toggleTaskType',
                     type: 'POST',
@@ -831,11 +872,11 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
                         id: selectDatas[0].id,
                         status: type
                     },
-                    success: function (data, textStatus, jqXHR) {
+                    success: function(data, textStatus, jqXHR) {
                         layer.msg(data.success ? '操作成功' : ('操作失败' + data.message));
                         reloadTable('taskTypeTable');
                     },
-                    error: function (jqXHR, textStatus, errorThrown) {
+                    error: function(jqXHR, textStatus, errorThrown) {
                         layer.msg(baseDatas.netErrMsg);
                     }
                 });
@@ -855,53 +896,54 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
             elem: '#kbNumberTable',
             url: '/api/readKbNumberPage',
             page: true,
-            cols: [[
-                {
-                    checkbox: true,
-                },
-                {
-                    field: '',
-                    title: '序号',
-                    width: 60,
-                    templet: function (d) {
-                        return d.LAY_INDEX;
+            cols: [
+                [{
+                        checkbox: true,
+                    },
+                    {
+                        field: '',
+                        title: '序号',
+                        width: 60,
+                        templet: function(d) {
+                            return d.LAY_INDEX;
+                        }
+                    },
+                    {
+                        title: '单号',
+                        field: "number"
+                    }, {
+                        title: '电商平台',
+                        field: "plant",
+                        templet: function(d) {
+                            return core.getPlantByCode(d.plant);
+                        }
+                    }, {
+                        title: '快递平台',
+                        field: "company",
+                        templet: function(d) {
+                            return core.getKbTypeByCode(d.company);
+                        }
+                    }, {
+                        title: '创建时间',
+                        field: "createdDate",
+                        templet: function(d) {
+                            return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
+                        }
+                    }, {
+                        title: '最后修改时间',
+                        field: "updateDate",
+                        templet: function(d) {
+                            return d.updateDate ? util.toDateString(d.updateDate, 'yyyy-MM-dd HH:mm') : '';
+                        }
+                    }, {
+                        title: '状态',
+                        field: 'status',
+                        templet: function(d) {
+                            return d.status === 1 ? '<span class="layui-text-green">未使用</span>' : '<span class="layui-text-pink">已使用</span>';
+                        }
                     }
-                },
-                {
-                    title: '单号',
-                    field: "number"
-                }, {
-                    title: '电商平台',
-                    field: "plant",
-                    templet: function (d) {
-                        return core.getPlantByCode(d.plant);
-                    }
-                }, {
-                    title: '快递平台',
-                    field: "company",
-                    templet: function (d) {
-                        return core.getKbTypeByCode(d.company);
-                    }
-                }, {
-                    title: '创建时间',
-                    field: "createdDate",
-                    templet: function (d) {
-                        return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
-                    }
-                }, {
-                    title: '最后修改时间',
-                    field: "updateDate",
-                    templet: function (d) {
-                        return d.updateDate ? util.toDateString(d.updateDate, 'yyyy-MM-dd HH:mm') : '';
-                    }
-                }, {
-                    title: '状态',
-                    field: 'status',
-                    templet: function (d) {
-                        return d.status === 1 ? '<span class="layui-text-green">未使用</span>' : '<span class="layui-text-pink">已使用</span>';
-                    }
-                }
-            ]],
+                ]
+            ],
             limits: [10, 20, 50, 100],
             page: {
                 theme: '#1E9FFF',
@@ -913,7 +955,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
             response: {
                 statusCode: true
             },
-            parseData: function (res) {
+            parseData: function(res) {
                 return {
                     code: res.success,
                     msg: res.msg,
@@ -921,7 +963,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
                     data: res.data.rows
                 }
             },
-            done: function (res) {
+            done: function(res) {
                 if (res.data.length) {
                     $('.layui-table-fixed-r').removeClass('layui-hide');
                 }
@@ -936,82 +978,83 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
         table.render({
             elem: '#kbTypeTable',
             url: '/api/readKbType',
-            cols: [[
-                {
-                    checkbox: true,
-                    fixed: 'left',
-                },
-                {
-                    field: '',
-                    title: '序号',
-                    width: 60,
-                    fixed: 'left',
-                    templet: function (d) {
-                        return d.LAY_INDEX;
+            cols: [
+                [{
+                        checkbox: true,
+                        fixed: 'left',
+                    },
+                    {
+                        field: '',
+                        title: '序号',
+                        width: 60,
+                        fixed: 'left',
+                        templet: function(d) {
+                            return d.LAY_INDEX;
+                        }
+                    },
+                    {
+                        title: '名称',
+                        field: "name",
+                        width: 250
+                    }, {
+                        title: '描述',
+                        field: "description",
+                        width: 350
+                    }, {
+                        title: '平台',
+                        field: "plant",
+                        width: 150,
+                        templet: function(d) {
+                            return core.getPlantByCode(d.plant);
+                        }
+                    }, {
+                        title: '简称',
+                        field: "code",
+                        width: 150
+                    }, {
+                        title: '价格(元)',
+                        field: "price",
+                        width: 150,
+                        templet: function(d) {
+                            return core.fenToYuan(d.price);
+                        }
+                    }, {
+                        title: '创建时间',
+                        field: "createdDate",
+                        width: 200,
+                        templet: function(d) {
+                            return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
+                        }
+                    }, {
+                        title: '最后修改时间',
+                        field: "updateDate",
+                        width: 200,
+                        templet: function(d) {
+                            return d.updateDate ? util.toDateString(d.updateDate, 'yyyy-MM-dd HH:mm') : '';
+                        }
+                    }, {
+                        title: '状态',
+                        field: 'status',
+                        width: 150,
+                        fixed: 'right',
+                        templet: function(d) {
+                            return d.status === 1 ? '启用' : '<span class="layui-text-pink">停用</span>';
+                        }
                     }
-                },
-                {
-                    title: '名称',
-                    field: "name",
-                    width: 250
-                }, {
-                    title: '描述',
-                    field: "description",
-                    width: 350
-                }, {
-                    title: '平台',
-                    field: "plant",
-                    width: 150,
-                    templet: function (d) {
-                        return core.getPlantByCode(d.plant);
-                    }
-                }, {
-                    title: '简称',
-                    field: "code",
-                    width: 150
-                }, {
-                    title: '价格(元)',
-                    field: "price",
-                    width: 150,
-                    templet: function (d) {
-                        return core.fenToYuan(d.price);
-                    }
-                }, {
-                    title: '创建时间',
-                    field: "createdDate",
-                    width: 200,
-                    templet: function (d) {
-                        return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
-                    }
-                }, {
-                    title: '最后修改时间',
-                    field: "updateDate",
-                    width: 200,
-                    templet: function (d) {
-                        return d.updateDate ? util.toDateString(d.updateDate, 'yyyy-MM-dd HH:mm') : '';
-                    }
-                }, {
-                    title: '状态',
-                    field: 'status',
-                    width: 150,
-                    fixed: 'right',
-                    templet: function (d) {
-                        return d.status === 1 ? '启用' : '<span class="layui-text-pink">停用</span>';
-                    }
-                }
-            ]],
+                ]
+            ],
             limits: [10, 20, 50, 100],
             response: {
                 statusCode: true
             },
-            parseData: function (res) {
+            parseData: function(res) {
                 return {
                     code: res.success,
                     msg: res.msg,
                     data: res.data.rows
                 }
             },
-            done: function (res) {
+            done: function(res) {
                 if (res.data.length) {
                     $('.layui-table-fixed-r').removeClass('layui-hide');
                 }
@@ -1027,99 +1070,100 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
         table.render({
             elem: '#taskTypeTable',
             url: '/api/readTaskType',
-            cols: [[
-                {
-                    checkbox: true,
-                    fixed: 'left'
-                },
-                {
-                    field: '',
-                    title: '序号',
-                    width: 60,
-                    fixed: 'left',
-                    templet: function (d) {
-                        return d.LAY_INDEX;
+            cols: [
+                [{
+                        checkbox: true,
+                        fixed: 'left'
+                    },
+                    {
+                        field: '',
+                        title: '序号',
+                        width: 60,
+                        fixed: 'left',
+                        templet: function(d) {
+                            return d.LAY_INDEX;
+                        }
+                    },
+                    {
+                        title: '名称',
+                        field: "name",
+                        width: 250
+                    }, {
+                        title: '描述',
+                        field: "description",
+                        width: 250
+                    }, {
+                        title: '平台',
+                        field: "plant",
+                        width: 150,
+                        templet: function(d) {
+                            return core.getPlantByCode(d.plant);
+                        }
+                    }, {
+                        title: '进价（积分）',
+                        field: "inPrice",
+                        width: 150,
+                    }, {
+                        title: '售价（元）',
+                        field: "outPrice",
+                        width: 150,
+                        templet: function(d) {
+                            return core.fenToYuan(d.outPrice);
+                        }
+                    }, {
+                        title: '有无关键词',
+                        field: "hasKeyword",
+                        width: 150,
+                        templet: function(d) {
+                            return d.hasKeyword === 1 ? '有' : '无';
+                        }
+                    }, {
+                        title: '类型',
+                        field: "isPc",
+                        width: 150,
+                        templet: function(d) {
+                            return d.isPc === 1 ? 'PC' : 'APP';
+                        }
+                    }, {
+                        title: '列流码',
+                        width: 150,
+                        field: "lieliuCode"
+                    }, {
+                        title: '创建时间',
+                        field: "createdDate",
+                        width: 200,
+                        templet: function(d) {
+                            return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
+                        }
+                    }, {
+                        title: '最后修改时间',
+                        field: "updateDate",
+                        width: 200,
+                        templet: function(d) {
+                            return d.updateDate ? util.toDateString(d.updateDate, 'yyyy-MM-dd HH:mm') : '';
+                        }
+                    }, {
+                        title: '状态',
+                        field: 'status',
+                        width: 150,
+                        fixed: 'right',
+                        templet: function(d) {
+                            return d.status === 1 ? '启用' : '<span class="layui-text-pink">停用</span>';
+                        }
                     }
-                },
-                {
-                    title: '名称',
-                    field: "name",
-                    width: 250
-                }, {
-                    title: '描述',
-                    field: "description",
-                    width: 250
-                }, {
-                    title: '平台',
-                    field: "plant",
-                    width: 150,
-                    templet: function (d) {
-                        return core.getPlantByCode(d.plant);
-                    }
-                }, {
-                    title: '进价（积分）',
-                    field: "inPrice",
-                    width: 150,
-                }, {
-                    title: '售价（元）',
-                    field: "outPrice",
-                    width: 150,
-                    templet: function (d) {
-                        return core.fenToYuan(d.outPrice);
-                    }
-                }, {
-                    title: '有无关键词',
-                    field: "hasKeyword",
-                    width: 150,
-                    templet: function (d) {
-                        return d.hasKeyword === 1 ? '有' : '无';
-                    }
-                }, {
-                    title: '类型',
-                    field: "isPc",
-                    width: 150,
-                    templet: function (d) {
-                        return d.isPc === 1 ? 'PC' : 'APP';
-                    }
-                }, {
-                    title: '列流码',
-                    width: 150,
-                    field: "lieliuCode"
-                }, {
-                    title: '创建时间',
-                    field: "createdDate",
-                    width: 200,
-                    templet: function (d) {
-                        return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
-                    }
-                }, {
-                    title: '最后修改时间',
-                    field: "updateDate",
-                    width: 200,
-                    templet: function (d) {
-                        return d.updateDate ? util.toDateString(d.updateDate, 'yyyy-MM-dd HH:mm') : '';
-                    }
-                }, {
-                    title: '状态',
-                    field: 'status',
-                    width: 150,
-                    fixed: 'right',
-                    templet: function (d) {
-                        return d.status === 1 ? '启用' : '<span class="layui-text-pink">停用</span>';
-                    }
-                }
-            ]],
+                ]
+            ],
             response: {
                 statusCode: true
             },
-            parseData: function (res) {
+            parseData: function(res) {
                 return {
                     code: res.success,
                     msg: res.msg,
                     data: res.data.rows
                 }
             },
-            done: function (res) {
+            done: function(res) {
                 if (res.data.length) {
                     $('.layui-table-fixed-r').removeClass('layui-hide');
                 }
@@ -1305,7 +1349,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
      * @param {*}  平台
      */
     function getKbTypeServer(plant, callback) {
-        $.get('/api/readKbType?status=1&plant=' + plant, function (res) {
+        $.get('/api/readKbType?status=1&plant=' + plant, function(res) {
             renderKbType(res.data.rows);
             callback && callback();
         }, 'json');
@@ -1320,7 +1364,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
         var $container = $('select[name=company]');
         $container.empty();
         $container.append(`<option value="">请选择快递类型</option>`);
-        $.each(kbTypes, function (index, item) {
+        $.each(kbTypes, function(index, item) {
             $container.append(`<option value="${item.code}" data-price="${item.price}" data-plant="${item.plant}">${item.name}</option>`);
         });
         form.render('select');
@@ -1347,7 +1391,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
         if (!data.length) {
             tpl += `<tr><td colspan="4">无数据</tr>`;
         }
-        $.each(data, function (index, d) {
+        $.each(data, function(index, d) {
             tpl += `<tr><td>${core.getKbTypeByCode(d.company)}</td><td>${d.total}</td><td>${d.used}</td><td><span class="layui-text-pink">${d.remain}</span></td></tr>`;
         });
         tpl += `</tbody></table>`;
@@ -1363,7 +1407,7 @@ layui.use(['util', 'layer', 'element', 'table', 'form', 'upload'], function () {
     function readKbNumberStock(plant, $container) {
         $.get('/api/readKbNumberStock', {
             plant: plant
-        }, function (res) {
+        }, function(res) {
             renderKbNumberStock(res.data.rows, $container);
         }, 'json');
     }
