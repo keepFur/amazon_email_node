@@ -303,7 +303,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function() {
                 success: function (data, textStatus, jqXHR) {
                     layer.msg(data.success ? ('操作成功') : ('操作失败：' + data.message));
                     if (data.success) {
-                        core.setWindowHash('manage_kb_order');
+                        core.setWindowHash('manage_kb_order?kbType='+baseDatas.plant);
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
