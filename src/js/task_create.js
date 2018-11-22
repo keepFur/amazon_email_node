@@ -457,7 +457,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function() {
                                     userInfo = user.data.rows[0];
                                     $('#userName').data('user', JSON.stringify(user));
                                 });
-                                core.setWindowHash('manage_task');
+                                core.setWindowHash('manage_task?taskType=' + baseDatas.tabText);
                             } else {
                                 // 操作失败需要取消当前任务
                                 APIUtil.cancelTask(taskInfo.taskOrderNumber, function(res) {
@@ -512,7 +512,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function() {
                                             userInfo = user.data.rows[0];
                                             $('#userName').data('user', JSON.stringify(user));
                                         });
-                                        core.setWindowHash('manage_task');
+                                        core.setWindowHash('manage_task?taskType=' + baseDatas.tabText);
                                     } else {
                                         // 操作失败需要取消当前任务
                                         APIUtil.cancelTask(taskInfo.taskOrderNumber, function(res) {

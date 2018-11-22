@@ -16,7 +16,8 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function() {
         // 任务平台
         taskPlants: ['TB', 'JD', 'PDD'],
         // 当前页签的索引
-        tabIndex: 0
+        tabIndex: 0,
+        taskType: (location.hash.split('?')[1] && location.hash.split('?')[1].split('=')[1]) || 'TB'
     };
     /**
      *页面入口函数 
@@ -24,6 +25,8 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function() {
      */
     (function init() {
         form.render('select');
+        // 调转到相应的平台
+        element.tabChange('manageTask', baseDatas.taskType);
         // 渲染数据表格
         renderTable();
         // 初始化事件
@@ -310,7 +313,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function() {
             url: '/api/readTaskPage',
             page: true,
             where: {
-                taskPlant: 'TB'
+                taskPlant: baseDatas.taskType
             },
             cols: [
                 [{
