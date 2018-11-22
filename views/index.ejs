@@ -14,13 +14,13 @@
     <meta name="keywords" content="淘宝引流,淘宝免费流量,淘宝买流量,淘宝手机流量,淘宝APP流量,淘宝流量软件,淘宝流量推广,淘宝流量提升,流量推广软件,网店推广软件">
     <meta name="description" content="猎流是一款用于淘宝引流的免费提升流量软件,模拟人工自然搜索、点击、停留浏览店铺和宝贝,支持PC流量、手机无线APP流量提升,可通过买流量快速提升淘宝店铺商品搜索排名、展现量、访问量和人气值！">
     <script>
-        var _hmt = _hmt || [];
-        (function () {
-            var hm = document.createElement("script");
-            hm.src = "https://hm.baidu.com/hm.js?b5a7f886836cb649fba0ea0bbdad1adf";
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(hm, s);
-        })();
+        // var _hmt = _hmt || [];
+        // (function () {
+        //     var hm = document.createElement("script");
+        //     hm.src = "https://hm.baidu.com/hm.js?b5a7f886836cb649fba0ea0bbdad1adf";
+        //     var s = document.getElementsByTagName("script")[0];
+        //     s.parentNode.insertBefore(hm, s);
+        // })();
     </script>
 </head>
 
@@ -36,9 +36,9 @@
             <span id="userName" data-user-name='<%= user.userName %>' data-user-id='<%= user.id %>' data-user='<%= JSON.stringify(user) %>'>
                 <%= user.userName %>
             </span>
-            <a href="/api/logout" id="logout">
-                <i class="layui-icon layui-icon-spread-left"></i>
-            </a>
+        <a href="/api/logout" id="logout">
+            <i class="layui-icon layui-icon-spread-left"></i>
+        </a>
         </span>
     </header>
     <!-- 面包屑 -->
@@ -80,21 +80,21 @@
         <span class="footer-brand" data-updatecontent="更新什么什么">Version:
             <span class="version-icon">
                 <span class='version-update'></span>
-                <%=package.version %>
+        <%=package.version %>
             </span>
-        </span>
-        <span class="footer-brand">
+            </span>
+            <span class="footer-brand">
             <strong class="text-danger">
                 <%=package.siteName%>
             </strong>
         </span>
-        <p class="no-margin">
-            ©
-            <span>2018</span>
-            <strong>
+            <p class="no-margin">
+                ©
+                <span>2018</span>
+                <strong>
                 <%=package.siteName%>
             </strong>. ALL Rights Reserved.
-        </p>
+            </p>
     </footer>
     <script type="text/javascript" src="../plugins/js/jquery.min.js"></script>
     <!-- <script type="text/javascript" src="../js/common/jquery.extend.js"></script> -->
