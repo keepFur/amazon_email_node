@@ -1,7 +1,8 @@
 <div>
     <div class="layui-tab layui-tab-brief" lay-filter="addMoney">
         <ul class="layui-tab-title">
-            <li data-index="0" class="layui-this">在线充值</li>
+            <li class="layui-this" lay-id="addMoney">在线充值</li>
+            <li class="shareMoney">推广攒钱</li>
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
@@ -35,6 +36,36 @@
                 <div class="task-add-container">
                     <div class="layui-row">
                         <button class="layui-btn layui-btn-normal" style="width:100%;" id="addMoney"> <i class="layui-icon layui-icon-release"></i>生成支付二维码</button>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <form class="layui-form" name="shareForm">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">推广链接</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="shareLink" class="layui-input" disabled>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">描述</label>
+                        <div class="layui-input-block">
+                            <textarea name="shareDesc" placeholder="选填，对你朋友说点什么吧，好听的话语是有利于增加推广效果的。。。" class="layui-textarea"></textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">效果预览</label>
+                        <div class="layui-input-block">
+                            <textarea name="shareEffect" class="layui-textarea" disabled></textarea>
+                        </div>
+                    </div>
+                </form>
+                <div class="task-detail-container">
+                    <span style="color:#f00;font-size:16px;">推广佣金说明：各位老板，如果您的朋友通过你分享的链接进行注册，您的朋友每次充值之后都会返充值金额的7%到您的账户中。（举个栗子：您的朋友充值了1000元，那么你将获得70元），佣金非常的可观。所有的获得的佣金都会在左侧菜单拦中的`资金明细`中有记录。点击下方的`一键复制推广链接`按钮，马上去推广吧！祝每天爆单！！!</span><br>
+                </div>
+                <div class="task-add-container">
+                    <div class="layui-row">
+                        <button class="layui-btn layui-btn-normal" style="width:100%;" id="copyShareLink"> <i class="layui-icon layui-icon-share"></i>一键复制推广文案</button>
                     </div>
                 </div>
             </div>
