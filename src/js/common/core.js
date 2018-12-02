@@ -6,7 +6,7 @@ var core = {
     },
 
     // 设置页面的hash
-    setWindowHash: function (hash, params) {
+    setWindowHash: function(hash, params) {
         if (params) {
             location.hash = hash + params;
         } else {
@@ -15,11 +15,11 @@ var core = {
     },
 
     // 为表格中checkbox绑定点击事件
-    bindCheckboxEvent: function ($table) {
+    bindCheckboxEvent: function($table) {
         if ($table) {
             try {
                 var selector = 'input[type=checkbox][name=""]';
-                $table.$body.find(selector).on('click', function () {
+                $table.$body.find(selector).on('click', function() {
                     var $this = $(this),
                         datalength = $table.options.data.length,
                         checkedDataLength = 0;
@@ -49,20 +49,20 @@ var core = {
      * @param {any} options  可选参数包括但不限于  {pageNumber：当前显示的页数，callback：回掉函数}
      * @return {Obj} pageObj  分页的实例对象
      */
-    initPager: function ($pageContainer, totalNum, pageSize, options) {
+    initPager: function($pageContainer, totalNum, pageSize, options) {
         var pageObj = flyer.page($pageContainer, {
             totalNum: totalNum,
             curIndex: options.pageNumber || 1,
             pageSize: pageSize,
-            fnClick: function () {
-                var pageSize = 20;
-                if (options.pageSizeSelectObj) {
-                    pageSize = parseInt(options.pageSizeSelectObj.getSelectedValue());
-                }
-                // 刷新表格
-                options.callback(this.options.curIndex, pageSize);
-                options.exports.curIndex = this.options.curIndex;
-            } //分页回调函数
+            fnClick: function() {
+                    var pageSize = 20;
+                    if (options.pageSizeSelectObj) {
+                        pageSize = parseInt(options.pageSizeSelectObj.getSelectedValue());
+                    }
+                    // 刷新表格
+                    options.callback(this.options.curIndex, pageSize);
+                    options.exports.curIndex = this.options.curIndex;
+                } //分页回调函数
         });
         // options.exports.curIndex = pageObj.options.curIndex;
         return pageObj;
@@ -77,7 +77,7 @@ var core = {
      * @param {any} callback 点击回掉函数
      * @return {Obj} 下拉框实例
      */
-    initPagerSizeSelect: function ($pageSizeContainer, pageList, currentSize, options) {
+    initPagerSizeSelect: function($pageSizeContainer, pageList, currentSize, options) {
         var pageSizeSelectObj = null,
             that = this;
         if ($pageSizeContainer.length && pageList.length) {
@@ -89,17 +89,17 @@ var core = {
                 allowSearch: false,
                 defaultValue: currentSize || '20',
                 data: pageList,
-                fnSelected: function (item, elm, items) {
-                    if (typeof options.callback === 'function') {
-                        var pageNumber = 1;
-                        // if (options.pagerObj) {
-                        //     pageNumber = options.pagerObj.options.curIndex;
-                        // }
-                        // 刷新表格
-                        options.callback(pageNumber, parseInt(item.fieldKey));
-                        options.exports.curIndex = pageNumber;
-                    }
-                } //点击选中事件
+                fnSelected: function(item, elm, items) {
+                        if (typeof options.callback === 'function') {
+                            var pageNumber = 1;
+                            // if (options.pagerObj) {
+                            //     pageNumber = options.pagerObj.options.curIndex;
+                            // }
+                            // 刷新表格
+                            options.callback(pageNumber, parseInt(item.fieldKey));
+                            options.exports.curIndex = pageNumber;
+                        }
+                    } //点击选中事件
             });
         } else if ($pageSizeContainer.length) {
             $pageSizeContainer.hide();
@@ -111,7 +111,7 @@ var core = {
      * 
      * @param {number} length 显示的长度
      */
-    generatePageText: function (length) {
+    generatePageText: function(length) {
         length = length || 20;
         var perPageText = '每页按' + length + '条显示';
         return (flyer.i18n && flyer.i18n.initTitle(perPageText)) || perPageText;
@@ -122,7 +122,7 @@ var core = {
      * @param {any} total 数据总数
      * @return {Obj} 一个数组
      */
-    getPageListByTotal: function (total) {
+    getPageListByTotal: function(total) {
         var tempArr = [],
             perPage20 = core.generatePageText(20),
             perPage50 = core.generatePageText(50),
@@ -135,34 +135,34 @@ var core = {
                     key: 20,
                     val: perPage20
                 }, {
-                        key: 50,
-                        val: perPage50
-                    });
+                    key: 50,
+                    val: perPage50
+                });
             } else if (total > 50 && total <= 100) {
                 tempArr.push({
                     key: 20,
                     val: perPage20
                 }, {
-                        key: 50,
-                        val: perPage50
-                    }, {
-                        key: 100,
-                        val: perPage100
-                    });
+                    key: 50,
+                    val: perPage50
+                }, {
+                    key: 100,
+                    val: perPage100
+                });
             } else if (total > 100) {
                 tempArr.push({
                     key: 20,
                     val: perPage20
                 }, {
-                        key: 50,
-                        val: perPage50
-                    }, {
-                        key: 100,
-                        val: perPage100
-                    }, {
-                        key: 200,
-                        val: perPage200
-                    });
+                    key: 50,
+                    val: perPage50
+                }, {
+                    key: 100,
+                    val: perPage100
+                }, {
+                    key: 200,
+                    val: perPage200
+                });
             }
         }
         return tempArr;
@@ -176,7 +176,7 @@ var core = {
      * @param {any} colspan 需要合并的列数
      * @param {any} message 显示的信息
      */
-    tableNoMatch: function ($table, message) {
+    tableNoMatch: function($table, message) {
         if ($table) {
             var msg = '暂时没有数据',
                 colspan = $table.$header.find('th').length,
@@ -197,7 +197,7 @@ var core = {
      * 
      * @param {str} hash 当前页面的hash值
      */
-    menuHeightLightByHash: function (hash) {
+    menuHeightLightByHash: function(hash) {
         if (hash) {
             $('ul.flyer-layout-tree').find('a[data-url="' + hash + '.html' + '"]').addClass('flyer-layout-linkActive');
         } else {
@@ -211,13 +211,13 @@ var core = {
      * @param {any} $table 数据表格
      * @returns 返回一个数组，没有则返回空数据
      */
-    getTableCheckedDatas: function ($table) {
+    getTableCheckedDatas: function($table) {
         var arr = [],
             rows = [];
         if ($table) {
             var checkedDatas = $table.$body.find('input[type=checkbox][name!=flyer-active-radio]:checked');
             rows = $table.getDatas();
-            $.each(checkedDatas, function (index, item) {
+            $.each(checkedDatas, function(index, item) {
                 var $item = $(item),
                     $index = $item.parents('tr').data('index');
                 arr[index] = rows[$index];
@@ -232,7 +232,7 @@ var core = {
      * @param {any} $form 表单对象
      * @returns 返回一个对象
      */
-    getFormValues: function ($form) {
+    getFormValues: function($form) {
         var formValueObject = {};
         var serializeArray = [];
         if (!$form || !$form.length) {
@@ -240,7 +240,7 @@ var core = {
             return {};
         }
         serializeArray = $form.serializeArray();
-        serializeArray.forEach(function (element) {
+        serializeArray.forEach(function(element) {
             formValueObject[element.name] = $.trim(element.value);
         }, this);
         return formValueObject;
@@ -253,7 +253,7 @@ var core = {
      * @param {string} date2 
      * @returns 返回差值
      */
-    computeDifferentDay: function (date1, date2) {
+    computeDifferentDay: function(date1, date2) {
         var diffDay = 1;
         if (!date1 || !date2) {
             return diffDay;
@@ -271,7 +271,7 @@ var core = {
      * @param {stringany} typeKey 
      * @returns 返回value
      */
-    getTaskChildType: function (typeKey) {
+    getTaskChildType: function(typeKey) {
         var types = {
             APP_TRAFFIC: 'APP流量',
             PC_TRAFFIC: 'PC流量',
@@ -302,7 +302,7 @@ var core = {
      * @param {stringany} typeKey 
      * @returns 返回code
      */
-    getTypeCodeByValue: function (typeKey) {
+    getTypeCodeByValue: function(typeKey) {
         var types = {
             APP_SEARCH: {
                 code: 0,
@@ -473,7 +473,7 @@ var core = {
     },
 
     // 根据快递公司的代码获取快递公司的名字
-    getKbTypeByCode: function (code) {
+    getKbTypeByCode: function(code) {
         var kb = {
             ST: '申通快递',
             ZT: '中通快递',
@@ -487,7 +487,7 @@ var core = {
     },
 
     // 根据平台代码获取平台名称
-    getPlantByCode: function (code) {
+    getPlantByCode: function(code) {
         var plant = {
             TB: '淘宝',
             JD: '京东',
@@ -501,7 +501,7 @@ var core = {
      * @param {stringany} typeKey 
      * @returns 返回value
      */
-    getTaskParentype: function (typeKey) {
+    getTaskParentype: function(typeKey) {
         var types = {
             TRAFFIC: '流量任务',
             COLLECT: '收藏任务',
@@ -521,9 +521,9 @@ var core = {
      * @param {object} $tabContainer 页签容器
      * @param {function} callback 初始化之后的回调函数
      */
-    initTabClick: function ($tabContainer, callback) {
+    initTabClick: function($tabContainer, callback) {
         if ($tabContainer && $tabContainer.length) {
-            $tabContainer.off('click').on('click', function (event) {
+            $tabContainer.off('click').on('click', function(event) {
                 var index = $(this).data('index') || 0;
                 if ($(this).hasClass('flyer-tab-active')) {
                     return false;
@@ -546,8 +546,8 @@ var core = {
      * 
      * @param {function} callback 回调函数
      */
-    getSysNow: function (callback) {
-        $.get('http://api.lieliu.com:1024/api/sys_now?format=json', function (data) {
+    getSysNow: function(callback) {
+        $.get('http://api.lieliu.com:1024/api/sys_now?format=json', function(data) {
             callback(data);
         });
     },
@@ -558,7 +558,7 @@ var core = {
      * @param {number} number 原数据
      * @param {string|number} pad 填充的字符串
      */
-    padStart: function (number, pad) {
+    padStart: function(number, pad) {
         pad = pad || '0';
         return number > 9 ? number : pad + number;
     },
@@ -569,7 +569,7 @@ var core = {
      * 
      * @param {object} obj 原数据
      */
-    objectToString: function (obj, result) {
+    objectToString: function(obj, result) {
         result = result || ``;
         if (typeof obj !== 'object') {
             $.writeLog('core-objectToString', '参数错误');
@@ -586,7 +586,7 @@ var core = {
     },
 
     //  将一个数字抓换为记账写法 例如 1000000  1，000，000
-    numberToLocalString: function (num) {
+    numberToLocalString: function(num) {
         if (num && !isNaN(num)) {
             return Number(num + '.00').toLocaleString();
         }
@@ -594,9 +594,9 @@ var core = {
     },
 
     // 获取用户的信息，通过用户id
-    getUserInfoById: function (callback) {
-        callback = callback || function () { };
-        $.get('/api/readUserById', function (userInfo) {
+    getUserInfoById: function(callback) {
+        callback = callback || function() {};
+        $.get('/api/readUserById', function(userInfo) {
             callback(userInfo);
         });
     },
@@ -606,7 +606,7 @@ var core = {
      * @param {any} name 
      * @returns 
      */
-    getQueryString: function (name, url) {
+    getQueryString: function(name, url) {
         var reg = new RegExp(name + "=([^&|#?]+)");
         var r = url.substring(url.indexOf("?") + 1).match(reg);
         if (r !== null) {
@@ -616,7 +616,7 @@ var core = {
     },
 
     // 将分转换成元
-    fenToYuan: function (f) {
+    fenToYuan: function(f) {
         if (!f || isNaN(f)) {
             return 0.00;
         }
@@ -624,7 +624,7 @@ var core = {
     },
 
     // 将元转换成分
-    yuanToFen: function (y) {
+    yuanToFen: function(y) {
         if (!y || isNaN(y)) {
             return 0;
         }
@@ -642,6 +642,7 @@ var core = {
         }
         return total > 0 ? total : 0;
     },
+
     // 计算会员价格（流量）
     computeTotalPriceTask(level, total) {
         level = level || 1;
@@ -653,6 +654,8 @@ var core = {
         }
         return total > 0 ? total : 0;
     },
+
+    // 会员文本
     getLevelText(level) {
         level = level || 1;
         var ret = `（普通会员）`;
@@ -662,5 +665,19 @@ var core = {
             ret = `（内部会员：<span class="layui-text-pink">享受【天王】级别优惠</span>）`
         }
         return ret;
+    },
+
+    // 复制到粘贴板 s：复制的文本，id：元素的id
+    copyToClipBoard: function(s, id) {
+        if (document.execCommand) {
+            var e = document.getElementById(id);
+            e.select();
+            document.execCommand("Copy");
+            return;
+        }
+        if (window.clipboardData) {
+            window.clipboardData.setData("Text", s);
+            return;
+        }
     }
 };

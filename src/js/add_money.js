@@ -281,6 +281,8 @@ layui.use(['element', 'layer', 'form'], function() {
      * @param {any} e 
      */
     function copyShareLinkHandle(e) {
+        debugger
+        core.copyToClipBoard('推广文案已成功复制到粘贴吧，去推广吧', 'jsShareEffect');
         layer.msg('推广文案已成功复制到粘贴吧，去推广吧');
         return false;
     }
