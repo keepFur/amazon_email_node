@@ -1007,3 +1007,8 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function() {
         }, 'json');
     }
 });
+
+// 圆通空包接口对接
+// 步骤
+// 1，获取秘钥，加上参数生成签名 在客户端生成
+// 2，获取单号（完成）

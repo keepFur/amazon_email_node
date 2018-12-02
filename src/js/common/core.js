@@ -672,7 +672,7 @@ var core = {
         if (document.execCommand) {
             var e = document.getElementById(id);
             e.select();
-            document.execCommand("Copy");
+            document.execCommand("copy");
             return;
         }
         if (window.clipboardData) {

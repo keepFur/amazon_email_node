@@ -19,7 +19,10 @@ layui.use(['element', 'layer', 'form'], function() {
         core.getUserInfoById(function(res) {
             $('#userMainMoney').text(core.fenToYuan(res.data.rows[0].money));
             // 生成推广链接（注册的时候自动给账号分配一个推广链接），链接形式：www.08v12.com?otherShareCode=adadjasjdiujasdiqwkajskd
-            $('input[name=shareLink]').val(location.host + '?otherShareCode=' + res.data.rows[0].myShareCode);
+            var link = location.host + '?otherShareCode=' + res.data.rows[0].myShareCode;
+            $('input[name=shareLink]').val(link);
+            // 生成效果
+            $('#jsShareEffect').val(`亲爱的朋友，我正在使用易店科技店铺优化，效果很不错哦，你也可以试试，立即点击为你准备的专属链接${link}进行注册吧，注册就送2.5元。`);
         });
         // 获取所有的充值方式并渲染
         getPackageDatas();
@@ -138,7 +141,7 @@ layui.use(['element', 'layer', 'form'], function() {
                         if (data.success) {
                             $('#jsPayCodeImg').attr('src', data.data.qr_code);
                             open.qr_id = data.data.qr_id;
-                            open.addPackageType = $('input[type=radio][name=addPackageType]').val();
+                            open.addPackageType = $('input[type=radio][name=addPackageType]:checked').val();
                             var count = 0;
                             open.timer = setInterval(function() {
                                 $.lockedBtn(layero.find('.layui-layer-btn0'), true, '支付状态检测中');
@@ -274,14 +277,13 @@ layui.use(['element', 'layer', 'form'], function() {
      * 1，user 表增加myShareCode和otherShareCode字断
      * 2，注册的时候，判断查询参数，是否有otherShareCode，如果有写入到otherShareCode字断中，并自动生成一个myOtherCode
      * 3，充值的时候，判断是否是通过别人的链接进行注册的，如果是，返回佣金和记录日志
-     * 实现步骤（客户端）：
+     * 实现步骤（客户端）：完成
      * 1，获取用户信息（myShareCode），生成推广链接
      * 2，组装推广文案
      * 3，复制推广文案
      * @param {any} e 
      */
     function copyShareLinkHandle(e) {
-        debugger
         core.copyToClipBoard('推广文案已成功复制到粘贴吧，去推广吧', 'jsShareEffect');
         layer.msg('推广文案已成功复制到粘贴吧，去推广吧');
         return false;
