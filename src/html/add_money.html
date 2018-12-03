@@ -2,7 +2,8 @@
     <div class="layui-tab layui-tab-brief" lay-filter="addMoney">
         <ul class="layui-tab-title">
             <li class="layui-this" lay-id="addMoney">在线充值</li>
-            <li class="shareMoney">推广攒钱</li>
+            <li>推广攒钱</li>
+            <li>我的推广</li>
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
@@ -48,7 +49,7 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">效果预览</label>
+                        <label class="layui-form-label">推广文案</label>
                         <div class="layui-input-block">
                             <textarea name="shareEffect" id="jsShareEffect" class="layui-textarea" disabled></textarea>
                         </div>
@@ -62,6 +63,24 @@
                         <button class="layui-btn layui-btn-normal" style="width:100%;" id="copyShareLink"> <i class="layui-icon layui-icon-share"></i>一键复制推广文案</button>
                     </div>
                 </div>
+            </div>
+            <div class="layui-tab-item">
+                <form class="layui-form clearfix" id="shareUserSearchForm">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input type="text" name="username" placeholder="用户名" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <button class="layui-btn layui-btn-normal" id="searchBtn">查询</button>
+                                <button class="layui-btn layui-btn-normal" id="resetBtn">重置</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div id="shareUserTable" lay-filter="shareUser"></div>
             </div>
         </div>
     </div>

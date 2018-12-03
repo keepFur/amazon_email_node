@@ -21,6 +21,8 @@ $(function() {
             position: 'auto',
             content: '更多公告，请登录系统查看，谢谢！！！祝老板每天爆单'
         });
+        // 如果是通过别人的分享的链接进行注册的话，直接跳转到注册的页面
+        getOtherShareCode() && $('#userRegister').trigger('click');
     })()
 
     // 事件初始化
@@ -669,8 +671,23 @@ $(function() {
         };
     }
 
+    /**
+     * 
+     * 根据参数名称获取到URL的参数值
+     * @param {any} name 
+     * @returns 
+     */
+    function getQueryString(name, url) {
+        var reg = new RegExp(name + "=([^&|#?]+)");
+        var r = url.substring(url.indexOf("?") + 1).match(reg);
+        if (r !== null) {
+            return window.unescape(r[1])
+        }
+        return null;
+    }
+
     // 获取分享码
     function getOtherShareCode() {
-        return core.getQueryString('otherShareCode');
+        return getQueryString('otherShareCode', window.location.href);
     }
 });

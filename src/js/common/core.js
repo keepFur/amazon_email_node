@@ -676,7 +676,7 @@ var core = {
             return;
         }
         if (window.clipboardData) {
-            window.clipboardData.setData("Text", s);
+            window.clipboardData.setData("Text", $(id).val());
             return;
         }
     }

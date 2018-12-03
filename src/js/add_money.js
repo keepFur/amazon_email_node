@@ -1,11 +1,15 @@
 //  用户充值模块
 "use strict";
-layui.use(['element', 'layer', 'form'], function() {
+layui.use(['element', 'layer', 'form', 'table', 'util'], function() {
     var element = layui.element;
     var layer = layui.layer;
     var form = layui.form;
+    var table = layui.table;
+    var util = layui.util;
     var collectPrice = 0.1; // 收藏价格
     var trafficPrice = 0.05; // 流量价格
+    var otherShareCode = '';
+    var myShareCode = '';
     // 入口函数
     (function init() {
         initComponment();
@@ -18,11 +22,15 @@ layui.use(['element', 'layer', 'form'], function() {
         $('form[name=addMoneyForm] input[name=userName]').val($('#userName').text().trim());
         core.getUserInfoById(function(res) {
             $('#userMainMoney').text(core.fenToYuan(res.data.rows[0].money));
+            // debugger
+            otherShareCode = res.data.rows[0].otherShareCode;
+            myShareCode = res.data.rows[0].myShareCode;
+            renderShareTable();
             // 生成推广链接（注册的时候自动给账号分配一个推广链接），链接形式：www.08v12.com?otherShareCode=adadjasjdiujasdiqwkajskd
-            var link = location.host + '?otherShareCode=' + res.data.rows[0].myShareCode;
+            var link = location.host + '/?otherShareCode=' + res.data.rows[0].myShareCode;
             $('input[name=shareLink]').val(link);
             // 生成效果
-            $('#jsShareEffect').val(`亲爱的朋友，我正在使用易店科技店铺优化，效果很不错哦，你也可以试试，立即点击为你准备的专属链接${link}进行注册吧，注册就送2.5元。`);
+            $('#jsShareEffect').val(`亲爱的朋友，我正在使用易店科技优化店铺，效果很不错哦，你也可以试试。点击下方为你准备的专属链接${link}进行注册吧。注册就送2.5元。`);
         });
         // 获取所有的充值方式并渲染
         getPackageDatas();
@@ -35,6 +43,22 @@ layui.use(['element', 'layer', 'form'], function() {
         $('#addMoney').on('click', addMoneyHandle);
         // 一键复制推广文案
         $('#copyShareLink').on('click', copyShareLinkHandle);
+        // 查询
+        $('#searchBtn').on('click', function() {
+            reloadTable({
+                userName: $('input[name=username]').val().trim(),
+                page: {
+                    curr: 1,
+                    limit: 10
+                }
+            });
+            return false;
+        });
+        // 重置
+        $('#resetBtn').on('click', function() {
+            $('#shareUserSearchForm')[0].reset();
+            return false;
+        });
     }
 
     // 充值套餐点击函数
@@ -261,7 +285,8 @@ layui.use(['element', 'layer', 'form'], function() {
             data: {
                 qr_id: qr_id,
                 addPackageType: addPackageType,
-                orderNumber: APIUtil.generateOrderNumer()
+                orderNumber: APIUtil.generateOrderNumer(),
+                otherShareCode: otherShareCode
             },
             success: function(payStatus) {
                 callback(payStatus.data.status);
@@ -284,8 +309,74 @@ layui.use(['element', 'layer', 'form'], function() {
      * @param {any} e 
      */
     function copyShareLinkHandle(e) {
-        core.copyToClipBoard('推广文案已成功复制到粘贴吧，去推广吧', 'jsShareEffect');
+        core.copyToClipBoard('jsShareEffect');
         layer.msg('推广文案已成功复制到粘贴吧，去推广吧');
         return false;
+    }
+
+    /**
+     * 渲染表格
+     * 
+     */
+    function renderShareTable() {
+        table.render({
+            elem: '#shareUserTable',
+            url: '/api/readShareUserPage',
+            page: true,
+            where: {
+                myShareCode: myShareCode
+            },
+            cols: [
+                [{
+                        field: '',
+                        title: '序号',
+                        width: 60,
+                        templet: function(d) {
+                            return d.LAY_INDEX;
+                        }
+                    },
+                    {
+                        field: 'userName',
+                        title: '用户名',
+                    },
+                    {
+                        field: 'createdDate',
+                        title: '创建时间',
+                        templet: function(d) {
+                            return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
+                        }
+                    }
+                ]
+            ],
+            limits: [10, 20, 50, 100],
+            page: {
+                theme: '#1E9FFF',
+                layout: ['prev', 'page', 'next', 'skip', 'count', 'limit']
+            },
+            request: {
+                pageName: 'offset'
+            },
+            response: {
+                statusCode: true
+            },
+            parseData: function(res) {
+                return {
+                    code: res.success,
+                    msg: res.msg,
+                    count: res.data.total,
+                    data: res.data.rows
+                }
+            }
+        });
+    }
+
+    /**
+     * 重载表格
+     * 
+     */
+    function reloadTable(where) {
+        table.reload('shareUserTable', {
+            where: where
+        });
     }
 });
