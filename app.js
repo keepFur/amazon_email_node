@@ -965,6 +965,15 @@ app.post('/api/createKbNumber', function(req, res) {
     }
 });
 
+// 通过api获取圆通空包的接口
+app.post('/ytkbApi/generateYtKbNumber', function(req, res) {
+    try {
+        manageKbNumber.generateYtKbNumber(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
 // 获取空包单号
 app.get('/api/readKbNumberPage', function(req, res) {
     try {
