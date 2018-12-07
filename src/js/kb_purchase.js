@@ -295,13 +295,13 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function() {
             kbOrderInfo.price = baseDatas.kbTypeInfo.price;
             // 如果是圆通快递的话 先获取空包单号
             // 张三，13688888888 ，广东省 深圳市 罗湖区 深南大道102号，518000
-            if(baseDatas.kbTypeInfo.code==='YT'){
+            if(baseDatas.kbTypeInfo.code==='YTIIIII'){
                 APIYTKB.generateYtKbNumber({
                    rec: [{
                        order_no:kbOrderInfo.number,// 订单号
                        rec:'江西省 宜春市 万载县 双桥镇 十二组',// 收件人详细地址  字符串长度不能大于100
                        name:'苏荣',// 发件人名称  字符串长度不能大于30
-                       shouji:'16675551108',// 发件人手机  有效的11位手机号码 
+                       shouji:'16675559991108',// 发件人手机  有效的11位手机号码 
                        address_province:'江西省',// 发件人所在省  字符串长度不能大于20
                        address_city:'宜春市',// 发件人所在市   字符串长度不能大于20
                        address_district:'万载县',// 发件人所在县/区  字符串长度不能大于20
