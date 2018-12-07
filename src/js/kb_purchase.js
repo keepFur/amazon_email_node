@@ -293,26 +293,67 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function() {
             kbOrderInfo.addressFromPca = kbOrderInfo.addressFrom.split(/\s/g)[0];
             kbOrderInfo.total = baseDatas.kbTypeInfo.price * kbOrderInfo.addressTo.length;
             kbOrderInfo.price = baseDatas.kbTypeInfo.price;
-            $.ajax({
-                url: '/api/createKbOrder',
-                type: 'POST',
-                data: kbOrderInfo,
-                beforeSend:function(){
-                    $.lockedBtn($(ele), true, '提交中');
-                },
-                success: function (data, textStatus, jqXHR) {
-                    layer.msg(data.success ? ('操作成功') : ('操作失败：' + data.message));
-                    if (data.success) {
-                        core.setWindowHash('manage_kb_order?kbType='+baseDatas.plant);
+            // 如果是圆通快递的话 先获取空包单号
+            // 张三，13688888888 ，广东省 深圳市 罗湖区 深南大道102号，518000
+            if(baseDatas.kbTypeInfo.code==='YTIIIII'){
+                APIYTKB.generateYtKbNumber({
+                   rec: [{
+                       order_no:kbOrderInfo.number,// 订单号
+                       rec:'江西省 宜春市 万载县 双桥镇 十二组',// 收件人详细地址  字符串长度不能大于100
+                       name:'苏荣',// 发件人名称  字符串长度不能大于30
+                       shouji:'16675559991108',// 发件人手机  有效的11位手机号码 
+                       address_province:'江西省',// 发件人所在省  字符串长度不能大于20
+                       address_city:'宜春市',// 发件人所在市   字符串长度不能大于20
+                       address_district:'万载县',// 发件人所在县/区  字符串长度不能大于20
+                       address:'谭部镇 十字路口旁',// 发件人详细地址  字符串长度不能大于100
+                       goods_name:'商品名称',// 商品名称  字符串长度不能大于100
+                       rec_weight:kbOrderInfo.kbWeight// 包裹重量 两位小数, 0.05kg-40kg之间
+                   }]
+                },function(res){
+                    kbOrderInfo.kbNumber = JSON.parse(res.data);
+                    $.ajax({
+                        url: '/api/createKbOrder',
+                        type: 'POST',
+                        data: kbOrderInfo,
+                        beforeSend:function(){
+                            $.lockedBtn($(ele), true, '提交中');
+                        },
+                        success: function (data, textStatus, jqXHR) {
+                            layer.msg(data.success ? ('操作成功') : ('操作失败：' + data.message));
+                            if (data.success) {
+                                core.setWindowHash('manage_kb_order?kbType='+baseDatas.plant);
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            layer.msg(baseDatas.errorMsg);
+                        },
+                        complete:function(){
+                            $.unlockBtn($(ele), '<i class="layui-icon layui-icon-release"></i>提交订单');
+                        }
+                    });
+                });
+            }else{
+                $.ajax({
+                    url: '/api/createKbOrder',
+                    type: 'POST',
+                    data: kbOrderInfo,
+                    beforeSend:function(){
+                        $.lockedBtn($(ele), true, '提交中');
+                    },
+                    success: function (data, textStatus, jqXHR) {
+                        layer.msg(data.success ? ('操作成功') : ('操作失败：' + data.message));
+                        if (data.success) {
+                            core.setWindowHash('manage_kb_order?kbType='+baseDatas.plant);
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        layer.msg(baseDatas.errorMsg);
+                    },
+                    complete:function(){
+                        $.unlockBtn($(ele), '<i class="layui-icon layui-icon-release"></i>提交订单');
                     }
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    layer.msg(baseDatas.errorMsg);
-                },
-                complete:function(){
-                    $.unlockBtn($(ele), '<i class="layui-icon layui-icon-release"></i>提交订单');
-                }
-            });
+                });
+            }
         } else {
             layer.msg(validKbOrderInfoResult.msg);
         }
@@ -1007,3 +1048,8 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function() {
         }, 'json');
     }
 });
+
+// 圆通空包接口对接
+// 步骤
+// 1，获取秘钥，加上参数生成签名 在客户端生成
+// 2，获取单号（完成）
