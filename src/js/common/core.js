@@ -668,7 +668,7 @@ var core = {
     },
 
     // 复制到粘贴板 s：复制的文本，id：元素的id
-    copyToClipBoard: function(s, id) {
+    copyToClipBoard: function(id) {
         if (document.execCommand) {
             var e = document.getElementById(id);
             e.select();
