@@ -103,32 +103,18 @@ layui.use(['element', 'layer', 'form', 'table', 'util'], function() {
             btn: '支付完成',
             scrollbar: false,
             yes: function(index, layero) {
-                $.lockedBtn(layero.find('.layui-layer-btn0'), true, '支付状态检测中');
-                var count = 0;
-                clearInterval(open.timer);
-                open.timer = setInterval(function() {
-                    count++;
-                    if (count < 5) {
-                        getQrCodePayStatus(open.qr_id, open.addPackageType, function(payStatus) {
-                            layer.closeAll('msg');
-                            if (payStatus) {
-                                open.payStatus = true;
-                                clearInterval(open.timer);
-                                layer.msg('支付成功');
-                                $.unlockBtn(layero.find('.layui-layer-btn0'), '支付完成');
-                                layer.close(index);
-                                core.setWindowHash('manage_logs');
-                                window.location.reload(true);
-                            } else {
-                                if (count === 5) {
-                                    layer.msg('订单未支付');
-                                }
-                            }
-                        });
-                    } else {
-                        clearInterval(open.timer);
-                    }
-                }, count === 0 ? 0 : 10000);
+                if (!open.payStatus) {
+                    getQrCodePayStatus(open.qr_id, open.addPackageType, function(payStatus) {
+                        layer.closeAll('msg');
+                        if (payStatus) {
+                            layer.msg('支付成功');
+                            core.setWindowHash('manage_logs');
+                            window.location.reload(true);
+                        } else {
+                            layer.msg('订单未支付');
+                        }
+                    });
+                }
             },
             cancel: function() {
                 // 支付成功之后不需要再去检查支付状态了
