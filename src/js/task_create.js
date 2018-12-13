@@ -238,10 +238,16 @@ layui.use(['element', 'layer', 'laydate', 'form'], function() {
             }
             // 拼多多
             if (baseDatas.tabIndex === 2) {
-                key = 'goods_id';
+                if (baseDatas.taskTypeInfo.code && baseDatas.taskTypeInfo.code === 93) {
+                    key = 'mall_id';
+                } else {
+                    key = 'goods_id';
+                }
             }
             value = core.getQueryString(key, this.value) || '';
-            this.value = this.value.split('?')[0] + '?' + key + '=' + value;
+            if (value) {
+                this.value = this.value.split('?')[0] + '?' + key + '=' + value;
+            }
             if (baseDatas.tabIndex === 0) {
                 $.get('/api/getTbDetail?id=' + value, function(res) {
                     if (res.ret[0] === 'SUCCESS::调用成功') {
