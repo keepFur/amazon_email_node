@@ -252,7 +252,12 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function() {
                             }).map(function(t) {
                                 return t.i;
                             });
-                            if (ids.length) {
+                            var failIds = res.data.list.l.filter(function(item) {
+                                return item.s == 8 || item.s == 9 || item.s == 10;
+                            }).map(function(t) {
+                                return t.i;
+                            });
+                            if (ids.length || failIds.length) {
                                 // 3，将已完成的任务标记为已完成状态
                                 $.ajax({
                                     url: '/api/maskCompleteTask',
@@ -263,8 +268,26 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function() {
                                     },
                                     success: function(data, textStatus, jqXHR) {
                                         if (data.success) {
-                                            layer.msg('操作成功,共同步（' + ids.length + '）条任务');
-                                            reloadTable();
+                                            // 标记为取消
+                                            $.ajax({
+                                                url: '/api/maskCompleteTask',
+                                                type: 'POST',
+                                                data: {
+                                                    id: failIds.join(','),
+                                                    status: 3
+                                                },
+                                                success: function(data, textStatus, jqXHR) {
+                                                    if (data.success) {
+                                                        layer.msg('操作成功,共同步（' + (ids.length + failIds.length) + '）条任务');
+                                                        reloadTable();
+                                                    } else {
+                                                        layer.msg('操作失败:' + data.message);
+                                                    }
+                                                },
+                                                error: function(jqXHR, textStatus, errorThrown) {
+                                                    layer.msg(baseDatas.netErrMsg);
+                                                }
+                                            });
                                         } else {
                                             layer.msg('操作失败:' + data.message);
                                         }

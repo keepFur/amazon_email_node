@@ -507,6 +507,7 @@ layui.use(['element', 'layer', 'laydate', 'form'], function() {
                                 url: '/api/createTask',
                                 type: 'POST',
                                 data: taskInfo,
+                                async: false,
                                 beforeSend: function(jqXHR, settings) {
                                     $.lockedBtn($(ele), true, '创建中');
                                 },
