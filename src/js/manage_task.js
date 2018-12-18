@@ -110,28 +110,52 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function() {
                 title: "询问框",
                 btn: ['确定', '取消']
             }, function(index, layero) {
-                APIUtil.cancelTask(selectDatas[0].taskOrderNumber, function(res) {
-                    if (res.data.status === '1') {
-                        layer.msg('操作成功!');
-                        $.ajax({
-                            url: '/api/toggleTask',
-                            type: 'POST',
-                            data: {
-                                id: selectDatas[0].id,
-                                status: 3,
-                                count: selectDatas[0].taskSumMoney,
-                                taskOrderNumber: selectDatas[0].taskOrderNumber,
-                                taskUserId: selectDatas[0].taskUserId
-                            },
-                            success: function(data, textStatus, jqXHR) {
-                                reloadTable();
-                            },
-                            error: function(jqXHR, textStatus, errorThrown) {
-                                layer.msg(baseDatas.netErrMsg);
-                            }
-                        });
-                    } else {
+                // 先判断任务是否进行到一半了，如果是的话，不能取消，否则的话，将剩余量的金额退款即可
+                APIUtil.listTask({
+                    id: selectDatas[0].taskOrderNumber
+                }, function(res) {
+                    if (res.data.status !== '1') {
                         layer.msg(res.data.tips);
+                    } else if (res.data.list && res.data.list.l.length > 0) {
+                        var total = res.data.list.l[0].c | 0;
+                        var remain = res.data.list.l[0].e | 0;
+                        // 不是处理中的
+                        if (res.data.list.l[0].s == 0) {
+                            // 处理到一半了
+                            if (remain < total / 2) {
+                                layer.msg('该订单已经完成一半了（坚持就是胜利），不能再取消了哦');
+                            } else {
+                                // 取消
+                                APIUtil.cancelTask(selectDatas[0].taskOrderNumber, function(res) {
+                                    if (res.data.status === '1') {
+                                        layer.msg('操作成功!');
+                                        $.ajax({
+                                            url: '/api/toggleTask',
+                                            type: 'POST',
+                                            data: {
+                                                id: selectDatas[0].id,
+                                                status: 3,
+                                                count: selectDatas[0].taskUnitPrice * remain,
+                                                taskOrderNumber: selectDatas[0].taskOrderNumber,
+                                                taskUserId: selectDatas[0].taskUserId
+                                            },
+                                            success: function(data, textStatus, jqXHR) {
+                                                reloadTable();
+                                            },
+                                            error: function(jqXHR, textStatus, errorThrown) {
+                                                layer.msg(baseDatas.netErrMsg);
+                                            }
+                                        });
+                                    } else {
+                                        layer.msg(res.data.tips);
+                                    }
+                                });
+                            }
+                        } else {
+                            layer.msg('该订单不是处理中的，不支持取消');
+                        }
+                    } else {
+                        layer.msg('查无此订单信息');
                     }
                 });
             });
