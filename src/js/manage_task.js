@@ -112,17 +112,17 @@ layui.use(['element', 'table', 'layer', 'util', 'form'], function() {
             }, function(index, layero) {
                 // 先判断任务是否进行到一半了，如果是的话，不能取消，否则的话，将剩余量的金额退款即可
                 APIUtil.listTask({
-                    id: selectDatas[0].taskOrderNumber.join(',')
+                    id: selectDatas[0].taskOrderNumber
                 }, function(res) {
                     if (res.data.status !== '1') {
                         layer.msg(res.data.tips);
                     } else if (res.data.list && res.data.list.l.length > 0) {
-                        var total = res.data.list.l[0].c;
-                        var remain = res.data.list.l[0].e;
+                        var total = res.data.list.l[0].c | 0;
+                        var remain = res.data.list.l[0].e | 0;
                         // 不是处理中的
                         if (res.data.list.l[0].s == 0) {
                             // 处理到一半了
-                            if (remain / total > 0.5) {
+                            if (remain < total / 2) {
                                 layer.msg('该订单已经完成一半了（坚持就是胜利），不能再取消了哦');
                             } else {
                                 // 取消
