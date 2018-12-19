@@ -7,6 +7,7 @@ $(function() {
     var usernameErrorMsg = '用户名是由6-15位的数字或密码组成';
     var phoneErrorMsg = '电话是由11位的数字组成';
     var computeErrorMsg = '计算结果不正确';
+    var clickCount = 0;
     // 模块入口
     (function init() {
         // 初始化通知组件
@@ -364,32 +365,38 @@ $(function() {
             });
             return;
         }
-        $.ajax({
-            url: '/front/createUser',
-            method: 'POST',
-            data: userInfo,
-            success: function(data, textStatus, jqXHR) {
-                data = JSON.parse(data);
-                if (data.success) {
+        clickCount++;
+        if (clickCount === 1) {
+            $.ajax({
+                url: '/front/createUser',
+                method: 'POST',
+                data: userInfo,
+                success: function(data, textStatus, jqXHR) {
+                    data = JSON.parse(data);
+                    if (data.success) {
+                        mdui.snackbar({
+                            message: '注册成功',
+                            position: 'top'
+                        });
+                        window.location.assign('/console');
+                    } else {
+                        mdui.snackbar({
+                            message: '注册失败:' + data.message,
+                            position: 'top'
+                        });
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
                     mdui.snackbar({
-                        message: '注册成功',
+                        message: '网络错误，请刷新页面重试',
                         position: 'top'
                     });
-                    window.location.assign('/console');
-                } else {
-                    mdui.snackbar({
-                        message: '注册失败:' + data.message,
-                        position: 'top'
-                    });
+                },
+                complete: function() {
+                    clickCount = 0;
                 }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                mdui.snackbar({
-                    message: '网络错误，请刷新页面重试',
-                    position: 'top'
-                });
-            }
-        });
+            });
+        }
         return false;
     }
 
