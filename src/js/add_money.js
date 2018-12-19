@@ -167,16 +167,15 @@ layui.use(['element', 'layer', 'form', 'table', 'util'], function() {
                                             layer.close(index);
                                             core.setWindowHash('manage_logs');
                                             window.location.reload(true);
-                                        } else {
-                                            if (count === 5) {
-                                                layer.msg('订单未支付');
-                                            }
+                                        } else if (count === 4) {
+                                            clearInterval(open.timer);
+                                            layer.msg('订单未支付');
                                         }
                                     });
                                 } else {
                                     clearInterval(open.timer);
                                 }
-                            }, 10000);
+                            }, 15000);
                         }
                     },
                     error: function() {
