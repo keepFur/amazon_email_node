@@ -142,7 +142,8 @@ a:active {
     overflow: hidden;
     white-space: nowrap;
 }
-.text-color-red{
+
+.text-color-red {
     color: #e91e63;
 }
 
@@ -279,8 +280,8 @@ header .main ul li.li-selected a:hover {
 .container {
     width: 100%;
     position: relative;
-    top: 66px;
-    margin-bottom: 66px;
+    top: 55px;
+    margin-bottom: 55px;
 }
 
 
@@ -368,9 +369,11 @@ header .main ul li.li-selected a:hover {
    首页大图
 ************************** */
 
-.container .big-img{
+.container .big-img {
     width: 100%;
 }
+
+
 /***********************
    商家效果图
 ************************** */
@@ -378,7 +381,7 @@ header .main ul li.li-selected a:hover {
 .container .ad {
     width: 90%;
     margin: 1rem auto;
-    background:#fff;
+    background: #fff;
     padding-top: 1rem;
     padding-bottom: 1rem;
     box-shadow: 0 0 4px #ccc;
@@ -388,7 +391,6 @@ header .main ul li.li-selected a:hover {
     width: 100%;
     background-size: 100%;
     background-repeat: no-repeat;
-    
 }
 
 .ad .control {
@@ -420,6 +422,7 @@ header .main ul li.li-selected a:hover {
 .ad .control li.active span {
     background: #e91e63;
 }
+
 
 /*********************** 功能介绍 ************************** */
 

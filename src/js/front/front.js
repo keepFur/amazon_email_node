@@ -64,7 +64,7 @@ $(function() {
         });
 
         // 流量下单
-        $('#trafficPur').on('click', function() {
+        $('.jsTrafficPur').on('click', function() {
             $.ajax({
                 url: '/front/getUserLoginStatus',
                 success: function(data) {
