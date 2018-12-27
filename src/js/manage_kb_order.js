@@ -142,6 +142,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
             function downloadKbOrderHandle(e) {
                 var aLink = document.createElement('a');
                 var queryParams = getQueryParams();
+                queryParams.plant = baseDatas.plants[baseDatas.tabIndex];
                 if (!queryParams.kbCompany) {
                     layer.msg('请选择导出的快递公司');
                     return false;
