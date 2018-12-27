@@ -78,7 +78,7 @@ layui.use(['util', 'layer', 'element', 'table'], function() {
                         type: 'POST',
                         data: noticeInfo,
                         beforeSend: function() {
-                            $.localBtn($ele, true, '创建中');
+                            $.unlockBtn($ele, true, '创建中');
                         },
                         success: function(data, textStatus, jqXHR) {
                             layer.msg(data.success ? ('操作成功') : ('操作失败'));
