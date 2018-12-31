@@ -253,10 +253,22 @@
                             <input class="mdui-textfield-input" name="password" type="text" pattern="^.*(?=.{6,15})(?=.*[a-z]).*$" required/>
                             <div class="mdui-textfield-error">密码是6-15位的字母组成</div>
                         </div>
+                        <div class="mdui-row-xs-2">
+                            <div class="mdui-textfield mdui-col-xs-9">
+                                <label class="mdui-textfield-label">手机号</label>
+                                <input class="mdui-textfield-input" type="text" name="phone" pattern="^1[0-9]{10}$" required/>
+                                <div class="mdui-textfield-error">请输入正确的手机号</div>
+                            </div>
+                            <div class="mdui-textfield mdui-col-xs-3">
+                                <label class="mdui-textfield-label mdui-invisible">获取验证码</label>
+                                <button class="mdui-btn mdui-btn-block mdui-color-pink" id="getVerfiyCodeReg">获取验证码
+                                </button>
+                            </div>
+                        </div>
                         <div class="mdui-textfield">
-                            <label class="mdui-textfield-label">手机</label>
-                            <input class="mdui-textfield-input" name="phone" type="text" pattern="^1[0-9]{10}$" required/>
-                            <div class="mdui-textfield-error">请输入正确的手机号</div>
+                            <label class="mdui-textfield-label">验证码</label>
+                            <input class="mdui-textfield-input" type="text" name="verfiyCode" pattern="^\d{4}$" required/>
+                            <div class="mdui-textfield-error">验证码是4位数字组成</div>
                         </div>
                         <div class="mdui-textfield">
                             <label class="mdui-textfield-label">邮箱</label>
