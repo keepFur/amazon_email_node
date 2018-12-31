@@ -1,5 +1,5 @@
 'use strict';
-layui.use(['element', 'layer'], function () {
+layui.use(['element', 'layer'], function() {
     var element = layui.element;
     var layer = layui.layer;
     // 基于准备好的dom，初始化echarts实例
@@ -143,7 +143,7 @@ layui.use(['element', 'layer'], function () {
      */
     function initEvent() {
         // 切换日期
-        $('.js-home-toggle-date').on('click', 'a', function (event) {
+        $('.js-home-toggle-date').on('click', 'a', function(event) {
             var type = $(this).data('type');
             var day = $(this).data('day');
             $(this).parents('.js-home-toggle-date').find('a').removeClass('layui-btn-normal').addClass('layui-btn-primary');
@@ -169,7 +169,7 @@ layui.use(['element', 'layer'], function () {
             return false;
         });
         // 查看更多通知
-        $('#viewMoreNotice').click(function (e) {
+        $('#viewMoreNotice').click(function(e) {
             tipNotice();
             return false;
         });
@@ -177,7 +177,7 @@ layui.use(['element', 'layer'], function () {
 
     //  获取用户余额
     function getScore() {
-        core.getUserInfoById(function (res) {
+        core.getUserInfoById(function(res) {
             $('.js-user-score').text(core.fenToYuan(res.data.rows[0].money));
         });
     }
@@ -197,9 +197,9 @@ layui.use(['element', 'layer'], function () {
         $.get('/api/readTaskCountOfInTime', {
             createdDateStart: createdDateStart,
             createdDateEnd: createdDateEnd
-        }, function (res) {
+        }, function(res) {
             var rows = res.data.rows;
-            numDayDate.forEach(function (item) {
+            numDayDate.forEach(function(item) {
                 if (!hasContainerEle(item, rows)) {
                     rows.push({
                         createdDate: $.formatDate('yyyy/mm/dd', item),
@@ -207,16 +207,16 @@ layui.use(['element', 'layer'], function () {
                     });
                 }
             });
-            rows = rows.map(function (item, index) {
+            rows = rows.map(function(item, index) {
                 return {
                     createdDate: $.formatDate('yyyy/mm/dd', item.createdDate),
                     count: item.count
                 };
             });
-            rows.sort(function (item1, item2) {
+            rows.sort(function(item1, item2) {
                 return new Date(item1.createdDate).getTime() - new Date(item2.createdDate).getTime();
             });
-            optionOfTaskCount.series[0].data = rows.map(function (item, index) {
+            optionOfTaskCount.series[0].data = rows.map(function(item, index) {
                 return item.count;
             });
             taskCount.setOption(optionOfTaskCount);
@@ -238,9 +238,9 @@ layui.use(['element', 'layer'], function () {
         $.get('/api/readKbCountOfInTime', {
             createdDateStart: createdDateStart,
             createdDateEnd: createdDateEnd
-        }, function (res) {
+        }, function(res) {
             var rows = res.data.rows;
-            numDayDate.forEach(function (item) {
+            numDayDate.forEach(function(item) {
                 if (!hasContainerEle(item, rows)) {
                     rows.push({
                         createdDate: $.formatDate('yyyy/mm/dd', item),
@@ -248,16 +248,16 @@ layui.use(['element', 'layer'], function () {
                     });
                 }
             });
-            rows = rows.map(function (item, index) {
+            rows = rows.map(function(item, index) {
                 return {
                     createdDate: $.formatDate('yyyy/mm/dd', item.createdDate),
                     count: item.count
                 };
             });
-            rows.sort(function (item1, item2) {
+            rows.sort(function(item1, item2) {
                 return new Date(item1.createdDate).getTime() - new Date(item2.createdDate).getTime();
             });
-            optionOfKbCount.series[0].data = rows.map(function (item, index) {
+            optionOfKbCount.series[0].data = rows.map(function(item, index) {
                 return item.count;
             });
             kbCount.setOption(optionOfKbCount);
@@ -277,11 +277,11 @@ layui.use(['element', 'layer'], function () {
         $.get('/api/readTaskTypeOfInTime', {
             createdDateStart: createdDateStart,
             createdDateEnd: createdDateEnd
-        }, function (res) {
+        }, function(res) {
             var rows = res.data.rows;
-            optionOfTaskType.series[0].data = rows.map(function (item) {
+            optionOfTaskType.series[0].data = rows.map(function(item) {
                 return {
-                    name: core.getTypeCodeByValue(item.taskChildType).name,
+                    name: item.taskTypeName,
                     value: item.count
                 };
             });
@@ -302,11 +302,11 @@ layui.use(['element', 'layer'], function () {
         $.get('/api/readKbTypeOfInTime', {
             createdDateStart: createdDateStart,
             createdDateEnd: createdDateEnd
-        }, function (res) {
+        }, function(res) {
             var rows = res.data.rows;
-            optionOfKbType.series[0].data = rows.map(function (item) {
+            optionOfKbType.series[0].data = rows.map(function(item) {
                 return {
-                    name: core.getPlantByCode(item.plant) + '(' + core.getKbTypeByCode(item.kbCompany) + ')',
+                    name: core.getPlantByCode(item.plant) + '(' + item.kbCompany + ')',
                     value: item.count
                 };
             });
@@ -346,9 +346,9 @@ layui.use(['element', 'layer'], function () {
         $.get('/api/readAddMoneyOfInTime', {
             createdDateStart: createdDateStart,
             createdDateEnd: createdDateEnd
-        }, function (res) {
+        }, function(res) {
             var rows = res.data.rows;
-            numDayDate.forEach(function (item) {
+            numDayDate.forEach(function(item) {
                 if (!hasContainerEle(item, rows)) {
                     rows.push({
                         createdDate: $.formatDate('yyyy/mm/dd', item),
@@ -356,16 +356,16 @@ layui.use(['element', 'layer'], function () {
                     });
                 }
             });
-            rows = rows.map(function (item, index) {
+            rows = rows.map(function(item, index) {
                 return {
                     createdDate: $.formatDate('yyyy/mm/dd', item.createdDate),
                     count: item.count
                 };
             });
-            rows.sort(function (item1, item2) {
+            rows.sort(function(item1, item2) {
                 return new Date(item1.createdDate).getTime() - new Date(item2.createdDate).getTime();
             });
-            optionOfScore.series[0].data = rows.map(function (item, index) {
+            optionOfScore.series[0].data = rows.map(function(item, index) {
                 return core.fenToYuan(item.count);
             });
             addScore.setOption(optionOfScore);
@@ -405,7 +405,7 @@ layui.use(['element', 'layer'], function () {
     function hasContainerEle(ele, arr) {
         var has = false;
         if (ele && arr && Array.isArray(arr)) {
-            arr.forEach(function (element) {
+            arr.forEach(function(element) {
                 if ($.formatDate('yyyy/mm/dd', element.createdDate) === ele) {
                     has = true;
                     return false;
@@ -427,7 +427,7 @@ layui.use(['element', 'layer'], function () {
             btn: '关闭',
             scrollbar: false,
             shadeClose: true,
-            success: function (layero, index) {
+            success: function(layero, index) {
                 // 加载通知列表并渲染
                 readNoticePage();
             }
@@ -443,7 +443,7 @@ layui.use(['element', 'layer'], function () {
                 offset: 1
             },
             dataType: 'json',
-            success: function (res) {
+            success: function(res) {
                 randerNoticeList(res.data.rows);
             }
         });
@@ -457,7 +457,7 @@ layui.use(['element', 'layer'], function () {
                         <div class="layui-card-body">内容：${n.noticeContent}</div>
                     </div>`;
         }
-        $.each(notice, function (index, item) {
+        $.each(notice, function(index, item) {
             $('#noticeContainer').append(generateTpl(item, index));
         });
         element.render('collapse');

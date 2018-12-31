@@ -112,7 +112,10 @@ $(function() {
         $('#getUserPasswordSubmit').on('click', userGetPasswordSubmitHandler);
 
         // 获取验证码
-        $('#getVerfiyCode').on('click', getVerfiyCodeHandler);
+        $('#getVerfiyCode').on('click', { $userPhone: $('input[name=userPhone]') }, getVerfiyCodeHandler);
+
+        // 获取验证码 注册模块
+        $('#getVerfiyCodeReg').on('click', { $userPhone: $('input[name=phone]') }, getVerfiyCodeHandler);
 
         // 刷新题目
         $('#refreshCompute').on('click', refreshComputeHandler);
@@ -365,6 +368,24 @@ $(function() {
             });
             return;
         }
+
+
+        // 判断验证码
+        if (!userInfo.verfiyCode.trim()) {
+            mdui.snackbar({
+                message: '请输入验证码',
+                position: 'top'
+            });
+            return;
+        }
+
+        if ($('input[name=phone]').data('code') !== userInfo.verfiyCode.trim()) {
+            mdui.snackbar({
+                message: '验证码错误',
+                position: 'top'
+            });
+            return;
+        }
         clickCount++;
         if (clickCount === 1) {
             $.ajax({
@@ -481,7 +502,8 @@ $(function() {
     // 获取验证码
     function getVerfiyCodeHandler(e) {
         // 存储到当前的元素data中
-        var userPhone = $('input[name=userPhone]').val().trim();
+        var $userPhone = e._data.$userPhone;
+        var userPhone = $userPhone.val().trim();
         var $this = $(this);
         var timer = null;
         var totalSecond = 60;
@@ -509,7 +531,7 @@ $(function() {
                         message: '验证码获取成功',
                         position: 'top'
                     });
-                    $('input[name=userPhone]').data('code', res.code);
+                    $userPhone.data('code', res.code);
                     timer = setInterval(function() {
                         totalSecond--;
                         if (totalSecond <= 0) {
