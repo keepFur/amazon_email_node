@@ -15,11 +15,11 @@ layui.use(['element', 'layer', 'laydate', 'form'], function() {
     // 页面入口
     (function init() {
         initEvent();
-        getTaskTypeServer('TB');
         initComponent();
         core.getUserInfoById(function(user) {
             userInfo = user.data.rows[0];
             baseDatas.level = userInfo.level;
+            getTaskTypeServer('TB');
             $('#userName').data('user', JSON.stringify(user));
             $('#userBalance').text(core.fenToYuan(userInfo.money));
             $('#userLevel').html(core.getLevelText(userInfo.level));
@@ -729,7 +729,15 @@ layui.use(['element', 'layer', 'laydate', 'form'], function() {
         $container.empty();
         $container.append(`<option value="">请选择任务类型</option>`);
         $.each(kbTypes, function(index, item) {
-            $container.append(`<option value="${item.id}" data-name="${item.name}" data-hask="${item.hasKeyword}" data-code="${item.lieliuCode}" data-price="${item.outPrice}" data-plant="${item.plant}">${item.name}</option>`);
+            // 当前
+            var curP = core.fenToYuan(core.computeTotalPriceTask(baseDatas.level, item.outPrice));
+            // 普通
+            var comP = core.fenToYuan(core.computeTotalPriceTask(1, item.outPrice));
+            // 金牌
+            var goldP = core.fenToYuan(core.computeTotalPriceTask(2, item.outPrice));
+            // 等级
+            var levelText = ['', '普通会员', '金牌会员', '内部会员'][baseDatas.level];
+            $container.append(`<option value="${item.id}" data-name="${item.name}" data-hask="${item.hasKeyword}" data-code="${item.lieliuCode}" data-price="${item.outPrice}" data-plant="${item.plant}">${item.name}，你的价格（${levelText}）：${curP}元，普通会员：${comP}元，金牌会员：${goldP}元</option>`);
         });
         form.render('select');
     }
