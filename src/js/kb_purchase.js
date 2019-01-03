@@ -28,13 +28,13 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function() {
             (function init() {
                 form.render('select');
                 form.render('radio');
-                getKbTypeServer('TB');
                 getAddressFromServer();
                 renderTable();
                 initEvents();
                 core.getUserInfoById(function(user) {
                     userInfo = user.data.rows[0];
                     baseDatas.level = userInfo.level;
+                    getKbTypeServer('TB');
                     $('#userName').data('user', JSON.stringify(user));
                     $('#userBalance').text(core.fenToYuan(userInfo.money));
                     $('#userLevel').html(core.getLevelText(userInfo.level));
@@ -923,7 +923,15 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function() {
         $container.empty();
         $container.append(`<option value="">请选择快递类型</option>`);
         $.each(kbTypes, function (index, item) {
-            $container.append(`<option value="${item.code}" data-price="${item.price}" data-plant="${item.plant}" data-desc="${item.description}">${item.name}</option>`);
+            // 当前
+            var curP = core.fenToYuan(core.computeTotalPrice(baseDatas.level,item.price));
+            // 普通
+            var comP = core.fenToYuan(core.computeTotalPrice(1,item.price));
+            // 金牌
+            var goldP =core.fenToYuan(core.computeTotalPrice(2,item.price));
+            // 等级
+            var levelText = ['','普通会员','金牌会员','内部会员'][baseDatas.level];
+            $container.append(`<option value="${item.code}" data-price="${item.price}" data-plant="${item.plant}" data-desc="${item.description}">${item.name} ，你的价格（${levelText}）：${curP}元，普通会员：${comP}元，金牌会员：${goldP}元</option>`);
         });
         form.render('select');
     }
