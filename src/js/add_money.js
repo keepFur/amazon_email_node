@@ -85,7 +85,9 @@ layui.use(['element', 'layer', 'form', 'table', 'util'], function() {
     // 充值点击函数
     function addMoneyHandle(event) {
         var checkedPackage = $('input[type=radio][name=addPackageType]:checked');
-        var open = {};
+        var open = {
+            count: 0
+        };
         var index = layer.open({
             content: `<div class="js-pay-container">
                             <h3 style="text-align:center;">打开微信或者支付宝扫一扫即可付款</h3>
@@ -100,35 +102,45 @@ layui.use(['element', 'layer', 'form', 'table', 'util'], function() {
                         </div>`,
             area: ['450px', '520px'],
             title: '在线充值付款',
-            btn: '支付完成',
+            btn: '我已支付（支付完成一定要点击我，否则不会到账）',
             scrollbar: false,
             yes: function(index, layero) {
-                if (!open.payStatus) {
-                    getQrCodePayStatus(open.qr_id, open.addPackageType, function(payStatus) {
-                        layer.closeAll('msg');
-                        if (payStatus) {
-                            layer.msg('支付成功');
-                            core.setWindowHash('manage_logs');
-                            window.location.reload(true);
-                        } else {
-                            layer.msg('订单未支付');
-                        }
-                    });
+                open.count++;
+                if (open.count === 1) {
+                    if (open.qr_id) {
+                        getQrCodePayStatus(open.qr_id, open.addPackageType, function(payStatus) {
+                            layer.closeAll('msg');
+                            if (payStatus) {
+                                layer.msg('支付成功');
+                                core.setWindowHash('manage_logs');
+                                window.location.reload(true);
+                            } else {
+                                layer.msg('充值失败');
+                            }
+                        });
+                    } else {
+                        layer.msg('二维码生成失败');
+                    }
                 }
             },
             cancel: function() {
                 // 支付成功之后不需要再去检查支付状态了
-                if (!open.payStatus) {
-                    getQrCodePayStatus(open.qr_id, open.addPackageType, function(payStatus) {
-                        layer.closeAll('msg');
-                        if (payStatus) {
-                            layer.msg('支付成功');
-                            core.setWindowHash('manage_logs');
-                            window.location.reload(true);
-                        } else {
-                            layer.msg('订单未支付');
-                        }
-                    });
+                open.count++;
+                if (open.count === 1) {
+                    if (open.qr_id) {
+                        getQrCodePayStatus(open.qr_id, open.addPackageType, function(payStatus) {
+                            layer.closeAll('msg');
+                            if (payStatus) {
+                                layer.msg('支付成功');
+                                core.setWindowHash('manage_logs');
+                                window.location.reload(true);
+                            } else {
+                                layer.msg('充值失败');
+                            }
+                        });
+                    } else {
+                        layer.msg('二维码生成失败');
+                    }
                 }
             },
             success: function(layero, index) {
@@ -152,30 +164,6 @@ layui.use(['element', 'layer', 'form', 'table', 'util'], function() {
                             $('#jsPayCodeImg').attr('src', data.data.qr_code);
                             open.qr_id = data.data.qr_id;
                             open.addPackageType = $('input[type=radio][name=addPackageType]:checked').val();
-                            var count = 0;
-                            open.timer = setInterval(function() {
-                                $.lockedBtn(layero.find('.layui-layer-btn0'), true, '支付状态检测中');
-                                count++;
-                                if (count < 5) {
-                                    getQrCodePayStatus(open.qr_id, open.addPackageType, function(payStatus) {
-                                        layer.closeAll('msg');
-                                        if (payStatus) {
-                                            open.payStatus = true;
-                                            clearInterval(open.timer);
-                                            layer.msg('支付成功，正在为你跳转到首页。。。');
-                                            $.unlockBtn(layero.find('.layui-layer-btn0'), '支付完成');
-                                            layer.close(index);
-                                            core.setWindowHash('manage_logs');
-                                            window.location.reload(true);
-                                        } else if (count === 4) {
-                                            clearInterval(open.timer);
-                                            layer.msg('订单未支付');
-                                        }
-                                    });
-                                } else {
-                                    clearInterval(open.timer);
-                                }
-                            }, 15000);
                         }
                     },
                     error: function() {
