@@ -13,7 +13,7 @@ $(function() {
         // 初始化通知组件
         initNoticeComponent();
         // 初始化轮播图
-        initScrollImgComponent();
+        // initScrollImgComponent();
         // 初始化事件
         inieEvent();
         // 触发一次刷新题目事件
