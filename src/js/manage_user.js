@@ -1,5 +1,5 @@
 'use strict';
-layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
+layui.use(['form', 'element', 'layer', 'table', 'util'], function() {
     var form = layui.form;
     var element = layui.element;
     var layer = layui.layer;
@@ -59,7 +59,7 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
         // 查询
         $('#searchBtn').on('click', searchHandle);
         // 重置
-        $('#resetBtn').on('click', function () {
+        $('#resetBtn').on('click', function() {
             $('#userSearchForm')[0].reset();
             return false;
         });
@@ -82,10 +82,10 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
     }
 
     /**
-    * 查询的点击事件处理函数
-    * 
-    * @param {any} events 
-    */
+     * 查询的点击事件处理函数
+     * 
+     * @param {any} events 
+     */
     function searchHandle(events) {
         var queryParams = getQueryParams();
         reloadTable({
@@ -121,24 +121,24 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
                 area: ['440px'],
                 title: '修改用户「' + selectDatas[0].userName + '」',
                 btn: ['修改', '取消'],
-                yes: function (index) {
+                yes: function(index) {
                     var userInfo = core.getFormValues($('form[name=userUpdateForm]'));
                     userInfo.id = selectDatas[0].id;
                     $.ajax({
                         url: '/api/updateUser',
                         type: 'POST',
                         data: userInfo,
-                        success: function (data, textStatus, jqXHR) {
+                        success: function(data, textStatus, jqXHR) {
                             layer.msg(data.success ? ('操作成功') : ('操作失败'));
                             layer.close(index);
                             reloadTable();
                         },
-                        error: function (jqXHR, textStatus, errorThrown) {
+                        error: function(jqXHR, textStatus, errorThrown) {
                             layer.msg(baseDatas.errorMsg);
                         }
                     });
                 },
-                success: function () {
+                success: function() {
                     setUserInfo($('form[name=userUpdateForm]'), selectDatas[0]);
                 }
             });
@@ -168,7 +168,7 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
                 area: ['400px'],
                 title: '余额充值（单位：分）',
                 btn: ['充值', '取消'],
-                yes: function (index) {
+                yes: function(index) {
                     var money = $.trim($('input[name=money]').val());
                     var validAddMoneyUserResult = validAddMoneyUser(money);
                     if (validAddMoneyUserResult.isPass) {
@@ -181,12 +181,12 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
                                 userName: selectDatas[0].userName,
                                 balance: selectDatas[0].money
                             },
-                            success: function (data, textStatus, jqXHR) {
+                            success: function(data, textStatus, jqXHR) {
                                 layer.msg(data.success ? ('操作成功') : ('操作失败' + data.message));
                                 layer.close(index);
                                 reloadTable();
                             },
-                            error: function (jqXHR, textStatus, errorThrown) {
+                            error: function(jqXHR, textStatus, errorThrown) {
                                 layer.msg(baseDatas.errorMsg);
                             }
                         });
@@ -212,14 +212,14 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
         var tipMsg = `<span style="color:#f00;">确定升级吗？</br>升级之后可以享受<strong>九折</strong>优惠!</br>升级会从账户中抵扣${minMoney}元，</br>请确保账户中有足够的余额！</span>`;
         if (selectDatas.length === 1) {
             // 获取用户的余额，判断余额是否大于等于1000分
-            readUserById(selectDatas[0].id, function (data) {
+            readUserById(selectDatas[0].id, function(data) {
                 if (data.success) {
                     var money = data.data.rows[0].money;
                     if (money >= minMoney) {
                         layer.confirm(tipMsg, {
                             btn: ['确定', '取消'],
                             title: "询问框",
-                        }, function () {
+                        }, function() {
                             $.ajax({
                                 url: '/api/updateLevelUser',
                                 type: 'POST',
@@ -229,11 +229,11 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
                                     money: selectDatas[0].money,
                                     level: 2
                                 },
-                                success: function (data, textStatus, jqXHR) {
+                                success: function(data, textStatus, jqXHR) {
                                     layer.msg(data.success ? '操作成功' : ('操作失败' + data.message));
                                     reloadTable();
                                 },
-                                error: function (jqXHR, textStatus, errorThrown) {
+                                error: function(jqXHR, textStatus, errorThrown) {
                                     layer.msg(baseDatas.netErrMsg);
                                 }
                             });
@@ -264,7 +264,7 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
             layer.confirm(tipMsg, {
                 btn: ['确定', '取消'],
                 title: "询问框",
-            }, function () {
+            }, function() {
                 $.ajax({
                     url: '/api/toggleUser',
                     type: 'POST',
@@ -272,11 +272,11 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
                         id: selectDatas[0].id,
                         status: type
                     },
-                    success: function (data, textStatus, jqXHR) {
+                    success: function(data, textStatus, jqXHR) {
                         layer.msg(data.success ? '操作成功' : ('操作失败' + data.message));
                         reloadTable();
                     },
-                    error: function (jqXHR, textStatus, errorThrown) {
+                    error: function(jqXHR, textStatus, errorThrown) {
                         layer.msg(baseDatas.netErrMsg);
                     }
                 });
@@ -296,84 +296,85 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
             elem: '#userTable',
             url: '/api/readUserPage',
             page: true,
-            cols: [[
-                {
-                    checkbox: true,
-                    fixed: 'left',
-                },
-                {
-                    field: '',
-                    title: '序号',
-                    width: 60,
-                    fixed: 'left',
-                    templet: function (d) {
-                        return d.LAY_INDEX;
+            cols: [
+                [{
+                        checkbox: true,
+                        fixed: 'left',
+                    },
+                    {
+                        field: '',
+                        title: '序号',
+                        width: 60,
+                        fixed: 'left',
+                        templet: function(d) {
+                            return d.LAY_INDEX;
+                        }
+                    },
+                    {
+                        title: '用户名',
+                        field: "userName",
+                        fixed: 'left',
+                        width: 150,
+                    }, {
+                        title: '当前余额（元）',
+                        field: "money",
+                        width: 150,
+                        templet: function(d) {
+                            return core.fenToYuan(d.money);
+                        }
+                    }, {
+                        title: '等级',
+                        field: "level",
+                        width: 150,
+                        templet: function(d) {
+                            return d.level === 1 ? '普通' : '金牌';
+                        }
+                    }, {
+                        title: '邮箱',
+                        field: "email",
+                        width: 150,
+                        templet: function(d) {
+                            return d.email ? d.email : '';
+                        }
+                    }, {
+                        title: '电话',
+                        field: "phone",
+                        width: 150,
+                        templet: function(d) {
+                            return d.phone ? d.phone : '';
+                        }
+                    }, {
+                        title: 'QQ',
+                        field: "QQ",
+                        width: 150,
+                        templet: function(d) {
+                            return d.QQ ? d.QQ : '';
+                        }
+                    }, {
+                        title: '注册时间',
+                        width: 200,
+                        field: "createdDate",
+                        templet: function(d) {
+                            return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
+                        }
+                    }, {
+                        title: '最后修改时间',
+                        field: "updateDate",
+                        width: 200,
+                        templet: function(d) {
+                            return d.updateDate ? util.toDateString(d.updateDate, 'yyyy-MM-dd HH:mm') : '';
+                        }
+                    }, {
+                        title: '状态',
+                        field: 'status',
+                        width: 150,
+                        fixed: 'right',
+                        templet: function(d) {
+                            return d.status === 1 ? '启用' : '<span class="layui-text-pink">停用</span>';
+                        }
                     }
-                },
-                {
-                    title: '用户名',
-                    field: "userName",
-                    fixed: 'left',
-                    width: 150,
-                }, {
-                    title: '当前余额（元）',
-                    field: "money",
-                    width: 150,
-                    templet: function (d) {
-                        return core.fenToYuan(d.money);
-                    }
-                }, {
-                    title: '等级',
-                    field: "level",
-                    width: 150,
-                    templet: function (d) {
-                        return d.level === 1 ? '普通' : '金牌';
-                    }
-                }, {
-                    title: '邮箱',
-                    field: "email",
-                    width: 150,
-                    templet: function (d) {
-                        return d.email ? d.email : '';
-                    }
-                }, {
-                    title: '电话',
-                    field: "phone",
-                    width: 150,
-                    templet: function (d) {
-                        return d.phone ? d.phone : '';
-                    }
-                }, {
-                    title: 'QQ',
-                    field: "QQ",
-                    width: 150,
-                    templet: function (d) {
-                        return d.QQ ? d.QQ : '';
-                    }
-                }, {
-                    title: '注册时间',
-                    width: 200,
-                    field: "createdDate",
-                    templet: function (d) {
-                        return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
-                    }
-                }, {
-                    title: '最后修改时间',
-                    field: "updateDate",
-                    width: 200,
-                    templet: function (d) {
-                        return d.updateDate ? util.toDateString(d.updateDate, 'yyyy-MM-dd HH:mm') : '';
-                    }
-                }, {
-                    title: '状态',
-                    field: 'status',
-                    width: 150,
-                    fixed: 'right',
-                    templet: function (d) {
-                        return d.status === 1 ? '启用' : '<span class="layui-text-pink">停用</span>';
-                    }
-                }
-            ]],
+                ]
+            ],
             limits: [10, 20, 50, 100],
             page: {
                 theme: '#1E9FFF',
@@ -385,7 +386,7 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
             response: {
                 statusCode: true
             },
-            parseData: function (res) {
+            parseData: function(res) {
                 return {
                     code: res.success,
                     msg: res.msg,
@@ -393,8 +394,7 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
                     data: res.data.rows
                 }
             },
-            done: function (res) {
-            }
+            done: function(res) {}
         });
     }
 
@@ -427,10 +427,10 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
             data: {
                 id: id
             },
-            success: function (data) {
+            success: function(data) {
                 callback(data);
             },
-            error: function (error) {
+            error: function(error) {
                 callback(data);
             }
         });
@@ -449,7 +449,7 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
             }
         }
 
-        if (money < 1000) {
+        if (money < 100) {
             return {
                 isPass: false,
                 msg: '充值金额不能小于10元'
@@ -469,14 +469,14 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
 
     /**
      *获取表格的查询参数
-    *
-    * @returns 返回所有参数的对象
-    */
+     *
+     * @returns 返回所有参数的对象
+     */
     function getQueryParams() {
         var $form = $('#userSearchForm');
         var formDatas = $form.serializeArray();
         var ret = {};
-        $.each(formDatas, function (index, item) {
+        $.each(formDatas, function(index, item) {
             ret[item.name] = item.value;
         });
         return ret;
