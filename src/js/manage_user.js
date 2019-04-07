@@ -1,5 +1,5 @@
 'use strict';
-layui.use(['form', 'element', 'layer', 'table', 'util'], function() {
+layui.use(['form', 'element', 'layer', 'table', 'util'], function () {
     var form = layui.form;
     var element = layui.element;
     var layer = layui.layer;
@@ -59,7 +59,7 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function() {
         // 查询
         $('#searchBtn').on('click', searchHandle);
         // 重置
-        $('#resetBtn').on('click', function() {
+        $('#resetBtn').on('click', function () {
             $('#userSearchForm')[0].reset();
             return false;
         });
@@ -121,24 +121,24 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function() {
                 area: ['440px'],
                 title: '修改用户「' + selectDatas[0].userName + '」',
                 btn: ['修改', '取消'],
-                yes: function(index) {
+                yes: function (index) {
                     var userInfo = core.getFormValues($('form[name=userUpdateForm]'));
                     userInfo.id = selectDatas[0].id;
                     $.ajax({
                         url: '/api/updateUser',
                         type: 'POST',
                         data: userInfo,
-                        success: function(data, textStatus, jqXHR) {
+                        success: function (data, textStatus, jqXHR) {
                             layer.msg(data.success ? ('操作成功') : ('操作失败'));
                             layer.close(index);
                             reloadTable();
                         },
-                        error: function(jqXHR, textStatus, errorThrown) {
+                        error: function (jqXHR, textStatus, errorThrown) {
                             layer.msg(baseDatas.errorMsg);
                         }
                     });
                 },
-                success: function() {
+                success: function () {
                     setUserInfo($('form[name=userUpdateForm]'), selectDatas[0]);
                 }
             });
@@ -168,7 +168,7 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function() {
                 area: ['400px'],
                 title: '余额充值（单位：分）',
                 btn: ['充值', '取消'],
-                yes: function(index) {
+                yes: function (index) {
                     var money = $.trim($('input[name=money]').val());
                     var validAddMoneyUserResult = validAddMoneyUser(money);
                     if (validAddMoneyUserResult.isPass) {
@@ -181,12 +181,12 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function() {
                                 userName: selectDatas[0].userName,
                                 balance: selectDatas[0].money
                             },
-                            success: function(data, textStatus, jqXHR) {
+                            success: function (data, textStatus, jqXHR) {
                                 layer.msg(data.success ? ('操作成功') : ('操作失败' + data.message));
                                 layer.close(index);
                                 reloadTable();
                             },
-                            error: function(jqXHR, textStatus, errorThrown) {
+                            error: function (jqXHR, textStatus, errorThrown) {
                                 layer.msg(baseDatas.errorMsg);
                             }
                         });
@@ -212,14 +212,14 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function() {
         var tipMsg = `<span style="color:#f00;">确定升级吗？</br>升级之后可以享受<strong>九折</strong>优惠!</br>升级会从账户中抵扣${minMoney}元，</br>请确保账户中有足够的余额！</span>`;
         if (selectDatas.length === 1) {
             // 获取用户的余额，判断余额是否大于等于1000分
-            readUserById(selectDatas[0].id, function(data) {
+            readUserById(selectDatas[0].id, function (data) {
                 if (data.success) {
                     var money = data.data.rows[0].money;
                     if (money >= minMoney) {
                         layer.confirm(tipMsg, {
                             btn: ['确定', '取消'],
                             title: "询问框",
-                        }, function() {
+                        }, function () {
                             $.ajax({
                                 url: '/api/updateLevelUser',
                                 type: 'POST',
@@ -229,11 +229,11 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function() {
                                     money: selectDatas[0].money,
                                     level: 2
                                 },
-                                success: function(data, textStatus, jqXHR) {
+                                success: function (data, textStatus, jqXHR) {
                                     layer.msg(data.success ? '操作成功' : ('操作失败' + data.message));
                                     reloadTable();
                                 },
-                                error: function(jqXHR, textStatus, errorThrown) {
+                                error: function (jqXHR, textStatus, errorThrown) {
                                     layer.msg(baseDatas.netErrMsg);
                                 }
                             });
@@ -264,7 +264,7 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function() {
             layer.confirm(tipMsg, {
                 btn: ['确定', '取消'],
                 title: "询问框",
-            }, function() {
+            }, function () {
                 $.ajax({
                     url: '/api/toggleUser',
                     type: 'POST',
@@ -272,11 +272,11 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function() {
                         id: selectDatas[0].id,
                         status: type
                     },
-                    success: function(data, textStatus, jqXHR) {
+                    success: function (data, textStatus, jqXHR) {
                         layer.msg(data.success ? '操作成功' : ('操作失败' + data.message));
                         reloadTable();
                     },
-                    error: function(jqXHR, textStatus, errorThrown) {
+                    error: function (jqXHR, textStatus, errorThrown) {
                         layer.msg(baseDatas.netErrMsg);
                     }
                 });
@@ -306,7 +306,7 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function() {
                         title: '序号',
                         width: 60,
                         fixed: 'left',
-                        templet: function(d) {
+                        templet: function (d) {
                             return d.LAY_INDEX;
                         }
                     },
@@ -319,58 +319,66 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function() {
                         title: '当前余额（元）',
                         field: "money",
                         width: 150,
-                        templet: function(d) {
+                        templet: function (d) {
                             return core.fenToYuan(d.money);
                         }
                     }, {
                         title: '等级',
                         field: "level",
                         width: 150,
-                        templet: function(d) {
+                        templet: function (d) {
                             return d.level === 1 ? '普通' : '金牌';
                         }
                     }, {
                         title: '邮箱',
                         field: "email",
                         width: 150,
-                        templet: function(d) {
+                        templet: function (d) {
                             return d.email ? d.email : '';
                         }
                     }, {
                         title: '电话',
                         field: "phone",
                         width: 150,
-                        templet: function(d) {
+                        templet: function (d) {
                             return d.phone ? d.phone : '';
                         }
                     }, {
                         title: 'QQ',
                         field: "QQ",
                         width: 150,
-                        templet: function(d) {
+                        templet: function (d) {
                             return d.QQ ? d.QQ : '';
                         }
                     }, {
                         title: '注册时间',
                         width: 200,
                         field: "createdDate",
-                        templet: function(d) {
+                        templet: function (d) {
                             return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
                         }
                     }, {
                         title: '最后修改时间',
                         field: "updateDate",
                         width: 200,
-                        templet: function(d) {
+                        templet: function (d) {
                             return d.updateDate ? util.toDateString(d.updateDate, 'yyyy-MM-dd HH:mm') : '';
                         }
                     }, {
                         title: '状态',
                         field: 'status',
+                        width: 120,
+                        fixed: 'right',
+                        templet: function (d) {
+                            return d.status === 1 ? '启用' : '<span class="layui-text-pink">停用</span>';
+                        }
+                    }, {
+                        title: '操作',
+                        field: '',
                         width: 150,
                         fixed: 'right',
-                        templet: function(d) {
-                            return d.status === 1 ? '启用' : '<span class="layui-text-pink">停用</span>';
+                        templet: function (d) {
+                            return `<a class="layui-btn layui-btn-normal layui-btn-xs js-view-extend" data-username="${d.userName}" data-id="${d.id}" data-othersharecode="${d.otherShareCode}" data-mysharecode="${d.myShareCode}">推广详情</a>`;
                         }
                     }
                 ]
@@ -386,7 +394,7 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function() {
             response: {
                 statusCode: true
             },
-            parseData: function(res) {
+            parseData: function (res) {
                 return {
                     code: res.success,
                     msg: res.msg,
@@ -394,7 +402,133 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function() {
                     data: res.data.rows
                 }
             },
-            done: function(res) {}
+            done: function (res) {
+                $('.js-view-extend').off('click').on('click', function (event) {
+                    var username = $(this).data('username');
+                    var id = $(this).data('id');
+                    var otherShareCode = $(this).data('othersharecode') || '';
+                    var myShareCode = $(this).data('mysharecode');
+                    // 需要显示的内容
+                    // 1，用户注册的来源（是否是别人推荐的，如果是显示上家的用户名，否则显示一级代理）
+                    // 2，显示当前用户的下级代理数量以及用户详情（用户id， 用户名  等级  用户余额 注册时间）
+                    // 3，显示用户所获得的佣金总额
+                    // 显示的方式：弹出框，下级代理用表格展示
+                    $.ajax({
+                        url: '/api/readUserExtendDetailById',
+                        data: {
+                            id: id,
+                            otherShareCode
+                        },
+                        success: function (res) {
+                            // 初始化内容
+                            if (res.success) {
+                                layer.open({
+                                    content: `<div>
+                                                <h5 class="layui-text-green">推广概览</h5>
+                                                <div class="layui-row layui-anim layui-anim-up layui-anim-fadein layui-anim-rotate" style="margin-bottom:16px;">
+                                                    <div class="layui-col-md6 home-account-info" style="padding:8px;">
+                                                        <h3 class="pull-left">注册来源：<span class="layui-text-pink js-user-register">0</span></h3>
+                                                    </div>
+                                                    <div class="layui-col-md6 home-account-info" style="padding:8px;">
+                                                        <h3 class="pull-left">佣金总额：<span class="layui-text-pink js-user-extend-money">0</span></h3>
+                                                    </div>
+                                                  </div>
+                                                  <h5 class="layui-text-green">下级代理</h5>
+                                                  <div lay-filter='userExtend' id="userExtendTable"></div>
+                                                </div>`,
+                                    area: ['800px', '600px'],
+                                    title: `用户【${username}】推广详情`,
+                                    btn: ['关闭'],
+                                    yes: function (index) {
+                                        layer.close(index);
+                                    },
+                                    success: function () {
+                                        renderUserExtendTable(myShareCode);
+                                        $('.js-user-register').text(res.data.registerOrigin);
+                                        $('.js-user-extend-money').text(core.fenToYuan(res.data.extendMoney || 0) + '元');
+                                    }
+                                });
+                            } else {
+                                console.log(res.message);
+                                layer.msg('服务器出现异常，请刷新页面重试！');
+                            }
+                        },
+                        error: function (error) {
+                            layer.msg('服务器出现异常，请刷新页面重试！');
+                        }
+                    });
+
+                });
+            }
+        });
+    }
+
+    /**
+     * 渲染用户下级代理表格
+     * 
+     */
+    function renderUserExtendTable(myShareCode) {
+        // 用户id， 用户名  等级  用户余额 注册时间）
+        table.render({
+            elem: '#userExtendTable',
+            url: '/api/readShareUserPage',
+            page: true,
+            where: {
+                myShareCode
+            },
+            cols: [
+                [{
+                    title: '用户名',
+                    field: "userName",
+                }, {
+                    title: '当前余额（元）',
+                    field: "money",
+                    width: 150,
+                    templet: function (d) {
+                        return core.fenToYuan(d.money);
+                    }
+                }, {
+                    title: '等级',
+                    field: "level",
+                    width: 100,
+                    templet: function (d) {
+                        return d.level === 1 ? '普通' : '金牌';
+                    }
+                }, {
+                    title: '注册时间',
+                    width: 200,
+                    field: "createdDate",
+                    templet: function (d) {
+                        return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
+                    }
+                }, {
+                    title: '状态',
+                    field: 'status',
+                    width: 100,
+                    templet: function (d) {
+                        return d.status === 1 ? '启用' : '<span class="layui-text-pink">停用</span>';
+                    }
+                }]
+            ],
+            limits: [10, 20, 50, 100],
+            page: {
+                theme: '#1E9FFF',
+                layout: ['prev', 'page', 'next', 'skip', 'count', 'limit']
+            },
+            request: {
+                pageName: 'offset'
+            },
+            response: {
+                statusCode: true
+            },
+            parseData: function (res) {
+                return {
+                    code: res.success,
+                    msg: res.msg,
+                    count: res.data.total,
+                    data: res.data.rows
+                }
+            }
         });
     }
 
@@ -427,10 +561,10 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function() {
             data: {
                 id: id
             },
-            success: function(data) {
+            success: function (data) {
                 callback(data);
             },
-            error: function(error) {
+            error: function (error) {
                 callback(data);
             }
         });
@@ -476,7 +610,7 @@ layui.use(['form', 'element', 'layer', 'table', 'util'], function() {
         var $form = $('#userSearchForm');
         var formDatas = $form.serializeArray();
         var ret = {};
-        $.each(formDatas, function(index, item) {
+        $.each(formDatas, function (index, item) {
             ret[item.name] = item.value;
         });
         return ret;

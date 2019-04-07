@@ -1,15 +1,59 @@
 <div>
     <div class="layui-tab layui-tab-brief" lay-filter="adviceFeedback">
         <ul class="layui-tab-title">
-            <li class="layui-this">账号概览</li>
-            <li>每日电商资讯</li>
-            <li>优惠券查询工具</li>
-            <li>淘口令解析工具</li>
+            <li class="layui-this">推广攒钱</li>
+            <li>我的推广</li>
+            <li>账号概览</li>
             <li>网店装修模版下载</li>
             <li>电脑端拼多多链接</li>
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
+                <form class="layui-form" name="shareForm">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">推广链接</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="shareLink" class="layui-input" disabled>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">推广文案</label>
+                        <div class="layui-input-block">
+                            <textarea name="shareEffect" id="jsShareEffect" class="layui-textarea"></textarea>
+                        </div>
+                    </div>
+                </form>
+                <div class="task-detail-container">
+                    <span
+                        style="color:#f00;font-size:16px;">推广佣金说明：各位老板，如果您的朋友通过你分享的链接进行注册，您的朋友每次充值之后都会返充值金额的7%到您的账户中。（举个栗子：您的朋友充值了1000元，那么你将获得70元），佣金非常的可观。所有的获得的佣金都会在左侧菜单拦中的`资金明细`中有记录。点击下方的`一键复制推广链接`按钮，马上去推广吧！祝每天爆单！！!</span><br>
+                </div>
+                <div class="task-add-container">
+                    <div class="layui-row">
+                        <button class="layui-btn layui-btn-normal" style="width:100%;" id="copyShareLink"> <i
+                                class="layui-icon layui-icon-share"></i>一键复制推广文案</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-tab-item">
+                <form class="layui-form clearfix" id="shareUserSearchForm">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input type="text" name="username" placeholder="用户名" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <button class="layui-btn layui-btn-normal" id="searchBtn">查询</button>
+                                <button class="layui-btn layui-btn-normal" id="resetBtn">重置</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div id="shareUserTable" lay-filter="shareUser"></div>
+            </div>
+            <div class="layui-tab-item">
                 <div class="layui-fluid">
                     <div class="layui-row" style="margin-bottom:16px;">
                         <div class="layui-col-md4 home-account-info">
@@ -26,13 +70,16 @@
                             <div class="layui-row">
                                 <div class="layui-col-md4">
                                     <div class="layui-btn-group">
-                                        <a href="#home" class="layui-btn layui-btn-normal layui-btn-sm" data-day="7" data-type="count">
+                                        <a href="#home" class="layui-btn layui-btn-normal layui-btn-sm" data-day="7"
+                                            data-type="count">
                                             近7天
                                         </a>
-                                        <a href="#home" class="layui-btn layui-btn-primary layui-btn-sm" data-day="15" data-type="count">
+                                        <a href="#home" class="layui-btn layui-btn-primary layui-btn-sm" data-day="15"
+                                            data-type="count">
                                             近15天
                                         </a>
-                                        <a href="#home" class="layui-btn layui-btn-primary layui-btn-sm" data-day="30" data-type="count">
+                                        <a href="#home" class="layui-btn layui-btn-primary layui-btn-sm" data-day="30"
+                                            data-type="count">
                                             近30天
                                         </a>
                                     </div>
@@ -48,13 +95,16 @@
                             <div class="layui-row">
                                 <div class="layui-col-md4">
                                     <div class="layui-btn-group">
-                                        <a href="#home" class="layui-btn layui-btn-normal layui-btn-sm" data-day="7" data-type="kbCount">
+                                        <a href="#home" class="layui-btn layui-btn-normal layui-btn-sm" data-day="7"
+                                            data-type="kbCount">
                                             近7天
                                         </a>
-                                        <a href="#home" class="layui-btn layui-btn-primary layui-btn-sm" data-day="15" data-type="kbCount">
+                                        <a href="#home" class="layui-btn layui-btn-primary layui-btn-sm" data-day="15"
+                                            data-type="kbCount">
                                             近15天
                                         </a>
-                                        <a href="#home" class="layui-btn layui-btn-primary layui-btn-sm" data-day="30" data-type="kbCount">
+                                        <a href="#home" class="layui-btn layui-btn-primary layui-btn-sm" data-day="30"
+                                            data-type="kbCount">
                                             近30天
                                         </a>
                                     </div>
@@ -70,13 +120,16 @@
                             <div class="layui-row">
                                 <div class="layui-col-md4">
                                     <div class="layui-btn-group">
-                                        <a href="#home" class="layui-btn layui-btn-normal layui-btn-sm" data-day="7" data-type="type">
+                                        <a href="#home" class="layui-btn layui-btn-normal layui-btn-sm" data-day="7"
+                                            data-type="type">
                                             近7天
                                         </a>
-                                        <a href="#home" class="layui-btn layui-btn-primary layui-btn-sm" data-day="15" data-type="type">
+                                        <a href="#home" class="layui-btn layui-btn-primary layui-btn-sm" data-day="15"
+                                            data-type="type">
                                             近15天
                                         </a>
-                                        <a href="#home" class="layui-btn layui-btn-primary layui-btn-sm" data-day="30" data-type="type">
+                                        <a href="#home" class="layui-btn layui-btn-primary layui-btn-sm" data-day="30"
+                                            data-type="type">
                                             近30天
                                         </a>
                                     </div>
@@ -99,13 +152,16 @@
                             <div class="layui-row">
                                 <div class="layui-col-md4">
                                     <div class="layui-btn-group">
-                                        <a href="#home" class="layui-btn layui-btn-normal layui-btn-sm" data-day="7" data-type="addmoney">
+                                        <a href="#home" class="layui-btn layui-btn-normal layui-btn-sm" data-day="7"
+                                            data-type="addmoney">
                                             近7天
                                         </a>
-                                        <a href="#home" class="layui-btn layui-btn-primary layui-btn-sm" data-day="15" data-type="addmoney">
+                                        <a href="#home" class="layui-btn layui-btn-primary layui-btn-sm" data-day="15"
+                                            data-type="addmoney">
                                             近15天
                                         </a>
-                                        <a href="#home" class="layui-btn layui-btn-primary layui-btn-sm" data-day="30" data-type="addmoney">
+                                        <a href="#home" class="layui-btn layui-btn-primary layui-btn-sm" data-day="30"
+                                            data-type="addmoney">
                                             近30天
                                         </a>
                                     </div>
@@ -117,15 +173,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="layui-tab-item">
-                每日电商资讯,正在开发。。。
-            </div>
-            <div class="layui-tab-item">
-                优惠券查询,正在开发。。。
-            </div>
-            <div class="layui-tab-item">
-                淘口令解析,正在开发。。。
             </div>
             <div class="layui-tab-item">
                 在本站充值任意金额，联系客服就送。

@@ -1,11 +1,19 @@
 <div>
     <div class="layui-tab layui-tab-brief" lay-filter="manageNotice">
         <ul class="layui-tab-title">
-            <li class="layui-this">通知管理</li>
+            <li class="layui-this">个人通知</li>
+            <li>系统通知</li>
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
                 <div class='layui-form-item'>
+                    <button class="layui-btn layui-btn-normal layui-btn-sm" id="markedReadBtn">标为已读</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="deleteBtn">删除</button>
+                </div>
+                <div lay-filter='noticePerson' id="noticeTablePerson"></div>
+            </div>
+            <div class="layui-tab-item">
+                <div class='layui-form-item' id="noticeOperator">
                     <button class="layui-btn layui-btn-normal layui-btn-sm" id="createNoticeBtn">创建</button>
                     <button class="layui-btn layui-btn-primary layui-btn-sm" id="updateNoticeBtn">修改</button>
                     <button class="layui-btn layui-btn-primary layui-btn-sm" id="disabledNoticeBtn">禁用</button>
