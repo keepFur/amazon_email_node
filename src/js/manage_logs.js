@@ -1,5 +1,5 @@
 // 操作日志查询模块
-layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
+layui.use(['table', 'element', 'layer', 'util', 'form'], function() {
     var table = layui.table;
     var element = layui.element;
     var layer = layui.layer;
@@ -12,7 +12,7 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
             single: '请选择一条数据操作',
             batch: '请至少选择一条数据操作'
         },
-        addStatus: [1, 3, 4, 5, 8]
+        addStatus: [1, 3, 4, 5, 8, 10]
     };
 
     /**
@@ -37,7 +37,7 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
         // 查询
         $('#searchBtn').on('click', searchHandle);
         // 重置
-        $('#resetBtn').on('click', function () {
+        $('#resetBtn').on('click', function() {
             $('#logsSearchForm')[0].reset();
             return false;
         });
@@ -52,10 +52,10 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
     }
 
     /**
-    * 查询的点击事件处理函数
-    * 
-    * @param {any} events 
-    */
+     * 查询的点击事件处理函数
+     * 
+     * @param {any} events 
+     */
     function searchHandle(events) {
         var queryParams = getQueryParams();
         reloadTable({
@@ -81,7 +81,7 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
             layer.confirm(tipMsg, {
                 title: '询问框',
                 btn: ['确定', '取消']
-            }, function (index, layero) {
+            }, function(index, layero) {
                 $.ajax({
                     url: '/api/toggleLogsScore',
                     type: 'POST',
@@ -89,11 +89,11 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
                         id: selectDatas[0].id,
                         status: type
                     },
-                    success: function (data, textStatus, jqXHR) {
+                    success: function(data, textStatus, jqXHR) {
                         layer.msg(data.success ? '操作成功' : ('操作失败' + data.message));
                         reloadTable();
                     },
-                    error: function (jqXHR, textStatus, errorThrown) {
+                    error: function(jqXHR, textStatus, errorThrown) {
                         layer.msg(baseDatas.netErrMsg);
                     }
                 });
@@ -113,67 +113,68 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
             elem: '#logsScoreTable',
             url: '/api/readLogsScorePage',
             page: true,
-            cols: [[
-                {
-                    checkbox: true,
-                },
-                {
-                    field: '',
-                    title: '序号',
-                    width: 60,
-                    templet: function (d) {
-                        return d.LAY_INDEX;
-                    }
-                },
-                {
-                    title: '操作用户',
-                    field: "userName"
-                },
-                {
-                    title: '订单号',
-                    field: 'orderNumber',
-                    width: 250
-                },
-                {
-                    title: '类型',
-                    field: "",
-                    templet: function (d) {
-                        var status = ['', '在线充值', '流量订单消费', '流量订单退款', '充值赠送', '推广佣金', '账号升级消费', '空包订单消费', '空包订单退款'];
-                        return status[d.type];
-                    }
-                },
-                {
-                    title: '金额（元）',
-                    field: "count",
-                    templet: function (d) {
-                        // 金额需要根据类型来，如果是增加的需要用红色的加号表示，否则绿色的减号表示
-                        return (baseDatas.addStatus.indexOf(d.type) === -1 ? '<span class="layui-text-green"> - </span>' : '<span class="layui-text-pink"> + </span>') + (core.fenToYuan(d.count));
-                    }
-                },
-                {
-                    title: '余额（元）',
-                    field: "balance",
-                    templet: function (d) {
-                        return core.fenToYuan(d.balance);
-                    }
-                },
-                {
-                    title: '创建时间',
-                    field: "createdDate",
-                    templet: function (d) {
-                        return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm:ss');
-                    }
-                }, {
-                    title: '状态',
-                    field: 'status',
-                    styles: {
-                        width: 56
+            cols: [
+                [{
+                        checkbox: true,
                     },
-                    templet: function (d) {
-                        return d.status === 1 ? '启用' : '停用';
+                    {
+                        field: '',
+                        title: '序号',
+                        width: 60,
+                        templet: function(d) {
+                            return d.LAY_INDEX;
+                        }
+                    },
+                    {
+                        title: '操作用户',
+                        field: "userName"
+                    },
+                    {
+                        title: '订单号',
+                        field: 'orderNumber',
+                        width: 250
+                    },
+                    {
+                        title: '类型',
+                        field: "",
+                        templet: function(d) {
+                            var status = ['', '在线充值', '流量订单消费', '流量订单退款', '充值赠送', '推广佣金', '账号升级消费', '空包订单消费', '空包订单退款', '礼品订单消费', '礼品订单退款'];
+                            return status[d.type];
+                        }
+                    },
+                    {
+                        title: '金额（元）',
+                        field: "count",
+                        templet: function(d) {
+                            // 金额需要根据类型来，如果是增加的需要用红色的加号表示，否则绿色的减号表示
+                            return (baseDatas.addStatus.indexOf(d.type) === -1 ? '<span class="layui-text-green"> - </span>' : '<span class="layui-text-pink"> + </span>') + (core.fenToYuan(d.count));
+                        }
+                    },
+                    {
+                        title: '余额（元）',
+                        field: "balance",
+                        templet: function(d) {
+                            return core.fenToYuan(d.balance);
+                        }
+                    },
+                    {
+                        title: '创建时间',
+                        field: "createdDate",
+                        templet: function(d) {
+                            return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm:ss');
+                        }
+                    }, {
+                        title: '状态',
+                        field: 'status',
+                        styles: {
+                            width: 56
+                        },
+                        templet: function(d) {
+                            return d.status === 1 ? '启用' : '停用';
+                        }
                     }
-                }
-            ]],
+                ]
+            ],
             limits: [10, 20, 50, 100],
             page: {
                 theme: '#1E9FFF',
@@ -185,7 +186,7 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
             response: {
                 statusCode: true
             },
-            parseData: function (res) {
+            parseData: function(res) {
                 return {
                     code: res.success,
                     msg: res.msg,
@@ -193,8 +194,7 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
                     data: res.data.rows
                 }
             },
-            done: function (res) {
-            }
+            done: function(res) {}
         });
     }
 
@@ -207,15 +207,15 @@ layui.use(['table', 'element', 'layer', 'util', 'form'], function () {
     }
 
     /**
-    *获取表格的查询参数
-    *
-    * @returns 返回所有参数的对象
-    */
+     *获取表格的查询参数
+     *
+     * @returns 返回所有参数的对象
+     */
     function getQueryParams() {
         var $form = $('#logsSearchForm');
         var formDatas = $form.serializeArray();
         var ret = {};
-        $.each(formDatas, function (index, item) {
+        $.each(formDatas, function(index, item) {
             ret[item.name] = item.value;
         });
         return ret;

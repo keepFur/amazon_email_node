@@ -1,0 +1,74 @@
+<div>
+    <div class="layui-tab layui-tab-brief" lay-filter="managePresentOrder">
+        <ul class="layui-tab-title">
+            <li class="layui-this" lay-id="TB">礼品订单</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form clearfix" id="presentOrderSearchForm">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">订单状态</label>
+                            <div class="layui-input-inline">
+                                <select name="status" lay-filter="status">
+                                    <option value="">全部</option>
+                                    <option value="1">待扫描</option>
+                                    <option value="2">已扫描</option>
+                                    <option value="3">已取消</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">收件人信息</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="addressTo" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">快递单号</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="kbNumber" placeholder="" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">订单号</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="number" placeholder="" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">发件人信息</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="addressFrom" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">日期范围</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="createdDate" id="createdDate" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">发货仓库</label>
+                            <div class="layui-input-inline">
+                                <select name="stockFromId" lay-filter="stockFromId">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="layui-form-item">
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="createPresentOrderBtn">礼品购买</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="exportPresentOrderBtn"><i class="layui-icon">&#xe601;</i>导出订单</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm layui-hide" id="pddBatchBtn"><i class="layui-icon">&#xe601;</i>拼多多批量发货</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm js-super" id="downloadPresentOrderBtn"><i class="layui-icon">&#xe601;</i>导出待扫描订单</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm js-super" id="markScanedPresentOrderBtn">标记为已扫描</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm js-super" id="cancelPresentOrderBtn">取消</button>
+                    <button class="layui-btn layui-btn-normal layui-btn-sm" id="searchBtn">查询</button>
+                    <button class="layui-btn layui-btn-normal layui-btn-sm" id="resetBtn">重置</button>
+                </div>
+                <div id="presentOrderTable" lay-filter="presentOrder"></div>
+            </div>
+        </div>
+    </div>
+</div>

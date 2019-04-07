@@ -42,6 +42,8 @@ let ManageKbAddress = require('./lib/manage_kb_address_service');
 let manageKbAddress = new ManageKbAddress();
 let OperateOverview = require('./lib/operate_overview_service');
 let operateOverview = new OperateOverview();
+let PresentPurchase = require('./lib/present_purchase_server');
+let presentPurchase = new PresentPurchase();
 let APIUtil = require('./lib/api_util');
 let APIPay = require('./lib/api_pay');
 let APIArea = require('./lib/api_area');
@@ -1041,6 +1043,98 @@ app.get('/api/getCityByCode', function(req, res) {
 app.get('/api/getAreaByCode', function(req, res) {
     try {
         APIArea.getAreaByCode(req, res);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+/* *****************礼品模块接口****************** */
+
+// 创建礼品订单
+app.post('/api/createPresentOrder', function(req, res) {
+    try {
+        presentPurchase.createPresentOrder(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 创建任务,提交到礼品岛
+app.get('/lieliuApi/createPresentOrder', function(req, res) {
+    try {
+        LieliuApi.createPresentOrder(req, res);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 获取礼品订单
+app.get('/api/readPresentOrderPage', function(req, res) {
+    try {
+        presentPurchase.readPresentOrderPage(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 修改订单状态
+app.post('/api/togglePresentOrder', function(req, res) {
+    try {
+        presentPurchase.togglePresentOrder(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 修改订单信息
+app.post('/api/updatePresentOrder', function(req, res) {
+    try {
+        presentPurchase.updatePresentOrder(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 获取礼品列表
+app.get('/api/readPresent', function(req, res) {
+    try {
+        presentPurchase.readPresent(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 读取发货人信息
+app.get('/api/readFromUserInfoById', function(req, res) {
+    try {
+        presentPurchase.readFromUserInfoById(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 保存发货人信息
+app.post('/api/saveFromUserInfoById', function(req, res) {
+    try {
+        presentPurchase.saveFromUserInfoById(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 修改发货人信息
+app.post('/api/updateFromUserInfoById', function(req, res) {
+    try {
+        presentPurchase.updateFromUserInfoById(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 读取发货仓库列表
+app.get('/api/readFromStock', function(req, res) {
+    try {
+        presentPurchase.readFromStock(req, res, req.query);
     } catch (error) {
         Core.flyer.log(error);
     }

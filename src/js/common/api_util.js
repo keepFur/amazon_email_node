@@ -1,19 +1,19 @@
 "use strict";
-layui.use(['util'], function () {
+layui.use(['util'], function() {
     var util = layui.util;
     var APIUtil = {
         domain: 'http://api.lieliu.com:1024',
         userKey: 'c1e5606f7b40e680d3b5bfc7dbb042ff#asd12c1e5606f7b40e680d3b5bfc7dbb042ff',
-        getServerTimestamp: function (callback) {
+        getServerTimestamp: function(callback) {
             var url = this.domain + '/api/sys_now?format=json';
-            callback = callback || function (res) {
+            callback = callback || function(res) {
                 layer.msg('sys_now==>' + res.data.time);
             };
-            $.get(url, function (data) {
+            $.get(url, function(data) {
                 callback(data);
             });
         },
-        generateOrderNumer: function () {
+        generateOrderNumer: function() {
             let random = util.digit(Math.ceil(Math.random() * 1000000), 6);
             let date = new Date();
             let year = date.getFullYear();
@@ -25,17 +25,17 @@ layui.use(['util'], function () {
             let mill = util.digit(date.getMilliseconds(), 4);
             return '' + year + month + day + hours + minutes + seconds + mill + random;
         },
-        signkey: function (apiName, params) {
+        signkey: function(apiName, params) {
             console.log('原串：' + params);
             var encodeUlr = encodeURIComponent(`${apiName}?${params}&${this.userKey.split('#')[0]}`);
             console.log('encodeurl之后：' + encodeUlr);
             return $.md5(encodeUlr);
         },
-        createTask: function (params, callback) {
+        createTask: function(params, callback) {
             var url = this.domain + '/ll/task_add';
             var orderNumber = this.generateOrderNumer();
             var _this = this;
-            this.getServerTimestamp(function (data) {
+            this.getServerTimestamp(function(data) {
                 params = $.extend(params, {
                     format: 'json',
                     ver: 4,
@@ -49,20 +49,20 @@ layui.use(['util'], function () {
                 $.ajax({
                     url: '/lieliuApi/createTask',
                     data: params,
-                    success: function (res) {
+                    success: function(res) {
                         res.orderNumber = orderNumber;
                         callback(res);
                     },
-                    error: function (error) {
+                    error: function(error) {
                         callback({}, error);
                     }
                 });
             });
         },
         // 查询任务
-        listTask: function (params, callback) {
+        listTask: function(params, callback) {
             var _this = this;
-            this.getServerTimestamp(function (data) {
+            this.getServerTimestamp(function(data) {
                 params = $.extend(params, {
                     format: 'json',
                     timestamp: data.data.time,
@@ -73,19 +73,19 @@ layui.use(['util'], function () {
                 $.ajax({
                     url: '/lieliuApi/listTask',
                     data: params,
-                    success: function (res) {
+                    success: function(res) {
                         callback(res);
                     },
-                    error: function (error) {
+                    error: function(error) {
                         layer.msg(error.message)
                     }
                 });
             });
         },
         // 取消任务
-        cancelTask: function (orderNumber, callback) {
+        cancelTask: function(orderNumber, callback) {
             var _this = this;
-            this.getServerTimestamp(function (data) {
+            this.getServerTimestamp(function(data) {
                 var params = {
                     format: 'json',
                     timestamp: data.data.time,
@@ -97,19 +97,19 @@ layui.use(['util'], function () {
                 $.ajax({
                     url: '/lieliuApi/cancelTask',
                     data: params,
-                    success: function (res) {
+                    success: function(res) {
                         callback(res);
                     },
-                    error: function (error) {
+                    error: function(error) {
                         layer.msg(error.message)
                     }
                 });
             });
         },
         // 暂停或者恢复任务
-        pauseAndResumeTask: function (orderNumber, status, callback) {
+        pauseAndResumeTask: function(orderNumber, status, callback) {
             var _this = this;
-            this.getServerTimestamp(function (data) {
+            this.getServerTimestamp(function(data) {
                 var params = {
                     format: 'json',
                     timestamp: data.data.time,
@@ -122,13 +122,25 @@ layui.use(['util'], function () {
                 $.ajax({
                     url: '/lieliuApi/pauseAndResumeTask',
                     data: params,
-                    success: function (res) {
+                    success: function(res) {
                         callback(res);
                     },
-                    error: function (error) {
+                    error: function(error) {
                         layer.msg(error.message)
                     }
                 });
+            });
+        },
+        createPresentOrder: function(params, callback) {
+            $.ajax({
+                url: '/lieliuApi/createPresentOrder',
+                data: params,
+                success: function(res) {
+                    callback(res);
+                },
+                error: function(error) {
+                    callback({}, error);
+                }
             });
         }
     };
