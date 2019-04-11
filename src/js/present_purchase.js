@@ -273,9 +273,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
             for (let i = 0, length = presentOrderInfo.addressTo.length; i < length; i++) {
                 (function (i) {
                     presentOrderInfo.orderNumber = APIUtil.generateOrderNumer();
-                    presentOrderInfo.addressTo = [presentOrderInfo.addressTo[i]];
-                    presentOrderInfo.addressToPca = [presentOrderInfo.addressToPca[i]];
-                    APIUtil.createPresentOrder({
+                    var params = {
                         send_order_no: presentOrderInfo.orderNumber,
                         goodsid: presentOrderInfo.pid,
                         storesid: presentOrderInfo.presentStock,
@@ -288,8 +286,11 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
                         receiver_address: presentOrderInfo.addressTo[i].split(/,|，/)[2].split(' ')[3],
                         sendname: presentOrderInfo.addressFromName,
                         sendphone: presentOrderInfo.addressFromPhone,
-                        presentOrderInfo: presentOrderInfo
-                    }, function (res, err) {
+                    };
+                    presentOrderInfo.addressToLocal = [presentOrderInfo.addressTo[i]];
+                    presentOrderInfo.addressToPcaLocal = [presentOrderInfo.addressToPca[i]];
+                    params.presentOrderInfo = presentOrderInfo;
+                    APIUtil.createPresentOrder(params, function (res, err) {
                         if (err || !res.success) {
                             layer.msg(baseDatas.netErrMsg);
                             return false;
