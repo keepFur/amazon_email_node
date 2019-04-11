@@ -1,13 +1,17 @@
 'use strict';
-layui.use(['element', 'layer'], function() {
+layui.use(['element', 'layer', 'table', 'util'], function () {
     var element = layui.element;
     var layer = layui.layer;
+    var table = layui.table;
+    var util = layui.util;
     // 基于准备好的dom，初始化echarts实例
     var taskCount = echarts.init(document.getElementById('taskCount'));
     var kbCount = echarts.init(document.getElementById('kbCount'));
     var taskType = echarts.init(document.getElementById('taskType'));
     var kbType = echarts.init(document.getElementById('kbType'));
     var addScore = echarts.init(document.getElementById('addScore'));
+    var otherShareCode = '';
+    var myShareCode = '';
     // 指定图表的配置项和数据--任务数量
     var optionOfTaskCount = {
         title: {
@@ -134,16 +138,49 @@ layui.use(['element', 'layer'], function() {
         getKbType();
         getAddMoney();
         getScore();
+        initComponment();
         initEvent();
     })()
+
+    // 初始化组件
+    function initComponment() {
+        core.getUserInfoById(function (res) {
+            otherShareCode = res.data.rows[0].otherShareCode;
+            myShareCode = res.data.rows[0].myShareCode;
+            renderShareTable();
+            // 生成推广链接（注册的时候自动给账号分配一个推广链接），链接形式：www.08v12.com?otherShareCode=adadjasjdiujasdiqwkajskd
+            var link = location.host + '/?otherShareCode=' + res.data.rows[0].myShareCode;
+            $('input[name=shareLink]').val(link);
+            // 生成效果
+            $('#jsShareEffect').val(`亲爱的朋友，我正在使用易店科技优化店铺，效果很不错哦，你也可以试试。点击下方为你准备的专属链接${link}进行注册吧。注册就送2.5元。`);
+        });
+    }
 
     /**
      * 事件初始化
      * 
      */
     function initEvent() {
+        // 一键复制推广文案
+        $('#copyShareLink').on('click', copyShareLinkHandle);
+        // 查询
+        $('#searchBtn').on('click', function () {
+            reloadTable({
+                userName: $('input[name=username]').val().trim(),
+                page: {
+                    curr: 1,
+                    limit: 10
+                }
+            });
+            return false;
+        });
+        // 重置
+        $('#resetBtn').on('click', function () {
+            $('#shareUserSearchForm')[0].reset();
+            return false;
+        });
         // 切换日期
-        $('.js-home-toggle-date').on('click', 'a', function(event) {
+        $('.js-home-toggle-date').on('click', 'a', function (event) {
             var type = $(this).data('type');
             var day = $(this).data('day');
             $(this).parents('.js-home-toggle-date').find('a').removeClass('layui-btn-normal').addClass('layui-btn-primary');
@@ -169,7 +206,7 @@ layui.use(['element', 'layer'], function() {
             return false;
         });
         // 查看更多通知
-        $('#viewMoreNotice').click(function(e) {
+        $('#viewMoreNotice').click(function (e) {
             tipNotice();
             return false;
         });
@@ -177,7 +214,7 @@ layui.use(['element', 'layer'], function() {
 
     //  获取用户余额
     function getScore() {
-        core.getUserInfoById(function(res) {
+        core.getUserInfoById(function (res) {
             $('.js-user-score').text(core.fenToYuan(res.data.rows[0].money));
         });
     }
@@ -197,9 +234,9 @@ layui.use(['element', 'layer'], function() {
         $.get('/api/readTaskCountOfInTime', {
             createdDateStart: createdDateStart,
             createdDateEnd: createdDateEnd
-        }, function(res) {
+        }, function (res) {
             var rows = res.data.rows;
-            numDayDate.forEach(function(item) {
+            numDayDate.forEach(function (item) {
                 if (!hasContainerEle(item, rows)) {
                     rows.push({
                         createdDate: $.formatDate('yyyy/mm/dd', item),
@@ -207,16 +244,16 @@ layui.use(['element', 'layer'], function() {
                     });
                 }
             });
-            rows = rows.map(function(item, index) {
+            rows = rows.map(function (item, index) {
                 return {
                     createdDate: $.formatDate('yyyy/mm/dd', item.createdDate),
                     count: item.count
                 };
             });
-            rows.sort(function(item1, item2) {
+            rows.sort(function (item1, item2) {
                 return new Date(item1.createdDate).getTime() - new Date(item2.createdDate).getTime();
             });
-            optionOfTaskCount.series[0].data = rows.map(function(item, index) {
+            optionOfTaskCount.series[0].data = rows.map(function (item, index) {
                 return item.count;
             });
             taskCount.setOption(optionOfTaskCount);
@@ -238,9 +275,9 @@ layui.use(['element', 'layer'], function() {
         $.get('/api/readKbCountOfInTime', {
             createdDateStart: createdDateStart,
             createdDateEnd: createdDateEnd
-        }, function(res) {
+        }, function (res) {
             var rows = res.data.rows;
-            numDayDate.forEach(function(item) {
+            numDayDate.forEach(function (item) {
                 if (!hasContainerEle(item, rows)) {
                     rows.push({
                         createdDate: $.formatDate('yyyy/mm/dd', item),
@@ -248,16 +285,16 @@ layui.use(['element', 'layer'], function() {
                     });
                 }
             });
-            rows = rows.map(function(item, index) {
+            rows = rows.map(function (item, index) {
                 return {
                     createdDate: $.formatDate('yyyy/mm/dd', item.createdDate),
                     count: item.count
                 };
             });
-            rows.sort(function(item1, item2) {
+            rows.sort(function (item1, item2) {
                 return new Date(item1.createdDate).getTime() - new Date(item2.createdDate).getTime();
             });
-            optionOfKbCount.series[0].data = rows.map(function(item, index) {
+            optionOfKbCount.series[0].data = rows.map(function (item, index) {
                 return item.count;
             });
             kbCount.setOption(optionOfKbCount);
@@ -277,9 +314,9 @@ layui.use(['element', 'layer'], function() {
         $.get('/api/readTaskTypeOfInTime', {
             createdDateStart: createdDateStart,
             createdDateEnd: createdDateEnd
-        }, function(res) {
+        }, function (res) {
             var rows = res.data.rows;
-            optionOfTaskType.series[0].data = rows.map(function(item) {
+            optionOfTaskType.series[0].data = rows.map(function (item) {
                 return {
                     name: item.taskTypeName,
                     value: item.count
@@ -302,9 +339,9 @@ layui.use(['element', 'layer'], function() {
         $.get('/api/readKbTypeOfInTime', {
             createdDateStart: createdDateStart,
             createdDateEnd: createdDateEnd
-        }, function(res) {
+        }, function (res) {
             var rows = res.data.rows;
-            optionOfKbType.series[0].data = rows.map(function(item) {
+            optionOfKbType.series[0].data = rows.map(function (item) {
                 return {
                     name: core.getPlantByCode(item.plant) + '(' + item.kbCompany + ')',
                     value: item.count
@@ -346,9 +383,9 @@ layui.use(['element', 'layer'], function() {
         $.get('/api/readAddMoneyOfInTime', {
             createdDateStart: createdDateStart,
             createdDateEnd: createdDateEnd
-        }, function(res) {
+        }, function (res) {
             var rows = res.data.rows;
-            numDayDate.forEach(function(item) {
+            numDayDate.forEach(function (item) {
                 if (!hasContainerEle(item, rows)) {
                     rows.push({
                         createdDate: $.formatDate('yyyy/mm/dd', item),
@@ -356,16 +393,16 @@ layui.use(['element', 'layer'], function() {
                     });
                 }
             });
-            rows = rows.map(function(item, index) {
+            rows = rows.map(function (item, index) {
                 return {
                     createdDate: $.formatDate('yyyy/mm/dd', item.createdDate),
                     count: item.count
                 };
             });
-            rows.sort(function(item1, item2) {
+            rows.sort(function (item1, item2) {
                 return new Date(item1.createdDate).getTime() - new Date(item2.createdDate).getTime();
             });
-            optionOfScore.series[0].data = rows.map(function(item, index) {
+            optionOfScore.series[0].data = rows.map(function (item, index) {
                 return core.fenToYuan(item.count);
             });
             addScore.setOption(optionOfScore);
@@ -405,7 +442,7 @@ layui.use(['element', 'layer'], function() {
     function hasContainerEle(ele, arr) {
         var has = false;
         if (ele && arr && Array.isArray(arr)) {
-            arr.forEach(function(element) {
+            arr.forEach(function (element) {
                 if ($.formatDate('yyyy/mm/dd', element.createdDate) === ele) {
                     has = true;
                     return false;
@@ -427,7 +464,7 @@ layui.use(['element', 'layer'], function() {
             btn: '关闭',
             scrollbar: false,
             shadeClose: true,
-            success: function(layero, index) {
+            success: function (layero, index) {
                 // 加载通知列表并渲染
                 readNoticePage();
             }
@@ -443,7 +480,7 @@ layui.use(['element', 'layer'], function() {
                 offset: 1
             },
             dataType: 'json',
-            success: function(res) {
+            success: function (res) {
                 randerNoticeList(res.data.rows);
             }
         });
@@ -457,9 +494,96 @@ layui.use(['element', 'layer'], function() {
                         <div class="layui-card-body">内容：${n.noticeContent}</div>
                     </div>`;
         }
-        $.each(notice, function(index, item) {
+        $.each(notice, function (index, item) {
             $('#noticeContainer').append(generateTpl(item, index));
         });
         element.render('collapse');
+    }
+
+    // 推广攒钱 和我的推广
+    /**
+     * 一键复制推广文案按钮的点击事件的处理函数
+     * 每个账户下有一个otherShareCode（别人分享的）和myShareCode（自己的）：
+     * 当用户注册的时候：判断链接中是否有otherShareCode查询参数，如果有的话，说明是通过别人分享的链接进行注册的，否则不是。注册的时候，每个账户分配一个myShareCode，当用户进行充值的时候，根据用户的otherShareCode去判断是否有人通过你分享的链接进行了注册，如果有的话，根据充值金额，按照比例进行佣金的返回并记录日志。
+     * 实现步骤（服务端）：
+     * 1，user 表增加myShareCode和otherShareCode字断
+     * 2，注册的时候，判断查询参数，是否有otherShareCode，如果有写入到otherShareCode字断中，并自动生成一个myOtherCode
+     * 3，充值的时候，判断是否是通过别人的链接进行注册的，如果是，返回佣金和记录日志
+     * 实现步骤（客户端）：完成
+     * 1，获取用户信息（myShareCode），生成推广链接
+     * 2，组装推广文案
+     * 3，复制推广文案
+     * @param {any} e 
+     */
+    function copyShareLinkHandle(e) {
+        core.copyToClipBoard('jsShareEffect');
+        layer.msg('推广文案已成功复制到粘贴板，去推广吧');
+        return false;
+    }
+
+    /**
+     * 渲染表格
+     * 
+     */
+    function renderShareTable() {
+        table.render({
+            elem: '#shareUserTable',
+            url: '/api/readShareUserPage',
+            page: true,
+            where: {
+                myShareCode: myShareCode
+            },
+            cols: [
+                [{
+                        field: '',
+                        title: '序号',
+                        width: 60,
+                        templet: function (d) {
+                            return d.LAY_INDEX;
+                        }
+                    },
+                    {
+                        field: 'userName',
+                        title: '用户名',
+                    },
+                    {
+                        field: 'createdDate',
+                        title: '创建时间',
+                        templet: function (d) {
+                            return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
+                        }
+                    }
+                ]
+            ],
+            limits: [10, 20, 50, 100],
+            page: {
+                theme: '#1E9FFF',
+                layout: ['prev', 'page', 'next', 'skip', 'count', 'limit']
+            },
+            request: {
+                pageName: 'offset'
+            },
+            response: {
+                statusCode: true
+            },
+            parseData: function (res) {
+                return {
+                    code: res.success,
+                    msg: res.msg,
+                    count: res.data.total,
+                    data: res.data.rows
+                }
+            }
+        });
+    }
+
+    /**
+     * 重载表格
+     * 
+     */
+    function reloadTable(where) {
+        table.reload('shareUserTable', {
+            where: where
+        });
     }
 });

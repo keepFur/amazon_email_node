@@ -1,6 +1,6 @@
 //  用户充值模块
 "use strict";
-layui.use(['element', 'layer', 'form', 'table', 'util'], function() {
+layui.use(['element', 'layer', 'form', 'table', 'util'], function () {
     var element = layui.element;
     var layer = layui.layer;
     var form = layui.form;
@@ -20,9 +20,8 @@ layui.use(['element', 'layer', 'form', 'table', 'util'], function() {
     function initComponment() {
         // 设置账号信息以及用户余额
         $('form[name=addMoneyForm] input[name=userName]').val($('#userName').text().trim());
-        core.getUserInfoById(function(res) {
+        core.getUserInfoById(function (res) {
             $('#userMainMoney').text(core.fenToYuan(res.data.rows[0].money));
-            // debugger
             otherShareCode = res.data.rows[0].otherShareCode;
             myShareCode = res.data.rows[0].myShareCode;
             renderShareTable();
@@ -44,7 +43,7 @@ layui.use(['element', 'layer', 'form', 'table', 'util'], function() {
         // 一键复制推广文案
         $('#copyShareLink').on('click', copyShareLinkHandle);
         // 查询
-        $('#searchBtn').on('click', function() {
+        $('#searchBtn').on('click', function () {
             reloadTable({
                 userName: $('input[name=username]').val().trim(),
                 page: {
@@ -55,7 +54,7 @@ layui.use(['element', 'layer', 'form', 'table', 'util'], function() {
             return false;
         });
         // 重置
-        $('#resetBtn').on('click', function() {
+        $('#resetBtn').on('click', function () {
             $('#shareUserSearchForm')[0].reset();
             return false;
         });
@@ -104,11 +103,11 @@ layui.use(['element', 'layer', 'form', 'table', 'util'], function() {
             title: '在线充值付款',
             btn: '我已支付（支付完成一定要点击我，否则不会到账）',
             scrollbar: false,
-            yes: function(index, layero) {
+            yes: function (index, layero) {
                 open.count++;
                 if (open.count === 1) {
                     if (open.qr_id) {
-                        getQrCodePayStatus(open.qr_id, open.addPackageType, function(payStatus) {
+                        getQrCodePayStatus(open.qr_id, open.addPackageType, function (payStatus) {
                             layer.closeAll('msg');
                             if (payStatus) {
                                 layer.msg('支付成功');
@@ -123,12 +122,12 @@ layui.use(['element', 'layer', 'form', 'table', 'util'], function() {
                     }
                 }
             },
-            cancel: function() {
+            cancel: function () {
                 // 支付成功之后不需要再去检查支付状态了
                 open.count++;
                 if (open.count === 1) {
                     if (open.qr_id) {
-                        getQrCodePayStatus(open.qr_id, open.addPackageType, function(payStatus) {
+                        getQrCodePayStatus(open.qr_id, open.addPackageType, function (payStatus) {
                             layer.closeAll('msg');
                             if (payStatus) {
                                 layer.msg('支付成功');
@@ -143,7 +142,7 @@ layui.use(['element', 'layer', 'form', 'table', 'util'], function() {
                     }
                 }
             },
-            success: function(layero, index) {
+            success: function (layero, index) {
                 // 设置付款金额
                 $('#payMount').text(checkedPackage.data('purchase-money') / 100);
                 $.ajax({
@@ -154,10 +153,10 @@ layui.use(['element', 'layer', 'form', 'table', 'util'], function() {
                         packageId: checkedPackage.val(),
                         qr_type: 'QR_TYPE_NOLIMIT'
                     },
-                    beforeSend: function() {
+                    beforeSend: function () {
                         $.addLoading($('.js-pay-container'));
                     },
-                    success: function(data) {
+                    success: function (data) {
                         $('#jsPayCodeImg').toggle(data.success);
                         $('#jsPayCodeRefresh').toggle(!data.success);
                         if (data.success) {
@@ -166,10 +165,10 @@ layui.use(['element', 'layer', 'form', 'table', 'util'], function() {
                             open.addPackageType = $('input[type=radio][name=addPackageType]:checked').val();
                         }
                     },
-                    error: function() {
+                    error: function () {
                         layer.msg(baseDatas.netErrMsg);
                     },
-                    complete: function() {
+                    complete: function () {
                         $.removeLoading($('.js-pay-container'));
                     }
                 });
@@ -188,14 +187,14 @@ layui.use(['element', 'layer', 'form', 'table', 'util'], function() {
                 status: 1,
                 offset: 1
             },
-            beforeSend: function(jqXHR, settings) {
+            beforeSend: function (jqXHR, settings) {
                 $.addLoading();
             },
-            success: function(data, jqXHR, textStatus) {
+            success: function (data, jqXHR, textStatus) {
                 if (data.success) {
                     renderPackage(data.data.rows);
                     // 充值套餐change事件并且模拟触发一次change事件
-                    form.on('radio', function(data) {
+                    form.on('radio', function (data) {
                         if (this.name === 'addPackageType') {
                             addPackageTypeHandle(data.elem);
                         }
@@ -206,10 +205,10 @@ layui.use(['element', 'layer', 'form', 'table', 'util'], function() {
                     renderPackage([]);
                 }
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
                 layer.msg(baseDatas.netErrMsg);
             },
-            complete: function(jqXHR, textStatus) {
+            complete: function (jqXHR, textStatus) {
                 $.removeLoading()
             }
         });
@@ -218,7 +217,7 @@ layui.use(['element', 'layer', 'form', 'table', 'util'], function() {
     // 渲染所有的充值方式
     function renderPackage(packages) {
         var $container = `<div class="layui-input-block">`;
-        $.each(packages, function(index, pack) {
+        $.each(packages, function (index, pack) {
             if (index % 4 === 0 && index !== 0) {
                 $container += '</div><div class="layui-input-block">';
                 $container += generateRadio(pack, index === 0);
@@ -261,7 +260,7 @@ layui.use(['element', 'layer', 'form', 'table', 'util'], function() {
                 orderNumber: APIUtil.generateOrderNumer(),
                 otherShareCode: otherShareCode
             },
-            success: function(payStatus) {
+            success: function (payStatus) {
                 callback(payStatus.data.status);
             }
         });
@@ -283,7 +282,7 @@ layui.use(['element', 'layer', 'form', 'table', 'util'], function() {
      */
     function copyShareLinkHandle(e) {
         core.copyToClipBoard('jsShareEffect');
-        layer.msg('推广文案已成功复制到粘贴吧，去推广吧');
+        layer.msg('推广文案已成功复制到粘贴板，去推广吧');
         return false;
     }
 
@@ -304,7 +303,7 @@ layui.use(['element', 'layer', 'form', 'table', 'util'], function() {
                         field: '',
                         title: '序号',
                         width: 60,
-                        templet: function(d) {
+                        templet: function (d) {
                             return d.LAY_INDEX;
                         }
                     },
@@ -315,7 +314,7 @@ layui.use(['element', 'layer', 'form', 'table', 'util'], function() {
                     {
                         field: 'createdDate',
                         title: '创建时间',
-                        templet: function(d) {
+                        templet: function (d) {
                             return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
                         }
                     }
@@ -332,7 +331,7 @@ layui.use(['element', 'layer', 'form', 'table', 'util'], function() {
             response: {
                 statusCode: true
             },
-            parseData: function(res) {
+            parseData: function (res) {
                 return {
                     code: res.success,
                     msg: res.msg,

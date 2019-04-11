@@ -1,6 +1,6 @@
 'use strict';
 var $ = mdui.JQ;
-$(function() {
+$(function () {
     var userNameMinLength = 6;
     var userNameMaxLength = 15;
     var passwordErrorMsg = '密码是由6-15位的数字或密码组成';
@@ -31,12 +31,12 @@ $(function() {
         var kefuDialog = null;
 
         // 查看更多公告
-        $('.js-notice-view-more').on('click', function(e) {
+        $('.js-notice-view-more').on('click', function (e) {
             return false;
         });
 
         // 首页
-        $('#home').on('click', function() {
+        $('#home').on('click', function () {
             if (!$('.js-user-login').hasClass('mdui-hidden') || !$('.js-user-register').hasClass('mdui-hidden')) {
                 window.location.reload();
             }
@@ -44,10 +44,10 @@ $(function() {
         });
 
         // 空包下单
-        $('#kbPur').on('click', function() {
+        $('#kbPur').on('click', function () {
             $.ajax({
                 url: '/front/getUserLoginStatus',
-                success: function(data) {
+                success: function (data) {
                     data = JSON.parse(data);
                     if (data.status) {
                         window.location.assign('/console#kb_purchase');
@@ -63,11 +63,31 @@ $(function() {
             return false;
         });
 
-        // 流量下单
-        $('.jsTrafficPur').on('click', function() {
+        // 空包下单
+        $('#presentPur').on('click', function () {
             $.ajax({
                 url: '/front/getUserLoginStatus',
-                success: function(data) {
+                success: function (data) {
+                    data = JSON.parse(data);
+                    if (data.status) {
+                        window.location.assign('/console#present_purchase');
+                    } else {
+                        mdui.snackbar({
+                            message: '请先登录系统',
+                            position: 'top'
+                        });
+                        $('#userLogin').trigger('click');
+                    }
+                }
+            });
+            return false;
+        });
+
+        // 流量下单
+        $('.jsTrafficPur').on('click', function () {
+            $.ajax({
+                url: '/front/getUserLoginStatus',
+                success: function (data) {
                     data = JSON.parse(data);
                     if (data.status) {
                         window.location.assign('/console#task_create');
@@ -87,7 +107,7 @@ $(function() {
         $('#userRegister').on('click', userRegisterHandler);
 
         // 注册跳转到登录
-        $('.js-to-login').on('click', function() {
+        $('.js-to-login').on('click', function () {
             $('#userLogin').trigger('click');
         });
 
@@ -98,7 +118,7 @@ $(function() {
         $('#userLogin').on('click', userLoginHandler);
 
         // 登录到注册
-        $('.js-login-to-register').on('click', function() {
+        $('.js-login-to-register').on('click', function () {
             $('#userRegister').trigger('click');
         });
 
@@ -112,10 +132,14 @@ $(function() {
         $('#getUserPasswordSubmit').on('click', userGetPasswordSubmitHandler);
 
         // 获取验证码
-        $('#getVerfiyCode').on('click', { $userPhone: $('input[name=userPhone]') }, getVerfiyCodeHandler);
+        $('#getVerfiyCode').on('click', {
+            $userPhone: $('input[name=userPhone]')
+        }, getVerfiyCodeHandler);
 
         // 获取验证码 注册模块
-        $('#getVerfiyCodeReg').on('click', { $userPhone: $('input[name=phone]') }, getVerfiyCodeHandler);
+        $('#getVerfiyCodeReg').on('click', {
+            $userPhone: $('input[name=phone]')
+        }, getVerfiyCodeHandler);
 
         // 刷新题目
         $('#refreshCompute').on('click', refreshComputeHandler);
@@ -124,10 +148,10 @@ $(function() {
         $('#setUserPasswordSubmit').on('click', setUserPasswordSubmitHandler);
 
         // 控制台
-        $('#console,.big-img').on('click', function(event) {
+        $('#console,.big-img').on('click', function (event) {
             $.ajax({
                 url: '/front/getUserLoginStatus',
-                success: function(data) {
+                success: function (data) {
                     data = JSON.parse(data);
                     if (data.status) {
                         window.location.assign('/console');
@@ -144,10 +168,10 @@ $(function() {
         });
 
         // 充值
-        $('#addMoney').on('click', function(event) {
+        $('#addMoney').on('click', function (event) {
             $.ajax({
                 url: '/front/getUserLoginStatus',
-                success: function(data) {
+                success: function (data) {
                     data = JSON.parse(data);
                     if (data.status) {
                         window.location.assign('/console#add_money');
@@ -163,24 +187,24 @@ $(function() {
         });
 
         // 打开立即咨询
-        $('.kefu-container').on('click', function() {
+        $('.kefu-container').on('click', function () {
             kefuDialog = new mdui.Dialog('.js-kefu-mdui-dialog');
             kefuDialog.open();
             return false;
         });
 
         // 关闭立即咨询
-        $('.kefu-btn-no').on('click', function() {
+        $('.kefu-btn-no').on('click', function () {
             kefuDialog.close();
             return false;
         });
 
         // 底部立即使用
-        $('#userLoginFooter,.buy').on('click', function(event) {
+        $('#userLoginFooter,.buy').on('click', function (event) {
             var $this = $(this);
             $.ajax({
                 url: '/front/getUserLoginStatus',
-                success: function(data) {
+                success: function (data) {
                     data = JSON.parse(data);
                     if (data.status) {
                         window.location.assign($this.find('a').attr('href'));
@@ -210,7 +234,7 @@ $(function() {
          */
         function setClassName(eles, className) {
             if (eles) {
-                eles.forEach(function(ele, index) {
+                eles.forEach(function (ele, index) {
                     ele.className = className;
                 });
             }
@@ -218,8 +242,8 @@ $(function() {
         // 实现轮播图功能
         var controlBtns = document.querySelectorAll('.ad .control>li');
         var imgItems = document.querySelectorAll('.ad .item');
-        controlBtns.forEach(function(item) {
-            item.addEventListener('click', function() {
+        controlBtns.forEach(function (item) {
+            item.addEventListener('click', function () {
                 var index = parseInt(this.getAttribute('data-index'));
                 setClassName(controlBtns, '');
                 setClassName([this], 'active');
@@ -238,13 +262,13 @@ $(function() {
                 offset: 1
             },
             dataType: 'json',
-            success: function(res) {
+            success: function (res) {
                 var $noticeContainer = $('.js-notice-container');
                 if (res.success) {
                     if (res.data.rows.length === 0) {
                         $noticeContainer.append(`<a href="#">暂无公告</a>`);
                     } else {
-                        $.each(res.data.rows, function(index, item) {
+                        $.each(res.data.rows, function (index, item) {
                             var createdDate = formatDate('yyyy-mm-dd HH:MM', item.createdDate);
                             var $template = `<a href="#" class="pull-left text-ellipsis js-notice-item ${index === 0 ? ' js-notice-item-active' : ' hide'}" data-id="${item.id}">
                                         <span class="js-notice-title">${createdDate + '#' + item.noticeTitle}</span>
@@ -253,7 +277,7 @@ $(function() {
                             $noticeContainer.append($template);
                         });
                         // 做一个定时器
-                        var timer = setInterval(function() {
+                        var timer = setInterval(function () {
                             var $item = $('.js-notice-item');
                             var length = $item.length;
                             var $currentItem = $('.js-notice-item-active');
@@ -303,7 +327,7 @@ $(function() {
                 url: '/front/userLogin',
                 method: 'POST',
                 data: userInfo,
-                success: function(data, textStatus, jqXHR) {
+                success: function (data, textStatus, jqXHR) {
                     data = JSON.parse(data);
                     if (data.success) {
                         mdui.snackbar({
@@ -318,7 +342,7 @@ $(function() {
                         });
                     }
                 },
-                error: function(jqXHR, textStatus, errorThrown) {
+                error: function (jqXHR, textStatus, errorThrown) {
                     mdui.snackbar({
                         message: '网络错误',
                         position: 'top'
@@ -392,7 +416,7 @@ $(function() {
                 url: '/front/createUser',
                 method: 'POST',
                 data: userInfo,
-                success: function(data, textStatus, jqXHR) {
+                success: function (data, textStatus, jqXHR) {
                     data = JSON.parse(data);
                     if (data.success) {
                         mdui.snackbar({
@@ -407,13 +431,13 @@ $(function() {
                         });
                     }
                 },
-                error: function(jqXHR, textStatus, errorThrown) {
+                error: function (jqXHR, textStatus, errorThrown) {
                     mdui.snackbar({
                         message: '网络错误，请刷新页面重试',
                         position: 'top'
                     });
                 },
-                complete: function() {
+                complete: function () {
                     clickCount = 0;
                 }
             });
@@ -437,7 +461,7 @@ $(function() {
     function userGetPasswordSubmitHandler(e) {
         var userInfo = getUserInfo($('form[name=userGetPasswordForm]'));
         var actualCode = $('input[name=userPhone]').data('code');
-        var validate = function() {
+        var validate = function () {
             // 判断用户名的规则
             if (!/^[a-zA-Z0-9]{6,15}$/g.test(userInfo.userName)) {
                 return {
@@ -470,7 +494,7 @@ $(function() {
             url: '/front/getUserInfoByPhone',
             data: userInfo,
             dataType: 'json',
-            success: function(res) {
+            success: function (res) {
                 if (res.success) {
                     mdui.snackbar({
                         message: '信息校验成功',
@@ -522,17 +546,17 @@ $(function() {
                 userPhone: userPhone
             },
             dataType: 'json',
-            beforeSend: function() {
+            beforeSend: function () {
                 $this.text('发送中...').attr('disabled', true);
             },
-            success: function(res) {
+            success: function (res) {
                 if (res.success) {
                     mdui.snackbar({
                         message: '验证码获取成功',
                         position: 'top'
                     });
                     $userPhone.data('code', res.code);
-                    timer = setInterval(function() {
+                    timer = setInterval(function () {
                         totalSecond--;
                         if (totalSecond <= 0) {
                             $this.text(`重新获取`).removeAttr('disabled');
@@ -549,13 +573,13 @@ $(function() {
                     });
                 }
             },
-            error: function(err) {
+            error: function (err) {
                 mdui.snackbar({
                     message: '网络错误，请刷新页面重试',
                     position: 'top'
                 });
             },
-            complete: function() {
+            complete: function () {
                 console.log('已发送');
                 $this.text(`获取验证码`).removeAttr('disabled');
             }
@@ -579,7 +603,7 @@ $(function() {
             method: 'POST',
             data: userInfo,
             dataType: 'json',
-            success: function(res) {
+            success: function (res) {
                 if (res.success) {
                     mdui.snackbar({
                         message: '密码重置成功：' + res.message,
@@ -593,7 +617,7 @@ $(function() {
                     });
                 }
             },
-            error: function(err) {
+            error: function (err) {
                 mdui.snackbar({
                     message: '网络错误，请刷新页面重试',
                     position: 'top'
@@ -612,7 +636,7 @@ $(function() {
             return {};
         }
         serializeArray = $form.serializeArray();
-        serializeArray.forEach(function(element) {
+        serializeArray.forEach(function (element) {
             userInfo[element.name] = $.trim(element.value);
         }, this);
         return userInfo;
@@ -655,7 +679,7 @@ $(function() {
         if (typeof format !== "string") {
             format = "yyyy-mm-dd hh:MM:ss";
         }
-        var getDate = function(date) {
+        var getDate = function (date) {
             date = isString(date) ? new Date(date) : (date || new Date());
             return {
                 year: date.getFullYear(),
@@ -666,10 +690,10 @@ $(function() {
                 seconds: date.getSeconds()
             };
         };
-        var isString = function(obj) {
+        var isString = function (obj) {
             return typeof obj === "string";
         };
-        var fullTime = function(time) {
+        var fullTime = function (time) {
             return time >= 10 ? time : ("0" + time);
         };
         date = getDate(date);
@@ -683,7 +707,7 @@ $(function() {
     }
 
     // 去除字符串两头的空格
-    $.trim = function(str) {
+    $.trim = function (str) {
         str = str || '';
         return str.replace(/^\s*|\s*$/g, '');
     };

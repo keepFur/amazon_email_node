@@ -1,6 +1,6 @@
 // 通知管理模块
 'use strict';
-layui.use(['util', 'layer', 'element', 'table'], function() {
+layui.use(['util', 'layer', 'element', 'table'], function () {
     var util = layui.util;
     var layer = layui.layer;
     var element = layui.element;
@@ -18,17 +18,41 @@ layui.use(['util', 'layer', 'element', 'table'], function() {
      * 
      */
     (function init() {
-        // 获取表格数据
+        // 获取表格数据(系统通知)
         renderTable();
+        // 获取表格数据（个人通知）
+        renderTablePerson();
+        // 如果是普通用户只能选择查看通知，不能操作
+        initContentByUser();
         // 初始化事件
         initEvent();
     })()
+
+    /**
+     *根据用户角色进行内容的初始化函数 
+     * 
+     */
+    function initContentByUser() {
+        // 删除按钮
+        core.getUserInfoById(function (user) {
+            if (!user.data.rows[0].isSuper) {
+                $('#noticeOperator').remove();
+            }
+        });
+    }
 
     /**
      * 初始化DOM元素事件
      * 
      */
     function initEvent() {
+        // 个人通知模块
+        // 标记为已读-支持批量
+        $('#markedReadBtn').on('click', markedReadHandler);
+        // 删除通知-支持批量
+        $('#deleteBtn').on('click', deleteHandler);
+
+        // 系统通知模块
         // 创建通知
         $('#createNoticeBtn').on('click', createNoticeHandle);
         // 修改通知信息
@@ -41,6 +65,62 @@ layui.use(['util', 'layer', 'element', 'table'], function() {
         $('#enabledNoticeBtn').on('click', {
             type: 1
         }, toggleNoticeHandle);
+    }
+
+    /**
+     * 通知标记为已读的点击事件处理函数
+     * 
+     * @param {any} events 
+     */
+    function markedReadHandler(e) {
+        var selectDatas = table.checkStatus('noticeTablePerson').data;
+        if (selectDatas.length > 0) {
+            $.ajax({
+                url: '/api/markedReadNotice',
+                type: 'POST',
+                data: {
+                    ids: selectDatas.map(item => item.id),
+                },
+                success: function (data, textStatus, jqXHR) {
+                    layer.msg(data.success ? ('操作成功') : ('操作失败' + data.message));
+                    table.reload('noticeTablePerson');
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    layer.msg(baseDatas.errorMsg);
+                }
+            });
+        } else {
+            layer.msg(baseDatas.operatorErrMsg.batch);
+        }
+        return false;
+    }
+
+    /**
+     * 删除通知的点击事件处理函数
+     * 
+     * @param {any} events 
+     */
+    function deleteHandler(e) {
+        var selectDatas = table.checkStatus('noticeTablePerson').data;
+        if (selectDatas.length > 0) {
+            $.ajax({
+                url: '/api/deleteNotice',
+                type: 'POST',
+                data: {
+                    ids: selectDatas.map(item => item.id),
+                },
+                success: function (data, textStatus, jqXHR) {
+                    layer.msg(data.success ? ('操作成功') : ('操作失败' + data.message));
+                    table.reload('noticeTablePerson');
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    layer.msg(baseDatas.errorMsg);
+                }
+            });
+        } else {
+            layer.msg(baseDatas.operatorErrMsg.batch);
+        }
+        return false;
     }
 
     /**
@@ -68,7 +148,7 @@ layui.use(['util', 'layer', 'element', 'table'], function() {
                         </form>`,
             title: '创建通知',
             btn: ['创建', '取消'],
-            yes: function(index, layero) {
+            yes: function (index, layero) {
                 var noticeInfo = core.getFormValues($('form[name=noticeCreateForm]'));
                 var validNoticeInfoResult = validNoticeInfo(noticeInfo);
                 var $ele = layero.find('.layui-layer-btn0');
@@ -77,18 +157,18 @@ layui.use(['util', 'layer', 'element', 'table'], function() {
                         url: '/api/createNotice',
                         type: 'POST',
                         data: noticeInfo,
-                        beforeSend: function() {
+                        beforeSend: function () {
                             $.unlockBtn($ele, true, '创建中');
                         },
-                        success: function(data, textStatus, jqXHR) {
+                        success: function (data, textStatus, jqXHR) {
                             layer.msg(data.success ? ('操作成功') : ('操作失败'));
                             layer.close(index);
                             reloadTable();
                         },
-                        error: function(jqXHR, textStatus, errorThrown) {
+                        error: function (jqXHR, textStatus, errorThrown) {
                             layer.msg(baseDatas.errorMsg);
                         },
-                        complete: function() {
+                        complete: function () {
                             $.unlockBtn($ele, '创建');
                         }
                     });
@@ -128,7 +208,7 @@ layui.use(['util', 'layer', 'element', 'table'], function() {
                         </form>`,
                 title: '通知信息修改',
                 btn: ['确定', '取消'],
-                yes: function(index) {
+                yes: function (index) {
                     var noticeInfo = core.getFormValues($('form[name=noticeUpdateForm]'));
                     var validNoticeInfoResult = validNoticeInfo(noticeInfo);
                     noticeInfo.id = selectDatas[0].id;
@@ -137,12 +217,12 @@ layui.use(['util', 'layer', 'element', 'table'], function() {
                             url: '/api/updateNotice',
                             type: 'POST',
                             data: noticeInfo,
-                            success: function(data, textStatus, jqXHR) {
+                            success: function (data, textStatus, jqXHR) {
                                 layer.msg(data.success ? ('操作成功') : ('操作失败' + data.message));
                                 layer.close(index);
                                 reloadTable();
                             },
-                            error: function(jqXHR, textStatus, errorThrown) {
+                            error: function (jqXHR, textStatus, errorThrown) {
                                 layer.msg(baseDatas.errorMsg);
                             }
                         });
@@ -170,7 +250,7 @@ layui.use(['util', 'layer', 'element', 'table'], function() {
             layer.confirm(tipMsg, {
                 btn: ['确定', '取消'],
                 title: "询问框",
-            }, function() {
+            }, function () {
                 $.ajax({
                     url: '/api/toggleNotice',
                     type: 'POST',
@@ -178,11 +258,11 @@ layui.use(['util', 'layer', 'element', 'table'], function() {
                         id: selectDatas[0].id,
                         status: type
                     },
-                    success: function(data, textStatus, jqXHR) {
+                    success: function (data, textStatus, jqXHR) {
                         layer.msg(data.success ? '操作成功' : ('操作失败' + data.message));
                         reloadTable();
                     },
-                    error: function(jqXHR, textStatus, errorThrown) {
+                    error: function (jqXHR, textStatus, errorThrown) {
                         layer.msg(baseDatas.netErrMsg);
                     }
                 });
@@ -194,7 +274,7 @@ layui.use(['util', 'layer', 'element', 'table'], function() {
     }
 
     /**
-     * 渲染表格结构
+     * 渲染表格结构 系统通知
      * 
      */
     function renderTable() {
@@ -210,7 +290,7 @@ layui.use(['util', 'layer', 'element', 'table'], function() {
                         field: '',
                         title: '序号',
                         width: 60,
-                        templet: function(d) {
+                        templet: function (d) {
                             return d.LAY_INDEX;
                         }
                     },
@@ -223,19 +303,19 @@ layui.use(['util', 'layer', 'element', 'table'], function() {
                     }, {
                         title: '创建时间',
                         field: "createdDate",
-                        templet: function(d) {
+                        templet: function (d) {
                             return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
                         }
                     }, {
                         title: '最后修改时间',
                         field: "updateDate",
-                        templet: function(d) {
+                        templet: function (d) {
                             return d.updateDate ? util.toDateString(d.updateDate, 'yyyy-MM-dd HH:mm') : '';
                         }
                     }, {
                         title: '状态',
                         field: 'status',
-                        templet: function(d) {
+                        templet: function (d) {
                             return d.status === 1 ? '启用' : '停用';
                         }
                     }
@@ -252,7 +332,7 @@ layui.use(['util', 'layer', 'element', 'table'], function() {
             response: {
                 statusCode: true
             },
-            parseData: function(res) {
+            parseData: function (res) {
                 return {
                     code: res.success,
                     msg: res.msg,
@@ -260,7 +340,83 @@ layui.use(['util', 'layer', 'element', 'table'], function() {
                     data: res.data.rows
                 }
             },
-            done: function(res) {}
+            done: function (res) {}
+        });
+    }
+
+    /**
+     * 渲染表格结构 个人通知
+     * 
+     */
+    function renderTablePerson() {
+        table.render({
+            elem: '#noticeTablePerson',
+            url: '/api/readNoticePersonPage',
+            page: true,
+            cols: [
+                [{
+                        checkbox: true,
+                    },
+                    {
+                        field: '',
+                        title: '序号',
+                        width: 60,
+                        templet: function (d) {
+                            return d.LAY_INDEX;
+                        }
+                    },
+                    {
+                        title: '标题',
+                        field: "title",
+                        width: 150,
+                    }, {
+                        title: '内容',
+                        field: "content",
+                    }, {
+                        title: '备注',
+                        field: 'remark',
+                        width: 150,
+                    }, {
+                        title: '创建时间',
+                        field: "createdDate",
+                        width: 150,
+                        templet: function (d) {
+                            return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
+                        }
+                    }, {
+                        title: '所属用户',
+                        field: 'username',
+                        width: 100,
+                    }, {
+                        title: '状态',
+                        field: 'status',
+                        width: 80,
+                        templet: function (d) {
+                            var statusText = ['', '未读', '已读'];
+                            return `<span class="layui-text-${(d.status == 1)? 'green' : 'pink'}">${statusText[d.status]}</span>`;
+                        }
+                    }
+                ]
+            ],
+            limits: [10, 20, 50, 100],
+            page: {
+                theme: '#1E9FFF',
+                layout: ['prev', 'page', 'next', 'skip', 'count', 'limit']
+            },
+            request: {
+                pageName: 'offset'
+            },
+            response: {
+                statusCode: true
+            },
+            parseData: function (res) {
+                return {
+                    code: res.success,
+                    msg: res.msg,
+                    count: res.data.total,
+                    data: res.data.rows
+                }
+            }
         });
     }
 

@@ -10,6 +10,7 @@ let express = require("express"),
     userMiddleware = require('./lib/middleware/user'),
     favicon = require('serve-favicon'),
     upload = require('./lib/upload'),
+    presentIntervalTask = require('./lib/present_interval_task'),
     Cookie = require('cookie-parser');
 
 
@@ -42,6 +43,8 @@ let ManageKbAddress = require('./lib/manage_kb_address_service');
 let manageKbAddress = new ManageKbAddress();
 let OperateOverview = require('./lib/operate_overview_service');
 let operateOverview = new OperateOverview();
+let PresentPurchase = require('./lib/present_purchase_server');
+let presentPurchase = new PresentPurchase();
 let APIUtil = require('./lib/api_util');
 let APIPay = require('./lib/api_pay');
 let APIArea = require('./lib/api_area');
@@ -49,7 +52,9 @@ let LieliuApi = require('./lib/lieliu_api');
 let TenMessageApi = require('./lib/ten_message_api');
 app.use(session({
     secret: `${Math.random(10)}`, //secret的值建议使用随机字符串
-    cookie: { maxAge: 60 * 1000 * 60 }, // 过期时间（毫秒）
+    cookie: {
+        maxAge: 60 * 1000 * 60
+    }, // 过期时间（毫秒）
     proxy: true,
     resave: true,
     saveUninitialized: false,
@@ -197,7 +202,9 @@ app.get('/api/readShareUserPage', function(req, res) {
 // 通过id获取用户
 app.get('/api/readUserById', function(req, res) {
     try {
-        userManage.readUserById(req, res, { id: req.user.id });
+        userManage.readUserById(req, res, {
+            id: req.user.id
+        });
     } catch (error) {
         Core.flyer.log(error);
     }
@@ -337,6 +344,16 @@ app.get('/front/getUserInfoByPhone', function(req, res) {
     }
 });
 
+// 用户推广接口
+// 获取用户推广详情信息
+app.get('/api/readUserExtendDetailById', function(req, res) {
+    try {
+        userManage.readUserExtendDetailById(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
 /***************平台管理模块路由*************/
 // 获取平台列表，支持分页
 app.get('/api/readPlantPage', function(req, res) {
@@ -384,6 +401,35 @@ app.post('/api/updatePlant', function(req, res) {
 });
 
 /***************通知管理模块路由*************/
+// 个人通知业务
+// 获取通知列表（个人通知）
+app.get('/api/readNoticePersonPage', function(req, res) {
+    try {
+        noticeMange.readNoticePersonPage(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 设置通知状态为已读（个人）
+app.post('/api/markedReadNotice', function(req, res) {
+    try {
+        noticeMange.markedReadNotice(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 删除通知（个人）
+app.post('/api/deleteNotice', function(req, res) {
+    try {
+        noticeMange.deleteNotice(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 系统通知业务
 // 获取通知列表，支持分页
 app.get('/front/readNoticePage', function(req, res) {
     try {
@@ -800,7 +846,10 @@ app.post('/api/getYouzanPushMessgae', function(req, res) {
             }
         }
         // 7. 返回接收成功标识 { "code": 0, "msg": "success" }
-        res.body = { code: 0, msg: 'success' };
+        res.body = {
+            code: 0,
+            msg: 'success'
+        };
     } catch (error) {
         Core.flyer.log(error);
     }
@@ -1046,6 +1095,142 @@ app.get('/api/getAreaByCode', function(req, res) {
     }
 });
 
+/* *****************礼品模块接口****************** */
+
+// 查看余额
+app.get('/lieliuApi/viewLipindaoAccountMoney', function(req, res) {
+    try {
+        LieliuApi.viewLipindaoAccountMoney(req, res);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 读取礼品列表，从礼品岛
+app.get('/lieliuApi/readPresentList', function(req, res) {
+    try {
+        LieliuApi.readPresentList(req, res);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+// 读取仓库列表，从礼品岛
+app.get('/lieliuApi/readFromStock', function(req, res) {
+    try {
+        LieliuApi.readFromStock(req, res);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 创建礼品订单
+app.post('/api/createPresentOrder', function(req, res) {
+    try {
+        presentPurchase.createPresentOrder(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 创建任务,提交到礼品岛
+app.get('/lieliuApi/createPresentOrder', function(req, res) {
+    try {
+        LieliuApi.createPresentOrder(req, res);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 获取快递单号,从礼品岛
+app.get('/lieliuApi/getPresentKdNumber', function(req, res) {
+    try {
+        LieliuApi.getPresentKdNumber(req, res);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 更新快递单号
+app.post('/api/setPresentKdNumber', function(req, res) {
+    try {
+        presentPurchase.setPresentKdNumber(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 获取礼品订单
+app.get('/api/readPresentOrderPage', function(req, res) {
+    try {
+        presentPurchase.readPresentOrderPage(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 修改订单状态
+app.post('/api/togglePresentOrder', function(req, res) {
+    try {
+        presentPurchase.togglePresentOrder(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 修改订单信息
+app.post('/api/updatePresentOrder', function(req, res) {
+    try {
+        presentPurchase.updatePresentOrder(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 获取礼品列表
+app.get('/api/readPresent', function(req, res) {
+    try {
+        presentPurchase.readPresent(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 读取发货人信息
+app.get('/api/readFromUserInfoById', function(req, res) {
+    try {
+        presentPurchase.readFromUserInfoById(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 保存发货人信息
+app.post('/api/saveFromUserInfoById', function(req, res) {
+    try {
+        presentPurchase.saveFromUserInfoById(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 修改发货人信息
+app.post('/api/updateFromUserInfoById', function(req, res) {
+    try {
+        presentPurchase.updateFromUserInfoById(req, res, req.body);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
+// 读取发货仓库列表
+app.get('/api/readFromStock', function(req, res) {
+    try {
+        presentPurchase.readFromStock(req, res, req.query);
+    } catch (error) {
+        Core.flyer.log(error);
+    }
+});
+
 // 入口
 app.get("/console", function(req, res, next) {
     Core.flyer.log('开始进入项目:' + new Date());
@@ -1116,5 +1301,7 @@ app.all('*', function(req, res, next) {
 
 // 启动服务
 app.listen(Package.webPort, function() {
+    // 启动服务之后开始跑定时任务
+    presentIntervalTask.startTask();
     Core.flyer.log("已经成功启动服务.....");
 });
