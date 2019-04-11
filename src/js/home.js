@@ -5,13 +5,10 @@ layui.use(['element', 'layer', 'table', 'util'], function () {
     var table = layui.table;
     var util = layui.util;
     // 基于准备好的dom，初始化echarts实例
-    var taskCount = echarts.init(document.getElementById('taskCount'));
-    var kbCount = echarts.init(document.getElementById('kbCount'));
-    var taskType = echarts.init(document.getElementById('taskType'));
-    var kbType = echarts.init(document.getElementById('kbType'));
-    var addScore = echarts.init(document.getElementById('addScore'));
+    var taskCount, addScore, kbCount, taskType, kbType;
     var otherShareCode = '';
     var myShareCode = '';
+    var clicked = false;
     // 指定图表的配置项和数据--任务数量
     var optionOfTaskCount = {
         title: {
@@ -132,12 +129,6 @@ layui.use(['element', 'layer', 'table', 'util'], function () {
      * 
      */
     (function init() {
-        getTaskCount();
-        getKbCount();
-        getTaskType();
-        getKbType();
-        getAddMoney();
-        getScore();
         initComponment();
         initEvent();
     })()
@@ -209,6 +200,24 @@ layui.use(['element', 'layer', 'table', 'util'], function () {
         $('#viewMoreNotice').click(function (e) {
             tipNotice();
             return false;
+        });
+        // 监听tab切换
+        element.on('tab(adviceFeedback)', function (data) {
+            if (data.index === 2 & !clicked) {
+                clicked = true;
+                // 基于准备好的dom，初始化echarts实例
+                taskCount = echarts.init(document.getElementById('taskCount'));
+                kbCount = echarts.init(document.getElementById('kbCount'));
+                taskType = echarts.init(document.getElementById('taskType'));
+                kbType = echarts.init(document.getElementById('kbType'));
+                addScore = echarts.init(document.getElementById('addScore'));
+                getTaskCount();
+                getKbCount();
+                getTaskType();
+                getKbType();
+                getAddMoney();
+                getScore();
+            }
         });
     }
 
