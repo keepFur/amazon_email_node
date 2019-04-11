@@ -3,6 +3,7 @@
         <ul class="layui-tab-title">
             <li class="layui-this">快递发货</li>
             <li>发货地址管理</li>
+            <li>拼多多电子面单发货教程</li>
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
@@ -14,6 +15,7 @@
                                 <input type="radio" name="plant" value="TB" title="淘宝网" checked>
                                 <input type="radio" name="plant" value="JD" title="京东商城">
                                 <input type="radio" name="plant" value="PDD" title="拼多多商城">
+                                <input type="radio" name="plant" value="PDDDZ" title="拼多多电子面单(推荐)">
                             </div>
                         </div>
                     </div>
@@ -40,7 +42,8 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">重量(千克)</label>
                         <div class="layui-input-block">
-                            <input type="text" name="kbWeight" id="kbWeight" value="1" placeholder="单位：千克" class="layui-input">
+                            <input type="text" name="kbWeight" id="kbWeight" value="1" placeholder="单位：千克"
+                                class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -52,7 +55,8 @@
                         </div>
                         <label class="layui-form-label"></label>
                         <div class="layui-form-mid layui-word-aux">
-                            <button class="layui-btn layui-btn-primary layui-btn-sm js-create-bb-address"><i class="layui-icon">&#xe654;</i>添加发货地址</button>
+                            <button class="layui-btn layui-btn-primary layui-btn-sm js-create-bb-address"><i
+                                    class="layui-icon">&#xe654;</i>添加发货地址</button>
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -66,10 +70,12 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label"></label>
                         <div class="layui-input-block">
-                            <button class="layui-btn layui-btn-normal layui-btn-sm" id="importAddressExcelBtn"><i class="layui-icon">&#xe67c;</i>通过Excel文件导入</button>
+                            <button class="layui-btn layui-btn-normal layui-btn-sm" id="importAddressExcelBtn"><i
+                                    class="layui-icon">&#xe67c;</i>通过Excel文件导入</button>
                             <!-- <button class="layui-btn layui-btn-primary layui-btn-sm" id="downloadTemplateBtn"><i class="layui-icon">&#xe601;</i>下载收货地址Excel模版</button> -->
                             <button class="layui-btn layui-btn-normal layui-btn-sm" id="getRealOrderBtn">过滤真实订单</button>
-                            <button class="layui-btn layui-btn-primary layui-btn-sm" id="formatAddressBtn">检查地址格式</button>
+                            <button class="layui-btn layui-btn-primary layui-btn-sm"
+                                id="formatAddressBtn">检查地址格式</button>
                         </div>
                         <label class="layui-form-label"></label>
                         <div class="layui-form-mid layui-word-aux">
@@ -95,13 +101,14 @@
                         <span>数量：<em id="kbQuantity">0</em>个</span>
                     </div>
                     <div class="layui-col-xs3">
-                        <span>总价：<em id="kbSumMoney">0</em>元<span id="discountKbSumMoneyText" class="layui-text-pink"> 优惠价：<em
-                                    id="discountKbSumMoney">0</em>元</span></span>
+                        <span>总价：<em id="kbSumMoney">0</em>元<span id="discountKbSumMoneyText" class="layui-text-pink">
+                                优惠价：<em id="discountKbSumMoney">0</em>元</span></span>
                     </div>
                 </div>
                 <div class="task-add-container">
                     <div class="layui-row">
-                        <button class="layui-btn layui-btn-normal layui-btn-fluid" id="createKbOrderBtn"> <i class="layui-icon layui-icon-release"></i>提交订单</button>
+                        <button class="layui-btn layui-btn-normal layui-btn-fluid" id="createKbOrderBtn"> <i
+                                class="layui-icon layui-icon-release"></i>提交订单</button>
                     </div>
                 </div>
             </div>
@@ -109,11 +116,40 @@
                 <div class='layui-form-item'>
                     <button class="layui-btn layui-btn-normal layui-btn-sm js-create-bb-address">创建</button>
                     <button class="layui-btn layui-btn-primary layui-btn-sm" id="updateKbAddressBtn">修改</button>
-                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="setDefaultKbAddressBtn">设置为默认地址</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm"
+                        id="setDefaultKbAddressBtn">设置为默认地址</button>
                     <button class="layui-btn layui-btn-primary layui-btn-sm" id="disabledKbAddressBtn">禁用</button>
                     <button class="layui-btn layui-btn-primary layui-btn-sm" id="enabledKbAddressBtn">启用</button>
                 </div>
                 <div lay-filter='kbAddress' id="kbAddressTable"></div>
+            </div>
+            <div class="layui-tab-item">
+                <h2 style="margin: 16px 0;color:#2cc3a9;">第一步:商家登陆拼多多后台点击图中的发货地址管理设置发货地之后，找到亚风快运</h2>
+                <img src="../imgs/h2.png" alt="">
+                <h2 style="margin: 16px 0;color:#2cc3a9;">第二步:然后申请开通亚风快运电子面单一般三分钟内就通过</h2>
+                <img src="../imgs/h3.png" alt="">
+                <h2 style="margin: 16px 0;color:#2cc3a9;">第三步:拼多多后台下拉至底部，点击服务市场下面的第三方合作软件进入</h2>
+                <img src="../imgs/h4.png" alt="">
+                <h2 style="margin: 16px 0;color:#2cc3a9;">第四步:拼多多后台选择授权传美打印</h2>
+                <img src="../imgs/h5.png" alt="">
+                <br>
+                <img src="../imgs/h6.png" alt="">
+                <h2 style="margin: 16px 0;color:#2cc3a9;">第五步:进入传美打印后选择打印发货>>>>>选择快递模板设置>>>>>选择新增模板</h2>
+                <img src="../imgs/h7.png" alt="">
+                <br>
+                <img src="../imgs/h8.png" alt="">
+                <h2 style="margin: 16px 0;color:#2cc3a9;">第六步:选择快递公司为亚风>>>>>点击添加模板</h2>
+                <img src="../imgs/h9.png" alt="">
+                <h2 style="margin: 16px 0;color:#2cc3a9;">第七步:模板设置完成后选择一个没用的打印机。《并不需要打印出来哦。可不放热敏纸》</h2>
+                <img src="../imgs/h11.png" alt="">
+                <h2 style="margin: 16px 0;color:#2cc3a9;">第八步:在传美打印页面上>>点击同步订单>>点击开始打印发货>>勾选需要发货的订单打印发货</h2>
+                <img src="../imgs/h13.png" alt="">
+                <h2 style="margin: 16px 0;color:#2cc3a9;">第九步:打印发货完成后。将订单导出并将表格的文件上传到我们网站电子面单下单页面</h2>
+                <img src="../imgs/h14.jpg" alt="">
+                <h2 style="margin: 16px 0;color:#2cc3a9;">第十步:这样你把你的单号和收货地址上传到我们网站，我们就可以帮你出物流了</h2>
+                <h2 style="margin: 16px 0;color:#2cc3a9;">提示：传统的是我们提供单号给你们发货，现在电子面单是你们提供单号给我们出物流</h2>
+                <h2 style="margin: 16px 0;color:#2cc3a9;">官方拼多多电子单可获流量免罚特权哦</h2>
+                <img src="../imgs/h15.png" alt="">
             </div>
         </div>
     </div>
