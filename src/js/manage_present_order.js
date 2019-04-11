@@ -1,6 +1,6 @@
 // 礼品订单管理模块
 'use strict';
-layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
+layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function () {
     var element = layui.element;
     var table = layui.table;
     var layer = layui.layer;
@@ -38,7 +38,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
             range: '~'
         });
         // 删除按钮
-        core.getUserInfoById(function(user) {
+        core.getUserInfoById(function (user) {
             if (!user.data.rows[0].isSuper) {
                 $('.js-super').remove();
             }
@@ -55,7 +55,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
         // 查询
         $('#searchBtn').on('click', searchHandle);
         // 重置
-        $('#resetBtn').on('click', function() {
+        $('#resetBtn').on('click', function () {
             $('#presentOrderSearchForm')[0].reset();
             return false;
         });
@@ -84,7 +84,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
      * @param {any} events 
      */
     function viewLipindaoAccountMoneyHandle(events) {
-        APIUtil.viewLipindaoAccountMoney({}, function(res) {
+        APIUtil.viewLipindaoAccountMoney({}, function (res) {
             if (res.code === 1) {
                 layer.msg('账户可用余额：¥' + res.data.usermoney + '元');
             } else {
@@ -148,7 +148,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
         }
         aLink.href = '/api/downloadPresentOrderToExcel?limit=1000&offset=1&' + core.objectToString(queryParams);
         aLink.click();
-        setTimeout(function() {
+        setTimeout(function () {
             reloadTable();
         }, 2000);
         return false;
@@ -192,12 +192,12 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
             layer.confirm(tipMsg, {
                 title: '询问框',
                 btn: ['确定', '取消']
-            }, function(index, layero) {
+            }, function (index, layero) {
                 $.ajax({
                     url: '/api/togglePresentOrder',
                     type: 'POST',
                     data: {
-                        id: selectDatas.map(function(item) {
+                        id: selectDatas.map(function (item) {
                             return item.id
                         }),
                         status: type,
@@ -206,11 +206,11 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
                         userId: selectDatas[0].userId,
                         userName: selectDatas[0].userName
                     },
-                    success: function(data, textStatus, jqXHR) {
+                    success: function (data, textStatus, jqXHR) {
                         layer.msg(data.success ? '操作成功！' : '操作失败：' + data.message);
                         reloadTable();
                     },
-                    error: function(jqXHR, textStatus, errorThrown) {
+                    error: function (jqXHR, textStatus, errorThrown) {
                         layer.msg(baseDatas.netErrMsg);
                     }
                 });
@@ -230,7 +230,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
         var $form = $('#presentOrderSearchForm');
         var formDatas = $form.serializeArray();
         var ret = {};
-        $.each(formDatas, function(index, item) {
+        $.each(formDatas, function (index, item) {
             ret[item.name] = item.value;
         });
         ret.createdDateStart = ret.createdDate.split('~')[0];
@@ -259,7 +259,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
                         field: '',
                         title: '序号',
                         fixed: 'left',
-                        templet: function(d) {
+                        templet: function (d) {
                             return d.LAY_INDEX;
                         }
                     },
@@ -277,15 +277,15 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
                         field: 'kdNumber',
                         title: '快递单号',
                         width: 220,
-                        templet: function(d) {
-                            return !d.kdNumber ? `系统会自动更新 <a class="layui-btn layui-btn-normal layui-btn-xs js-update-kd-number" data-id="${d.id}"  data-taskid="${d.taskid}">手动获取</a>` : d.kdNumber;
+                        templet: function (d) {
+                            return d.kdNumber === '000000' ? `系统会自动更新 <a class="layui-btn layui-btn-normal layui-btn-xs js-update-kd-number" data-id="${d.id}"  data-taskid="${d.taskid}">手动获取</a>` : d.kdNumber;
                         }
                     },
                     {
                         field: 'fromStockId',
                         title: '快递仓库/发货地址',
                         width: 300,
-                        templet: function(d) {
+                        templet: function (d) {
                             return d.name + '/' + d.address;
                         }
                     },
@@ -293,7 +293,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
                         field: 'addressFromName',
                         title: '发件人信息',
                         width: 200,
-                        templet: function(d) {
+                        templet: function (d) {
                             return d.addressFromName + '(' + d.addressFromPhone + ')';
                         }
                     },
@@ -311,7 +311,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
                         field: 'createdDate',
                         title: '创建时间',
                         width: 200,
-                        templet: function(d) {
+                        templet: function (d) {
                             return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
                         }
                     },
@@ -321,7 +321,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
                         width: 200,
                         fixed: 'right',
                         align: 'center',
-                        templet: function(d) {
+                        templet: function (d) {
                             var statusText = ['', '待扫描', '已扫描', '已取消']; // 1:待扫描 2，已扫描 3，已取消
                             return `<span class="layui-text-${(d.status == 1)? 'green' : 'pink'}">${statusText[d.status]}</span>`;
                         }
@@ -339,7 +339,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
             response: {
                 statusCode: true
             },
-            parseData: function(res) {
+            parseData: function (res) {
                 return {
                     code: res.success,
                     msg: res.msg,
@@ -347,8 +347,8 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
                     data: res.data.rows
                 }
             },
-            done: function() {
-                $('.js-update-order').off('click').on('click', function(event) {
+            done: function () {
+                $('.js-update-order').off('click').on('click', function (event) {
                     var from = $(this).data('kb-from');
                     var to = $(this).data('kb-to');
                     var id = $(this).data('id');
@@ -364,12 +364,12 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
                         area: ['600px', '300px'],
                         title: '礼品订单信息修改',
                         btn: ['保存', '取消'],
-                        yes: function(index) {
+                        yes: function (index) {
                             var presentOrderInfo = core.getFormValues($('form[name=presentOrderUpdateForm]'));
                             var validPresentOrderInfoResult = validPresentOrderInfo(presentOrderInfo);
                             if (validPresentOrderInfoResult.isPass) {
                                 presentOrderInfo.id = id;
-                                presentOrderInfo.addressToPca = (function() {
+                                presentOrderInfo.addressToPca = (function () {
                                     var add = presentOrderInfo.addressTo.split(/,|，/)[2];
                                     var detail = add.split(' ');
                                     return detail[0] + '-' + detail[1] + '-' + detail[2];;
@@ -378,12 +378,12 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
                                     url: '/api/updatePresentOrder',
                                     type: 'POST',
                                     data: presentOrderInfo,
-                                    success: function(data, textStatus, jqXHR) {
+                                    success: function (data, textStatus, jqXHR) {
                                         layer.msg(data.success ? ('操作成功') : ('操作失败' + data.message));
                                         layer.close(index);
                                         reloadTable();
                                     },
-                                    error: function(jqXHR, textStatus, errorThrown) {
+                                    error: function (jqXHR, textStatus, errorThrown) {
                                         layer.msg(baseDatas.errorMsg);
                                     }
                                 });
@@ -395,11 +395,13 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
                     return false;
                 });
                 // 获取快递单号
-                $('.js-update-kd-number').off('click').on('click', function(event) {
+                $('.js-update-kd-number').off('click').on('click', function (event) {
                     var id = $(this).data('id');
                     var taskid = $(this).data('taskid');
                     var content = '';
-                    APIUtil.getPresentKdNumber({ taskid }, function(res) {
+                    APIUtil.getPresentKdNumber({
+                        taskid
+                    }, function (res) {
                         if (res.code === 0) {
                             content = res.msg;
                             layer.tips(content, event.target, {
@@ -414,14 +416,14 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
                                     kdNumber: res.data.express_no
                                 },
                                 type: 'post',
-                                success: function(res) {
+                                success: function (res) {
                                     if (res.success) {
                                         reloadTable();
                                     } else {
                                         layer.msg(baseDatas.netErrMsg);
                                     }
                                 },
-                                error: function(e) {
+                                error: function (e) {
                                     layer.msg(baseDatas.netErrMsg);
                                 }
                             });
@@ -447,7 +449,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
      *
      */
     function getPresentFromStockServer(id) {
-        APIUtil.readFromStock({}, function(res) {
+        APIUtil.readFromStock({}, function (res) {
             if (res.code === 1) {
                 renderPresentStock(res.data.storelist);
             } else {
@@ -465,7 +467,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
         var $container = $('select[name=stockFromId]');
         $container.empty();
         $container.append(`<option value="">请选择发货仓库</option>`);
-        $.each(presentStock, function(index, item) {
+        $.each(presentStock, function (index, item) {
             $container.append(`<option value="${item.id}" ${selectedId==item.id?'selected':''}>${item.store_name}</option>`);
         });
         form.render('select');

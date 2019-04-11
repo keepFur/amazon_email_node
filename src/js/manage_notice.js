@@ -367,28 +367,33 @@ layui.use(['util', 'layer', 'element', 'table'], function () {
                     },
                     {
                         title: '标题',
-                        field: "title"
+                        field: "title",
+                        width: 150,
                     }, {
                         title: '内容',
-                        field: "content"
+                        field: "content",
+                    }, {
+                        title: '备注',
+                        field: 'remark',
+                        width: 150,
                     }, {
                         title: '创建时间',
                         field: "createdDate",
+                        width: 150,
                         templet: function (d) {
                             return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
                         }
                     }, {
                         title: '所属用户',
                         field: 'username',
-                    }, {
-                        title: '备注',
-                        field: 'remark',
+                        width: 100,
                     }, {
                         title: '状态',
                         field: 'status',
                         width: 80,
                         templet: function (d) {
-                            return d.status === 1 ? '未读' : '已读';
+                            var statusText = ['', '未读', '已读'];
+                            return `<span class="layui-text-${(d.status == 1)? 'green' : 'pink'}">${statusText[d.status]}</span>`;
                         }
                     }
                 ]

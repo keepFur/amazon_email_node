@@ -12,11 +12,12 @@
     <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" href="../plugins/mdui-v0-2/css/mdui.min.css">
     <link rel="stylesheet" href="../dest/css/yidian.front.all.min.css">
-    <meta name="keywords" content="淘宝引流,淘宝免费流量,淘宝买流量,淘宝手机流量,淘宝APP流量,淘宝流量软件,淘宝流量推广,淘宝流量提升,流量推广软件,网店推广软件">
-    <meta name="description" content="猎流是一款用于淘宝引流的免费提升流量软件,模拟人工自然搜索、点击、停留浏览店铺和宝贝,支持PC流量、手机无线APP流量提升,可通过买流量快速提升淘宝店铺商品搜索排名、展现量、访问量和人气值！">
+    <meta name="keywords" content="拍A发B最佳选项,礼品单,淘宝引流,淘宝免费流量,淘宝买流量,淘宝手机流量,淘宝APP流量,淘宝流量软件,淘宝流量推广,淘宝流量提升,流量推广软件,网店推广软件">
+    <meta name="description"
+        content="易店科技是一款用于淘宝引流的免费提升流量软件,模拟人工自然搜索、点击、停留浏览店铺和宝贝,支持PC流量、手机无线APP流量提升,可通过买流量快速提升淘宝店铺商品搜索排名、展现量、访问量和人气值！">
     <script>
         var _hmt = _hmt || [];
-        (function() {
+        (function () {
             var hm = document.createElement("script");
             hm.src = "https://hm.baidu.com/hm.js?b5a7f886836cb649fba0ea0bbdad1adf";
             var s = document.getElementsByTagName("script")[0];
@@ -54,28 +55,31 @@
                 <li>
                     <a href="#" id="kbPur">快递下单</a>
                 </li>
+                <!-- <li>
+                    <a href="#" id="presentPur">礼品下单</a>
+                </li> -->
                 <li>
                     <a href="#" id="addMoney">在线充值</a>
                 </li>
                 <% if(!user){ %>
-                    <li id="userLogin">
-                        <a href="#">登录</a>
-                    </li>
-                    <li id="userRegister">
-                        <a href="#">注册</a>
-                    </li>
-                    <% } %>
-                        <li>
-                            <a href="#" id="console">控制台</a>
-                        </li>
-                        <% if(user){ %>
-                            <li class="li-user-info">
-                                <a href="/api/logout">
-                                    <%= user.userName%>
-                                        <i class="mdui-icon material-icons">&#xe879;</i>
-                                </a>
-                            </li>
-                            <% } %>
+                <li id="userLogin">
+                    <a href="#">登录</a>
+                </li>
+                <li id="userRegister">
+                    <a href="#">注册</a>
+                </li>
+                <% } %>
+                <li>
+                    <a href="#" id="console">控制台</a>
+                </li>
+                <% if(user){ %>
+                <li class="li-user-info">
+                    <a href="/api/logout">
+                        <%= user.userName%>
+                        <i class="mdui-icon material-icons">&#xe879;</i>
+                    </a>
+                </li>
+                <% } %>
             </ul>
         </nav>
     </header>
@@ -101,13 +105,15 @@
                     <div class="mdui-col-xs-6 mdui-col-offset-xs-3">
                         <div class="mdui-textfield">
                             <label class="mdui-textfield-label">用户名</label>
-                            <input class="mdui-textfield-input" name="userName" type="text" pattern="^.*(?=.{6,15})(?=.*[a-z]).*$" required/>
+                            <input class="mdui-textfield-input" name="userName" type="text"
+                                pattern="^.*(?=.{6,15})(?=.*[a-z]).*$" required />
                             <div class="mdui-textfield-error">用户名是6-15位字母组成</div>
                         </div>
                         <div class="mdui-row-xs-2 js-keyword-quantity-item">
                             <div class="mdui-textfield mdui-col-xs-9">
                                 <label class="mdui-textfield-label">注册手机号</label>
-                                <input class="mdui-textfield-input" type="text" name="userPhone" pattern="^\d{11}$" required/>
+                                <input class="mdui-textfield-input" type="text" name="userPhone" pattern="^\d{11}$"
+                                    required />
                             </div>
                             <div class="mdui-textfield mdui-col-xs-3">
                                 <label class="mdui-textfield-label mdui-invisible">获取验证码</label>
@@ -117,7 +123,8 @@
                         </div>
                         <div class="mdui-textfield">
                             <label class="mdui-textfield-label">验证码</label>
-                            <input class="mdui-textfield-input" type="text" name="verfiyCode" pattern="^\d{4}$" required/>
+                            <input class="mdui-textfield-input" type="text" name="verfiyCode" pattern="^\d{4}$"
+                                required />
                             <div class="mdui-textfield-error">验证码是是4位数字组成</div>
                         </div>
                     </div>
@@ -130,7 +137,8 @@
                 </div>
                 <div class="mdui-row">
                     <div class="mdui-col-xs-6 mdui-col-offset-xs-3">
-                        <button class="mdui-btn mdui-btn-raised mdui-btn-block mdui-color-pink" id="getUserPasswordSubmit">
+                        <button class="mdui-btn mdui-btn-raised mdui-btn-block mdui-color-pink"
+                            id="getUserPasswordSubmit">
                             <i class="mdui-icon material-icons">&#xe569;</i>立即找回
                         </button>
                     </div>
@@ -153,12 +161,14 @@
                     <div class="mdui-col-xs-6 mdui-col-offset-xs-3">
                         <div class="mdui-textfield">
                             <label class="mdui-textfield-label">用户名</label>
-                            <input class="mdui-textfield-input" name="userName" type="text" pattern="^.*(?=.{6,15})(?=.*[a-z]).*$" required readonly/>
+                            <input class="mdui-textfield-input" name="userName" type="text"
+                                pattern="^.*(?=.{6,15})(?=.*[a-z]).*$" required readonly />
                             <div class="mdui-textfield-error">用户名是6-15位字母组成</div>
                         </div>
                         <div class="mdui-textfield">
                             <label class="mdui-textfield-label">新密码</label>
-                            <input class="mdui-textfield-input" name="password" type="text" pattern="^.*(?=.{6,15})(?=.*[a-z]).*$" required/>
+                            <input class="mdui-textfield-input" name="password" type="text"
+                                pattern="^.*(?=.{6,15})(?=.*[a-z]).*$" required />
                             <div class="mdui-textfield-error">密码是6-15位的字母组成</div>
                         </div>
                     </div>
@@ -171,7 +181,8 @@
                 </div>
                 <div class="mdui-row">
                     <div class="mdui-col-xs-6 mdui-col-offset-xs-3">
-                        <button class="mdui-btn mdui-btn-raised mdui-btn-block mdui-color-pink" id="setUserPasswordSubmit">
+                        <button class="mdui-btn mdui-btn-raised mdui-btn-block mdui-color-pink"
+                            id="setUserPasswordSubmit">
                             <i class="mdui-icon material-icons">&#xe569;</i>立即重置
                         </button>
                     </div>
@@ -194,22 +205,26 @@
                     <div class="mdui-col-xs-6 mdui-col-offset-xs-3">
                         <div class="mdui-textfield">
                             <label class="mdui-textfield-label">用户名</label>
-                            <input class="mdui-textfield-input" name="userName" type="text" pattern="^.*(?=.{6,15})(?=.*[a-z]).*$" required/>
+                            <input class="mdui-textfield-input" name="userName" type="text"
+                                pattern="^.*(?=.{6,15})(?=.*[a-z]).*$" required />
                             <div class="mdui-textfield-error">用户名是6-15位字母组成</div>
                         </div>
                         <div class="mdui-textfield">
                             <label class="mdui-textfield-label">密码</label>
-                            <input class="mdui-textfield-input" type="password" name="password" pattern="^.*(?=.{6,15})(?=.*[a-z]).*$" autocomplete="new-password" required/>
+                            <input class="mdui-textfield-input" type="password" name="password"
+                                pattern="^.*(?=.{6,15})(?=.*[a-z]).*$" autocomplete="new-password" required />
                             <div class="mdui-textfield-error">密码是6-15位字母组成</div>
                         </div>
                         <div class="mdui-row-xs-2 js-keyword-quantity-item">
                             <div class="mdui-textfield mdui-col">
                                 <label class="mdui-textfield-label">计算结果</label>
-                                <input class="mdui-textfield-input" type="text" name="computeResult" placeholder="输入右侧题目答案" />
+                                <input class="mdui-textfield-input" type="text" name="computeResult"
+                                    placeholder="输入右侧题目答案" />
                             </div>
                             <div class="mdui-textfield mdui-col">
                                 <label class="mdui-textfield-label">题目（点击刷新）</label>
-                                <input class="mdui-textfield-input" type="text" name="loginProblem" value='' id="refreshCompute" readonly/>
+                                <input class="mdui-textfield-input" type="text" name="loginProblem" value=''
+                                    id="refreshCompute" readonly />
                             </div>
                         </div>
                     </div>
@@ -245,18 +260,21 @@
                     <div class="mdui-col-xs-6 mdui-col-offset-xs-3">
                         <div class="mdui-textfield">
                             <label class="mdui-textfield-label">用户名</label>
-                            <input class="mdui-textfield-input" name="userName" type="text" pattern="^.*(?=.{6,15})(?=.*[a-z]).*$" required/>
+                            <input class="mdui-textfield-input" name="userName" type="text"
+                                pattern="^.*(?=.{6,15})(?=.*[a-z]).*$" required />
                             <div class="mdui-textfield-error">用户名是6-15位的字母组成</div>
                         </div>
                         <div class="mdui-textfield">
                             <label class="mdui-textfield-label">密码</label>
-                            <input class="mdui-textfield-input" name="password" type="text" pattern="^.*(?=.{6,15})(?=.*[a-z]).*$" required/>
+                            <input class="mdui-textfield-input" name="password" type="text"
+                                pattern="^.*(?=.{6,15})(?=.*[a-z]).*$" required />
                             <div class="mdui-textfield-error">密码是6-15位的字母组成</div>
                         </div>
                         <div class="mdui-row-xs-2">
                             <div class="mdui-textfield mdui-col-xs-9">
                                 <label class="mdui-textfield-label">手机号</label>
-                                <input class="mdui-textfield-input" type="text" name="phone" pattern="^1[0-9]{10}$" required/>
+                                <input class="mdui-textfield-input" type="text" name="phone" pattern="^1[0-9]{10}$"
+                                    required />
                                 <div class="mdui-textfield-error">请输入正确的手机号</div>
                             </div>
                             <div class="mdui-textfield mdui-col-xs-3">
@@ -267,7 +285,8 @@
                         </div>
                         <div class="mdui-textfield">
                             <label class="mdui-textfield-label">验证码</label>
-                            <input class="mdui-textfield-input" type="text" name="verfiyCode" pattern="^\d{4}$" required/>
+                            <input class="mdui-textfield-input" type="text" name="verfiyCode" pattern="^\d{4}$"
+                                required />
                             <div class="mdui-textfield-error">验证码是4位数字组成</div>
                         </div>
                         <div class="mdui-textfield">
@@ -310,7 +329,7 @@
                         真实人工访问
                     </h3>
                     <p>完全自然人工浏览，不同地区IP
-                        <br/>真实流量，安全可靠
+                        <br />真实流量，安全可靠
                     </p>
                 </div>
                 <div class="item">
@@ -318,7 +337,7 @@
                         提升店铺权重
                     </h3>
                     <p>百人同时在线，深度访问
-                        <br/>增加宝贝收藏，提高权重
+                        <br />增加宝贝收藏，提高权重
                     </p>
                 </div>
                 <div class="item">
@@ -326,7 +345,7 @@
                         增加商品点击
                     </h3>
                     <p>专业的关键词优化，提高点击率
-                        <br/>有点击才会有流量
+                        <br />有点击才会有流量
                     </p>
                 </div>
                 <div class="item">
@@ -334,7 +353,7 @@
                         轻松打造爆款
                     </h3>
                     <p>轻松为你打造店铺爆款产品
-                        <br/>从而引爆全店销量
+                        <br />从而引爆全店销量
                     </p>
                 </div>
             </section>
