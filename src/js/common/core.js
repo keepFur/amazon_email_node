@@ -628,7 +628,7 @@ var core = {
         if (!y || isNaN(y)) {
             return 0;
         }
-        return Number(y * 10).toFixed(0);
+        return Number(Number(y * 100).toFixed(0));
     },
 
     // 计算会员价格（空包）

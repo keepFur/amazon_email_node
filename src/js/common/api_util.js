@@ -131,9 +131,62 @@ layui.use(['util'], function() {
                 });
             });
         },
+        // 获取礼品列表
+        readPresentList: function(params, callback) {
+            $.ajax({
+                url: '/lieliuApi/readPresentList',
+                data: params,
+                success: function(res) {
+                    callback(res);
+                },
+                error: function(error) {
+                    callback({}, error);
+                }
+            });
+        },
+        // 读取发货仓库列表
+        readFromStock: function(params, callback) {
+            $.ajax({
+                url: '/lieliuApi/readFromStock',
+                data: params,
+                success: function(res) {
+                    callback(res);
+                },
+                error: function(error) {
+                    callback({}, error);
+                }
+            });
+        },
+        // 创建礼品订单
         createPresentOrder: function(params, callback) {
             $.ajax({
                 url: '/lieliuApi/createPresentOrder',
+                data: params,
+                success: function(res) {
+                    callback(res);
+                },
+                error: function(error) {
+                    callback({}, error);
+                }
+            });
+        },
+        // 获取快递单号
+        getPresentKdNumber: function(params, callback) {
+            $.ajax({
+                url: '/lieliuApi/getPresentKdNumber',
+                data: params,
+                success: function(res) {
+                    callback(res);
+                },
+                error: function(error) {
+                    callback({}, error);
+                }
+            });
+        },
+        // 查看账户余额
+        viewLipindaoAccountMoney: function(params, callback) {
+            $.ajax({
+                url: '/lieliuApi/viewLipindaoAccountMoney',
                 data: params,
                 success: function(res) {
                     callback(res);
