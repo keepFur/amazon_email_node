@@ -255,6 +255,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
         var presentOrderInfo = core.getFormValues($('form[name=presentOrderForm]'));
         var validPresentOrderInfoResult = validPresentOrderInfo(presentOrderInfo);
         var ele = e.target;
+        $.lockedBtn($(ele), true, '提交中');
         if (validPresentOrderInfoResult.isPass) {
             presentOrderInfo.addressTo = presentOrderInfo.addressTo.split(/\n/g).filter(function (item) {
                 return !!item;
@@ -289,14 +290,17 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
                     };
                     presentOrderInfo.addressToLocal = [presentOrderInfo.addressTo[i]];
                     presentOrderInfo.addressToPcaLocal = [presentOrderInfo.addressToPca[i]];
+                    presentOrderInfo.addressToLocal = [presentOrderInfo.addressTo[i]]
                     params.presentOrderInfo = presentOrderInfo;
                     APIUtil.createPresentOrder(params, function (res, err) {
                         if (err || !res.success) {
                             layer.msg(baseDatas.netErrMsg);
+                            $.unlockBtn($(ele), '<i class="layui-icon layui-icon-release"></i>提交订单');
                             return false;
                         }
                         if (length - 1 === i) {
                             layer.msg(res.success ? ('操作成功') : ('操作失败：' + baseDatas.netErrMsg));
+                            $.unlockBtn($(ele), '<i class="layui-icon layui-icon-release"></i>提交订单');
                             core.setWindowHash('manage_present_order');
                         }
                     });
