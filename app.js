@@ -687,7 +687,11 @@ app.get('/api/downloadTemplate', function (req, res) {
 app.post('/api/importAddressExcel', function (req, res) {
     try {
         upload(req, res).then((file) => {
-            manageKbOrder.importAddressExcel(req, res, file);
+            if(req.body.plant==='PDDDZ'){
+                manageKbOrder.importPDDDZAddressExcel(req, res, file);
+            }else{
+                manageKbOrder.importAddressExcel(req, res, file);
+            }
         });
     } catch (error) {
         Core.flyer.log(error);
