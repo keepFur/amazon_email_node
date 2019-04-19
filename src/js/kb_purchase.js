@@ -383,7 +383,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
                         </form>`,
             title: '创建收货地址',
             btn: ['创建', '取消'],
-            area: ['640px'],
+            area: ['660px'],
             yes: function (index, layero) {
                 var kbAddressInfo = core.getFormValues($('form[name=kbAddressCreateForm]'));
                 var validKbAddressInfoResult = validKbAddressInfo(kbAddressInfo);
@@ -514,7 +514,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
                         </form>`,
                 title: '收货地址信息修改',
                 btn: ['确定', '取消'],
-                area: ['640px'],
+                area: ['660px'],
                 yes: function (index) {
                     var kbAddressInfo = core.getFormValues($('form[name=kbAddressUpdateForm]'));
                     var validKbAddressInfoResult = validKbAddressInfo(kbAddressInfo);
