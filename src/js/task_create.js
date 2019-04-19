@@ -687,7 +687,15 @@ layui.use(['element', 'layer', 'laydate', 'form'], function() {
         main = sum - mode;
         // 填充元素
         result.fill(main / n, start, 24);
-        result[23] += mode;
+        // 剩下的再平均分配，只要剩余时间没有了或者余数没有了都要结束循环
+        for(var i = 0;i < mode; i++ ){
+            if(start>=23){
+                result[start] += mode;
+                break;
+            }else{
+                result[start + i] += 1;
+            }
+        }
         return result;
     }
 
