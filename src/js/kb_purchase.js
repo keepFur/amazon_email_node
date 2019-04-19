@@ -217,10 +217,18 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
             if (item.split(/，|,/).length === 4 && item.split(/，|,/)[2].split(/\s{1,}/g).length === 4) {
                 return true;
             }
-            badIndex.push('<span class="layui-text-pink">第' + (index + 1) + '行</span>(' + item + ') \n');
+            badIndex.push('<span class="layui-text-pink">第' + (index + 1) + '个</span>(' + item + ')； <br>');
             return false;
         });
-        layer.alert(`总共<span class="layui-text-pink">${addressTos.length}个</span>收货地址。 \n其中有效收货地址<span class="layui-text-pink">${ret.length}个</span>\n，无效收货地址<span class="layui-text-pink">${addressTos.length - ret.length}个</span>${badIndex.length ? `，无效地址分别是在：${badIndex.join('，')}。烦请修改` : '，非常好！！！'}\n`);
+        layer.open({
+            content:`总共收货地址<span class="layui-text-pink">${addressTos.length}个</span>，其中有效收货地址<span class="layui-text-pink">${ret.length}个</span>，无效收货地址<span class="layui-text-pink">${addressTos.length - ret.length}个</span>${badIndex.length ? `。<br>无效地址分别是在：<br>${badIndex.join('')}<span class="layui-text-pink">烦请修改后提交订单，谢谢！</span>` : '，非常好！！！'}<br>`,
+            title: '检查地址格式',
+            btn: ['确定'],
+            area: ['660px'],
+            html:true,
+            scrollbar: false,
+        });
+        // layer.alert(`总共<span class="layui-text-pink">${addressTos.length}个</span>收货地址。 \n其中有效收货地址<span class="layui-text-pink">${ret.length}个</span>\n，无效收货地址<span class="layui-text-pink">${addressTos.length - ret.length}个</span>${badIndex.length ? `，无效地址分别是在：${badIndex.join('，')}。烦请修改` : '，非常好！！！'}\n`);
         return false;
     }
 
@@ -383,7 +391,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
                         </form>`,
             title: '创建收货地址',
             btn: ['创建', '取消'],
-            area: ['640px'],
+            area: ['660px'],
             yes: function (index, layero) {
                 var kbAddressInfo = core.getFormValues($('form[name=kbAddressCreateForm]'));
                 var validKbAddressInfoResult = validKbAddressInfo(kbAddressInfo);
@@ -514,7 +522,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
                         </form>`,
                 title: '收货地址信息修改',
                 btn: ['确定', '取消'],
-                area: ['640px'],
+                area: ['660px'],
                 yes: function (index) {
                     var kbAddressInfo = core.getFormValues($('form[name=kbAddressUpdateForm]'));
                     var validKbAddressInfoResult = validKbAddressInfo(kbAddressInfo);
