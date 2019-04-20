@@ -482,6 +482,7 @@ var core = {
             YF: '亚风速运',
             BS: '百世快递',
             YT: '圆通快递',
+            CND: '承诺达快递',
         };
         return kb[code];
     },
