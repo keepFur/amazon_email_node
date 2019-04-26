@@ -996,3 +996,6 @@ textarea.flyer-input {
     transition: all 0.3s ease; }
   .present-purchase-html .present-item .present-item-footer {
     margin-top: 8px; }
+
+.layui-form-select dl {
+  max-height: 400px !important; }
