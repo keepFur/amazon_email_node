@@ -483,6 +483,7 @@ var core = {
             BS: '百世快递',
             YT: '圆通快递',
             CND: '承诺达快递',
+            CNDDZ: '承诺达电子面单',
             STDZ: '申通电子面单',
         };
         return kb[code];
