@@ -168,7 +168,8 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
             function pddBatchHandle(e) {
                 var aLink = document.createElement('a');
                 // var queryParams = getQueryParams();
-                aLink.href = '/api/pddBatch?limit=1000&offset=1&plant=PDD&status=1&userName=' + $('input[name=userName]').val().trim();
+                var userName = $('input[name=userName]') && $('input[name=userName]').val();
+                aLink.href = '/api/pddBatch?limit=1000&offset=1&plant=PDD&status=1&userName=' + userName;
                 aLink.click();
                 return false;
             }
