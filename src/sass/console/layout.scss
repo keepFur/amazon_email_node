@@ -1,21 +1,26 @@
 @import "base";
 // 工具类
 // 蓝色文本
-.layui-text-blue{
+.layui-text-blue {
     color: $color-messenger;
 }
+
 // 绿色
-.layui-text-green{
+.layui-text-green {
     color: #2cc3a9;
 }
+
 // 粉色文本
-.layui-text-pink{
+.layui-text-pink {
     color: $color-red;
 }
-.pull-left{
+
+.pull-left {
     float: left;
 }
-.pull-right{float: right;
+
+.pull-right {
+    float: right;
 }
 
 body {
@@ -171,7 +176,7 @@ header {
             position: relative;
             top: -6px;
         }
-        &:hover{
+        &:hover {
             color: #fff;
         }
     }
@@ -256,7 +261,7 @@ section.flyer-layout-content {
     padding-bottom: 40px;
     overflow: hidden;
     min-height: 400px;
-    .layui-tab{
+    .layui-tab {
         margin: 0;
     }
     .btn-container {
@@ -1196,4 +1201,30 @@ textarea.flyer-input {
 
 .dialog-form-container div.mutiple-select {
     padding-left: 10px;
+}
+
+.present-purchase-html {
+    .present-item {
+        padding: 10px;
+        border: 1px solid #ddd;
+        cursor: pointer;
+        &:hover {
+            transform: translateY(-6px);
+            -webkit-transform: translateY(-6px);
+            -moz-transform: translateY(-6px);
+            -webkit-box-shadow: 0 26px 40px -24px rgba(0, 36, 100, 0.3);
+            -moz-box-shadow: 0 26px 40px -24px rgba(0, 36, 100, 0.3);
+            box-shadow: 0 26px 40px -24px rgba(0, 36, 100, 0.3);
+            -webkit-transition: all 0.3s ease;
+            -moz-transition: all 0.3s ease;
+            -o-transition: all 0.3s ease;
+            transition: all 0.3s ease;
+        }
+        .present-item-footer {
+            margin-top: 8px;
+        }
+    }
+}
+.layui-form-select dl{
+    max-height: 400px!important;
 }

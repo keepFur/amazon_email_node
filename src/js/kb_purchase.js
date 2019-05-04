@@ -90,10 +90,18 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function() {
                     getKbTypeServer(data.value);
                     var p = data.value === 'PDD' ? `格式：姓名，手机，省（空格）市（空格）县区（空格）详细地址，订单流水号 
 例如：张三，13688888888 ，广东省 深圳市 罗湖区 深南大道102号，20150831-070478496
-严格按上面的格式来  三个逗号，三个空格，一个都不要少，也不能多` : `格式：姓名，手机，省（空格）市（空格）县区（空格）详细地址，邮编 
+严格按上面的格式来  三个逗号，三个空格，一个都不要少，也不能多
+一行一个地址
+PS：提交订单之前最好先点击下面的【检查地址格式】按钮来检查地址格式是否正确，系统会将不符合格式的地址进行提示，不强制检查。` : data.value === 'PDDDZ' ? `格式：姓名，手机，省（空格）市（空格）县区（空格）详细地址，快递单号 
+例如：张三，13688888888 ，广东省 深圳市 罗湖区 深南大道102号，2015083113213123
+严格按上面的格式来  三个逗号，三个空格，一个都不要少，也不能多
+一行一个地址
+PS：提交订单之前最好先点击下面的【检查地址格式】按钮来检查地址格式是否正确，系统会将不符合格式的地址进行提示，不强制检查。` : `格式：姓名，手机，省（空格）市（空格）县区（空格）详细地址，邮编 
 例如：张三，13688888888 ，广东省 深圳市 罗湖区 深南大道102号，518000 
-严格按上面的格式来  三个逗号，三个空格，一个都不要少，也不能多`;
-                    $('[name=addressTo]').attr('placeholder', p);
+严格按上面的格式来  三个逗号，三个空格，一个都不要少，也不能多
+一行一个地址
+PS：提交订单之前最好先点击下面的【检查地址格式】按钮来检查地址格式是否正确，系统会将不符合格式的地址进行提示，不强制检查。`;
+                    $('#addressFormat').val(p);
                     baseDatas.plant = data.value;
                     // 将注意事项隐藏
                     $('#bbDetailContainer').addClass('layui-hide');
@@ -215,10 +223,18 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function() {
                     if (item.split(/，|,/).length === 4 && item.split(/，|,/)[2].split(/\s{1,}/g).length === 4) {
                         return true;
                     }
-                    badIndex.push('<span class="layui-text-pink">第' + (index + 1) + '行</span>(' + item + ') \n');
+                    badIndex.push('<span class="layui-text-pink">第' + (index + 1) + '个</span>(' + item + ')； <br>');
                     return false;
                 });
-                layer.alert(`总共<span class="layui-text-pink">${addressTos.length}个</span>收货地址。 \n其中有效收货地址<span class="layui-text-pink">${ret.length}个</span>\n，无效收货地址<span class="layui-text-pink">${addressTos.length - ret.length}个</span>${badIndex.length ? `，无效地址分别是在：${badIndex.join('，')}。烦请修改` : '，非常好！！！'}\n`);
+                var formatText = $('#addressFormat').val();
+                layer.open({
+                            content: `<span class="layui-text-pink">正确格式：姓名，手机，省（空格）市（空格）县区（空格）详细地址，邮编或快递单号或订单号</span><br>总共收货地址<span class="layui-text-pink">${addressTos.length}个</span>，其中有效收货地址<span class="layui-text-pink">${ret.length}个</span>，无效收货地址<span class="layui-text-pink">${addressTos.length - ret.length}个</span>${badIndex.length ? `。<br>无效地址分别是在：<br>${badIndex.join('')}<span class="layui-text-pink">烦请修改后提交订单，谢谢！</span>` : '，非常好！！！'}<br>`,
+            title: '检查地址格式',
+            btn: ['确定'],
+            area: ['660px','500px'],
+            html:true,
+            scrollbar: false,
+        });
         return false;
     }
 
@@ -293,67 +309,28 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function() {
             kbOrderInfo.addressFromPca = kbOrderInfo.addressFrom.split(/\s/g)[0];
             kbOrderInfo.total = baseDatas.kbTypeInfo.price * kbOrderInfo.addressTo.length;
             kbOrderInfo.price = baseDatas.kbTypeInfo.price;
-            // 如果是圆通快递的话 先获取空包单号
             // 张三，13688888888 ，广东省 深圳市 罗湖区 深南大道102号，518000
-            if(baseDatas.kbTypeInfo.code==='YTIIIII'){
-                APIYTKB.generateYtKbNumber({
-                   rec: [{
-                       order_no:kbOrderInfo.number,// 订单号
-                       rec:'江西省 宜春市 万载县 双桥镇 十二组',// 收件人详细地址  字符串长度不能大于100
-                       name:'苏荣',// 发件人名称  字符串长度不能大于30
-                       shouji:'16675559991108',// 发件人手机  有效的11位手机号码 
-                       address_province:'江西省',// 发件人所在省  字符串长度不能大于20
-                       address_city:'宜春市',// 发件人所在市   字符串长度不能大于20
-                       address_district:'万载县',// 发件人所在县/区  字符串长度不能大于20
-                       address:'谭部镇 十字路口旁',// 发件人详细地址  字符串长度不能大于100
-                       goods_name:'商品名称',// 商品名称  字符串长度不能大于100
-                       rec_weight:kbOrderInfo.kbWeight// 包裹重量 两位小数, 0.05kg-40kg之间
-                   }]
-                },function(res){
-                    kbOrderInfo.kbNumber = JSON.parse(res.data);
-                    $.ajax({
-                        url: '/api/createKbOrder',
-                        type: 'POST',
-                        data: kbOrderInfo,
-                        beforeSend:function(){
-                            $.lockedBtn($(ele), true, '提交中');
-                        },
-                        success: function (data, textStatus, jqXHR) {
-                            layer.msg(data.success ? ('操作成功') : ('操作失败：' + data.message));
-                            if (data.success) {
-                                core.setWindowHash('manage_kb_order?kbType='+baseDatas.plant);
-                            }
-                        },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            layer.msg(baseDatas.errorMsg);
-                        },
-                        complete:function(){
-                            $.unlockBtn($(ele), '<i class="layui-icon layui-icon-release"></i>提交订单');
-                        }
-                    });
-                });
-            }else{
-                $.ajax({
-                    url: '/api/createKbOrder',
-                    type: 'POST',
-                    data: kbOrderInfo,
-                    beforeSend:function(){
-                        $.lockedBtn($(ele), true, '提交中');
-                    },
-                    success: function (data, textStatus, jqXHR) {
-                        layer.msg(data.success ? ('操作成功') : ('操作失败：' + data.message));
-                        if (data.success) {
-                            core.setWindowHash('manage_kb_order?kbType='+baseDatas.plant);
-                        }
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        layer.msg(baseDatas.errorMsg);
-                    },
-                    complete:function(){
-                        $.unlockBtn($(ele), '<i class="layui-icon layui-icon-release"></i>提交订单');
+            // 拼多多电子面单的
+            $.ajax({
+                url: baseDatas.plant == 'PDDDZ' ? '/api/createPDDDZKbOrder' : '/api/createKbOrder',
+                type: 'POST',
+                data: kbOrderInfo,
+                beforeSend: function () {
+                    $.lockedBtn($(ele), true, '提交中');
+                },
+                success: function (data, textStatus, jqXHR) {
+                    layer.msg(data.success ? ('操作成功') : ('操作失败：' + data.message));
+                    if (data.success) {
+                        core.setWindowHash('manage_kb_order?kbType=' + baseDatas.plant);
                     }
-                });
-            }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    layer.msg(baseDatas.errorMsg);
+                },
+                complete: function () {
+                    $.unlockBtn($(ele), '<i class="layui-icon layui-icon-release"></i>提交订单');
+                }
+            });
         } else {
             layer.msg(validKbOrderInfoResult.msg);
         }
@@ -420,8 +397,8 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function() {
                         </form>`,
             title: '创建收货地址',
             btn: ['创建', '取消'],
-            area: ['640px'],
-            yes: function (index,layero) {
+            area: ['660px'],
+            yes: function (index, layero) {
                 var kbAddressInfo = core.getFormValues($('form[name=kbAddressCreateForm]'));
                 var validKbAddressInfoResult = validKbAddressInfo(kbAddressInfo);
                 var $ele = layero.find('.layui-layer-btn0');
@@ -432,8 +409,8 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function() {
                         url: '/api/createKbAddress',
                         type: 'POST',
                         data: kbAddressInfo,
-                        beforeSend:function(){
-                           $.lockedBtn($ele, true, '创建中');
+                        beforeSend: function () {
+                            $.lockedBtn($ele, true, '创建中');
                         },
                         success: function (data, textStatus, jqXHR) {
                             layer.msg(data.success ? ('操作成功') : ('操作失败'));
@@ -444,7 +421,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function() {
                         error: function (jqXHR, textStatus, errorThrown) {
                             layer.msg(baseDatas.errorMsg);
                         },
-                        complete:function(){
+                        complete: function () {
                             $.unlockBtn($ele, '<i class="layui-icon layui-icon-release"></i>创建');
                         }
                     });
@@ -551,7 +528,7 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function() {
                         </form>`,
                 title: '收货地址信息修改',
                 btn: ['确定', '取消'],
-                area: ['640px'],
+                area: ['660px'],
                 yes: function (index) {
                     var kbAddressInfo = core.getFormValues($('form[name=kbAddressUpdateForm]'));
                     var validKbAddressInfoResult = validKbAddressInfo(kbAddressInfo);
@@ -712,55 +689,56 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function() {
         table.render({
             elem: '#kbAddressTable',
             url: '/api/readKbAddress',
-            cols: [[
-                {
-                    checkbox: true,
-                },
-                {
-                    title: '寄件人',
-                    field: "contact"
-                }, {
-                    title: '手机',
-                    field: "phone"
-                }, {
-                    title: '地址',
-                    field: "detail",
-                    templet: function (d) {
-                        return d.pca + d.detail;
+            cols: [
+                [{
+                        checkbox: true,
+                    },
+                    {
+                        title: '寄件人',
+                        field: "contact"
+                    }, {
+                        title: '手机',
+                        field: "phone"
+                    }, {
+                        title: '地址',
+                        field: "detail",
+                        templet: function (d) {
+                            return d.pca + d.detail;
+                        }
+                    }, {
+                        title: '邮编',
+                        field: "email"
+                    }, {
+                        title: '备注',
+                        field: "remark"
+                    }, {
+                        title: '创建时间',
+                        field: "createdDate",
+                        templet: function (d) {
+                            return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
+                        }
+                    }, {
+                        title: '最后修改时间',
+                        field: "updateDate",
+                        templet: function (d) {
+                            return d.updateDate ? util.toDateString(d.updateDate, 'yyyy-MM-dd HH:mm') : '';
+                        }
+                    }, {
+                        title: '是否默认',
+                        field: '',
+                        templet: function (d) {
+                            return d.isDefault === 1 ? '<span class="layui-text-pink">是</span>' : '否';
+                        }
+                    },
+                    {
+                        title: '状态',
+                        field: 'status',
+                        templet: function (d) {
+                            return d.status === 1 ? '启用' : '<span class="layui-text-pink">停用</span>';
+                        }
                     }
-                }, {
-                    title: '邮编',
-                    field: "email"
-                }, {
-                    title: '备注',
-                    field: "remark"
-                }, {
-                    title: '创建时间',
-                    field: "createdDate",
-                    templet: function (d) {
-                        return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
-                    }
-                }, {
-                    title: '最后修改时间',
-                    field: "updateDate",
-                    templet: function (d) {
-                        return d.updateDate ? util.toDateString(d.updateDate, 'yyyy-MM-dd HH:mm') : '';
-                    }
-                }, {
-                    title: '是否默认',
-                    field: '',
-                    templet: function (d) {
-                        return d.isDefault === 1 ? '<span class="layui-text-pink">是</span>' : '否';
-                    }
-                },
-                {
-                    title: '状态',
-                    field: 'status',
-                    templet: function (d) {
-                        return d.status === 1 ? '启用' : '<span class="layui-text-pink">停用</span>';
-                    }
-                }
-            ]],
+                ]
+            ],
             response: {
                 statusCode: true
             },
@@ -924,13 +902,13 @@ layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function() {
         $container.append(`<option value="">请选择快递类型</option>`);
         $.each(kbTypes, function (index, item) {
             // 当前
-            var curP = core.fenToYuan(core.computeTotalPrice(baseDatas.level,item.price));
+            var curP = core.fenToYuan(core.computeTotalPrice(baseDatas.level, item.price));
             // 普通
-            var comP = core.fenToYuan(core.computeTotalPrice(1,item.price));
+            var comP = core.fenToYuan(core.computeTotalPrice(1, item.price));
             // 金牌
-            var goldP =core.fenToYuan(core.computeTotalPrice(2,item.price));
+            var goldP = core.fenToYuan(core.computeTotalPrice(2, item.price));
             // 等级
-            var levelText = ['','普通会员','金牌会员','内部会员'][baseDatas.level];
+            var levelText = ['', '普通会员', '金牌会员', '内部会员'][baseDatas.level];
             $container.append(`<option value="${item.code}" data-price="${item.price}" data-plant="${item.plant}" data-desc="${item.description}">${item.name} ，你的价格（${levelText}）：${curP}元，普通会员：${comP}元，金牌会员：${goldP}元</option>`);
         });
         form.render('select');

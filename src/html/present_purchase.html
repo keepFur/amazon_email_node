@@ -1,0 +1,143 @@
+<div class="present-purchase-html">
+    <div class="layui-tab layui-tab-brief" lay-filter="presentPurchase">
+        <ul class="layui-tab-title">
+            <li class="layui-this" lay-id="presentList">礼品列表</li>
+            <li lay-id="presentPurchase">购买礼品</li>
+            <li lay-id="setInfoPurchase">设置发货信息</li>
+            <!-- <li lay-id="presentCollectList">我的收藏</li> -->
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <div class="list-container">
+                    <div class="layui-row layui-col-space8">
+                        <div id="nodataTip" style="display:none;">
+                            <img src="./imgs/nodata.jpeg" alt="" width="400px" height="300px">
+                            <div style="padding-left:70px;">
+                                <h3 style="color:#2cc3a9">网页小哥去寻找诗和远方了。。。。</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <form class="layui-form" name="presentOrderForm" onsubmit="javascript:return false;">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">选择礼品</label>
+                        <div class="layui-input-block">
+                            <select name="present" lay-filter="present">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">快递价格</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="kdPrice" id="kdPrice" value="3.1" class="layui-input" disabled>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">发货仓</label>
+                        <div class="layui-input-block">
+                            <select name="presentStock" lay-filter="presentStock">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">地址格式</label>
+                        <div class="layui-input-block">
+                            <textarea class="layui-textarea" disabled>收货地址格式：姓名，手机，省（空格）市（空格）县区（空格）详细地址，邮编或订单号 
+例如：张三，13688888888 ，广东省 深圳市 罗湖区 深南大道102号，518000 
+严格按上面的格式来  三个逗号，三个空格，一个都不要少，也不能多
+一行一个地址</textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">收货地址</label>
+                        <div class="layui-input-block">
+                            <textarea class="layui-textarea" name="addressTo" rows="15" placeholder="一行一个地址，格式按照上面的来填写"></textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"></label>
+                        <div class="layui-input-block">
+                            <button class="layui-btn layui-btn-normal layui-btn-sm" id="importTBAddressExcelBtn"><i
+                                    class="layui-icon">&#xe67c;</i>通过Excel文件导入(淘宝)</button>
+                            <button class="layui-btn layui-btn-normal layui-btn-sm" id="importPDDAddressExcelBtn"><i
+                                    class="layui-icon">&#xe67c;</i>通过Excel文件导入（拼多多）</button>
+                            <button class="layui-btn layui-btn-normal layui-btn-sm" id="importJDAddressExcelBtn"><i
+                                    class="layui-icon">&#xe67c;</i>通过Excel文件导入（京东）</button>
+                            <!-- <button class="layui-btn layui-btn-primary layui-btn-sm" id="downloadTemplateBtn"><i class="layui-icon">&#xe601;</i>下载收货地址Excel模版</button> -->
+                            <button class="layui-btn layui-btn-normal layui-btn-sm" id="getRealOrderBtn">过滤真实订单</button>
+                            <button class="layui-btn layui-btn-primary layui-btn-sm" id="formatAddressBtn">检查地址格式</button>
+                        </div>
+                        <label class="layui-form-label"></label>
+                        <div class="layui-form-mid layui-word-aux">
+                            PS：提交订单之前最好先点击上面的【检查地址格式】按钮来检查地址格式是否正确，系统会将不符合格式的地址进行提示，不强制检查。
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">备注</label>
+                        <div class="layui-input-block">
+                            <textarea class="layui-textarea" name="remark"></textarea>
+                        </div>
+                    </div>
+                </form>
+                <div class="layui-row task-detail-container">
+                    <div class="layui-col-xs5">
+                        <span>当前余额：<em id="userBalance">0</em>元 <span id="userLevel"></span></span>
+                    </div>
+                    <!-- <div class="layui-col-xs3">
+                        <span>单价：<em id="kbPrice">0</em>元<span id="discountKbPriceText" class="layui-text-pink"> 优惠价：<em
+                                id="discountKbPrice">0</em>元</span></span>
+                    </div> -->
+                    <div class="layui-col-xs3">
+                        <span>包裹数量：<em id="kbQuantity">0</em>个</span>
+                    </div>
+                    <div class="layui-col-xs4">
+                        <span>总价：<em id="kbSumMoney">0</em>元<span id="discountKbSumMoneyText" class="layui-text-pink">
+                                优惠价：<em id="discountKbSumMoney">0</em>元</span></span>
+                    </div>
+                </div>
+                <div class="task-add-container">
+                    <div class="layui-row">
+                        <button class="layui-btn layui-btn-normal layui-btn-fluid" id="createPresentOrderBtn"> <i
+                                class="layui-icon layui-icon-release"></i>提交订单</button>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <div id="setInfoPurchase" lay-filter="setInfoPurchase">
+                    <div class="layui-row">
+                        <div class="layui-col-md6">
+                            <form class="layui-form layui-form-pane" name="userUpdatePasswordForm">
+                                <div class="layui-form-item">
+                                    <div class="layui-form-item layui-form-text">
+                                        <label class="layui-form-label">发货姓名</label>
+                                        <div class="layui-input-block">
+                                            <input class="layui-input" name="fromName" placeholder="底单上显示" />
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-form-text">
+                                        <label class="layui-form-label">发货号码</label>
+                                        <div class="layui-input-block">
+                                            <input class="layui-input" name="fromPhone" placeholder="底单上显示" />
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-form-text">
+                                        <div class="layui-input-block">
+                                            <button class="layui-btn layui-btn-normal layui-btn-fluid" id="saveSetPurchaseInfoBtn">保存</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="layui-tab-item">
+                <div id="presentCollectList" lay-filter="presentCollectList">
+                    <h3>开发中，敬请期待。。。</h3>
+                </div>
+            </div> -->
+        </div>
+    </div>
+</div>

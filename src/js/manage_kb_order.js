@@ -15,7 +15,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
                     batch: '请至少选择一条数据操作'
                 },
                 // 空包订单平台
-                plants: ['TB', 'JD', 'PDD'],
+                plants: ['TB', 'JD', 'PDD', 'PDDDZ'],
                 // 当前页签的索引
                 tabIndex: 0,
                 kbType: (location.hash.split('?')[1] && location.hash.split('?')[1].split('=')[1]) || 'TB'
@@ -91,6 +91,10 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
                 $('#markScanedKbOrderBtn').on('click', {
                     type: 2
                 }, toggleKbOrderHandle);
+                // 标记为已扫描空包订单
+                $('#markUnScanedKbOrderBtn').on('click', {
+                    type: 1
+                }, toggleKbOrderHandle);
             }
 
             /**
@@ -164,7 +168,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
             function pddBatchHandle(e) {
                 var aLink = document.createElement('a');
                 // var queryParams = getQueryParams();
-                aLink.href = '/api/pddBatch?limit=1000&offset=1&plant=PDD&status=1';
+                aLink.href = '/api/pddBatch?limit=1000&offset=1&plant=PDD&status=1&userName=' + $('input[name=userName]').val().trim();
                 aLink.click();
                 return false;
             }
@@ -177,7 +181,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
             function toggleKbOrderHandle(events) {
                 var selectDatas = table.checkStatus('kbOrderTable').data;
                 var type = events.data.type;
-                var tipMsg = type === 2 ? '确定标记为已扫描状态吗？' : '确定标记为取消状态吗？';
+                var tipMsg = type === 2 ? '确定标记为已扫描状态吗？' : type === 1 ? '确定标记为未扫描状态吗？' : '确定标记为取消状态吗？';
                 if (type === 3 && selectDatas.length !== 1) {
                     layer.msg(baseDatas.operatorErrMsg.single);
                     return false;
@@ -187,7 +191,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
                     return false;
                 }
                 if (type === 3 && selectDatas[0].status === 3) {
-                    layer.msg('已该订单已经是取消状态了！！！');
+                    layer.msg('该订单已经是取消状态了！！！');
                     return false;
                 }
                 if (selectDatas.length > 0) {
@@ -209,7 +213,7 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
                                 userName: selectDatas[0].userName
                             },
                             success: function(data, textStatus, jqXHR) {
-                                layer.msg(data.success ? '操作成功！' : '操作失败：' + data.message);
+                                layer.msg('操作成功');
                                 reloadTable();
                             },
                             error: function(jqXHR, textStatus, errorThrown) {
@@ -320,9 +324,10 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
                                             templet: function(d) {
                                                     var statusText = ['', '待扫描', '已扫描', '已取消']; // 1:待扫描 2，已扫描 3，已取消
                                                     return `<span class="layui-text-${d.status == 1 ? 'green' : 'pink'}">${statusText[d.status]}</span> ${d.status === 1 ? `<a class="layui-btn layui-btn-normal layui-btn-xs js-update-order" data-id="${d.id}" data-kb-weight="${d.kbWeight}" data-kb-from="${d.addressFrom}" data-kb-to="${d.addressTo}">修改</a>` : ``}`;
+                        }
                     }
-                }
-            ]],
+                ]
+            ],
             limits: [10, 20, 50, 100],
             page: {
                 theme: '#1E9FFF',
