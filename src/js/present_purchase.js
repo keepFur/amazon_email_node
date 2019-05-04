@@ -1,199 +1,206 @@
 "use strict";
-layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
-    var form = layui.form;
-    var table = layui.table;
-    var layer = layui.layer;
-    var util = layui.util;
-    var element = layui.element;
-    var upload = layui.upload;
-    var baseDatas = {
-        // 表格实例
-        $table: null,
-        level: 1,
-        presentInfo: null,
-        fromStockInfo: null,
-        // 错误消息
-        paramErrMsg: '参数错误，请刷新页面重试',
-        netErrMsg: '系统已退出登录，请登录系统重试',
-        operatorErrMsg: {
-            single: '请选择一条数据操作',
-            batch: '请至少选择一条数据操作'
-        },
-        prensentList: [],
-        kdPrice: 310,
-        plant: 'TB'
-    };
-    var userInfo = {};
-
-    /**
-     *页面入口函数 
-     * 
-     */
-    (function init() {
-        // 初始化事件
-        initEvent();
-        // 获取用户信息
-        core.getUserInfoById(function (user) {
-            userInfo = user.data.rows[0];
-            baseDatas.level = userInfo.level;
-            // 获取礼品
-            readPresentListServer();
-            $('#userName').data('user', JSON.stringify(user));
-            $('#userBalance').text(core.fenToYuan(userInfo.money));
-            $('#userLevel').html(core.getLevelText(userInfo.level));
-            $('#discountKbSumMoneyText,#discountKbPriceText').toggle(userInfo.level !== 1);
-            // 读取发货人信息
-            readFromUserInfoById();
-        });
-        // 渲染发货仓库
-        getPresentFromStockServer();
-        // 初始化文件上传组件
-        initUpload('#importTBAddressExcelBtn', 'TB');
-        initUpload('#importPDDAddressExcelBtn', 'PDD');
-        initUpload('#importJDAddressExcelBtn', 'JD');
-    })();
-
-    /**
-     * 初始化文件上传组件
-     *
-     */
-    function initUpload($ele, plant) {
-        function format(a) {
-            return a.map(function (item) {
-                return item.name + '，' + item.phone + '，' + item.province + ' ' + item.city + ' ' + item.area + ' ' + item.detail + '，' + item.email;
-            });
-        }
-        upload.render({
-            elem: $ele,
-            url: '/api/importAddressExcel',
-            done: function (res) {
-                if (res.success) {
-                    layer.msg('数据解析成功！！');
-                    $('textarea[name=addressTo]').val(format(res.data).join('\n'));
-                } else {
-                    layer.msg('数据解析失败：' + res.message);
-                }
-                layer.closeAll('loading');
-            },
-            before: function (obj) {
-                layer.load();
-                return false;
-            },
-            data: {
-                plant: plant
-            },
-            size: 2048,
-            accept: 'file',
-            exts: 'xls|xlsx|csv',
-            error: function (err) {
-                layer.closeAll('loading');
-                layer.msg('数据解析失败:服务器异常！！！');
-            }
-        });
-    }
-
-    /**
-     * 初始化事件函数
-     * 
-     */
-    function initEvent() {
-        // 保存礼品订单
-        $('#createPresentOrderBtn').on('click', createPresentOrderHandler);
-        // 收货地址输入框的onblur事件
-        $('textarea[name=addressTo]').on('blur', function (e) {
-            // 数量
-            var quantity = getKbAddressTo().length;
-            var sumMoney = quantity && baseDatas.presentInfo ? quantity * (core.yuanToFen(baseDatas.presentInfo.price) + baseDatas.kdPrice) : 0;
-            $('#kbQuantity').text(quantity);
-            // 总价
-            $('#kbSumMoney').text(core.fenToYuan(sumMoney));
-            // 优惠总价 = 数量*单价（礼品价格+快递价格
-            var vipKdPrice = core.computeTotalPrice(baseDatas.level, baseDatas.kdPrice);
-            var lastPrice = baseDatas.presentInfo && quantity ? (core.fenToYuan(quantity * (core.yuanToFen(baseDatas.presentInfo.price) + vipKdPrice))) : 0;
-            $('#discountKbSumMoney').text(lastPrice);
-            return false;
-        });
-        // 通过excel导入收货地址
-        $('#importAddressExcelBtn').on('click', importAddressExcelHandle);
-        // 下载收货地址模版
-        $('#downloadTemplateBtn').on('click', downloadTemplateHandle);
-        // 格式化地址
-        $('#formatAddressBtn').on('click', formatAddressHandle);
-        // 过滤真实订单
-        $('#getRealOrderBtn').on('click', getRealOrderHandle);
-        // 保存发货信息
-        $('#saveSetPurchaseInfoBtn').on('click', saveSetPurchaseInfoHandler);
-        // 监听tab切换事件
-        element.on('tab(presentPurchase)', function () {
-            if (this.getAttribute('lay-id') === 'presentPurchase') {
-                renderPresentSelect(baseDatas.prensentList);
-            }
-        });
-        // 监听礼品下拉框的change事件
-        form.on('select(present)', function (data) {
-            var $selected = $(data.elem).find('option[value=' + data.value + ']')
-            var price = $selected.data('price');
-            var name = $selected.data('name');
-            // 将选中的任务保存到基础数据中，后期的数据源只来源于此（唯一数据源）
-            baseDatas.presentInfo = {
-                price: price,
-                id: data.value,
-                name: name
+layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function() {
+            var form = layui.form;
+            var table = layui.table;
+            var layer = layui.layer;
+            var util = layui.util;
+            var element = layui.element;
+            var upload = layui.upload;
+            var baseDatas = {
+                // 表格实例
+                $table: null,
+                level: 1,
+                presentInfo: null,
+                fromStockInfo: null,
+                // 错误消息
+                paramErrMsg: '参数错误，请刷新页面重试',
+                netErrMsg: '系统已退出登录，请登录系统重试',
+                operatorErrMsg: {
+                    single: '请选择一条数据操作',
+                    batch: '请至少选择一条数据操作'
+                },
+                prensentList: [],
+                kdPrice: 310,
+                plant: 'TB'
             };
-            // 单价
-            $('#kbPrice').text(core.fenToYuan(price));
-            // 优惠单价
-            $('#discountKbPrice').text(core.fenToYuan(core.computeTotalPrice(baseDatas.level, price)));
-        });
-    }
+            var userInfo = {};
 
-    /**
-     *通过excel导入收货地址
-     *
-     * @param {*} e
-     * @returns
-     */
-    function importAddressExcelHandle(e) {
-        return false;
-    }
+            /**
+             *页面入口函数 
+             * 
+             */
+            (function init() {
+                // 初始化事件
+                initEvent();
+                // 获取用户信息
+                core.getUserInfoById(function(user) {
+                    userInfo = user.data.rows[0];
+                    baseDatas.level = userInfo.level;
+                    // 获取礼品
+                    readPresentListServer();
+                    $('#userName').data('user', JSON.stringify(user));
+                    $('#userBalance').text(core.fenToYuan(userInfo.money));
+                    $('#userLevel').html(core.getLevelText(userInfo.level));
+                    $('#discountKbSumMoneyText,#discountKbPriceText').toggle(userInfo.level !== 1);
+                    // 读取发货人信息
+                    readFromUserInfoById();
+                });
+                // 渲染发货仓库
+                getPresentFromStockServer();
+                // 初始化文件上传组件
+                initUpload('#importTBAddressExcelBtn', 'TB');
+                initUpload('#importPDDAddressExcelBtn', 'PDD');
+                initUpload('#importJDAddressExcelBtn', 'JD');
+            })();
 
-    /**
-     * 下载模版
-     *
-     * @param {*} e
-     * @returns
-     */
-    function downloadTemplateHandle(e) {
-        var aLink = document.createElement('a');
-        aLink.href = '/api/downloadTemplate?plant=' + baseDatas.plant;
-        aLink.click();
-        return false;
-    }
-
-    /**
-     *格式化收货地址
-     *
-     * @param {*} e
-     * @returns
-     */
-    function formatAddressHandle(e) {
-        var addressTo = $('textarea[name=addressTo]').val();
-        if (!addressTo) {
-            layer.msg('请先填写收货地址信息');
-            return false;
-        }
-        var addressTos = addressTo.split(/\n{1,}/g);
-        var badIndex = [];
-        var ret = addressTos.map(function (item) {
-            return $.trim(item);
-        }).filter(function (item, index) {
-            if (item.split(/，|,/).length === 4 && item.split(/，|,/)[2].split(/\s{1,}/g).length === 4) {
-                return true;
+            /**
+             * 初始化文件上传组件
+             *
+             */
+            function initUpload($ele, plant) {
+                function format(a) {
+                    return a.map(function(item) {
+                        return item.name + '，' + item.phone + '，' + item.province + ' ' + item.city + ' ' + item.area + ' ' + item.detail + '，' + item.email;
+                    });
+                }
+                upload.render({
+                    elem: $ele,
+                    url: '/api/importAddressExcel',
+                    done: function(res) {
+                        if (res.success) {
+                            layer.msg('数据解析成功！！');
+                            $('textarea[name=addressTo]').val(format(res.data).join('\n'));
+                        } else {
+                            layer.msg('数据解析失败：' + res.message);
+                        }
+                        layer.closeAll('loading');
+                    },
+                    before: function(obj) {
+                        layer.load();
+                        return false;
+                    },
+                    data: {
+                        plant: plant
+                    },
+                    size: 2048,
+                    accept: 'file',
+                    exts: 'xls|xlsx|csv',
+                    error: function(err) {
+                        layer.closeAll('loading');
+                        layer.msg('数据解析失败:服务器异常！！！');
+                    }
+                });
             }
-            badIndex.push('<span class="layui-text-pink">第' + (index + 1) + '行</span>(' + item + ') \n');
-            return false;
+
+            /**
+             * 初始化事件函数
+             * 
+             */
+            function initEvent() {
+                // 保存礼品订单
+                $('#createPresentOrderBtn').on('click', createPresentOrderHandler);
+                // 收货地址输入框的onblur事件
+                $('textarea[name=addressTo]').on('blur', function(e) {
+                    // 数量
+                    var quantity = getKbAddressTo().length;
+                    var sumMoney = quantity && baseDatas.presentInfo ? quantity * (core.yuanToFen(baseDatas.presentInfo.price) + baseDatas.kdPrice) : 0;
+                    $('#kbQuantity').text(quantity);
+                    // 总价
+                    $('#kbSumMoney').text(core.fenToYuan(sumMoney));
+                    // 优惠总价 = 数量*单价（礼品价格+快递价格
+                    var vipKdPrice = core.computeTotalPrice(baseDatas.level, baseDatas.kdPrice);
+                    var lastPrice = baseDatas.presentInfo && quantity ? (core.fenToYuan(quantity * (core.yuanToFen(baseDatas.presentInfo.price) + vipKdPrice))) : 0;
+                    $('#discountKbSumMoney').text(lastPrice);
+                    return false;
+                });
+                // 通过excel导入收货地址
+                $('#importAddressExcelBtn').on('click', importAddressExcelHandle);
+                // 下载收货地址模版
+                $('#downloadTemplateBtn').on('click', downloadTemplateHandle);
+                // 格式化地址
+                $('#formatAddressBtn').on('click', formatAddressHandle);
+                // 过滤真实订单
+                $('#getRealOrderBtn').on('click', getRealOrderHandle);
+                // 保存发货信息
+                $('#saveSetPurchaseInfoBtn').on('click', saveSetPurchaseInfoHandler);
+                // 监听tab切换事件
+                element.on('tab(presentPurchase)', function() {
+                    if (this.getAttribute('lay-id') === 'presentPurchase') {
+                        renderPresentSelect(baseDatas.prensentList);
+                    }
+                });
+                // 监听礼品下拉框的change事件
+                form.on('select(present)', function(data) {
+                    var $selected = $(data.elem).find('option[value=' + data.value + ']')
+                    var price = $selected.data('price');
+                    var name = $selected.data('name');
+                    // 将选中的任务保存到基础数据中，后期的数据源只来源于此（唯一数据源）
+                    baseDatas.presentInfo = {
+                        price: price,
+                        id: data.value,
+                        name: name
+                    };
+                    // 单价
+                    $('#kbPrice').text(core.fenToYuan(price));
+                    // 优惠单价
+                    $('#discountKbPrice').text(core.fenToYuan(core.computeTotalPrice(baseDatas.level, price)));
+                });
+            }
+
+            /**
+             *通过excel导入收货地址
+             *
+             * @param {*} e
+             * @returns
+             */
+            function importAddressExcelHandle(e) {
+                return false;
+            }
+
+            /**
+             * 下载模版
+             *
+             * @param {*} e
+             * @returns
+             */
+            function downloadTemplateHandle(e) {
+                var aLink = document.createElement('a');
+                aLink.href = '/api/downloadTemplate?plant=' + baseDatas.plant;
+                aLink.click();
+                return false;
+            }
+
+            /**
+             *格式化收货地址
+             *
+             * @param {*} e
+             * @returns
+             */
+            function formatAddressHandle(e) {
+                var addressTo = $('textarea[name=addressTo]').val();
+                if (!addressTo) {
+                    layer.msg('请先填写收货地址信息');
+                    return false;
+                }
+                var addressTos = addressTo.split(/\n{1,}/g);
+                var badIndex = [];
+                var ret = addressTos.map(function(item) {
+                    return $.trim(item);
+                }).filter(function(item, index) {
+                    if (item.split(/，|,/).length === 4 && item.split(/，|,/)[2].split(/\s{1,}/g).length === 4) {
+                        return true;
+                    }
+                    badIndex.push('<span class="layui-text-pink">第' + (index + 1) + '个</span>(' + item + ')； <br>');
+                    return false;
+                });
+                layer.open({
+                            content: `<span class="layui-text-pink">正确格式：姓名，手机，省（空格）市（空格）县区（空格）详细地址，邮编或快递单号或订单号</span><br>总共收货地址<span class="layui-text-pink">${addressTos.length}个</span>，其中有效收货地址<span class="layui-text-pink">${ret.length}个</span>，无效收货地址<span class="layui-text-pink">${addressTos.length - ret.length}个</span>${badIndex.length ? `。<br>无效地址分别是在：<br>${badIndex.join('')}<span class="layui-text-pink">烦请修改后提交订单，谢谢！</span>` : '，非常好！！！'}<br>`,
+            title: '检查地址格式',
+            btn: ['确定'],
+            area: ['660px','500px'],
+            html:true,
+            scrollbar: false,
         });
-        layer.alert(`总共<span class="layui-text-pink">${addressTos.length}个</span>收货地址。 \n其中有效收货地址<span class="layui-text-pink">${ret.length}个</span>\n，无效收货地址<span class="layui-text-pink">${addressTos.length - ret.length}个</span>${badIndex.length ? `，无效地址分别是在：${badIndex.join('，')}。烦请修改` : '，非常好！！！'}\n`);
         return false;
     }
 

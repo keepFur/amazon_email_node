@@ -42,8 +42,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">重量(千克)</label>
                         <div class="layui-input-block">
-                            <input type="text" name="kbWeight" id="kbWeight" value="1" placeholder="单位：千克"
-                                class="layui-input">
+                            <input type="text" name="kbWeight" id="kbWeight" value="1" placeholder="单位：千克" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -60,11 +59,19 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
+                        <label class="layui-form-label">地址格式</label>
+                        <div class="layui-input-block">
+                            <textarea id="addressFormat" class="layui-textarea" disabled rows="5">收货地址格式：姓名，手机，省（空格）市（空格）县区（空格）详细地址，邮编
+例如：张三，13688888888 ，广东省 深圳市 罗湖区 深南大道102号，518000 
+严格按上面的格式来  三个逗号，三个空格，一个都不要少，也不能多
+一行一个地址
+PS：提交订单之前最好先点击下面的【检查地址格式】按钮来检查地址格式是否正确，系统会将不符合格式的地址进行提示，不强制检查。</textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
                         <label class="layui-form-label">收货地址</label>
                         <div class="layui-input-block">
-                            <textarea class="layui-textarea" name="addressTo" rows="15" placeholder="格式：姓名，手机，省（空格）市（空格）县区（空格）详细地址，邮编 
-例如：张三，13688888888 ，广东省 深圳市 罗湖区 深南大道102号，518000 
-严格按上面的格式来  三个逗号，三个空格，一个都不要少，也不能多"></textarea>
+                            <textarea class="layui-textarea" name="addressTo" rows="15" placeholder="一行一个地址，格式按照上面的来填写"></textarea>
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -74,8 +81,7 @@
                                     class="layui-icon">&#xe67c;</i>通过Excel文件导入</button>
                             <!-- <button class="layui-btn layui-btn-primary layui-btn-sm" id="downloadTemplateBtn"><i class="layui-icon">&#xe601;</i>下载收货地址Excel模版</button> -->
                             <button class="layui-btn layui-btn-normal layui-btn-sm" id="getRealOrderBtn">过滤真实订单</button>
-                            <button class="layui-btn layui-btn-primary layui-btn-sm"
-                                id="formatAddressBtn">检查地址格式</button>
+                            <button class="layui-btn layui-btn-primary layui-btn-sm" id="formatAddressBtn">检查地址格式</button>
                         </div>
                         <label class="layui-form-label"></label>
                         <div class="layui-form-mid layui-word-aux">
@@ -116,8 +122,7 @@
                 <div class='layui-form-item'>
                     <button class="layui-btn layui-btn-normal layui-btn-sm js-create-bb-address">创建</button>
                     <button class="layui-btn layui-btn-primary layui-btn-sm" id="updateKbAddressBtn">修改</button>
-                    <button class="layui-btn layui-btn-primary layui-btn-sm"
-                        id="setDefaultKbAddressBtn">设置为默认地址</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="setDefaultKbAddressBtn">设置为默认地址</button>
                     <button class="layui-btn layui-btn-primary layui-btn-sm" id="disabledKbAddressBtn">禁用</button>
                     <button class="layui-btn layui-btn-primary layui-btn-sm" id="enabledKbAddressBtn">启用</button>
                 </div>
