@@ -168,8 +168,12 @@ layui.use(['element', 'table', 'layer', 'util', 'form', 'laydate'], function() {
             function pddBatchHandle(e) {
                 var aLink = document.createElement('a');
                 // var queryParams = getQueryParams();
-                var userName = $('input[name=userName]') && $('input[name=userName]').val();
-                aLink.href = '/api/pddBatch?limit=1000&offset=1&plant=PDD&status=1&userName=' + userName;
+                var userName = $('input[name=userName]').length && $('input[name=userName]').val();
+                if (userName) {
+                    aLink.href = '/api/pddBatch?limit=1000&offset=1&plant=PDD&status=1&userName=' + userName;
+                } else {
+                    aLink.href = '/api/pddBatch?limit=1000&offset=1&plant=PDD&status=1';
+                }
                 aLink.click();
                 return false;
             }
