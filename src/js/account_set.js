@@ -67,12 +67,12 @@ layui.use(['element', 'layer', 'form'], function() {
             new: $('form[name=userUpdatePasswordForm] input[name=password]').val(),
         };
         var $ele = $(e.target);
-        if (!/^[a-zA-Z0-9]{6,15}$/g.test(pass.old) || !/^[a-zA-Z0-9]{6,15}$/g.test(pass.new)) {
+        if (!/^[a-zA-Z0-9@]{6,15}$/g.test(pass.old) || !/^[a-zA-Z0-9@]{6,15}$/g.test(pass.new)) {
             layer.msg(passwordErrorMsg);
             return false;
         }
         if (pass.new === pass.old) {
-            layer.msg('新密码和就密码一致，无需修改');
+            layer.msg('新密码和旧密码一致，无需修改');
             return false;
         }
         // 验证原密码是否正确
