@@ -29,7 +29,7 @@ layui.use(['element', 'layer', 'form', 'table', 'util'], function () {
             var link = location.host + '/?otherShareCode=' + res.data.rows[0].myShareCode;
             $('input[name=shareLink]').val(link);
             // 生成效果
-            $('#jsShareEffect').val(`亲爱的朋友，我正在使用易店科技优化店铺，效果很不错哦，你也可以试试。点击下方为你准备的专属链接${link}进行注册吧。注册就送2.5元。`);
+            $('#jsShareEffect').val(`亲爱的朋友，我正在使用易店优化店铺，效果很不错哦，你也可以试试。点击下方为你准备的专属链接${link}进行注册吧。注册就送2.5元。`);
         });
         // 获取所有的充值方式并渲染
         getPackageDatas();
@@ -96,7 +96,7 @@ layui.use(['element', 'layer', 'form', 'table', 'util'], function () {
                             </div>
                             <div>
                                 <span class="pull-left">付款金额：<spam id="payMount">100</spam>元</span>
-                                <span class="pull-right">收款人：易店科技</span>
+                                <span class="pull-right">收款人：易店</span>
                             </div>
                         </div>`,
             area: ['450px', '520px'],
