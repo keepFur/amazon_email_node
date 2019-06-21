@@ -143,7 +143,7 @@ layui.use(['element', 'layer', 'table', 'util'], function () {
             var link = location.host + '/?otherShareCode=' + res.data.rows[0].myShareCode;
             $('input[name=shareLink]').val(link);
             // 生成效果
-            $('#jsShareEffect').val(`亲爱的朋友，我正在使用易店科技优化店铺，效果很不错哦，你也可以试试。点击下方为你准备的专属链接${link}进行注册吧。注册就送2.5元。`);
+            $('#jsShareEffect').val(`亲爱的朋友，我正在使用易店优化店铺，效果很不错哦，你也可以试试。点击下方为你准备的专属链接${link}进行注册吧。注册就送2.5元。`);
         });
     }
 

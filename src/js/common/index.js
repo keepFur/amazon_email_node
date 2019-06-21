@@ -104,7 +104,7 @@ layui.use(['jquery'], function () {
      * @param {string} title title值
      */
     function setDocumentTitle(title) {
-        document.title = '易店科技 - ' + title;
+        document.title = '易店 - ' + title;
         $('.js-nav-text').text(title);
     }
 
