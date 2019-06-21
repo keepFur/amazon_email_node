@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="../dest/css/yidian.front.all.min.css">
     <meta name="keywords" content="拍A发B最佳选项,礼品单,淘宝引流,淘宝免费流量,淘宝买流量,淘宝手机流量,淘宝APP流量,淘宝流量软件,淘宝流量推广,淘宝流量提升,流量推广软件,网店推广软件">
     <meta name="description"
-        content="易店科技是一款用于淘宝引流的免费提升流量软件,模拟人工自然搜索、点击、停留浏览店铺和宝贝,支持PC流量、手机无线APP流量提升,可通过买流量快速提升淘宝店铺商品搜索排名、展现量、访问量和人气值！">
+        content="易店是一款用于淘宝引流的免费提升流量软件,模拟人工自然搜索、点击、停留浏览店铺和宝贝,支持PC流量、手机无线APP流量提升,可通过买流量快速提升淘宝店铺商品搜索排名、展现量、访问量和人气值！">
     <script>
         var _hmt = _hmt || [];
         (function () {
@@ -36,10 +36,10 @@
     <header>
         <nav class="main">
             <!-- 此处两种方式  一个是使用直接潜入到结构中，还有一种是背景图片，一般logo的话 是使用img标签 -->
-            <a href="#" class="brand pull-left">
+            <a href="#" class="brand pull-left hide">
                 <img src="../imgs/logo.png" height="40" alt="回到首页">
             </a>
-            <ul class="text-right">
+            <ul class="text-center">
                 <li class="li-selected">
                     <a href="#" id="home">首页</a>
                 </li>
@@ -59,7 +59,7 @@
                     <a href="#" id="presentPur">礼品下单</a>
                 </li>
                 <li>
-                    <a href="#" id="addMoney">在线充值</a>
+                    <a href="#" class="hide" id="addMoney">在线充值</a>
                 </li>
                 <% if(!user){ %>
                 <li id="userLogin">
@@ -362,17 +362,17 @@
                 <a href="#" class="more pull-right js-notice-view-more">更多公告</a>
             </div>
             <!-- 在线咨询 -->
-            <div class="kefu-container">
+            <div class="kefu-container hide">
             </div>
             <div class="mdui-dialog js-kefu-mdui-dialog">
-                <div class="mdui-dialog-title">欢迎来到易店科技</div>
+                <div class="mdui-dialog-title">欢迎来到易店</div>
                 <div class="mdui-dialog-content mdui-text-center">
                     <p>
                         请添加QQ：
                         <span class="mdui-text-color-pink">
                             <%= package.siteQQ%>
                         </span>，或者打开手机QQ扫描下方的二维码直接进入
-                        <span class="mdui-text-color-pink">易店科技官方</span>客服QQ群
+                        <span class="mdui-text-color-pink">易店官方</span>客服QQ群
                     </p>
                     <p>
                         <img src="../imgs/qqq.png" width="280" height="280" alt="易店官方客服QQ群">
