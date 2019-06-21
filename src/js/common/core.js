@@ -485,6 +485,8 @@ var core = {
             CND: '承诺达快递',
             CNDDZ: '承诺达电子面单',
             STDZ: '申通电子面单',
+            BSDZ: '百世电子面单',
+            YTDZ: '圆通电子面单',
         };
         return kb[code];
     },
