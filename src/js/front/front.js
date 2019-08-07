@@ -24,6 +24,10 @@ $(function () {
         });
         // 如果是通过别人的分享的链接进行注册的话，直接跳转到注册的页面
         getOtherShareCode() && $('#userRegister').trigger('click');
+        // 如果是有hash的话，跳转到hash页面
+        if (window.location.hash === '#login') {
+            $('#userLogin').trigger('click');
+        }
     })()
 
     // 事件初始化

@@ -81,13 +81,26 @@ app.set('src', path.join('src'));
 
 // 过滤未登录的用户
 app.all('/api/*', function (req, res, next) {
-    if (req.user) {
+    if (req.session.userId) {
         next();
     } else {
         res.redirect('/');
     }
 });
 
+// 获取登录状态
+app.get('/api/checkLoginStatus', function (req, res) {
+    try {
+        res.send({
+            success: !!req.session.userId
+        })
+    } catch (error) {
+        res.send({
+            success: false
+        })
+        Core.flyer.log(error);
+    }
+});
 // 获取每天的流量购买数量
 app.get('/api/readTaskCountOfInTime', function (req, res) {
     try {

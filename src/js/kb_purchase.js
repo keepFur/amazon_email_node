@@ -1,94 +1,94 @@
 "use strict";
-layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function() {
-            var form = layui.form;
-            var table = layui.table;
-            var layer = layui.layer;
-            var util = layui.util;
-            var upload = layui.upload;
-            var baseDatas = {
-                netErrMsg: '系统已退出登录，请登录系统重试',
-                operatorErrMsg: {
-                    single: '请选择一条数据操作',
-                    batch: '请至少选择一条数据操作'
-                },
-                level: 1,
-                plant: 'TB',
-                kbTypeInfo: null
-            };
-            var pca = {
-                p: '',
-                c: '',
-                a: '',
-                pT: '',
-                cT: '',
-                aT: ''
-            }; // 省市区
-            var userInfo = {};
+layui.use(['form', 'element', 'table', 'layer', 'util', 'upload'], function () {
+    var form = layui.form;
+    var table = layui.table;
+    var layer = layui.layer;
+    var util = layui.util;
+    var upload = layui.upload;
+    var baseDatas = {
+        netErrMsg: '系统已退出登录，请登录系统重试',
+        operatorErrMsg: {
+            single: '请选择一条数据操作',
+            batch: '请至少选择一条数据操作'
+        },
+        level: 1,
+        plant: 'TB',
+        kbTypeInfo: null
+    };
+    var pca = {
+        p: '',
+        c: '',
+        a: '',
+        pT: '',
+        cT: '',
+        aT: ''
+    }; // 省市区
+    var userInfo = {};
 
-            (function init() {
-                form.render('select');
-                form.render('radio');
-                getAddressFromServer();
-                renderTable();
-                initEvents();
-                core.getUserInfoById(function(user) {
-                    userInfo = user.data.rows[0];
-                    baseDatas.level = userInfo.level;
-                    getKbTypeServer('TB');
-                    $('#userName').data('user', JSON.stringify(user));
-                    $('#userBalance').text(core.fenToYuan(userInfo.money));
-                    $('#userLevel').html(core.getLevelText(userInfo.level));
-                    $('#discountKbSumMoneyText,#discountKbPriceText').toggle(userInfo.level !== 1);
-                });
-                initUpload();
-            })();
+    (function init() {
+        form.render('select');
+        form.render('radio');
+        getAddressFromServer();
+        renderTable();
+        initEvents();
+        core.getUserInfoById(function (user) {
+            userInfo = user.data.rows[0];
+            baseDatas.level = userInfo.level;
+            getKbTypeServer('TB');
+            $('#userName').data('user', JSON.stringify(user));
+            $('#userBalance').text(core.fenToYuan(userInfo.money));
+            $('#userLevel').html(core.getLevelText(userInfo.level));
+            $('#discountKbSumMoneyText,#discountKbPriceText').toggle(userInfo.level !== 1);
+        });
+        initUpload();
+    })();
 
-            /**
-             * 初始化文件上传组件
-             *
-             */
-            function initUpload() {
-                function format(a) {
-                    return a.map(function(item) {
-                        return item.name + '，' + item.phone + '，' + item.province + ' ' + item.city + ' ' + item.area + ' ' + item.detail + '，' + item.email;
-                    });
+    /**
+     * 初始化文件上传组件
+     *
+     */
+    function initUpload() {
+        function format(a) {
+            return a.map(function (item) {
+                return item.name + '，' + item.phone + '，' + item.province + ' ' + item.city + ' ' + item.area + ' ' + item.detail + '，' + item.email;
+            });
+        }
+        upload.render({
+            elem: '#importAddressExcelBtn',
+            url: '/api/importAddressExcel',
+            done: function (res) {
+                if (res.success) {
+                    layer.msg('数据解析成功！！');
+                    $('textarea[name=addressTo]').val(format(res.data).join('\n'));
+                } else {
+                    layer.msg('数据解析失败：' + res.message);
                 }
-                upload.render({
-                    elem: '#importAddressExcelBtn',
-                    url: '/api/importAddressExcel',
-                    done: function(res) {
-                        if (res.success) {
-                            layer.msg('数据解析成功！！');
-                            $('textarea[name=addressTo]').val(format(res.data).join('\n'));
-                        } else {
-                            layer.msg('数据解析失败：' + res.message);
-                        }
-                        layer.closeAll('loading');
-                    },
-                    before: function(obj) {
-                        layer.load();
-                    },
-                    data: {
-                        plant: function() {
-                            return baseDatas.plant;
-                        }
-                    },
-                    size: 2048,
-                    accept: 'file',
-                    exts: 'xls|xlsx|csv',
-                    error: function(err) {
-                        layer.closeAll('loading');
-                        layer.msg('数据解析失败:服务器异常！！！');
-                    }
-                });
+                layer.closeAll('loading');
+            },
+            before: function (obj) {
+                layer.load();
+            },
+            data: {
+                plant: function () {
+                    return baseDatas.plant;
+                }
+            },
+            size: 2048,
+            accept: 'file',
+            exts: 'xls|xlsx|csv',
+            error: function (err) {
+                layer.closeAll('loading');
+                layer.msg('数据解析失败:服务器异常！！！');
             }
+        });
+    }
 
-            // 事件初始化
-            function initEvents() {
-                // 电商平台的切换
-                form.on('radio', function(data) {
-                    getKbTypeServer(data.value);
-                    var p = data.value === 'PDD' ? `格式：姓名，手机，省（空格）市（空格）县区（空格）详细地址，订单流水号 
+    // 事件初始化
+    function initEvents() {
+        // 电商平台的切换
+        form.on('radio', function (data) {
+            renderKbType(getKbTypeClient(data.value))
+            var p = data.value === 'PDD' ? `格式：姓名，手机，省（空格）市（空格）县区（空格）详细地址，订单流水号 
 例如：张三，13688888888 ，广东省 深圳市 罗湖区 深南大道102号，20150831-070478496
 严格按上面的格式来  三个逗号，三个空格，一个都不要少，也不能多
 一行一个地址
@@ -101,138 +101,138 @@ PS：提交订单之前最好先点击下面的【检查地址格式】按钮来
 严格按上面的格式来  三个逗号，三个空格，一个都不要少，也不能多
 一行一个地址
 PS：提交订单之前最好先点击下面的【检查地址格式】按钮来检查地址格式是否正确，系统会将不符合格式的地址进行提示，不强制检查。`;
-                    $('#addressFormat').val(p);
-                    baseDatas.plant = data.value;
-                    // 将注意事项隐藏
-                    $('#bbDetailContainer').addClass('layui-hide');
-                    $('#description').text('');
-                });
-                // 快递类型的选择
-                form.on('select(kbCompany)', function(data) {
-                    if (data.value) {
-                        var $selected = $(data.elem).find('option[value=' + data.value + ']')
-                        var price = $selected.data('price');
-                        var plant = $selected.data('plant');
-                        var desc = $selected.data('desc');
-                        // 将选中的任务保存到基础数据中，后期的数据源只来源于此（唯一数据源）
-                        baseDatas.kbTypeInfo = {
-                            price: price,
-                            plant: plant,
-                            code: data.value
-                        };
-                        // 单价
-                        $('#kbPrice').text(core.fenToYuan(price));
-                        // 优惠单价
-                        $('#discountKbPrice').text(core.fenToYuan(core.computeTotalPrice(baseDatas.level, price)));
-                        // 数量
-                        var quantity = getKbAddressTo().length;
-                        var sumMoney = quantity && baseDatas.kbTypeInfo ? quantity * baseDatas.kbTypeInfo.price : 0;
-                        $('#kbQuantity').text(quantity);
-                        // 总价
-                        $('#kbSumMoney').text(core.fenToYuan(sumMoney));
-                        // 优惠总价
-                        $('#discountKbSumMoney').text(core.fenToYuan(core.computeTotalPrice(baseDatas.level, baseDatas.kbTypeInfo ? quantity * baseDatas.kbTypeInfo.price : 0) * quantity));
-                        // 将注意事项显示出来
-                        $('#bbDetailContainer').removeClass('layui-hide');
-                        $('#description').text(desc);
-                    } else {
-                        baseDatas.kbTypeInfo = null;
-                        // 将注意事项隐藏
-                        $('#bbDetailContainer').addClass('layui-hide');
-                        $('#description').text('');
-                    }
-                });
-                // 收货地址输入框的onblur事件
-                $('textarea[name=addressTo]').on('blur', function(e) {
-                    // 数量
-                    var quantity = getKbAddressTo().length;
-                    var sumMoney = quantity && baseDatas.kbTypeInfo ? quantity * baseDatas.kbTypeInfo.price : 0;
-                    $('#kbQuantity').text(quantity);
-                    // 总价
-                    $('#kbSumMoney').text(core.fenToYuan(sumMoney));
-                    // 优惠总价
-                    $('#discountKbSumMoney').text(core.fenToYuan(core.computeTotalPrice(baseDatas.level, baseDatas.kbTypeInfo ? baseDatas.kbTypeInfo.price : 0) * quantity));
-                    return false;
-                });
-                // 通过excel导入收货地址
-                $('#importAddressExcelBtn').on('click', importAddressExcelHandle);
-                // 下载收货地址模版
-                $('#downloadTemplateBtn').on('click', downloadTemplateHandle);
-                // 格式化地址
-                $('#formatAddressBtn').on('click', formatAddressHandle);
-                // 过滤真实订单
-                $('#getRealOrderBtn').on('click', getRealOrderHandle);
-                // 提交订单
-                $('#createKbOrderBtn').on('click', createKbOrderHandle);
-                // 创建发货地址
-                $('.js-create-bb-address').on('click', createKbAddressHandle);
-                // 修改发货地址
-                $('#updateKbAddressBtn').on('click', updateKbAddressHandle);
-                // 设置为默认地址
-                $('#setDefaultKbAddressBtn').on('click', setDefaultKbAddressHandle);
-                // 禁用发货地址
-                $('#disabledKbAddressBtn').on('click', {
-                    type: 0
-                }, toggleKbAddressHandle);
-                // 启用发货地址
-                $('#enabledKbAddressBtn').on('click', {
-                    type: 1
-                }, toggleKbAddressHandle);
+            $('#addressFormat').val(p);
+            baseDatas.plant = data.value;
+            // 将注意事项隐藏
+            $('#bbDetailContainer').addClass('layui-hide');
+            $('#description').text('');
+        });
+        // 快递类型的选择
+        form.on('select(kbCompany)', function (data) {
+            if (data.value) {
+                var $selected = $(data.elem).find('option[value=' + data.value + ']')
+                var price = $selected.data('price');
+                var plant = $selected.data('plant');
+                var desc = $selected.data('desc');
+                // 将选中的任务保存到基础数据中，后期的数据源只来源于此（唯一数据源）
+                baseDatas.kbTypeInfo = {
+                    price: price,
+                    plant: plant,
+                    code: data.value
+                };
+                // 单价
+                $('#kbPrice').text(core.fenToYuan(price));
+                // 优惠单价
+                $('#discountKbPrice').text(core.fenToYuan(core.computeTotalPrice(baseDatas.level, price)));
+                // 数量
+                var quantity = getKbAddressTo().length;
+                var sumMoney = quantity && baseDatas.kbTypeInfo ? quantity * baseDatas.kbTypeInfo.price : 0;
+                $('#kbQuantity').text(quantity);
+                // 总价
+                $('#kbSumMoney').text(core.fenToYuan(sumMoney));
+                // 优惠总价
+                $('#discountKbSumMoney').text(core.fenToYuan(core.computeTotalPrice(baseDatas.level, baseDatas.kbTypeInfo ? quantity * baseDatas.kbTypeInfo.price : 0) * quantity));
+                // 将注意事项显示出来
+                $('#bbDetailContainer').removeClass('layui-hide');
+                $('#description').text(desc);
+            } else {
+                baseDatas.kbTypeInfo = null;
+                // 将注意事项隐藏
+                $('#bbDetailContainer').addClass('layui-hide');
+                $('#description').text('');
             }
+        });
+        // 收货地址输入框的onblur事件
+        $('textarea[name=addressTo]').on('blur', function (e) {
+            // 数量
+            var quantity = getKbAddressTo().length;
+            var sumMoney = quantity && baseDatas.kbTypeInfo ? quantity * baseDatas.kbTypeInfo.price : 0;
+            $('#kbQuantity').text(quantity);
+            // 总价
+            $('#kbSumMoney').text(core.fenToYuan(sumMoney));
+            // 优惠总价
+            $('#discountKbSumMoney').text(core.fenToYuan(core.computeTotalPrice(baseDatas.level, baseDatas.kbTypeInfo ? baseDatas.kbTypeInfo.price : 0) * quantity));
+            return false;
+        });
+        // 通过excel导入收货地址
+        $('#importAddressExcelBtn').on('click', importAddressExcelHandle);
+        // 下载收货地址模版
+        $('#downloadTemplateBtn').on('click', downloadTemplateHandle);
+        // 格式化地址
+        $('#formatAddressBtn').on('click', formatAddressHandle);
+        // 过滤真实订单
+        $('#getRealOrderBtn').on('click', getRealOrderHandle);
+        // 提交订单
+        $('#createKbOrderBtn').on('click', createKbOrderHandle);
+        // 创建发货地址
+        $('.js-create-bb-address').on('click', createKbAddressHandle);
+        // 修改发货地址
+        $('#updateKbAddressBtn').on('click', updateKbAddressHandle);
+        // 设置为默认地址
+        $('#setDefaultKbAddressBtn').on('click', setDefaultKbAddressHandle);
+        // 禁用发货地址
+        $('#disabledKbAddressBtn').on('click', {
+            type: 0
+        }, toggleKbAddressHandle);
+        // 启用发货地址
+        $('#enabledKbAddressBtn').on('click', {
+            type: 1
+        }, toggleKbAddressHandle);
+    }
 
-            /**
-             *通过excel导入收货地址
-             *
-             * @param {*} e
-             * @returns
-             */
-            function importAddressExcelHandle(e) {
-                return false;
+    /**
+     *通过excel导入收货地址
+     *
+     * @param {*} e
+     * @returns
+     */
+    function importAddressExcelHandle(e) {
+        return false;
+    }
+
+    /**
+     * 下载模版
+     *
+     * @param {*} e
+     * @returns
+     */
+    function downloadTemplateHandle(e) {
+        var aLink = document.createElement('a');
+        aLink.href = '/api/downloadTemplate?plant=' + baseDatas.plant;
+        aLink.click();
+        return false;
+    }
+
+    /**
+     *格式化收货地址
+     *
+     * @param {*} e
+     * @returns
+     */
+    function formatAddressHandle(e) {
+        var addressTo = $('textarea[name=addressTo]').val();
+        if (!addressTo) {
+            layer.msg('请先填写收货地址信息');
+            return false;
+        }
+        var addressTos = addressTo.split(/\n{1,}/g);
+        var badIndex = [];
+        var ret = addressTos.map(function (item) {
+            return $.trim(item);
+        }).filter(function (item, index) {
+            if (item.split(/，|,/).length === 4 && item.split(/，|,/)[2].split(/\s{1,}/g).length === 4) {
+                return true;
             }
-
-            /**
-             * 下载模版
-             *
-             * @param {*} e
-             * @returns
-             */
-            function downloadTemplateHandle(e) {
-                var aLink = document.createElement('a');
-                aLink.href = '/api/downloadTemplate?plant=' + baseDatas.plant;
-                aLink.click();
-                return false;
-            }
-
-            /**
-             *格式化收货地址
-             *
-             * @param {*} e
-             * @returns
-             */
-            function formatAddressHandle(e) {
-                var addressTo = $('textarea[name=addressTo]').val();
-                if (!addressTo) {
-                    layer.msg('请先填写收货地址信息');
-                    return false;
-                }
-                var addressTos = addressTo.split(/\n{1,}/g);
-                var badIndex = [];
-                var ret = addressTos.map(function(item) {
-                    return $.trim(item);
-                }).filter(function(item, index) {
-                    if (item.split(/，|,/).length === 4 && item.split(/，|,/)[2].split(/\s{1,}/g).length === 4) {
-                        return true;
-                    }
-                    badIndex.push('<span class="layui-text-pink">第' + (index + 1) + '个</span>(' + item + ')； <br>');
-                    return false;
-                });
-                var formatText = $('#addressFormat').val();
-                layer.open({
-                            content: `<span class="layui-text-pink">正确格式：姓名，手机，省（空格）市（空格）县区（空格）详细地址，邮编或快递单号或订单号</span><br>总共收货地址<span class="layui-text-pink">${addressTos.length}个</span>，其中有效收货地址<span class="layui-text-pink">${ret.length}个</span>，无效收货地址<span class="layui-text-pink">${addressTos.length - ret.length}个</span>${badIndex.length ? `。<br>无效地址分别是在：<br>${badIndex.join('')}<span class="layui-text-pink">烦请修改后提交订单，谢谢！</span>` : '，非常好！！！'}<br>`,
+            badIndex.push('<span class="layui-text-pink">第' + (index + 1) + '个</span>(' + item + ')； <br>');
+            return false;
+        });
+        var formatText = $('#addressFormat').val();
+        layer.open({
+            content: `<span class="layui-text-pink">正确格式：姓名，手机，省（空格）市（空格）县区（空格）详细地址，邮编或快递单号或订单号</span><br>总共收货地址<span class="layui-text-pink">${addressTos.length}个</span>，其中有效收货地址<span class="layui-text-pink">${ret.length}个</span>，无效收货地址<span class="layui-text-pink">${addressTos.length - ret.length}个</span>${badIndex.length ? `。<br>无效地址分别是在：<br>${badIndex.join('')}<span class="layui-text-pink">烦请修改后提交订单，谢谢！</span>` : '，非常好！！！'}<br>`,
             title: '检查地址格式',
             btn: ['确定'],
-            area: ['660px','500px'],
-            html:true,
+            area: ['660px', '500px'],
+            html: true,
             scrollbar: false,
         });
         return false;
@@ -691,52 +691,52 @@ PS：提交订单之前最好先点击下面的【检查地址格式】按钮来
             url: '/api/readKbAddress',
             cols: [
                 [{
-                        checkbox: true,
-                    },
-                    {
-                        title: '寄件人',
-                        field: "contact"
-                    }, {
-                        title: '手机',
-                        field: "phone"
-                    }, {
-                        title: '地址',
-                        field: "detail",
-                        templet: function (d) {
-                            return d.pca + d.detail;
-                        }
-                    }, {
-                        title: '邮编',
-                        field: "email"
-                    }, {
-                        title: '备注',
-                        field: "remark"
-                    }, {
-                        title: '创建时间',
-                        field: "createdDate",
-                        templet: function (d) {
-                            return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
-                        }
-                    }, {
-                        title: '最后修改时间',
-                        field: "updateDate",
-                        templet: function (d) {
-                            return d.updateDate ? util.toDateString(d.updateDate, 'yyyy-MM-dd HH:mm') : '';
-                        }
-                    }, {
-                        title: '是否默认',
-                        field: '',
-                        templet: function (d) {
-                            return d.isDefault === 1 ? '<span class="layui-text-pink">是</span>' : '否';
-                        }
-                    },
-                    {
-                        title: '状态',
-                        field: 'status',
-                        templet: function (d) {
-                            return d.status === 1 ? '启用' : '<span class="layui-text-pink">停用</span>';
-                        }
+                    checkbox: true,
+                },
+                {
+                    title: '寄件人',
+                    field: "contact"
+                }, {
+                    title: '手机',
+                    field: "phone"
+                }, {
+                    title: '地址',
+                    field: "detail",
+                    templet: function (d) {
+                        return d.pca + d.detail;
                     }
+                }, {
+                    title: '邮编',
+                    field: "email"
+                }, {
+                    title: '备注',
+                    field: "remark"
+                }, {
+                    title: '创建时间',
+                    field: "createdDate",
+                    templet: function (d) {
+                        return util.toDateString(d.createdDate, 'yyyy-MM-dd HH:mm');
+                    }
+                }, {
+                    title: '最后修改时间',
+                    field: "updateDate",
+                    templet: function (d) {
+                        return d.updateDate ? util.toDateString(d.updateDate, 'yyyy-MM-dd HH:mm') : '';
+                    }
+                }, {
+                    title: '是否默认',
+                    field: '',
+                    templet: function (d) {
+                        return d.isDefault === 1 ? '<span class="layui-text-pink">是</span>' : '否';
+                    }
+                },
+                {
+                    title: '状态',
+                    field: 'status',
+                    templet: function (d) {
+                        return d.status === 1 ? '启用' : '<span class="layui-text-pink">停用</span>';
+                    }
+                }
                 ]
             ],
             response: {
@@ -886,9 +886,26 @@ PS：提交订单之前最好先点击下面的【检查地址格式】按钮来
      * @param {*}  平台
      */
     function getKbTypeServer(plant) {
-        $.get('/api/readKbType?status=1&plant=' + plant, function (res) {
-            renderKbType(res.data.rows);
+        // 一次性把所有的快递拉过来，然后存储在客户端localStorege
+        $.get('/api/readKbType?status=1', function (res) {
+            localStorage.setItem('getKbTypeClient', JSON.stringify(res.data.rows))
+            renderKbType(getKbTypeClient(plant))
         }, 'json');
+    }
+
+    /**
+    *获取快递类型列表
+    *
+    * @param {*}  平台
+    */
+    function getKbTypeClient(plant) {
+        var kbTypes = [];
+        try {
+            kbTypes = JSON.parse(localStorage.getItem('getKbTypeClient'))
+        } catch (error) {
+            kbTypes = []
+        }
+        return kbTypes.filter(item => item.plant === plant)
     }
 
     /**
@@ -1034,8 +1051,3 @@ PS：提交订单之前最好先点击下面的【检查地址格式】按钮来
         }, 'json');
     }
 });
-
-// 圆通空包接口对接
-// 步骤
-// 1，获取秘钥，加上参数生成签名 在客户端生成
-// 2，获取单号（完成）
