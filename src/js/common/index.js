@@ -30,9 +30,15 @@ layui.use(['jquery'], function () {
 
         // window hashChange事件
         window.onhashchange = function () {
-            var url = getPageUrlByHash();
-            triggerHomeClick(window.location.hash);
-            loadPageByUrl(url);
+            $.get('/api/checkLoginStatus', function (data) {
+                if (data.success) {
+                    var url = getPageUrlByHash();
+                    triggerHomeClick(window.location.hash);
+                    loadPageByUrl(url);
+                } else {
+                    window.location.assign('/#login')
+                }
+            })
         };
 
         // window的resize事件
